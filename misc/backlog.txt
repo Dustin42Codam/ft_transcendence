@@ -1,0 +1,4 @@
+
+This file contains a backlog of all initial tasks related to ft_transcendence.
+
+
