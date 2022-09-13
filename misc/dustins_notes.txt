@@ -1,0 +1,21 @@
+
+A collection of ideas, random thoughts and a personal to-do list at the bottom.
+
+Todo:
+	-	learn javascript
+		-	freecodecamp?
+		-	book?
+	-	learn vue.js
+		-	official page
+		-	alexs' videos
+	-	set up environment on macos/linux
+		-	docker
+		-	nestjs
+	-	search for useful information/resources
+	-	learn about CI/CD
+		-	https://resources.github.com/ci-cd/
+
+In Progress:
+	->	read subject + write down unclear points
+
+Done:

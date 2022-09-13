@@ -1,0 +1,47 @@
+version: "3"
+
+services:
+
+  postgres:
+    restart: always
+    container_name: postgres
+    hostname: postgres
+    image: postgres:latest
+    volumes:
+      - postgres_sql_vol:/var/lib/mysql
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_PASSWORD:    ${POSTGRES_PASSWORD}
+      POSTGRES_USER:        ${POSTGRES_USER}
+    networks:
+      - ft_transendace
+
+  pgAdmin4:
+    restart: always
+    container_name: pgAdmin4
+    hostname: pgAdmin4
+    image: dpage/pgadmin4
+    volumes:
+      - postgres_sql_vol:/var/lib/mysql
+    networks:
+      - ft_transendace
+    ports:
+      - "8082:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL:    ${PGADMIN_DEFAULT_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
+
+networks:
+  ft_transendace:
+    driver: bridge
+    name: ft_transendace
+
+volumes:
+  postgres_sql_vol:
+    driver: local
+    name: postgres_sql_vol
+    driver_opts:
+      type: none
+      o: bind
+      device: '${HOME}/data/postgresSql'
