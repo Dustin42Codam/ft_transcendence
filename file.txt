@@ -1,0 +1,20 @@
+Attaching to postgres, pgAdmin4
+[33mpostgres    |[0m 
+[33mpostgres    |[0m PostgreSQL Database directory appears to contain a database; Skipping initialization
+[33mpostgres    |[0m 
+[33mpostgres    |[0m 2022-09-14 17:12:28.242 UTC [1] LOG:  starting PostgreSQL 14.5 (Debian 14.5-1.pgdg110+1) on x86_64-pc-linux-gnu, compiled by gcc (Debian 10.2.1-6) 10.2.1 20210110, 64-bit
+[33mpostgres    |[0m 2022-09-14 17:12:28.242 UTC [1] LOG:  listening on IPv4 address "0.0.0.0", port 5432
+[33mpostgres    |[0m 2022-09-14 17:12:28.243 UTC [1] LOG:  listening on IPv6 address "::", port 5432
+[33mpostgres    |[0m 2022-09-14 17:12:28.249 UTC [1] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+[33mpostgres    |[0m 2022-09-14 17:12:28.254 UTC [24] LOG:  database system was interrupted; last known up at 2022-09-14 17:11:13 UTC
+[33mpostgres    |[0m 2022-09-14 17:12:28.382 UTC [24] LOG:  database system was not properly shut down; automatic recovery in progress
+[33mpostgres    |[0m 2022-09-14 17:12:28.384 UTC [24] LOG:  invalid record length at 0/16FC1C8: wanted 24, got 0
+[33mpostgres    |[0m 2022-09-14 17:12:28.384 UTC [24] LOG:  redo is not required
+[33mpostgres    |[0m 2022-09-14 17:12:28.397 UTC [1] LOG:  database system is ready to accept connections
+[36mpgAdmin4    |[0m [2022-09-14 17:12:33 +0000] [1] [INFO] Starting gunicorn 20.1.0
+[36mpgAdmin4    |[0m [2022-09-14 17:12:33 +0000] [1] [INFO] Listening at: http://[::]:80 (1)
+[36mpgAdmin4    |[0m [2022-09-14 17:12:33 +0000] [1] [INFO] Using worker: gthread
+[36mpgAdmin4    |[0m [2022-09-14 17:12:33 +0000] [82] [INFO] Booting worker with pid: 82
+[33mpostgres exited with code 137
+[0m[36mpgAdmin4 exited with code 137
+[0m
