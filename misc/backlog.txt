@@ -25,13 +25,18 @@ Main objectives:
 
 1.	user interface / user account
 	-	implement intra OAuth system
-	-	feature: create user name
-		-	display user name on the website
-	-	feature: upload user avatar
-		-	default avatars if no avatar selected
+		->	The user must login using the OAuth system of 42 intranet
+	-	feature: user name creation
+		->	display user name on the website
+		->	The user should be able to choose a unique name that will be displayed on the website
+	-	feature: user avatar upload
+		->	default avatars if no avatar selected
+		->	The user should be able to upload an avatar. If the user doesn’t upload an avatar, a default one must be set
 	-	feature: two-factor athentication
-		-	google authenticator
-		-	text message via phone
+		->	The user should be able to enable two-factor authentication. For instance, 
+			Google Authenticator or sending a text message to their phone.
+		->	google authenticator
+		->	text message via phone
 	-	feature: add friends
 		-	see friend list
 		-	delete friend
@@ -45,6 +50,9 @@ Main objectives:
 		-	ladder level?
 		-	achievements
 			-	???
+	-	achievements
+		->	A user should be able to gather achievement when playing the game:
+			(10 wins in a row, 100 games played, ...)
 	-	Feature: match history
 		-	1v1 games
 		-	ladder
