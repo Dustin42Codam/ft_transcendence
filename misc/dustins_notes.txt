@@ -8,14 +8,24 @@ Todo:
 	-	learn vue.js
 		-	official page
 		-	alexs' videos
-	-	set up environment on macos/linux
+	-	set up environment on macos
 		-	docker
 		-	nestjs
 	-	search for useful information/resources
 	-	learn about CI/CD
 		-	https://resources.github.com/ci-cd/
+	-	learn PostgreSQL
+		-	https://www.codementor.io/@engineerapart/getting-started-with-postgresql-on-mac-osx-are8jcopb
+		-	https://stackoverflow.com/questions/7975556/how-can-i-start-postgresql-server-on-mac-os-x
+	-	learn NestJS
+	-	checkout insomnia
+		-	https://docs.insomnia.rest/
 
 In Progress:
-	->	read subject + write down unclear points
+	->	set up environment on linux
+		+	docker
+		-	vuejs
+		-	nestjs
 
 Done:
+	+	read subject + write down unclear points

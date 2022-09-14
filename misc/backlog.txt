@@ -2,3 +2,86 @@
 This file contains a backlog of all initial tasks related to ft_transcendence.
 
 
+Tech stack:
+-	backend in NestJS
+-	frontend in Vue.js
+-	PostgreSQL database
+
+Security:
+-	hashed passwords
+	-	chose strong hashing algorithm
+-	SQL injection protection
+-	server side form validation
+-	server side user input validation
+-	create .env file
+	-	holds credentials, API keys and env variables
+	-	add to .gitignore
+
+
+Main objectives:
+1.	user interface
+2.	chat
+3.	game
+
+1.	user interface / user account
+	-	implement intra OAuth system
+	-	feature: create user name
+		-	display user name on the website
+	-	feature: upload user avatar
+		-	default avatars if no avatar selected
+	-	feature: two-factor athentication
+		-	google authenticator
+		-	text message via phone
+	-	feature: add friends
+		-	see friend list
+		-	delete friend
+	-	feature: friend status
+		-	status:	online
+		-	status:	offline
+		-	status:	in a game
+	-	User profile
+		-	wins
+		-	losses
+		-	ladder level?
+		-	achievements
+			-	???
+	-	Feature: match history
+		-	1v1 games
+		-	ladder
+		-	...
+
+2.	chat
+	-	feature: chatrooms
+		-	create chatrooms
+			-	public
+			-	private
+			-	protected (password authentication)
+	-	feature: direct messages
+		-	users can send each other DMs
+	-	feature: block users
+		-	users can block each other
+	-	feature: channel owner / channel admin
+		-	user who created a channel is by default channel admin
+		-	channel admins can set channel password
+		-	channel admins can change channel password
+		-	channel admins can remove channel password
+		-	user loses admin rights when they leave a channel
+		-	channel admins can set other users as channel admins
+		-	channel admins can ban users for a limited time
+		-	channel admins can mute users for a limited time
+	-	feature: game invites
+		-	user should be able to invite other users
+			to play a Pong game through the chat interface
+	-	feature: user profile in chat UI
+		-	user can access other user profiles in the chat interface
+
+3.	Game
+	-	a game of the original Pong
+	-	feature: matchmaking system
+		-	user can join a queue for a game with another user
+	-	customization options
+		-	power ups
+		-	different maps
+		-	default version
+	-	the game must be responsive
+	-	user can watch a live game of other users
