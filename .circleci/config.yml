@@ -16,6 +16,9 @@ jobs:
           version: 20.10.14
           docker_layer_caching: true
       - run:
+          name: "check dirs"
+          command: "ls -la /home/circleci/data && ls -la /var/lib/docker/volumes/postgres_sql_vol"
+      - run:
           name: "Create data dir for db"
           command: "mkdir -p /home/circleci/data/postgresSql /var/lib/docker/volumes/postgres_sql_vol/_data"
       - run:
