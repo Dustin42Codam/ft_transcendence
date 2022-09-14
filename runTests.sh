@@ -3,7 +3,7 @@ docker-compose up --build &>/dev/null &
 
 
 # give server time to start-up
-sleep 15
+sleep 25
 
 
 # EXIT_CODE = executeTests.sh
