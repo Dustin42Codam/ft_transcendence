@@ -14,9 +14,10 @@ jobs:
             # ... steps for building/testing app ...
       - setup_remote_docker:
           version: 20.10.14
+          docker_layer_caching: true
       - run:
           name: "Create data dir for db"
-          command: "mkdir -p /home/circleci/data/postgresSql"
+          command: "mkdir -p /home/circleci/data/postgresSql /var/lib/docker/volumes/postgres_sql_vol/_data"
       - run:
           name: Build-app
           command: "docker-compose up --build"
