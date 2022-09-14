@@ -12,8 +12,8 @@ jobs:
   steps:
     - checkout
     - run:
-      name: Build-app
-      command: "docker-compose up --build"
+        name: Build-app
+        command: "docker-compose up --build"
     - run:
-      name: "Say hello"
-      command: "echo Hello, World!"
+        name: "Say hello"
+        command: "echo Hello, World!"
