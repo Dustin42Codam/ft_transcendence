@@ -4,7 +4,7 @@
 docker-compose up --build &>/dev/null &
 
 
-sleep 25
+sleep 30
 
 # EXIT_CODE = executeTests.sh
 EXIT_CODE=0
