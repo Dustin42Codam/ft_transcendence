@@ -15,6 +15,9 @@ jobs:
       - setup_remote_docker:
           version: 20.10.14
       - run:
+          name: "Create data dir for db"
+          command: "mkdir -p /home/circleci/data/postgresSql"
+      - run:
           name: Build-app
           command: "docker-compose up --build"
       - run:
