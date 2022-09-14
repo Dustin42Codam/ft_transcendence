@@ -12,7 +12,7 @@ jobs:
   steps:
     - checkout
     - run:
-      name: "Build app"
+      name: Build-app
       command: "docker-compose up --build"
     - run:
       name: "Say hello"
