@@ -7,8 +7,8 @@ services:
     container_name: postgres
     hostname: postgres
     image: postgres:latest
-    volumes:
-      - postgres_sql_vol:/var/lib/mysql
+    # volumes:
+    #   - postgres_sql_vol:/var/lib/mysql
     ports:
       - '5432:5432'
     environment:
@@ -22,8 +22,8 @@ services:
     container_name: pgAdmin4
     hostname: pgAdmin4
     image: dpage/pgadmin4
-    volumes:
-      - postgres_sql_vol:/var/lib/mysql
+    # volumes:
+    #   - postgres_sql_vol:/var/lib/mysql
     networks:
       - ft_transcendence
     ports:
@@ -37,11 +37,11 @@ networks:
     driver: bridge
     name: ft_transcendence
 
-volumes:
-  postgres_sql_vol:
-    driver: local
-    name: postgres_sql_vol
-    driver_opts:
-      type: none
-      o: bind
-      device: '${HOME}/data/postgresSql'
+# volumes:
+#   postgres_sql_vol:
+#     driver: local
+#     name: postgres_sql_vol
+#     driver_opts:
+#       type: none
+#       o: bind
+#       device: '${HOME}/data/postgresSql'
