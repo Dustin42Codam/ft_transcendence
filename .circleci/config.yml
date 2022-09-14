@@ -11,6 +11,9 @@ jobs:
       - image: cimg/base:stable
     steps:
       - checkout
+            # ... steps for building/testing app ...
+      - setup_remote_docker:
+          version: 20.10.14
       - run:
           name: Build-app
           command: "docker-compose up --build"
