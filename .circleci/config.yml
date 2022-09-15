@@ -3,7 +3,7 @@ version: 2.1
 jobs:
   build:
     docker:
-      - image: "lgutter/webserv_test:latest"
+      - image: cimg/base:stable
     steps:
       - checkout
       - setup_remote_docker:
