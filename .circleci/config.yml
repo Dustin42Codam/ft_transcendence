@@ -25,18 +25,18 @@ jobs:
             # Setting the Docker Compose project name to "ft_trancendence" means
             # the names of our services' containers would be prefixed with "ft_trancendence".
             docker-compose --project ft_trancendence up -d --build
+            dockerize -wait tcp://localhost:8082 -timeout 1m
 
       #       # In this example, we have a "contacts" service, and
       #       # we are trying to check, via `dockerize`, if the service is ready.
-            docker container run --network container:ft_trancendence \
+            # docker container run --network container:ft_trancendence \
       #         docker.io/jwilder/dockerize \
       #         -wait http://localhost:8082/\
       #         -wait-retry-interval 2s \
       #         -timeout 20s
       
-      - run:
-          name: Wait for db
-          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+      # - run:
+      #     name: Wait for db
 
       - run:
           name: Build-app
