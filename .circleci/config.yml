@@ -19,21 +19,25 @@ jobs:
           name: Start all services declared in docker-compose.yml
           command: docker-compose up -d --build
 
-      - run:
-          name: Start docker-compose and verify service(s)
-          command: |
-            # Setting the Docker Compose project name to "ft_trancendence" means
-            # the names of our services' containers would be prefixed with "ft_trancendence".
-            docker-compose --project ft_trancendence up -d --build
+      # - run:
+      #     name: Start docker-compose and verify service(s)
+      #     command: |
+      #       # Setting the Docker Compose project name to "ft_trancendence" means
+      #       # the names of our services' containers would be prefixed with "ft_trancendence".
+      #       docker-compose --project ft_trancendence up -d --build
 
-            # In this example, we have a "contacts" service, and
-            # we are trying to check, via `dockerize`, if the service is ready.
-            docker container run --network container:ft_trancendence_contacts_1 \
-              docker.io/jwilder/dockerize \
-              -wait http://localhost:8082/\
-              -wait-retry-interval 2s \
-              -timeout 20s
+      #       # In this example, we have a "contacts" service, and
+      #       # we are trying to check, via `dockerize`, if the service is ready.
+      #       docker container run --network container:ft_trancendence_contacts_1 \
+      #         docker.io/jwilder/dockerize \
+      #         -wait http://localhost:8082/\
+      #         -wait-retry-interval 2s \
+      #         -timeout 20s
       
+      - run:
+        name: Wait for db
+        command: dockerize -wait tcp://localhost:8082 -timeout 1m
+
       - run:
           name: Build-app
           command: "./CiTests.sh"
