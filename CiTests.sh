@@ -1,6 +1,6 @@
 #!/bin/bash
 
-docker-compose up --build &
+docker-compose up --build &>/dev/null &
 
 max_iterations=10
 wait_seconds=6
@@ -11,6 +11,7 @@ while true
 do
 	((iterations++))
 	echo "Attempt $iterations"
+	docker ps -q
 	sleep $wait_seconds
 
 	http_code=$(curl --verbose -s -o /tmp/result.txt -w '%{http_code}' "$http_endpoint";)
