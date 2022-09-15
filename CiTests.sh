@@ -1,4 +1,7 @@
 #!/bin/bash
+
+docker-compose up --build &
+
 max_iterations=10
 wait_seconds=6
 http_endpoint="http://localhost:8082/"
