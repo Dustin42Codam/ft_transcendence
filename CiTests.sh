@@ -4,7 +4,7 @@ docker-compose up --build &>/dev/null &
 
 max_iterations=10
 wait_seconds=6
-http_endpoint="http://localhost:8082/"
+http_endpoint="0.0.0.0:8082"
 
 iterations=0
 while true
