@@ -1,8 +1,4 @@
 #!/bin/bash
-# start up the application as specific in subject
-
-# docker-compose up --build &>/dev/null &
-
 max_iterations=10
 wait_seconds=6
 http_endpoint="http://localhost:8082/"
@@ -15,7 +11,7 @@ do
 	sleep $wait_seconds
 
 	http_code=$(curl --verbose -s -o /tmp/result.txt -w '%{http_code}' "$http_endpoint";)
-# http code should bechanged to 200
+# http code should be changed to 200
 	if [ "$http_code" -eq 302 ]; then
 		echo "Server Up"
 		break
@@ -27,9 +23,6 @@ do
 	fi
 done
 
-# sleep 30
-
-# EXIT_CODE = executeTests.sh
 EXIT_CODE=0
 
 ./acceptanceTests.sh
