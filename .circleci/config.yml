@@ -24,7 +24,7 @@ jobs:
           command: |
             # Setting the Docker Compose project name to "ft_trancendence" means
             # the names of our services' containers would be prefixed with "ft_trancendence".
-            docker-compose --project ft_trancendence up -d --build
+            docker-compose ft_trancendence up --build
             dockerize -wait tcp://localhost:8082 -timeout 1m
 
       #       # In this example, we have a "contacts" service, and
