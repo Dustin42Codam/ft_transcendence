@@ -11,7 +11,7 @@ while true
 do
 	((iterations++))
 	echo "Attempt $iterations"
-	docker ps -q
+	docker ps
 	sleep $wait_seconds
 
 	http_code=$(curl --verbose -s -o /tmp/result.txt -w '%{http_code}' "$http_endpoint";)
