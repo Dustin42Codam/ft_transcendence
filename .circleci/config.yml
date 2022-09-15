@@ -3,16 +3,12 @@ version: 2.1
 jobs:
   build:
     docker:
-      - image: cimg/base:stable
+      - image: "lgutter/webserv_test:latest"
     steps:
       - checkout
       - setup_remote_docker:
           version: 20.10.14
           docker_layer_caching: true
-      # - run: 
-      #     name: Start all services declared in docker-compose.yml
-      #     command: docker-compose up --build
-
       - run:
           name: Build-app
           command: "./CiTests.sh"
