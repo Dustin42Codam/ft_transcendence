@@ -15,6 +15,9 @@ jobs:
       - setup_remote_docker:
           version: 20.10.14
           docker_layer_caching: true
+      - run: 
+          name: Start all services declared in docker-compose.yml
+          command: docker-compose up -d --build
       - run:
           name: Build-app
           command: "./CiTests.sh"
