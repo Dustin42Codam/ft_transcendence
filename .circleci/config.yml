@@ -35,8 +35,8 @@ jobs:
       #         -timeout 20s
       
       - run:
-        name: Wait for db
-        command: dockerize -wait tcp://localhost:8082 -timeout 1m
+          name: Wait for db
+          command: dockerize -wait tcp://localhost:8082 -timeout 1m
 
       - run:
           name: Build-app
