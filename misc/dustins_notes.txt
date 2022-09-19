@@ -1,7 +1,62 @@
 
 A collection of ideas, random thoughts and a personal to-do list at the bottom.
 
+Vue.js:
+	-	build toolchain "Vite"
+	-	state management "Pinia"
+	-	vue testing tools?
+	-	Vue CLI for tooling & browser-based Dev Tools?
+	-	Reactive data binding for real-time apps?
+	-	tutorial
+		->	https://vuejs.org/tutorial/
+
+Resources:
+	-	Books:
+		-	The Full Stack Developer
+		-	Modern Full Stack Development
+		-	Fullstack Vue.js
+	-	Courses:
+		-	
+	-	SPAs
+		->	https://bholmes.dev/blog/spas-clientside-routing/
+	-	GitHub student pack
+		-	
+
+Testing:
+	-	User input
+		->	https://github.com/minimaxir/big-list-of-naughty-strings
+	-	add bitwised OR'ed exit code in ci/cd script to determine failed tests
+	-	Chai JS testint library
+		-> https://www.freecodecamp.org/learn/quality-assurance/#quality-assurance-and-testing-with-chai
+		-> https://www.chaijs.com/
+	-	deepsource.io
+		-> synch repo
+
 Todo:
+	-	build a real website
+		-	microsoft azure/digitcal ocean
+		-	name.com domain
+		-	GitHub pages
+		-	datadog
+	-	GitHub Student Pack
+		-	educative.com
+		-	frontend masters
+		-	datacamp
+		-	polypane (browser and dev tool)
+			-	free for 1 year
+		-	icons8
+		-	figma frontend design
+		-	sentry
+		-	popsql
+		-	browserstack
+		-	blackfire io
+		-	lambda test
+		-	sqlgate
+		-	deepscan
+			-	DeepScan is a platform for building better and more reliable JavaScript apps
+			-	Free 6-month trial while you are a student.
+
+
 	-	learn javascript
 		-	freecodecamp?
 		-	book?
@@ -29,3 +84,4 @@ In Progress:
 
 Done:
 	+	read subject + write down unclear points
+	+	install LiveServer in VSCode
