@@ -15,7 +15,7 @@ services:
     #volumes:
     #  - frontend_vol:/home/node
     #networks:
-    #  - ft_transendace
+    #  - ft_trance
 
   backend:
     restart: always
@@ -29,7 +29,7 @@ services:
     volumes:
       - backend_vol:/home/node
     networks:
-      - ft_transendace
+      - ft_trance
 
   postgres:
     restart: always
@@ -44,9 +44,9 @@ services:
       POSTGRES_USER:        ${POSTGRES_USER}
       POSTGRES_DB:          ${POSTGRES_DB}
     networks:
-      - ft_transendace
+      - ft_trance
     healthcheck:
-        test: ["CMD", "pg_isready", "-U", "user", "-d", "ft_transendace"]
+        test: ["CMD", "pg_isready", "-U", "user", "-d", "ft_trance"]
         interval: 10s
         retries: 2
         start_period: 20s
@@ -60,7 +60,7 @@ services:
     volumes:
       - postgres_sql_vol:/var/lib/mysql
     networks:
-      - ft_transendace
+      - ft_trance
     ports:
       - "8082:80"
     environment:
@@ -74,9 +74,9 @@ services:
         timeout: 10s
 
 networks:
-  ft_transendace:
+  ft_trance:
     driver: bridge
-    name: ft_transendace
+    name: ft_trance
 
 volumes:
   postgres_sql_vol:
