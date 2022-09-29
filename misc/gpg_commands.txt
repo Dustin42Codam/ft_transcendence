@@ -1,0 +1,21 @@
+# generate new keys
+gpg --full-generate-key
+
+# encrypt
+gpg --encrypt --output file.gpg file-to-encrypt
+
+# decrypt
+gpg --decrypt --output file file-to-decrypt
+
+# list keys
+gpg --list-keys
+
+# export private key
+gpg --export-secret-keys KEY_ID > private_key.gpg
+
+# export public key
+gpg --output public_key.gpg --export KEY_ID
+
+# import key
+gpg --import some_gpg.key
+

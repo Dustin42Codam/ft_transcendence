@@ -15,8 +15,8 @@ fi
 
 gpg --list-keys | grep "trancedance"
 if [ $? -ne 0 ]; then
-	gpg --import /sgoinfre/trancedance/private_key.gpg
-	gpg --import /sgoinfre/trancedance/public_key.gpg
+	gpg --import ./misc/private_key.gpg
+	gpg --import ./misc/public_key.gpg
 	if [ $? -ne 0 ]; then
 		echo "Couldn't import GnuPG keys."
 		exit 1
