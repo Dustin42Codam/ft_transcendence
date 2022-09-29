@@ -16,7 +16,7 @@ describe("LoginForm", () => {
     const wrapper = mount(LoginForm);
     axios({
       method: "post",
-      url: "http://localhost:3000/",
+      url: "http://backend:3000/",
       data:{
         username: "test@gmail.com",
         password: "password"
