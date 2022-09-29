@@ -11,7 +11,7 @@ function onSubmit() {
   console.log(password.value);
   axios({
     method: "post",
-    url: "http://localhost:3000/",
+    url: "http://backend:3000/",
     data:{
       username: email.value,
       password: password.value
