@@ -34,8 +34,8 @@ services:
   postgres:
     restart: always
     user: "root:root"
-    container_name: postgres
-    hostname: postgres
+    container_name: postgresContainer
+    hostname: postgresHost
     image: postgres:latest
     volumes:
       - postgres_sql_vol:/var/lib/postgresql/data
@@ -46,7 +46,7 @@ services:
     networks:
       - ft_transendace
     healthcheck:
-        test: ["CMD", "pg_isready", "-q", "-d", "ft_transendace"]
+        test: ["CMD", "pg_isready", "-U", "user", "-d", "ft_transendace"]
         interval: 10s
         retries: 2
         start_period: 20s
