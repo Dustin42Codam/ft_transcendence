@@ -1,8 +1,15 @@
-import{ Entity } from 'typeOrm';
+import{ Entity, PrimaryGeneratedColumn, Column } from 'typeOrm';
 @Entity()
 class User {
-    public email: string
-    public password: string
+    @PrimaryGeneratedColumn()
+    public id: number;
+
+    @Column()
+    public email: string;
+    
+    @Column()
+    public password: string;
+    
 }
 
 export default User;
