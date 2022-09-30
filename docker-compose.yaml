@@ -16,10 +16,16 @@ services:
      - frontend_vol:/home/node
     networks:
      - ft_trance
+    healthcheck:
+        test: ["CMD", "curl", "--fail", "http://localhost:5173", "||", "exit", "1"]
+        interval: 10s
+        retries: 2
+        start_period: 240s
+        timeout: 10s
 
   backend:
     restart: always
-    command: sh -c "npm run start:dev"
+    command: sh -c "npm ci && npm run start:dev"
     working_dir: /home/node
     container_name: backend
     hostname: backend
@@ -30,6 +36,12 @@ services:
       - backend_vol:/home/node
     networks:
       - ft_trance
+    healthcheck:
+        test: ["CMD", "curl", "--fail", "http://localhost:3000", "||", "exit", "1"]
+        interval: 10s
+        retries: 2
+        start_period: 240s
+        timeout: 10s
       
   postgres:
     restart: always
@@ -46,7 +58,7 @@ services:
     networks:
       - ft_trance
     healthcheck:
-        test: ["CMD", "pg_isready", "-U", "user", "-d", "ft_trance"]
+        test: ["CMD", "pg_isready", "-U", "${POSTGRES_USER}", "-d", "${POSTGRES_DB}"]
         interval: 10s
         retries: 2
         start_period: 20s
