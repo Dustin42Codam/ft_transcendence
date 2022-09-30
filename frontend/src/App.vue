@@ -5,20 +5,22 @@ import HelloWorld from "./components/HelloWorld.vue";
 
 <template>
   <header>
+
     <img
       alt="Vue logo"
       class="logo"
-      src="@/assets/logo.svg"
-      width="125"
-      height="125"
+      src="@/assets/trancedance.gif"
+      width="500"
+      height="274"
     />
 
     <div class="wrapper">
-      <HelloWorld msg="You did it!" />
+      <HelloWorld msg="TranceDance" />
 
       <nav>
         <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
+        <!-- <RouterLink to="/about">About</RouterLink> -->
+        <b-button href="https://api.intra.42.fr/oauth/authorize?client_id=7c59d418a12bb6da95283ca1866d0db3946ff94528e8d7be5b98545c31f892ff&redirect_uri=http%3A%2F%2Flocalhost%3A5173%2F&response_type=code">Login</b-button>
       </nav>
     </div>
   </header>
@@ -27,6 +29,7 @@ import HelloWorld from "./components/HelloWorld.vue";
 </template>
 
 <style scoped>
+
 header {
   line-height: 1.5;
   max-height: 100vh;
@@ -68,11 +71,11 @@ nav a:first-of-type {
     place-items: center;
     padding-right: calc(var(--section-gap) / 2);
   }
-
+  
   .logo {
     margin: 0 2rem 0 0;
   }
-
+  
   header .wrapper {
     display: flex;
     place-items: flex-start;

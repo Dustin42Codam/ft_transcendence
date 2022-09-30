@@ -5,6 +5,6 @@ import LoginForm from "../components/LoginForm.vue";
 
 <template>
   <main>
-    <LoginForm />
+    <!-- <LoginForm /> -->
   </main>
 </template>

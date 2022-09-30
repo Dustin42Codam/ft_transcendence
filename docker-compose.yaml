@@ -5,7 +5,7 @@ services:
 
   frontend:
     restart: always
-    command: sh -c "npm install && npm run dev"
+    command: sh -c "chown -R node:node /home/node && npm install && npm run dev"
     working_dir: /home/node
     container_name: frontend
     hostname: frontend
@@ -19,7 +19,7 @@ services:
 
   backend:
     restart: always
-    command: sh -c "npm run start:dev"
+    command: sh -c "npm ci && npm run start:dev"
     working_dir: /home/node
     container_name: backend
     hostname: backend
@@ -85,18 +85,18 @@ volumes:
     driver_opts:
       type: none
       o: bind
-      device: '${PWD}/postgres_vol'
+      device: '/home/dustin/Projects/trans3/postgres_vol'
   backend_vol:
     driver: local
     name: backend_vol
     driver_opts:
       type: none
       o: bind
-      device: '${PWD}/backend'
+      device: '/home/dustin/Projects/trans3/backend'
   frontend_vol:
     driver: local
     name: frontend_vol
     driver_opts:
       type: none
       o: bind
-      device: '${PWD}/frontend'
+      device: '/home/dustin/Projects/trans3/frontend'
