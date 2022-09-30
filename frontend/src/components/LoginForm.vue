@@ -3,19 +3,14 @@
 import axios from 'axios';
 import { ref } from "vue";
 
-const email: string = ref("");
-const password: string = ref("");
+const email = ref("");
+const password = ref("");
 
 function onSubmit() {
-  console.log(email.value);
-  console.log(password.value);
   axios({
     method: "post",
-    url: "http://backend:3000/",
-    data:{
-      username: email.value,
-      password: password.value
-    }
+    url: "http://localhost:3000", 
+   data: JSON.stringify({'email': email, 'password': password}) 
   });
 }
 

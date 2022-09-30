@@ -46,7 +46,7 @@ services:
     networks:
       - ft_trance
     healthcheck:
-        test: ["CMD", "pg_isready", "-U", "user", "-d", "ft_trance"]
+        test: ["CMD", "pg_isready", "-U", "${POSTGRES_USER}", "-d", "${POSTGRES_DB}"]
         interval: 10s
         retries: 2
         start_period: 20s
