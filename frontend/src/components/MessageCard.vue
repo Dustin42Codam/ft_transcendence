@@ -2,15 +2,17 @@
 import { ref } from "vue";
 
 interface Props {
-  msg: string,
-  date: string,
-  username: string
+  msg: string;
+  date: string;
+  username: string;
+  index: number;
 }
 
 const props = withDefaults(defineProps<Props>(), {
   msg: "default message",
   date: "01.01.1970 00:00",
-  username: "default"
+  username: "default",
+  index: 0
 })
 
 </script>
@@ -24,6 +26,7 @@ const props = withDefaults(defineProps<Props>(), {
           <small> {{ date }}</small>
         </div>
       <div class="col-10 mb-1 small"> {{ msg }} </div>
+      <div class="col-10 mb-1 small"> You have chaed for {{ index + 1 }} messsage in total</div>
     </div>
   </div>
 </template>

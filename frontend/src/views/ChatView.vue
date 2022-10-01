@@ -1,19 +1,19 @@
 <script setup lang="ts">
 import MessageCard from "../components/MessageCard.vue";
+import ChatInput from "../components/ChatInput.vue";
 import { reactive } from "vue";
 
 interface Person {
   name: string;
   age: number;
-  [key: string]: any; // 👈️ index signature
 }
 
 const arr2: Person[] = [
   { name: 'Alice', age: 27 },
-  { name: 'Bob', age: 28, country: 'Chile' },
+  { name: 'Bob', age: 28 },
 ];
 
-arr2.push({ name: 'Carl', age: 30, country: 'Canada' });
+arr2.push({ name: 'Carl', age: 30});
 
 
 interface Message {
@@ -22,32 +22,29 @@ interface Message {
   username: string;
 }
 
-const Messages: Message[] = [
-  {"Hi how are You?", "30.09.2022 23:14", "Jusha"},
+const arr3: Message[] = [
+  { content: "Hi how are you BACKEND?", date: "01.10.2022 21:14", username: "alkrusts" },
+  { content: "For the chat we need these type of tables", date: "01.10.2022 21:14", username: "alkrusts" },
+  { content: "id: number, name: string, visibility: (option publick, private, protected), admins: string[usernames], connected_users: string[usernames], password: salted_hash, muted_users: string[username], banned_users: string[username]", date: "1.10.2022 21:16", username: "alkrusts" }
 ];
 
-Messages.push({"Hi how are You?", "30.09.2022 23:14", "Jusha"});
-Messages.push({"Not Bad. How are You?", "30.09.2022 23:14", "Alex"});
-Messages.push({"Good. Can I ask You a qestion?", "30.09.2022 23:15", "Jusha"});
-console.log(Messages);
-
-interface Person {
-  name: string;
-  age: number;
-  [key: string]: any; // 👈️ index signature
-}
-
-const arr2: Person[] = [
-  { name: 'Alice', age: 27 },
-  { name: 'Bob', age: 28, country: 'Chile' },
-];
-
-arr2.push({ name: 'Carl', age: 30, country: 'Canada' });
+/*
+arr3.push({content: "Hi how are You?", date: "30.09.2022 23:14", username: "Alex"});
+arr3.push({content: "Hi I am good have you aten bannanes?", date: "30.09.2022 23:14", username: "Jusha"});
+arr3.push({content: "Yes! Bannanas are amziaing", date: "30.09.2022 23:14", username: "Alex"});
+arr3.push({content: "I like to talk!", date: "30.09.2022 23:15", username: "Jusha"});
+arr3.push({content: "I am sober for a long time now.", date: "30.09.2022 23:15", username: "Jusha"});
+*/
 
 </script>
 
 <template>
-  <MessageCard msg="TEST" date="30.09.2022 23:14" username="Jusha"></MessageCard>
+  <div class="container">
+    <div class="row">
+      <MessageCard v-for="(item, index) in arr3" :msg="item.content" :date="item.date" :username="item.username" :index="index"></MessageCard>
+      <ChatInput></ChatInput>
+    </div>
+  </div>
 </template>
 
 <style scoped>
