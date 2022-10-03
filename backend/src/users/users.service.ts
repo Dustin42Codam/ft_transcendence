@@ -25,8 +25,9 @@ export class UsersService {
   }
 
   create(userData: CreateUserDto) {
-    const newUser = this.usersRepository.create(userData);
+    const newUser = this.usersRepository.create({...userData});
     this.usersRepository.save(newUser);
+    console.log("User added to database!");
     return newUser;
   }
 

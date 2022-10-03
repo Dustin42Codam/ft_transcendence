@@ -10,7 +10,7 @@ function onSubmit() {
   axios({
     method: "post",
     url: "http://localhost:3000/users/auth/login", 
-   data: JSON.stringify({'email': email, 'password': password}) 
+   data: {'email': email.value, 'password': password.value}
   });
 }
 
