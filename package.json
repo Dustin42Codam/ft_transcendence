@@ -1,6 +1,0 @@
-{
-  "dependencies": {
-    "locally": "^0.2.1",
-    "node": "^18.10.0"
-  }
-}
