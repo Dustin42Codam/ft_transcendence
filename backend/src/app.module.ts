@@ -6,13 +6,8 @@ import {ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { config } from 'dotenv';
 
-
-config();
-// console.log(process.env.POSTGRES_URL);
-console.log(process.env.POSTGRES_USER);
-console.log(process.env.POSTGRES_PASSWORD);
-console.log(process.env.POSTGRES_DB);
-console.log(process.env.POSTGRES_URL);
+const pathToEnv: string = '.env';
+config({path: pathToEnv});
 @Module({
   imports: 
   [
@@ -21,12 +16,9 @@ console.log(process.env.POSTGRES_URL);
     ({
         imports: [ConfigModule],
         inject: [ConfigService],
-        useFactory: (configService: ConfigService) => ({
+        useFactory: () => ({
           type: 'postgres',
-          url: process.env.POSTGRES_URL, 
-          // username: configService.get('POSTGRES_USER'),
-          // password: configService.get('POSTGRES_PASSWORD'),
-          // database: configService.get('POSTGRES_DB'),
+          url: process.env.POSTGRES_URL, // combined host://user:password@host:portnum/db_name
           entities: [],
           autoLoadEntities: true,
           synchronize: true
