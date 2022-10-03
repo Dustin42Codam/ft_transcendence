@@ -11,7 +11,7 @@ export class AppController {
   }
 
   @Post()
-  PostFromVue(@Body() body): string {
+  PostFromVue(@Body() body: string) {
     console.log(body);
     return this.appService.PostFromVue();
   }
