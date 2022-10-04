@@ -11,7 +11,6 @@ describe('ChatController', () => {
 
     beforeEach( async () => {
         const module = await Test.createTestingModule({
-            imports: [TypeOrmModule.forFeature([Chat])],
             controllers: [ChatController],
             providers: [ChatService]
         }).compile();
@@ -19,6 +18,10 @@ describe('ChatController', () => {
         chatService = module.get<ChatService>(ChatService);
         chatController = module.get<ChatController>(ChatController);
     });
+
+    it("Chat api should be defined", () => {
+        expect(chatService).toBeDefined();
+    })
 
     describe('Get /chat', () => {
         it('should return all db chats', async () => {

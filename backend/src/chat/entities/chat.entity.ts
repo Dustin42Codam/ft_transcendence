@@ -1,15 +1,16 @@
-import { Column, Entity, PrimaryColumn } from "typeorm";
+import { Column, Entity, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
 
 
 @Entity()
 class Chat {
-    @PrimaryColumn()
+
+    @PrimaryGeneratedColumn()
     public id: number;
 
     @Column()
     public name: string;
 
-    // add protection for olny 3 possible choices
+    // add protection for only 3 possible choices
     @Column()
     public visibility: string;
 
@@ -30,3 +31,7 @@ class Chat {
 }
 
 export default Chat;
+
+
+// curl test query
+// curl localhost:3000/chat -v -X POST -d "name=appels&password=aksdf2345&visibility=private&admin=testies&connectedUsers=me&mutedUsers=everyfuckingone&banendUsers=noone"
