@@ -30,11 +30,3 @@ class Chat {
 }
 
 export default Chat;
-// id: number
-// name: string
-// visibility: string (public, private, protect)
-// admin: string[usernames]
-// connecter_users: string[usernames]
-// password: string (salted & hashed)
-// muted_users: string[usernames]
-// banend_users: string[usernames]
