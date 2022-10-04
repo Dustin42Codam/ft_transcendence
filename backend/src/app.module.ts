@@ -5,6 +5,7 @@ import { UsersModule } from './users/users.module';
 import {ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { config } from 'dotenv';
+import { ChatModule } from './chat/chat.module';
 
 const pathToEnv: string = '.env';
 config({path: pathToEnv});
@@ -24,7 +25,8 @@ config({path: pathToEnv});
           synchronize: true
         }),
     }),
-    UsersModule
+    UsersModule,
+    ChatModule,
   ],
   controllers: [AppController],
   providers: [AppService],
