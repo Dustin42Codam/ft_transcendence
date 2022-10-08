@@ -9,8 +9,8 @@ const password = ref("");
 function onSubmit() {
   axios({
     method: "post",
-    url: "http://localhost:3000", 
-   data: JSON.stringify({'email': email, 'password': password}) 
+    url: "http://localhost:3000/users/auth/login", 
+   data: {'email': email.value, 'password': password.value}
   });
 }
 
