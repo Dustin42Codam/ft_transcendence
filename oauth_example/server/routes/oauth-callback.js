@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const axios = require("axios").default;
+const axios = require("axios");
 const qs = require("query-string");
 
 const config = {
@@ -20,8 +20,7 @@ router.get("/", (req, res) => {
     return;
   }
   //post request to /token endpoint
-  axios
-    .post(
+  axios.post(
       url,
       qs.stringify({
         client_id: process.env.CLIENT_ID,

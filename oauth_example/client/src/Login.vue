@@ -5,7 +5,7 @@
 
 <script>
   export default {
-	name: "Login",
+	name: "LoginView",
 	props: ["showSignout"],
   };
 </script>
