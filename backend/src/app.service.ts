@@ -7,6 +7,6 @@ export class AppService {
   }
   
   PostFromVue(): string {
-    return 'Hello Vue!';
+    return 'Hello frontend. I am backend!';
   }
 }
