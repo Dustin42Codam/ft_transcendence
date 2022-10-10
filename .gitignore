@@ -5,11 +5,11 @@
 
 
 postgres_vol/
+oauth_example/server/.env
+oauth_example/server/node_modules
+oauth_example/client/node_modules
 
 .env
-
-
-
 
 ### Node ###
 # Logs
