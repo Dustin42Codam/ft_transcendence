@@ -1,6 +1,7 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { UserService } from '../user/user.service' 
 import { User } from '../user/models/user.entity';
+import * as bcrypt from 'bcryptjs';
 
 @Controller()
 export class AuthController {
@@ -13,7 +14,14 @@ export class AuthController {
 
       @Post('register')
       async register(@Body() body) {
-            return this.userService.create(body);
+            //hashing passwords 
+            const hashed = await bcrypt.hash(body.password, 12);
+            return this.userService.create({
+                  firstName: body.firstName,
+                  last: body.last,
+                  email: body.email,
+                  password: hashed
+      });
       }
 
 }
