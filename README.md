@@ -13,6 +13,16 @@ then I added 2 docker files in that folder.
 This will always a new install
 Hot refresh works
 
+### How to add pacages?
+
+```sh
+docker ps
+#get the id of the target docker container
+docker exec -it id /bin/sh
+vue add typescript
+exit
+``
+
 `docker-compose-dev.yaml` which will create a production enviorment
 
 ```sh
