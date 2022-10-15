@@ -4,7 +4,7 @@ WORKDIR /app
 
 ENV PATH /app/node_modules/.bin:$PATH
 
-COPY package.json /app/package.json
+COPY *.json /app/
 
 RUN npm install --only=development
 RUN npm install @nestjs/cli@latest -g
