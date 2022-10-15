@@ -1,6 +1,8 @@
 # ft_transcendence
 ## If you need to have a frech vue/js install or nest/js install this is the repo
 
+### Development
+
 `docker-compose-dev.yaml` which will create a dev enviorment
 
 ```sh
@@ -21,7 +23,9 @@ docker ps
 docker exec -it id /bin/sh
 vue add typescript
 exit
-``
+```
+
+### Production
 
 `docker-compose-dev.yaml` which will create a production enviorment
 
