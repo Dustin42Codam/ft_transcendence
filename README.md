@@ -15,7 +15,7 @@ then I added 2 docker files in that folder.
 This will always a new install
 Hot refresh works
 
-### How to add pacages?
+### How to add packages?
 
 ```sh
 docker ps
