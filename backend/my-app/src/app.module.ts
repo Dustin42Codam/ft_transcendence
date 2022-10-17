@@ -14,8 +14,8 @@ import { AuthModule } from './auth/auth.module';
       host: 'postgres',
       port: 5432,
       username: 'root',
-      password: 'SuperSecer',
-      database: 'ft_tranc',
+      password: 'SuperSecret',
+      database: 'ft_trance',
       entities: [
         User,
       ],

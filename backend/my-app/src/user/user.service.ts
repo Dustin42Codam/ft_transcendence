@@ -18,6 +18,7 @@ export class UserService {
       return this.userRepository.save(data);
     }
     async findOne(condition): Promise<User> {
-      return this.userRepository.findOne(condition);  
+			console.log(condition);
+			return this.userRepository.findOne({where: condition});  
     }
 }
