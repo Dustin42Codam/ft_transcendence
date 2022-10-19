@@ -52,6 +52,7 @@ export class AuthController {
     });
   }
 
+	@UseInterceptors(ClassSerializerInterceptor)
 	@Get('user') 
 		async user(@Req() request: Request) {
 			const cookie = request.cookies['jwt'];
