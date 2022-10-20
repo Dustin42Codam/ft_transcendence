@@ -1,11 +1,13 @@
-import { NotFoundException, BadRequestException, Body, Controller, Post, Get, Res, Req } from '@nestjs/common';
+import { UseGuards, ClassSerializerInterceptor, UseInterceptors, NotFoundException, BadRequestException, Body, Controller, Post, Get, Res, Req } from '@nestjs/common';
 import { UserService } from '../user/user.service';
 import * as bcrypt from 'bcrypt';
 import { RegisterDto } from './models/register.dto';
 import { JwtService } from '@nestjs/jwt';
 import { Response } from 'express';
 import { Request } from 'express';
+import { AuthGuard } from './auth.guard';
 
+@UseInterceptors(ClassSerializerInterceptor)
 @Controller()
 export class AuthController {
 
@@ -18,22 +20,23 @@ export class AuthController {
   async login(
     @Body('email') email: string,
     @Body('password') password: string,
-		@Res() response: Response
+		@Res( {passthrough: true} ) response: Response
   ) {
-      const user = await this.userService.findOne({email: email});
+    const user = await this.userService.findOne({email: email});
 
-      if (!user) {
-        throw new NotFoundException('User not Found');
-      }
-      if (!await bcrypt.compare(password, user.password)) {
-        throw new BadRequestException('Invalid credentials');
-      }
+    if (!user) {
+      throw new NotFoundException('User not Found');
+    }
+    if (!await bcrypt.compare(password, user.password)) {
+      throw new BadRequestException('Invalid credentials');
+    }
 
-			const jwt = await this.jwtService.signAsync({id: user.id});
+		const jwt = await this.jwtService.signAsync({id: user.id});
 
-			response.cookie('jwt', jwt, { 'httpOnly': true});
+		response.cookie('jwt', jwt, { 'httpOnly': true } );
+		console.log(user);
 
-      return user;
+    return user;
   }
 
   @Post('register')
@@ -52,7 +55,7 @@ export class AuthController {
     });
   }
 
-	@UseInterceptors(ClassSerializerInterceptor)
+	@UseGuards(AuthGuard)
 	@Get('user') 
 		async user(@Req() request: Request) {
 			const cookie = request.cookies['jwt'];
@@ -61,4 +64,13 @@ export class AuthController {
 
 			return this.userService.findOne( { id: data['id']});
 		}
+
+	@Post('logout')
+	async logout(@Res( {passthrough: true} ) response: Response) {
+		response.clearCookie('jwt');
+
+		return {
+			message: 'succes',
+		};
+	}
 }

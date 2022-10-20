@@ -5,6 +5,12 @@ import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
+import { CommonModule } from './common/common.module';
+import { config } from 'dotenv';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+
+const pathToEnv: string = '.env';
+config({path: pathToEnv});
 
 @Module({
   imports: [
@@ -23,6 +29,7 @@ import { AuthModule } from './auth/auth.module';
       synchronize: true,
     }),
     AuthModule,
+    CommonModule,
   ],
   controllers: [AppController],
   providers: [AppService],
