@@ -6,7 +6,6 @@ ENV PATH /app/node_modules/.bin:$PATH
 
 COPY *.json /app/
 
-RUN npm install --only=development
-RUN npm install @nestjs/cli@latest -g
+RUN npm update && npm install --only=development && npm install @nestjs/cli@latest -g
 
 CMD ["npm", "run", "start:dev"]
