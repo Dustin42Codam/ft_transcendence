@@ -6,7 +6,6 @@ ENV PATH /app/node_modules/.bin:$PATH
 
 COPY *.json /app/
 
-RUN npm install
-RUN npm install @vue/cli@latest -g
+RUN npm update && npm install && npm install @vue/cli@latest -g
 
 CMD ["npm", "run", "serve"]

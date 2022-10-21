@@ -7,10 +7,10 @@ services:
     container_name: frontend
     hostname: frontend
     build:
-      context: ${PWD}/frontend/my-app
+      context: ./frontend/my-app
       dockerfile: Dockerfile-dev
     volumes:
-      - '${PWD}/frontend/my-app:/app/'
+      - './frontend/my-app:/app/'
       - '/app/node_modules'
     ports:
       - '8081:8080'
@@ -28,10 +28,10 @@ services:
     container_name: backend
     hostname: backend
     build:
-      context: ${PWD}/backend/my-app
+      context: ./backend/my-app
       dockerfile: Dockerfile-dev
     volumes:
-      - '${PWD}/backend/my-app:/app/'
+      - './backend/my-app:/app/'
       - '/app/node_modules'
     ports:
       - '3000:3000'
@@ -51,7 +51,7 @@ services:
     hostname: postgres
     image: postgres:latest
     volumes:
-      - '${PWD}/postgres_vol:/var/lib/postgresql/data'
+      - './postgres_vol:/var/lib/postgresql/data'
     networks:
       - ft_trance
     environment:
@@ -71,7 +71,7 @@ services:
     hostname: pgAdmin4
     image: dpage/pgadmin4
     volumes:
-      - '${PWD}/postgres_vol:/var/lib/mysql'
+      - './postgres_vol:/var/lib/mysql'
     ports:
       - "8082:80"
     networks:
