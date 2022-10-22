@@ -3,15 +3,12 @@ import React from 'react'
 import './App.css';
 import Users from './pages/Users'
 import Dashboard from './pages/Dashboard'
-import Login from './pages/Login'
+import Authenticate from './pages/Authenticate'
 import {
 	BrowserRouter,
 	Routes,
 	Route,
 } from "react-router-dom";
-import { Auth0Provider } from '@auth0/auth0-react';
-
-const domain = process.env.
 
 function App() {
   return (
@@ -20,7 +17,7 @@ function App() {
 			<Routes>
 				<Route path={'/'} element={<Dashboard/>} />
 				<Route path={'/users'} element={<Users/>} />
-				<Route path={'/login'} element={<Login/>} />
+				<Route path={'/authenticate'} element={<Authenticate/>} />
 			</Routes>
 		</BrowserRouter>
     </div>

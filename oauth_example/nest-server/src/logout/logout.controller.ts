@@ -9,6 +9,6 @@ export class LogoutController {
 		  request.session.destroy();
 		  // end FusionAuth session
 		  // res.redirect(`http://localhost:${process.env.FUSIONAUTH_PORT}/oauth2/logout?client_id=${process.env.CLIENT_ID}`);
-		  response.redirect(`http://localhost:8081/`);
+		  response.redirect(`http://localhost:${process.env.FRONTEND_PORT}/`);
 	}
 }

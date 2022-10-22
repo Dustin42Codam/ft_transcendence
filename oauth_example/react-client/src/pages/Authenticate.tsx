@@ -1,10 +1,7 @@
-import React, { Component } from 'react'
+import React, { Component, SyntheticEvent } from 'react'
 import '../login.css'
-import {useNavigate} from 'react-router-dom'
-
 export class Register extends Component {
 	login_name = '';
-	api_key = '';
 
 	render() {
     	const mystyle = {
@@ -12,7 +9,6 @@ export class Register extends Component {
 			fontFamily: "verdana",
 			fontSize: 35,
 	};
-
 
 	return (
 	  <>
@@ -22,8 +18,9 @@ export class Register extends Component {
 		 
 		    <h2 className="h1 mb-4 fw-normal" style={mystyle}>ft_transcendence</h2>
 
-		    <button className="w-100 btn btn-lg btn-primary" type="submit" >Sign in</button>
-		 
+		    {/* <button className="w-100 btn btn-lg btn-primary" type="submit" >Sign in</button> */}
+		    <a className="w-100 btn btn-lg btn-primary" href='http://localhost:9000/login'>Sign In</a>
+
 		    <p className="mt-5 mb-3 mbtext-muted">made by dkrecisz, alkrusts, lbisscho and avan-ber</p>
 		    <p className="mt-5 mb-3 text-muted">&copy; 2022</p>
 		  </form>

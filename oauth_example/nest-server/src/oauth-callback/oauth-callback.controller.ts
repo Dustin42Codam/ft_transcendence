@@ -16,13 +16,13 @@ export class OauthCallbackController {
 	@Get()
 	callback(@Req() request: Request, @Res() response: Response) {
 		// State from Server
-		const stateFromServer = request.query.state;
-		if (stateFromServer !== request.session.stateValue) {
-			console.log("State doesn't match. uh-oh.");
-			console.log(`Saw: ${stateFromServer}, but expected: &{request.session.stateValue}`);
-			response.redirect(302, '/');
-			return;
-		}
+		// const stateFromServer = request.query.state;
+		// if (stateFromServer !== request.session.stateValue) {
+		// 	console.log("State doesn't match. uh-oh.");
+		// 	console.log(`Saw: ${stateFromServer}, but expected: &{request.session.stateValue}`);
+		// 	response.redirect(302, '/login');
+		// 	return;
+		// }
 		//post request to /token endpoint
 		axios.post(
 			url,
@@ -39,10 +39,10 @@ export class OauthCallbackController {
 			// save token to session
 			request.session.token = result.data.access_token;
 			//redirect to Vue app
-			response.redirect(`http://localhost:8081`);
+			response.redirect(`http://localhost:${process.env.FRONTEND_PORT}`);
 		})
 		.catch((err) => {
-			response.redirect(`http://localhost:8081`);
+			response.redirect(`http://localhost:${process.env.FRONTEND_PORT}/login`);
 			console.error(err);
 	  });
 	}
