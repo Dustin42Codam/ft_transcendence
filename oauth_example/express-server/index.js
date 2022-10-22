@@ -37,10 +37,10 @@ app.use('/login', require('./routes/login'))
 app.use('/logout', require('./routes/logout'))
 app.use('/oauth-callback', require('./routes/oauth-callback'))
 
-// Provide a default port 
+// Provide a default port
 const port = process.env.SERVER_PORT || 3000;
 
-// Listen to server  
+// Listen to server
 app.listen(port, () => {
   console.log(`Listening on port ${port}`);
 });
