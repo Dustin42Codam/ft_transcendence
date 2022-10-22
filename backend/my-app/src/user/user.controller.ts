@@ -1,4 +1,4 @@
-import { Put, Param, UseGuards, UseInterceptors, ClassSerializerInterceptor, Body, Post, Controller, Get } from '@nestjs/common';
+import { Query, Delete, Put, Param, UseGuards, UseInterceptors, ClassSerializerInterceptor, Body, Post, Controller, Get } from '@nestjs/common';
 import { UserService } from './user.service';
 import { User } from './models/user.entity';
 import * as bcrypt from 'bcryptjs';
@@ -16,8 +16,8 @@ export class UserController {
   }
 
   @Get()
-  async all(): Promise<User[]>{
-    return this.userService.all();
+  async all(@Query('page') page: number = 1): Promise<User[]>{
+    return this.userService.paginate(page);
   }
 
 	@Post()
@@ -28,7 +28,8 @@ export class UserController {
 			first_name: body.first_name,
 			last_name: body.last_name,
 			email: body.email,
-			password
+			password,
+			role_id: body.role_id
 		});
 	}
 
@@ -48,5 +49,9 @@ export class UserController {
 			email: body.email
 		});
 		return this.userService.findOne({ id: id });
+	}
+	@Delete(':id')
+	async delete(@Param('id') id: number) {
+			return this.userService.delete(id);
 	}
 }

@@ -8,6 +8,7 @@ import { AuthModule } from './auth/auth.module';
 import { CommonModule } from './common/common.module';
 import { config } from 'dotenv';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { RoleModule } from './role/role.module';
 
 const pathToEnv: string = '.env';
 config({path: pathToEnv});
@@ -30,6 +31,7 @@ config({path: pathToEnv});
     }),
     AuthModule,
     CommonModule,
+    RoleModule,
   ],
   controllers: [AppController],
   providers: [AppService],

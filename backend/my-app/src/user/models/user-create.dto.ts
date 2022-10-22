@@ -8,4 +8,6 @@ export class UserCreateDto {
 	@IsEmail()
 	@IsNotEmpty()
 	email: string;
+	@IsNotEmpty()
+	role_id: number;
 }
