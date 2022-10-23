@@ -1,37 +1,29 @@
 import { Module } from '@nestjs/common';
-import { User } from './user/models/user.entity';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { LoginController } from './login/login.controller';
+import { OauthCallbackController } from './oauth-callback/oauth-callback.controller';
+import { UserController } from './user/user.controller';
+import { LogoutController } from './logout/logout.controller';
 import { UserModule } from './user/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AuthModule } from './auth/auth.module';
-import { CommonModule } from './common/common.module';
-import { config } from 'dotenv';
-import { ConfigModule, ConfigService } from '@nestjs/config';
 
-const pathToEnv: string = '.env';
-config({path: pathToEnv});
-
+console.log(process.env.REDIRECT_URI);
 @Module({
-  imports: [
-    UserModule,
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: 'postgres',
-      port: 5432,
-      username: 'root',
-      password: 'SuperSecret',
-      database: 'ft_trance',
-      entities: [
-        User,
-      ],
-      autoLoadEntities: true,//do not use this in prod
-      synchronize: true,
-    }),
-    AuthModule,
-    CommonModule,
-  ],
-  controllers: [AppController],
+	imports: [
+		UserModule,
+		TypeOrmModule.forRoot({
+			type: 'postgres',
+			host: 'postgres',
+			port: 5432,
+			username: 'user',
+			password: 'SuperSecret',
+			database: 'ft_trance',
+			autoLoadEntities: true,
+			synchronize: true,
+		}),
+	],
+  controllers: [AppController, LoginController, OauthCallbackController, UserController, LogoutController],
   providers: [AppService],
 })
 export class AppModule {}
