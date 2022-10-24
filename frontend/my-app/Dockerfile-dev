@@ -1,14 +1,15 @@
-FROM node:17-alpine
+FROM node:17
 
 WORKDIR /app
 
 ENV PATH /app/node_modules/.bin:$PATH
 
-COPY package.json /app/
+COPY --chown=node:node package.json .
 
-RUN npm install
+RUN npm upgrade && npm install
 
-COPY . .
+COPY --chown=node:node . .
+USER node
 
 EXPOSE 8081
 

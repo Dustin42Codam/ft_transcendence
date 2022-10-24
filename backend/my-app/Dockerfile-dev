@@ -2,13 +2,13 @@ FROM node:17
 
 WORKDIR /app
 
-# ENV PATH /app/node_modules/.bin:$PATH
+ENV PATH /app/node_modules/.bin:$PATH
 
-COPY package.json .
-
-RUN npm install && npm install rxjs  express cors morgan nodemon dotenv axios express-session query-string && npm install -g @nestjs/cli
+COPY --chown=node:node package.json .
+RUN npm upgrade && npm install && npm install rxjs  express cors morgan nodemon dotenv axios express-session query-string && npm install -g @nestjs/cli
 RUN npm install --save @nestjs/typeorm typeorm mysql
 
-COPY . .
+COPY --chown=node:node . .
+USER node
 
 CMD ["npm", "run", "start:dev"]
