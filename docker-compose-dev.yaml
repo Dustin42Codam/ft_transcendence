@@ -13,7 +13,7 @@ services:
       - './frontend/my-app:/app/'
       - '/app/node_modules'
     ports:
-      - '8081:8080'
+      - '4242:3000'
     networks:
       - ft_trance
     healthcheck:
