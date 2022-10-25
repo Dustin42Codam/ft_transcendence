@@ -1,14 +1,18 @@
 import { Controller, Get, Req, Res } from '@nestjs/common';
 import { Request, Response } from 'express-session';
-import * as session from 'express-session';
+import { UserService } from './user.service';
+import { User } from './models/user.entity';
 const axios = require("axios");
 const qs = require("query-string");
 
 @Controller('users')
 export class UsersController {
+
+	constructor(private userService: UserService)  {}
+
 	@Get()
-	all() {
-		return ['users'];
+	async all(): Promise<User[]> {
+		return await this.userService.all();
 	}
 }
 @Controller('user')
@@ -22,11 +26,11 @@ export class UserController {
 				'Authorization': 'Bearer ' + request.session.token,
 				}
 			})
-			.then( data => {
+			.then( ret => {
 				response.send({
 					authState: "Authorized",
-					name: data.data["displayname"],
-					photo: data.data["image_url"]
+					display_name: ret.data["displayname"],
+					avatar: ret.data["image_url"]
 			  	});
 			})
 			.catch( err => {

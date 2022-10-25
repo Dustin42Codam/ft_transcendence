@@ -1,9 +1,6 @@
 # Created by https://www.toptal.com/developers/gitignore/api/node,vue,vuejs,zsh,vim,visualstudio
 # Edit at https://www.toptal.com/developers/gitignore?templates=node,vue,vuejs,zsh,vim,visualstudio
 
-
-
-
 postgres_vol/
 
 .env

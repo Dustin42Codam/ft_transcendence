@@ -11,7 +11,7 @@ class Nav extends Component {
 			  <input className="form-control form-control-dark w-100 rounded-0 border-0" type="text" placeholder="Search" aria-label="Search"/>
 			  <div className="navbar-nav">
 			    <div className="nav-item text-nowrap">
-					<form id="logout" action='http://localhost:3000/logout'>
+					<form id="logout" action='http://localhost:3000/api/logout'>
 						<button>Sign out</button>
 					</form>
 			      {/* <a className="nav-link px-3" href="/authenticate">Sign out</a> */}

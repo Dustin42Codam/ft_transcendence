@@ -6,6 +6,9 @@ export class User {
 	id: number;
 
 	@Column()
+	display_name: string;
+
+	@Column()
 	first_name: string;
 
 	@Column()
@@ -16,4 +19,10 @@ export class User {
 
 	@Column()
 	password: string;
+
+	@Column()
+	avatar: string;
+
+	@Column()
+	auth_state: string;
 }
