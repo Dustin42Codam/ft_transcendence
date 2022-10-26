@@ -36,13 +36,14 @@ export class OauthCallbackController {
 		)
 		.then((result) => {
 			// save token to session
-			request.session.token = result.data.access_token;
+			// request.session.token = result.data.access_token;
 
 			// try to create new user
 			// ...
 			
 
 			//redirect to frontend
+			// response.session.token = result.data.access_token;
 			response.redirect(`http://localhost:4242`);
 		})
 		.catch((err) => {

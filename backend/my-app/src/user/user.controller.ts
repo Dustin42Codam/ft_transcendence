@@ -1,4 +1,4 @@
-import { Controller, Get, Req, Res } from '@nestjs/common';
+import { Controller, Get, Post, Req, Res, Body } from '@nestjs/common';
 import { Request, Response } from 'express-session';
 import { UserService } from './user.service';
 import { User } from './models/user.entity';
@@ -13,6 +13,11 @@ export class UsersController {
 	@Get()
 	async all(): Promise<User[]> {
 		return await this.userService.all();
+	}
+
+	@Post()
+	async create(@Body() body): Promise<User> {
+		return this.userService.create(body);
 	}
 }
 @Controller('_user')

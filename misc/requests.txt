@@ -1,0 +1,20 @@
+Short collection of different requests to test our API with.
+
+POST http://localhost:300/api/register
+{
+	"display_name": "John Doe",
+	"first_name": "John",
+	"last_name": "Doe",
+	"email": "john@doe.com",
+	"password": "abc",
+	"avatar": "john.png",
+	"auth_state": "authenticated"
+}
+
+POST http://localhost:300/api/login
+{
+	"email": "john@doe.com",
+	"password": "abc"
+}
+
+POST http://localhost:300/api/logout
