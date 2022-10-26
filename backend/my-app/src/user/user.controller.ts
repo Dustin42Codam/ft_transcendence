@@ -15,7 +15,7 @@ export class UsersController {
 		return await this.userService.all();
 	}
 }
-@Controller('user')
+@Controller('_user')
 export class UserController {
 	@Get()
 	sendUserData(@Req() request: Request, @Res() response: Response) {

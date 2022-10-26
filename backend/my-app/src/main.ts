@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
 import * as session from 'express-session';
+import * as cookieParser from 'cookie-parser';
 
 const express = require("express");
 const cors = require("cors");
@@ -17,6 +18,7 @@ async function bootstrap() {
 	app.use(cors({origin: true, credentials: true}));
 	app.use(morgan("common"));
 	app.use(express.json());
+	app.use(cookieParser());
 	app.use(session(
 		{
 			secret: process.env.EXPRESS_SECRET,
@@ -29,6 +31,6 @@ async function bootstrap() {
 			}
 		})
 	);
-	await app.listen(3000);
+	await app.listen(parseInt(process.env.BACKEND_PORT));
 }
 bootstrap();

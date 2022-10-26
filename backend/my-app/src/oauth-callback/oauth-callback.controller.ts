@@ -37,6 +37,11 @@ export class OauthCallbackController {
 		.then((result) => {
 			// save token to session
 			request.session.token = result.data.access_token;
+
+			// try to create new user
+			// ...
+			
+
 			//redirect to frontend
 			response.redirect(`http://localhost:4242`);
 		})
