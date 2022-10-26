@@ -16,7 +16,7 @@ services:
       - postgres
       - backend
     ports:
-      - '4242:3000'
+      - ${FRONTEND_PORT}:3000
     networks:
       - ft_trance
     healthcheck:
@@ -39,7 +39,7 @@ services:
     depends_on:
       - postgres
     ports:
-      - '3000:3000'
+      - ${BACKEND_PORT}:3000
     networks:
       - ft_trance
     healthcheck:
@@ -58,7 +58,7 @@ services:
     volumes:
       - './postgres_vol:/var/lib/postgresql/data'
     ports:
-      - '5432:5432'
+      - ${POSTGRES_PORT}:5432
     networks:
       - ft_trance
     environment:
