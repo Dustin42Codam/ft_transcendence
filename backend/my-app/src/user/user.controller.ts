@@ -1,25 +1,77 @@
-import { Controller, Get, Post, Req, Res, Body } from '@nestjs/common';
+import { Query, Delete, Put, BadRequestException, Param, UseGuards, Controller, Get, Post, Req, Res, Body, ClassSerializerInterceptor, UseInterceptors } from '@nestjs/common';
 import { Request, Response } from 'express-session';
 import { UserService } from './user.service';
 import { User } from './models/user.entity';
+import * as bcrypt from 'bcrypt';
+import { UserCreateDto } from './models/user-create.dto';
+import { UserUpdateDto } from './models/user-update.dto';
+import { AuthGuard } from 'src/auth/auth.guard';
+
 const axios = require("axios");
 const qs = require("query-string");
 
+@UseInterceptors(ClassSerializerInterceptor)
+@UseGuards(AuthGuard)
 @Controller('users')
 export class UsersController {
 
-	constructor(private userService: UserService)  {}
+	constructor(
+		private userService: UserService,
+		)  {}
 
 	@Get()
-	async all(): Promise<User[]> {
-		return await this.userService.all();
+	async all(@Query('page') page: number = 1) {
+		return await this.userService.paginate(page, ['role']);
+	}
+	
+	@Post()
+	async create(@Body() body: UserCreateDto): Promise<User> {
+		console.log('lol');
+		const password = await bcrypt.hash('1234', 12);
+
+		const user = await this.userService.findOne({email: body.email});
+
+		if (user) {
+			throw new BadRequestException('User with this email already exists!');
+		}
+
+		const {role_id, ...data} = body;
+
+		console.log(role_id);
+
+		return this.userService.create({
+			...data,
+			password,
+			role: {id: role_id}
+		});
 	}
 
-	@Post()
-	async create(@Body() body): Promise<User> {
-		return this.userService.create(body);
+	@Get(':id')
+	async get(@Param('id') id: number) {
+		return this.userService.findOne({id}, ['role']);
+	}
+
+	@Put(':id')
+	async update(
+		@Param('id') id: number,
+		@Body() body: UserUpdateDto,
+	) {
+		const {role_id, ...data} = body;
+
+		await this.userService.update(id, {
+			...data,
+			role: {id: role_id},
+		});
+
+		return this.userService.findOne({id});
+	}
+
+	@Delete(':id')
+	async delete(@Param('id') id: number) {
+		return this.userService.delete(id);
 	}
 }
+
 @Controller('_user')
 export class UserController {
 	@Get()

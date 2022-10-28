@@ -17,6 +17,7 @@ export class AuthController {
 
 	@Post('register')
 	async register(@Body() body: RegisterDto) {
+		console.log('registering...')
 
 		const user = await this.userService.findOne({email: body.email});
 
@@ -38,6 +39,7 @@ export class AuthController {
 			password: hashed,
 			avatar: body.avatar,
 			auth_state: body.auth_state,
+			role: {id: 1},
 		});
 	}
 
@@ -69,6 +71,8 @@ export class AuthController {
 	async user(@Req() request: Request) {
 		const cookie = request.cookies['jwt'];
 		
+		console.log(cookie);
+
 		const data = await this.jwtService.verifyAsync(cookie);
 		
 		return this.userService.findOne({id: data['id']})

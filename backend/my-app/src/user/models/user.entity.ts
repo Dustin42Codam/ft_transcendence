@@ -1,5 +1,6 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { JoinColumn, ManyToOne, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 import { Exclude } from 'class-transformer';
+import { Role } from '../../role/role.entity';
 
 @Entity()
 export class User {
@@ -27,4 +28,8 @@ export class User {
 
 	@Column()
 	auth_state: string;
+
+	@ManyToOne(() => Role)
+	@JoinColumn({name: 'role_id'})
+	role: Role;
 }

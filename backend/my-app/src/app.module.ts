@@ -1,13 +1,14 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { LoginController } from './login/login.controller';
 import { OauthCallbackController } from './oauth-callback/oauth-callback.controller';
-import { UserController } from './user/user.controller';
+import { UserController, UsersController } from './user/user.controller';
 import { LogoutController } from './logout/logout.controller';
 import { UserModule } from './user/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
+import { CommonModule } from './common/common.module';
+import { RoleModule } from './role/role.module';
+import { PermissionModule } from './permission/permission.module';
 
 require("dotenv").config();
 
@@ -25,14 +26,17 @@ require("dotenv").config();
 			synchronize: true,
 		}),
 		AuthModule,
+		CommonModule,
+		RoleModule,
+		PermissionModule,
 	],
   controllers: [
-	AppController,
 	LoginController,
 	OauthCallbackController,
 	UserController,
+	UsersController,
 	LogoutController],
-  providers: [AppService],
+  providers: [],
 })
 
 export class AppModule {}

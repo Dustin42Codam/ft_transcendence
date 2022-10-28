@@ -1,4 +1,4 @@
-Short collection of different requests to test our API with.
+Short collection of different requests to our API endpoints.
 
 POST http://localhost:300/api/register
 {
@@ -18,3 +18,26 @@ POST http://localhost:300/api/login
 }
 
 POST http://localhost:300/api/logout
+
+
+GET http://localhost:3000/api/roles
+
+POST http://localhost:3000/api/roles
+{
+	"name": "Admin"
+}
+
+GET http://localhost:3000/api/permissions
+
+
+POST http://localhost:3000/api/permissions
+{
+	"name": "Test",
+	"permissions": [ 1, 2, 3 ]
+}
+
+POST http://localhost:3000/api/permissions
+{
+  "id": 1,
+  "name": "view_users"
+}
