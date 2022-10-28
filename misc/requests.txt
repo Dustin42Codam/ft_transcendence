@@ -41,3 +41,14 @@ POST http://localhost:3000/api/permissions
   "id": 1,
   "name": "view_users"
 }
+
+PUT http://localhost:3000/api/users/info
+{
+	"first_name": "updated"
+}
+
+PUT http://localhost:3000/api/users/password
+{
+	"password": "123",
+	"password_confirm": "123"
+}
