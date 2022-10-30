@@ -1,4 +1,4 @@
-version: '3.9'
+version: '2.4'
 
 services:
 
@@ -10,7 +10,7 @@ services:
       context: ./frontend/my-app
       dockerfile: Dockerfile-dev
     volumes:
-      - './frontend/my-app:/app/'
+      - './frontend/my-app/:/app/'
       - '/app/node_modules'
     depends_on:
       - postgres
@@ -34,7 +34,7 @@ services:
       context: ./backend/my-app
       dockerfile: Dockerfile-dev
     volumes:
-      - './backend/my-app:/app/'
+      - './backend/my-app/:/app/'
       - '/app/node_modules'
     depends_on:
       - postgres
@@ -56,7 +56,7 @@ services:
     hostname: postgres
     image: postgres:latest
     volumes:
-      - './postgres_vol:/var/lib/postgresql/data'
+      - ./postgres_vol/:/var/lib/postgresql/data:delegated
     ports:
       - ${POSTGRES_PORT}:5432
     networks:
@@ -78,7 +78,7 @@ services:
     hostname: pgAdmin4
     image: dpage/pgadmin4
     volumes:
-      - './postgres_vol:/var/lib/mysql'
+      - ./postgres_vol/:/var/lib/pgadmin:delegated
     ports:
       - "8082:80"
     networks:

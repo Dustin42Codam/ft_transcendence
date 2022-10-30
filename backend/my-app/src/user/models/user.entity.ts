@@ -24,11 +24,8 @@ export class User {
 	password: string;
 
 	@Column()
-	avatar: string;
-
-	@Column()
 	auth_state: string;
 
-	@ManyToOne( () => Role )
-	role: Role;
+	@ManyToOne( () => Role)
+	role:Role;
 }

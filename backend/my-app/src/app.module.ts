@@ -6,8 +6,13 @@ import { OauthCallbackController } from './oauth-callback/oauth-callback.control
 import { UserController } from './user/user.controller';
 import { LogoutController } from './logout/logout.controller';
 import { UserModule } from './user/user.module';
+import { User } from './user/models/user.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
+import { CommonModule } from './common/common.module';
+import { config } from 'dotenv';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { RoleModule } from './role/role.module';
 
 require("dotenv").config();
 
@@ -21,17 +26,23 @@ require("dotenv").config();
 			username: process.env.POSTGRES_USER,
 			password: process.env.POSTGRES_PASSWORD,
 			database: process.env.POSTGRES_DB,
+      entities: [
+        User,
+      ],
 			autoLoadEntities: true,
 			synchronize: true,
 		}),
 		AuthModule,
+    CommonModule,
+    RoleModule,
 	],
   controllers: [
-	AppController,
-	LoginController,
-	OauthCallbackController,
-	UserController,
-	LogoutController],
+		AppController,
+		LoginController,
+		OauthCallbackController,
+		UserController,
+		LogoutController,
+	],
   providers: [AppService],
 })
 
