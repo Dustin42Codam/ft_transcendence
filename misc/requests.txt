@@ -7,6 +7,7 @@ POST http://localhost:300/api/register
 	"last_name": "Doe",
 	"email": "john@doe.com",
 	"password": "abc",
+	"password_confirm": "abc",
 	"avatar": "john.png",
 	"auth_state": "authenticated"
 }
@@ -51,4 +52,12 @@ PUT http://localhost:3000/api/users/password
 {
 	"password": "123",
 	"password_confirm": "123"
+}
+
+POST http://localhost:3000/api/products
+{
+	"title": "product",
+	"description": "desc",
+	"image": "some_image",
+	"price": 20
 }

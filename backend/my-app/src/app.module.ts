@@ -1,14 +1,11 @@
 import { Module } from '@nestjs/common';
-import { LoginController } from './login/login.controller';
-import { OauthCallbackController } from './oauth-callback/oauth-callback.controller';
-import { UserController, UsersController } from './user/user.controller';
-import { LogoutController } from './logout/logout.controller';
 import { UserModule } from './user/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import { CommonModule } from './common/common.module';
 import { RoleModule } from './role/role.module';
 import { PermissionModule } from './permission/permission.module';
+import { ProductModule } from './product/product.module';
 
 require("dotenv").config();
 
@@ -29,14 +26,8 @@ require("dotenv").config();
 		CommonModule,
 		RoleModule,
 		PermissionModule,
-	],
-  controllers: [
-	LoginController,
-	OauthCallbackController,
-	UserController,
-	UsersController,
-	LogoutController],
-  providers: [],
+		ProductModule,
+	]
 })
 
 export class AppModule {}

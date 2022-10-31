@@ -28,7 +28,6 @@ export class UsersController {
 	
 	@Post()
 	async create(@Body() body: UserCreateDto): Promise<User> {
-		console.log('lol');
 		const password = await bcrypt.hash('1234', 12);
 
 		const user = await this.userService.findOne({email: body.email});
@@ -38,8 +37,6 @@ export class UsersController {
 		}
 
 		const {role_id, ...data} = body;
-
-		console.log(role_id);
 
 		return this.userService.create({
 			...data,

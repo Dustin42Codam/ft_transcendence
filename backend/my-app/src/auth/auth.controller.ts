@@ -33,7 +33,9 @@ export class AuthController {
 
 		const hashed = await bcrypt.hash(body.password, 12);
 
-		return this.userService.create({
+		const {password, ...data} = body;
+
+		await this.userService.create({
 			display_name: body.display_name,
 			first_name: body.first_name,
 			last_name: body.last_name,
@@ -43,6 +45,8 @@ export class AuthController {
 			auth_state: body.auth_state,
 			role: {id: 1},
 		});
+
+		return this.userService.findOne({email: body.email});
 	}
 
 	@Post('login')
