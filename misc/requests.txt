@@ -61,3 +61,5 @@ POST http://localhost:3000/api/products
 	"image": "some_image",
 	"price": 20
 }
+
+GET http://localhost:3000/api/orders
