@@ -1,7 +1,8 @@
-import { Get, Controller, Query, UseGuards } from '@nestjs/common';
+import { Get, Controller, Query, UseGuards, ClassSerializerInterceptor, UseInterceptors } from '@nestjs/common';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { OrderService } from './order.service';
 
+@UseInterceptors(ClassSerializerInterceptor)
 @UseGuards(AuthGuard)
 @Controller()
 export class OrderController {

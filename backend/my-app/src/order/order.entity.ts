@@ -1,28 +1,36 @@
-import { CreateDateColumn, Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
-import { OrderItem } from './order-item.entity';
+import {Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn} from "typeorm";
+import {OrderItem} from "./order-item.entity";
+import {Exclude, Expose} from "class-transformer";
 
 @Entity('orders')
 export class Order {
+    @PrimaryGeneratedColumn()
+    id: number;
 
-	@PrimaryGeneratedColumn()
-	id: number;
+    @Column()
+    @Exclude()
+    first_name: string;
 
-	@Column()
-	first_name: string;
-	
-	@Column()
-	last_name: string;
-	
-	@Column()
-	email: string;
+    @Column()
+    @Exclude()
+    last_name: string;
 
-	@CreateDateColumn()
-	created_at: string;
+    @Column()
+    email: string;
 
-	@OneToMany(() => OrderItem, orderItem => orderItem.order)
-	order_items: OrderItem[];
+    @CreateDateColumn()
+    created_at: string;
 
-	get name(): string {
-		return `${this.first_name} ${this.last_name}`;
-	}
+    @OneToMany(() => OrderItem, orderItem => orderItem.order)
+    order_items: OrderItem[];
+
+    @Expose()
+    get name(): string {
+        return `${this.first_name} ${this.last_name}`;
+    }
+
+    @Expose()
+    get total(): number {
+        return this.order_items.reduce((sum, i) => sum + i.quantity * i.price, 0);
+    }
 }
