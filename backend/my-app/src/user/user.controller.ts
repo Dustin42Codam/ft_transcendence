@@ -7,6 +7,7 @@ import { UserCreateDto } from './models/user-create.dto';
 import { UserUpdateDto } from './models/user-update.dto';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { AuthService } from 'src/auth/auth.service';
+import { HasPermission } from 'src/permission/has-permission.decorator';
 
 const axios = require("axios");
 const qs = require("query-string");
@@ -22,45 +23,48 @@ export class UsersController {
 		) {}
 
 	@Get()
+	@HasPermission('users')
 	async all(@Query('page') page: number = 1) {
 		return await this.userService.paginate(page, ['role']);
 	}
 	
 	@Post()
+	@HasPermission('users')
 	async create(@Body() body: UserCreateDto): Promise<User> {
 		const password = await bcrypt.hash('1234', 12);
-
+		
 		const user = await this.userService.findOne({email: body.email});
-
+		
 		if (user) {
 			throw new BadRequestException('User with this email already exists!');
 		}
-
+		
 		const {role_id, ...data} = body;
-
+		
 		return this.userService.create({
 			...data,
 			password,
 			role: {id: role_id}
 		});
 	}
-
+	
 	@Get(':id')
+	@HasPermission('users')
 	async get(@Param('id') id: number) {
 		return this.userService.findOne({id}, ['role']);
 	}
-
+	
 	@Put('info')
 	async updateInfo(
-	@Req() request: Request,
-	@Body() body: UserUpdateDto
-	) {
-		const id = await this.authService.userId(request);
-		
-		await this.userService.update(id, body)
-		
-		return this.userService.findOne({id})
-	}
+		@Req() request: Request,
+		@Body() body: UserUpdateDto
+		) {
+			const id = await this.authService.userId(request);
+			
+			await this.userService.update(id, body)
+			
+			return this.userService.findOne({id})
+		}
 		
 	@Put('password')
 	async updatePassword(
@@ -83,6 +87,7 @@ export class UsersController {
 	}
 
 	@Put(':id')
+	@HasPermission('users')
 	async update(
 		@Param('id') id: number,
 		@Body() body: UserUpdateDto,
@@ -98,6 +103,7 @@ export class UsersController {
 	}
 
 	@Delete(':id')
+	@HasPermission('users')
 	async delete(@Param('id') id: number) {
 		return this.userService.delete(id);
 	}

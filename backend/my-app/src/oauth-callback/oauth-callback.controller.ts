@@ -10,9 +10,9 @@ const config = {
 	},
 };
 
-@Controller('oauth-callback')
+@Controller()
 export class OauthCallbackController {
-	@Get()
+	@Get('oauth-callback')
 	callback(@Req() request: Request, @Res() response: Response) {
 		// State from Server
 		const stateFromServer = request.query.state;

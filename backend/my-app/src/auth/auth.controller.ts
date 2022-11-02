@@ -8,7 +8,7 @@ import { AuthGuard } from './auth.guard';
 import { AuthService } from './auth.service';
 
 @UseInterceptors(ClassSerializerInterceptor)
-@Controller('')
+@Controller()
 export class AuthController {
 
 	constructor(
@@ -35,6 +35,7 @@ export class AuthController {
 
 		const {password, ...data} = body;
 
+
 		await this.userService.create({
 			display_name: body.display_name,
 			first_name: body.first_name,
@@ -43,7 +44,7 @@ export class AuthController {
 			password: hashed,
 			avatar: body.avatar,
 			auth_state: body.auth_state,
-			role: {id: 1},
+			role: {id: 1}
 		});
 
 		return this.userService.findOne({email: body.email});

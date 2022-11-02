@@ -6,9 +6,12 @@ import { CommonModule } from './common/common.module';
 import { RoleModule } from './role/role.module';
 import { PermissionModule } from './permission/permission.module';
 import { ProductModule } from './product/product.module';
-import { OrderController } from './order/order.controller';
 import { OrderModule } from './order/order.module';
-import { OrderService } from './order/order.service';
+import { PermissionGuard } from './permission/permission.guard';
+import { APP_GUARD } from '@nestjs/core';
+import { LoginModule } from './login/login.module';
+import { LogoutModule } from './logout/logout.module';
+import { OauthCallbackModule } from './oauth-callback/oauth-callback.module';
 
 require("dotenv").config();
 
@@ -31,6 +34,15 @@ require("dotenv").config();
 		PermissionModule,
 		ProductModule,
 		OrderModule,
+		LoginModule,
+		LogoutModule,
+		OauthCallbackModule,
+	],
+	providers: [
+		{
+			provide: APP_GUARD,
+			useClass: PermissionGuard
+		}
 	]
 })
 
