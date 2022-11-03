@@ -35,6 +35,7 @@ export class AuthController {
 
 		const {password, ...data} = body;
 
+		console.log('Body:', body);
 
 		await this.userService.create({
 			display_name: body.display_name,
