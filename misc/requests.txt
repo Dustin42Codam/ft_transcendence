@@ -1,67 +1,64 @@
 Short collection of different requests to our API endpoints.
 
-POST http://localhost:300/api/register
+Create a user
+POST http://localhost:300/api/users
 {
-	"display_name": "John Doe",
-	"first_name": "John",
-	"last_name": "Doe",
-	"email": "john@doe.com",
-	"password": "abc",
-	"password_confirm": "abc",
-	"avatar": "john.png",
-	"auth_state": "authenticated"
+	"display_name": "John",
+	"avatar": "john.jpg",
+	"two_factor_auth": 0,
+	"status": "online"
 }
 
-POST http://localhost:300/api/login
+Request all users
+GET http://localhost:300/api/users
+
+Request one user by ID
+GET http://localhost:3000/api/users/1
+
+Login a user
+POST http://localhost:3000/api/login
 {
-	"email": "john@doe.com",
-	"password": "abc"
+  "display_name": "dkrecisz"
 }
 
-POST http://localhost:300/api/logout
+Logout a user
+POST http://localhost:3000/api/logout
 
-
-GET http://localhost:3000/api/roles
-
-POST http://localhost:3000/api/roles
-{
-	"name": "Admin"
-}
-
-GET http://localhost:3000/api/permissions
-
-
-POST http://localhost:3000/api/permissions
-{
-	"name": "Test",
-	"permissions": [ 1, 2, 3 ]
-}
-
-POST http://localhost:3000/api/permissions
-{
-  "id": 1,
-  "name": "view_users"
-}
-
+Update information of logged in user
 PUT http://localhost:3000/api/users/info
 {
 	"first_name": "updated"
 }
 
-PUT http://localhost:3000/api/users/password
+Update information of a specific user
+PUT http://localhost:3000/api/users/1
 {
-	"password": "123",
-	"password_confirm": "123"
+  "display_name": "Jack",
+  "two_factor_auth": true
 }
 
-POST http://localhost:3000/api/products
+Delete a user
+DELETE http://localhost:3000/api/users/1
+
+
+Create a chatroom
+POST http://localhost:3000/api/chatrooms
 {
-	"title": "product",
-	"description": "desc",
-	"image": "some_image",
-	"price": 20
+  "name": "chat_one",
+  "type": 1
 }
 
-GET http://localhost:3000/api/orders
+Request all chatrooms
+GET http://localhost:3000/api/chatrooms
 
-GET http://localhost:3000/api/chart
+Request one chatroom by its ID
+GET http://localhost:3000/api/chatrooms/1
+
+Change chatroom name
+PUT http://localhost:3000/api/chatrooms/1
+{
+  "name": "new_chatroom_name"
+}
+
+Delete a chatroom
+DELETE http://localhost:3000/api/chatrooms/1

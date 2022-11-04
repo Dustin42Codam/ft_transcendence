@@ -53,20 +53,15 @@ export class AuthController {
 
 	@Post('login')
 	async login(
-		@Body('email') email: string,
-		@Body('password') password: string,
+		@Body('display_name') display_name: string,
 		@Res({passthrough: true}) response: Response,
 	) {
-		const user = await this.userService.findOne({email: email});
+		const user = await this.userService.findOne({display_name: display_name});
 
 		if (!user) {
 			throw new NotFoundException('User not found!');
 		}
 		
-		if (!await bcrypt.compare(password, user.password)) {
-			throw new NotFoundException('Invalid credentials!');
-		}
-
 		const jwt = await this.jwtService.signAsync({id: user.id});
 
 		response.cookie('jwt', jwt, {httpOnly: true});

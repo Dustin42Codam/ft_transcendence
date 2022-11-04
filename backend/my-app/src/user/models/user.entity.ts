@@ -1,35 +1,23 @@
-import { JoinColumn, ManyToOne, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
-import { Exclude } from 'class-transformer';
-import { Role } from '../../role/role.entity';
+import { Member } from "src/member/models/member.entity";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
-@Entity()
+@Entity('user')
 export class User {
 	@PrimaryGeneratedColumn()
 	id: number;
 
-	@Column()
-	display_name: string;
-
-	@Column()
-	first_name: string;
-
-	@Column()
-	last_name: string;
-
 	@Column({unique: true})
-	email: string;
-
-	@Exclude()
-	@Column()
-	password: string;
+	display_name: string;
 
 	@Column()
 	avatar: string;
 
 	@Column()
-	auth_state: string;
+	two_factor_auth: boolean;
 
-	@ManyToOne(() => Role)
-	@JoinColumn({name: 'role_id'})
-	role: Role;
+	@Column()
+	status: string;
+
+	@OneToMany(() => Member, (member) => member.user)
+	chatrooms: Member[];
 }
