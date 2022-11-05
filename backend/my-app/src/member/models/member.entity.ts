@@ -8,7 +8,7 @@ export enum UserRole {
 	USER = 'user'
 }
 
-@Unique('unique_chatroom_member', ['user_id', 'channel_id'])
+@Unique('unique_chatroom_member', ['user', 'chatroom'])
 @Entity('member')
 export class Member {
 	@PrimaryGeneratedColumn()
