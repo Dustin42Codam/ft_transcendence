@@ -1,4 +1,4 @@
-import { Query, Delete, Put, BadRequestException, Param, UseGuards, Controller, Get, Post, Req, Res, Body, ClassSerializerInterceptor, UseInterceptors } from '@nestjs/common';
+import { Query, Delete, Put, BadRequestException, Param, UseGuards, Controller, Get, Post, Req, Res, Body, ClassSerializerInterceptor, UseInterceptors, Redirect } from '@nestjs/common';
 import { UserService } from './user.service';
 import { Request } from 'express-session';
 import { User } from './models/user.entity';

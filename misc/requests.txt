@@ -45,7 +45,7 @@ Create a chatroom
 POST http://localhost:3000/api/chatrooms
 {
   "name": "chat_one",
-  "type": 1
+  "type": "public"
 }
 
 Request all chatrooms

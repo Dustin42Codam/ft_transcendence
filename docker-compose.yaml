@@ -96,18 +96,18 @@ volumes:
     driver_opts:
       type: none
       o: bind
-      device: '${PWD}/postgres_vol'
+      device: ${PWD}/postgres_vol
   backend_vol:
     driver: local
     name: backend_vol
     driver_opts:
       type: none
       o: bind
-      device: '${PWD}/backend'
+      device: ${PWD}/backend
   frontend_vol:
     driver: local
     name: frontend_vol
     driver_opts:
       type: none
       o: bind
-      device: '${PWD}/frontend'
+      device: ${PWD}/frontend

@@ -9,6 +9,7 @@ import { LogoutModule } from './logout/logout.module';
 import { OauthCallbackModule } from './oauth-callback/oauth-callback.module';
 import { ChatroomModule } from './chatroom/chatroom.module';
 import { MemberModule } from './member/member.module';
+import { MessageModule } from './message/message.module';
 
 require("dotenv").config();
 
@@ -32,6 +33,7 @@ require("dotenv").config();
 		OauthCallbackModule,
 		ChatroomModule,
 		MemberModule,
+		MessageModule
 	]
 })
 
