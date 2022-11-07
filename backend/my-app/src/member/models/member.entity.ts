@@ -1,6 +1,6 @@
 import { Chatroom } from "src/chatroom/models/chatroom.entity";
 import { User } from "src/user/models/user.entity";
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn, Unique } from "typeorm";
+import { Column, Entity, Index, JoinColumn, ManyToOne, PrimaryGeneratedColumn, RelationId, Unique } from "typeorm";
 
 export enum UserRole {
 	OWNER = 'owner',
@@ -30,11 +30,17 @@ export class Member {
 	@Column()
 	banned: boolean;
 
-	@Column()
 	@ManyToOne(() => User, (user) => user.chatrooms)
-	user: number;
+	@JoinColumn({name: 'user_id'})
+	user: User;
+	
+	@Column()
+	user_id: number
+	
+	@ManyToOne(() => Chatroom, (chatroom) => chatroom.users)
+	@JoinColumn({name: 'chatroom_id'})
+	chatroom: Chatroom;
 
 	@Column()
-	@ManyToOne(() => Chatroom, (chatroom) => chatroom.users)
-	chatroom: number;
+	chatroom_id: number
 }

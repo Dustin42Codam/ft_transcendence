@@ -25,7 +25,6 @@ export class Chatroom {
 	type: ChatroomType;
 
 	@OneToMany(() => Member, (members) => members.chatroom)
-	@JoinTable()
 	users: Member[];
 
 	@OneToMany(() => Message, (message) => message.chatroom)

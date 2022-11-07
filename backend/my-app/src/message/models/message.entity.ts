@@ -17,7 +17,7 @@ export class Message {
 	@JoinColumn()
 	chatroom: Chatroom;
 
-	@ManyToOne(() => User, (user) => user.messages, {onDelete: "SET NULL"})
-	@JoinColumn()
-	user: User;
+	// @ManyToOne(() => User, (user) => user.messages, {onDelete: "SET NULL"})
+	// @JoinColumn()
+	// user: User;
 }

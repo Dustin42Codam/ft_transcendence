@@ -1,4 +1,6 @@
 import { IsNotEmpty, IsOptional } from 'class-validator'
+import { Chatroom } from 'src/chatroom/models/chatroom.entity';
+import { User } from 'src/user/models/user.entity';
 import { UserRole } from './member.entity';
 
 export class MemberCreateDto {
@@ -16,8 +18,8 @@ export class MemberCreateDto {
 	banned: boolean;
 	
 	@IsNotEmpty()
-	user: number;
+	user_id: number;
 	
 	@IsNotEmpty()
-	chatroom: number;
+	chatroom_id: number;
 }
