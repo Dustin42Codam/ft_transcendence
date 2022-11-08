@@ -38,13 +38,10 @@ export class MemberController {
 
 	@Post()
 	async createMember(@Body() body: MemberCreateDto): Promise<Member> {
-
 		const member = await this.memberService.findOne({
 			user_id: body.user_id,
 			chatroom_id: body.chatroom_id,
 		});
-		console.log('Member:', member);
-		console.log('body:', body);
 		
 		if (member)
 			return member;

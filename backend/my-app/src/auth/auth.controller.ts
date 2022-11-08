@@ -22,7 +22,6 @@ export class AuthController {
 		console.log('registering...')
 
 		const user = await this.userService.findOne({email: body.email});
-
 		if (user) {
 			throw new BadRequestException('User with this email already exists!');
 		}

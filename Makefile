@@ -3,6 +3,9 @@ SRC = ./docker-compose-dev.yaml
 all:
 	docker-compose -f $(SRC) up
 
+react_guide:
+	docker-compose -f $(SRC) up --build react_guide
+
 frontend:
 	docker-compose -f $(SRC) up --build frontend
 
