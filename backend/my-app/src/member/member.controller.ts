@@ -5,7 +5,7 @@ import { MemberService } from './member.service';
 import { MemberCreateDto } from './models/member-create.dto';
 import { Member } from './models/member.entity';
 
-@Controller('member')
+@Controller('members')
 export class MemberController {
 
 	constructor(

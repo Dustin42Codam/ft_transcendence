@@ -10,8 +10,9 @@ import { OauthCallbackModule } from './oauth-callback/oauth-callback.module';
 import { ChatroomModule } from './chatroom/chatroom.module';
 import { MemberModule } from './member/member.module';
 import { MessageModule } from './message/message.module';
+import * as dotenv from "dotenv";
 
-require("dotenv").config();
+dotenv.config();
 
 @Module({
 	imports: [

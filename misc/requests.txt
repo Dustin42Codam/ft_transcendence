@@ -1,7 +1,13 @@
+
 Short collection of different requests to our API endpoints.
 
+
++++++++++++++++++++++++++++
++++++ USER ENDPOINTS ++++++
++++++++++++++++++++++++++++
+
 Create a user
-POST http://localhost:300/api/users
+POST http://localhost:3000/api/users
 {
 	"display_name": "John",
 	"avatar": "john.jpg",
@@ -10,7 +16,7 @@ POST http://localhost:300/api/users
 }
 
 Request all users
-GET http://localhost:300/api/users
+GET http://localhost:3000/api/users
 
 Request one user by ID
 GET http://localhost:3000/api/users/1
@@ -41,6 +47,11 @@ Delete a user
 DELETE http://localhost:3000/api/users/1
 
 
+
++++++++++++++++++++++++++++
++++++ CHAT ENDPOINTS ++++++
++++++++++++++++++++++++++++
+
 Create a chatroom
 POST http://localhost:3000/api/chatrooms
 {
@@ -62,3 +73,24 @@ PUT http://localhost:3000/api/chatrooms/1
 
 Delete a chatroom
 DELETE http://localhost:3000/api/chatrooms/1
+
+
+
++++++++++++++++++++++++++++++
++++++ MEMBER ENDPOINTS ++++++
++++++++++++++++++++++++++++++
+
+Get all members
+GET http://localhost:3000/api/members/
+
+Get a member by ID
+GET http://localhost:3000/api/members/1
+
+Create a member
+POST http://localhost:3000/api/members/
+{
+
+}
+
+Delete a member
+DELETE http://localhost:3000/api/members/1
