@@ -1,0 +1,63 @@
+version: '2.4'
+
+services:
+  backend:
+    hostname: backend
+    build:
+      context: ./backend
+      target: prod
+    ports:
+      - ${BACKEND_PORT}:${BACKEND_PORT}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+        test: wget --no-verbose --tries=3 --spider http://127.0.0.1:3000/ || exit 1
+        interval: 30s
+        retries: 2
+        start_period: 20s
+        timeout: 3s
+
+  frontend:
+    hostname: frontend
+    build:
+      context: ./frontend
+      target: prod
+    ports:
+      - ${FRONTEND_PORT}:${FRONTEND_PORT}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+        test: wget --no-verbose --tries=3 --spider http://127.0.0.1:4242/ || exit 1
+        interval: 30s
+        retries: 2
+        start_period: 20s
+        timeout: 3s
+
+  postgres:
+    restart: always
+    container_name: postgres
+    hostname: postgres
+    image: postgres:latest
+    volumes:
+      - ./postgres_vol/:/var/lib/postgresql/data:delegated
+    ports:
+      - ${POSTGRES_PORT}:5432
+    networks:
+      - ft_trance
+    environment:
+      POSTGRES_PASSWORD:    ${POSTGRES_PASSWORD}
+      POSTGRES_USER:        ${POSTGRES_USER}
+      POSTGRES_DB:          ${POSTGRES_DB}
+    healthcheck:
+        test: pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}
+        interval: 10s
+        retries: 2
+        start_period: 20s
+        timeout: 10s
+
+networks:
+  ft_trance:
+    driver: bridge
+    name: ft_trance
