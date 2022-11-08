@@ -1,0 +1,73 @@
+version: "3"
+
+services:
+
+  postgres:
+    restart: always
+    user: "root:root"
+    container_name: postgres
+    hostname: postgres
+    image: postgres:latest
+    volumes:
+      - postgres_vol:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD:    ${POSTGRES_PASSWORD}
+      POSTGRES_USER:        ${POSTGRES_USER}
+      POSTGRES_DB:          ${POSTGRES_DB}
+    networks:
+      - ft_trance
+    healthcheck:
+        test: ["CMD", "pg_isready", "-U", "${POSTGRES_USER}", "-d", "${POSTGRES_DB}"]
+        interval: 10s
+        retries: 2
+        start_period: 20s
+        timeout: 10s
+
+  pgAdmin4:
+    restart: always
+    container_name: pgAdmin4
+    hostname: pgAdmin4
+    image: dpage/pgadmin4
+    volumes:
+      - postgres_vol:/var/lib/mysql
+    networks:
+      - ft_trance
+    ports:
+      - "8082:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL:    ${PGADMIN_DEFAULT_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
+    healthcheck:
+        test: wget --no-verbose --tries=1 --spider localhost:80 || exit 1
+        interval: 10s
+        retries: 2 
+        start_period: 60s
+        timeout: 10s
+
+networks:
+  ft_trance:
+    driver: bridge
+    name: ft_trance
+
+volumes:
+  postgres_vol:
+    driver: local
+    name: postgres_vol
+    driver_opts:
+      type: none
+      o: bind
+      device: '${PWD}/postgres_vol'
+  backend_vol:
+    driver: local
+    name: backend_vol
+    driver_opts:
+      type: none
+      o: bind
+      device: '${PWD}/backend'
+  frontend_vol:
+    driver: local
+    name: frontend_vol
+    driver_opts:
+      type: none
+      o: bind
+      device: '${PWD}/frontend'

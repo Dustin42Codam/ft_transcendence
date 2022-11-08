@@ -12,13 +12,13 @@ services:
     volumes:
       - './frontend/my-app/:/app/'
       - '/app/node_modules'
-    depends_on:
-      - postgres
-      - backend
     ports:
       - ${FRONTEND_PORT}:3000
     networks:
       - ft_trance
+    depends_on:
+      backend:
+        condition: service_healthy
     healthcheck:
         test: wget --no-verbose --tries=1 --spider http://localhost:3000 || exit 1
         interval: 20s
@@ -36,12 +36,13 @@ services:
     volumes:
       - './backend/my-app/:/app/'
       - '/app/node_modules'
-    depends_on:
-      - postgres
     ports:
       - ${BACKEND_PORT}:3000
     networks:
       - ft_trance
+    depends_on:
+      postgres:
+        condition: service_healthy
     healthcheck:
         test: wget --no-verbose --tries=1 --spider http://localhost:3000 || exit 1
         interval: 20s
@@ -51,7 +52,6 @@ services:
 
   postgres:
     restart: always
-    user: "root:root"
     container_name: postgres
     hostname: postgres
     image: postgres:latest
@@ -66,7 +66,7 @@ services:
       POSTGRES_USER:        ${POSTGRES_USER}
       POSTGRES_DB:          ${POSTGRES_DB}
     healthcheck:
-        test: ["CMD", "pg_isready", "-U", "${POSTGRES_USER}", "-d", "${POSTGRES_DB}"]
+        test: pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}
         interval: 10s
         retries: 2
         start_period: 20s
@@ -86,6 +86,9 @@ services:
     environment:
       PGADMIN_DEFAULT_EMAIL:    ${PGADMIN_DEFAULT_EMAIL}
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
+    depends_on:
+      postgres:
+        condition: service_healthy
     healthcheck:
         test: wget --no-verbose --tries=1 --spider localhost:80 || exit 1
         interval: 10s
