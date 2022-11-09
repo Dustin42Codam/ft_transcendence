@@ -54,6 +54,8 @@ CMD ["npm", "run", "audit"]
 ###PROD###
 FROM base as prod
 
+ENV PATH /node_modules/.bin:$PATH
+
 COPY --chown=node:node --from=build ./backend/dist ./dist
 
 USER node

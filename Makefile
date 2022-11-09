@@ -1,7 +1,7 @@
-SRC = ./docker-compose-dev.yaml
+SRC = docker-compose-dev.yml
 
 all:
-	docker-compose -f $(SRC) up
+	docker-compose up --build
 
 frontend:
 	docker-compose -f $(SRC) up --build frontend
@@ -20,6 +20,12 @@ decrypt:
 
 encrypt:
 	./encrypt.sh ./.env
+
+dev:
+	docker-compose -f $(SRC) up
+
+build:
+	docker-compose -f $(SRC) up --build
 
 clean:
 	./docker-nuke.sh

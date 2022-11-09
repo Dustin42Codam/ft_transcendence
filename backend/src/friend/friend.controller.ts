@@ -14,7 +14,7 @@ export class FriendController {
 
   @Get()
   findAll() {
-    return this.friendService.findAll();
+    return this.friendService.all();
   }
 
   @Get(':id')
@@ -29,6 +29,6 @@ export class FriendController {
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.friendService.remove(+id);
+    return this.friendService.delete(+id);
   }
 }

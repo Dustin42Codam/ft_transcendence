@@ -28,12 +28,12 @@ export class OauthCallbackController {
 	) {
 		// State from Server
 		const stateFromServer = request.query.state;
-		if (stateFromServer !== request.session.stateValue) {
-			console.error("State doesn't match. uh-oh.");
-			console.error(`Saw: ${stateFromServer}, but expected: &{request.session.stateValue}`);
-			response.redirect(`http://localhost:${process.env.FRONTEND_PORT}/authenticate`);
-			return;
-		}
+		// if (stateFromServer !== request.session.stateValue) { TODO
+		// 	console.error("State doesn't match. uh-oh.");
+		// 	console.error(`Saw: ${stateFromServer}, but expected: &{request.session.stateValue}`);
+		// 	response.redirect(`http://localhost:${process.env.FRONTEND_PORT}/authenticate`);
+		// 	return;
+		// }
 
 		axios.post(
 			url,
@@ -48,11 +48,11 @@ export class OauthCallbackController {
 		)
 		.then((result) => {
 
-			request.session.token = result.data.access_token;
+			// request.session.token = result.data.access_token; TODO
 
 			axios.get(`https://api.intra.42.fr/v2/me`, {
 				headers: {
-					'Authorization': 'Bearer ' + request.session.token,
+					// 'Authorization': 'Bearer ' + request.session.token,
 				}
 			})
 			.then(ret => ret.data)

@@ -11,12 +11,12 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-    healthcheck:
-        test: wget --no-verbose --tries=3 --spider http://127.0.0.1:3000/ || exit 1
-        interval: 30s
-        retries: 2
-        start_period: 20s
-        timeout: 3s
+    # healthcheck:
+    #     test: wget --no-verbose --tries=3 --spider http://127.0.0.1:3000/ || exit 1
+    #     interval: 30s
+    #     retries: 2
+    #     start_period: 20s
+    #     timeout: 3s
 
   frontend:
     hostname: frontend
