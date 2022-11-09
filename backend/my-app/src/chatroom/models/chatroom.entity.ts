@@ -6,7 +6,8 @@ import { Column, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColum
 export enum ChatroomType {
 	PUBLIC = 'public',
 	PROTECTED = 'protected',
-	PRIVATE = 'private'
+	PRIVATE = 'private',
+	DIRECT = 'direct'
 }
 
 @Entity('chatroom')

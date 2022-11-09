@@ -1,6 +1,7 @@
+import { Friend } from "src/friend/entities/friend.entity";
 import { Member } from "src/member/models/member.entity";
 import { Message } from "src/message/models/message.entity";
-import { Column, Entity, JoinColumn, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 export enum UserStatus {
 	ONLINE = 'online',
@@ -31,6 +32,10 @@ export class User {
 
 	@OneToMany(() => Member, (member : Member) => member.user)
 	public chatrooms?: Member[];
+
+	@ManyToMany(() => User)
+  	@JoinTable()
+  	public friends: User[];
 
 	// @OneToMany(() => Message, (message) => message.chatroom)
 	// messages: Message[];

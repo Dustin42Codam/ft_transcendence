@@ -10,6 +10,9 @@ import { OauthCallbackModule } from './oauth-callback/oauth-callback.module';
 import { ChatroomModule } from './chatroom/chatroom.module';
 import { MemberModule } from './member/member.module';
 import { MessageModule } from './message/message.module';
+import { FriendModule } from './friend/friend.module';
+import { FriendRequestModule } from './friend_request/friend_request.module';
+import { BannedModule } from './banned/banned.module';
 
 require("dotenv").config();
 
@@ -33,7 +36,10 @@ require("dotenv").config();
 		OauthCallbackModule,
 		ChatroomModule,
 		MemberModule,
-		MessageModule
+		MessageModule,
+		FriendModule,
+		FriendRequestModule,
+		BannedModule
 	]
 })
 

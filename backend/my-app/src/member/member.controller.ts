@@ -1,13 +1,15 @@
-import { Body, Controller, Get, Param, Post, Query, Req } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Req} from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import RequestWithUser from 'src/interfaces/IRequestWithUser';
 import { User } from 'src/user/models/user.entity';
 import { MemberService } from './member.service';
 import { MemberCreateDto } from './models/member-create.dto';
-import { Member } from './models/member.entity';
+import { MemberMutedUpdateDto } from './models/member-muted-update.dto';
+import { MemberRoleUpdateDto } from './models/member-role-update.dto';
+import { Member, UserRole } from './models/member.entity';
 
 @Controller('member')
 export class MemberController {
-
 	constructor(
 		private memberService: MemberService
 	) {}
@@ -43,35 +45,101 @@ export class MemberController {
 			user_id: body.user_id,
 			chatroom_id: body.chatroom_id,
 		});
-		console.log('Member:', member);
-		console.log('body:', body);
-		
 		if (member)
 			return member;
-		
-
 		console.log('Creating Member: \n', body);
 
 		return this.memberService.createMember(body);
 	}
 
-	@Get(':id')
-	async get(@Param('id') id: number) {
+	@Get('user/:id')
+	async getAllMembersFromUser(@Param('id') id: number) {
 		console.log('id:', id);
 		return this.memberService.getAllMembersFromUser(id);
 	}
+
+	@Get('chatroom/:id')
+	async getAllMembersFromChatroom(@Param('id') id: number) {
+		console.log('id:', id);
+		return this.memberService.getAllMembersFromChatroom(id);
+	}
 	
-	// @Put('info')
-	// async updateInfo(
-	// 	@Req() request: Request,
-	// 	@Body() body: MemberUpdateDto
-	// ) {
-	// 	const id = await this.authService.userId(request);
+	@Post('role/:id')
+	async updateRoleMember(
+		@Param('id') id: number,
+		@Body() body: MemberRoleUpdateDto
+	) : Promise<any> {
+		var member = await this.memberService.findOne({id});
+		member.role = body.role;
+		await this.memberService.update(id, member);
+		return member;
+	}
 
-	// 	await this.memberService.update(id, body);
+	@Get(':id')
+	async isAllowedToSendMessages(@Param('id') id: number) {
+		const member = await this.memberService.findOne({id});
+		if (member.banned)
+			return false;
+		const date = new Date();
+		if (member.muted_until > date)
+			return false;
+		return true;
+	}
 
-	// 	return this.memberService.findOne({id});
-	// }
+	@Get('isOwner/:id')
+	async isOwner(@Param('id') id: number) {
+		const member = await this.memberService.findOne({id});
+		return member.role == UserRole.OWNER;
+	}
+
+	@Get('isAdmin:id')
+	async isAdmin(@Param('id') id: number) {
+		const member = await this.memberService.findOne({id});
+		return member.role == UserRole.ADMIN;
+	}
+
+	@Post('mute/:id')
+	async muteMemberById(
+		@Param('id') id: number,
+		@Body() body: MemberMutedUpdateDto
+	) : Promise<any> {
+		var member = await this.memberService.findOne({id});
+		member.muted_until = body.muted_until;
+		await this.memberService.update(id, member);
+		return member;
+	}
+
+	@Post('unmute/:id')
+	async unmuteMemberById(
+		@Param('id') id: number,
+	) : Promise<any> {
+		var member = await this.memberService.findOne({id});
+		member.muted_until = new Date();
+		await this.memberService.update(id, member);
+		return member;
+	}
+
+	@Post('ban/:id')
+	async banMemberById(
+		@Param('id') id: number,
+	) : Promise<any> {
+		var member = await this.memberService.findOne({id});
+		if (member.role == UserRole.OWNER)
+			throw("Member is the owner and can not be banned");
+		member.banned = true;
+		await this.memberService.update(id, member);
+		return await member;
+	}
+
+	@Post('unban/:id')
+	async unbanMemberById(
+		@Param('id') id: number,
+	) : Promise<any> {
+		var member = await this.memberService.findOne({id});
+		member.banned = false;
+		await this.memberService.update(id, member);
+		return await member;
+	}
 
 	// @Put(':id')
 	// async update(
@@ -88,3 +156,7 @@ export class MemberController {
 	// 	return this.memberService.delete(id);
 	// }
 }
+function Put(arg0: string) {
+	throw new Error('Function not implemented.');
+}
+

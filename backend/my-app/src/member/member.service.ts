@@ -29,20 +29,23 @@ export class MemberService extends AbstractService {
 	}
 
 	async getAllMembersFromUser(user_id: number) {
-
-
-		// this.memberRepository.select().where()
 		const member = await this.memberRepository.find({
 			where: {
 				user_id : user_id,
 			},
 			relations: ['chatroom']
 		});
+		return member;
+	}
 
-		// const member = await this.memberRepository.find({where: {user.id: user_id}, relations: ['user', 'chatroom'] });
-	
-		console.log(member);
+	async getAllMembersFromChatroom(chatroom_id: number) {
 
+		const member = await this.memberRepository.find({
+			where: {
+				chatroom_id : chatroom_id,
+			},
+			relations: ['user']
+		});
 		return member;
 	}
 

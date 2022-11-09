@@ -1,7 +1,7 @@
 Short collection of different requests to our API endpoints.
 
 Create a user
-POST http://localhost:300/api/users
+POST http://localhost:3000/api/users
 {
 	"display_name": "John",
 	"avatar": "john.jpg",
@@ -10,7 +10,7 @@ POST http://localhost:300/api/users
 }
 
 Request all users
-GET http://localhost:300/api/users
+GET http://localhost:3000/api/users
 
 Request one user by ID
 GET http://localhost:3000/api/users/1

@@ -3,7 +3,7 @@ import { ChatroomService } from './chatroom.service';
 import { Request } from 'express-session';
 import { ChatroomCreateDto } from './models/chatroom-create.dto';
 import { ChatroomUpdateDto } from './models/chatroom-update.dto';
-import { Chatroom } from './models/chatroom.entity';
+import { Chatroom, ChatroomType } from './models/chatroom.entity';
 import { AuthGuard } from '@nestjs/passport';
 import { MessageService } from 'src/message/message.service';
 import { request } from 'http';
@@ -25,18 +25,30 @@ export class ChatroomController {
 	async create(@Body() body: ChatroomCreateDto): Promise<Chatroom> {
 
 		const chatroom = await this.chatroomService.findOne({name: body.name});
-
 		if (chatroom)
 			return chatroom;
-
-		console.log('Creating new chatroom: \n', body);
-		
 		return this.chatroomService.create(body);
 	}
 
 	@Get(':id')
 	async get(@Param('id') id: number) {
 		return this.chatroomService.findOne({id});
+	}
+
+	@Get('chatroom:id')
+	async isAllowedToJoinChatroom(@Param('id') id: number) {
+		const chatroom = await this.chatroomService.findOne({id});
+		// if (!chatroom)
+		// 	throw "Chatroom does not exists";						TODO check how this is done best
+		if (chatroom.type == ChatroomType.PRIVATE)
+			return false;
+		if (chatroom.type == ChatroomType.DIRECT)
+			return false;
+		if (chatroom.type == ChatroomType.PROTECTED)
+		{
+			//Passwordcheck 
+			return false;
+		}
 	}
 
 	@Put(':id')
