@@ -8,9 +8,6 @@ import { UserUpdateDto } from './models/user-update.dto';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { AuthService } from 'src/auth/auth.service';
 
-const axios = require("axios");
-const qs = require("query-string");
-
 // @UseGuards(AuthGuard)
 @Controller('users')
 export class UserController {

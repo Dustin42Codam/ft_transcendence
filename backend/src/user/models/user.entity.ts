@@ -1,4 +1,3 @@
-import { Friend } from "src/friend/entities/friend.entity";
 import { Member } from "src/member/models/member.entity";
 import { Message } from "src/message/models/message.entity";
 import { Column, Entity, JoinColumn, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";

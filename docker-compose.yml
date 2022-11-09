@@ -11,6 +11,8 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+    networks:
+      - ft_trance
     # healthcheck:
     #     test: wget --no-verbose --tries=3 --spider http://127.0.0.1:3000/ || exit 1
     #     interval: 30s
@@ -28,6 +30,8 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+    networks:
+      - ft_trance
     healthcheck:
         test: wget --no-verbose --tries=3 --spider http://127.0.0.1:4242/ || exit 1
         interval: 30s

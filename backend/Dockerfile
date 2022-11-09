@@ -9,7 +9,7 @@ COPY package.json package-lock.json tsconfig.json ./
 
 RUN apk add tini --no-cache \
 	&& npm config list \
-	&& npm ci \
+	&& npm install \
 #	&& npm outdated \
 	&& npm cache clean --force
 
@@ -26,7 +26,7 @@ RUN npm install && npm cache clean --force
 
 COPY . ./backend
 
-WORKDIR ./backend
+WORKDIR /backend
 
 CMD ["nest", "start", "--watch"] 
 

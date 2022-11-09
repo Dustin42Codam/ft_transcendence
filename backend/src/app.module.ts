@@ -10,9 +10,6 @@ import { OauthCallbackModule } from './oauth-callback/oauth-callback.module';
 import { ChatroomModule } from './chatroom/chatroom.module';
 import { MemberModule } from './member/member.module';
 import { MessageModule } from './message/message.module';
-import { FriendModule } from './friend/friend.module';
-import { FriendRequestModule } from './friend_request/friend_request.module';
-import { BannedModule } from './banned/banned.module';
 import * as dotenv from "dotenv";
 
 dotenv.config();
@@ -23,10 +20,10 @@ dotenv.config();
 		TypeOrmModule.forRoot({
 			type: 'postgres',
 			host: 'postgres',
-			port: parseInt(process.env.POSTGRES_PORT),
-			username: process.env.POSTGRES_USER,
-			password: process.env.POSTGRES_PASSWORD,
-			database: process.env.POSTGRES_DB,
+			port: 5432,
+			username: "user",
+			password: "SuperSecret",
+			database: "ft_trance",
 			autoLoadEntities: true,
 			synchronize: true,
 		}),
@@ -38,9 +35,6 @@ dotenv.config();
 		ChatroomModule,
 		MemberModule,
 		MessageModule,
-		FriendModule,
-		FriendRequestModule,
-		BannedModule
 	]
 })
 
