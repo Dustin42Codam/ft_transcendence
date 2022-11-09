@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, HttpCode, Param, Post, Put, Query, Req } from '@nestjs/common';
 import { ChatroomService } from './chatroom.service';
-import { Request } from 'express-session';
+import { Request } from 'express';
 import { ChatroomCreateDto } from './models/chatroom-create.dto';
 import { ChatroomUpdateDto } from './models/chatroom-update.dto';
 import { Chatroom, ChatroomType } from './models/chatroom.entity';

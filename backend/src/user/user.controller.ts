@@ -1,6 +1,6 @@
 import { Query, Delete, Put, BadRequestException, Param, UseGuards, Controller, Get, Post, Req, Res, Body, ClassSerializerInterceptor, UseInterceptors, Redirect } from '@nestjs/common';
 import { UserService } from './user.service';
-import { Request } from 'express-session';
+import { Request } from 'express';
 import { User } from './models/user.entity';
 import * as bcrypt from 'bcrypt';
 import { UserCreateDto } from './models/user-create.dto';

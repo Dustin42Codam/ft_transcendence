@@ -1,5 +1,5 @@
 import { Controller, Get, Req, Res } from '@nestjs/common';
-import { Request, Response } from 'express-session';
+import { Request, Response } from 'express';
 
 @Controller('logout')
 export class LogoutController {

@@ -1,5 +1,5 @@
 import { Controller, Get, Req, Res, UseInterceptors } from '@nestjs/common';
-import { Request, Response } from 'express-session';
+import { Request, Response } from 'express';
 import { UserService } from 'src/user/user.service';
 
 require("dotenv").config();
