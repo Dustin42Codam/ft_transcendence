@@ -1,9 +1,10 @@
 import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
+import * as dotenv from "dotenv";
 
-const express = require("express");
 const cors = require("cors");
+const express = require("express");
 
 require("dotenv").config();
 
@@ -14,6 +15,6 @@ async function bootstrap() {
 	app.useGlobalPipes(new ValidationPipe());
 	app.use(cors({origin: true, credentials: true}));
 	app.use(express.json());
-	await app.listen(3000);
+	await app.listen(parseInt(process.env.POSTGRES_PORT));
 }
 bootstrap();
