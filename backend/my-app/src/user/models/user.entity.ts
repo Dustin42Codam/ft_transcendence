@@ -8,9 +8,6 @@ export class User {
 	id: number;
 
 	@Column()
-	display_name: string;
-
-	@Column()
 	first_name: string;
 
 	@Column()
@@ -22,12 +19,6 @@ export class User {
 	@Exclude()
 	@Column()
 	password: string;
-
-	@Column()
-	avatar: string;
-
-	@Column()
-	auth_state: string;
 
 	@ManyToOne(() => Role)
 	@JoinColumn({name: 'role_id'})

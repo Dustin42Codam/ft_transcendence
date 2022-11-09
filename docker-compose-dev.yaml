@@ -16,11 +16,11 @@ services:
       - postgres
       - backend
     ports:
-      - ${FRONTEND_PORT}:3000
+      - ${FRONTEND_PORT}:${FRONTEND_PORT}
     networks:
       - ft_trance
     healthcheck:
-        test: wget --no-verbose --tries=1 --spider http://localhost:3000 || exit 1
+        test: wget --no-verbose --tries=1 --spider http://localhost:${FRONTEND_PORT} || exit 1
         interval: 20s
         retries: 1 
         start_period: 10s
@@ -39,11 +39,11 @@ services:
     depends_on:
       - postgres
     ports:
-      - ${BACKEND_PORT}:3000
+      - ${BACKEND_PORT}:${BACKEND_PORT}
     networks:
       - ft_trance
     healthcheck:
-        test: wget --no-verbose --tries=1 --spider http://localhost:3000 || exit 1
+        test: wget --no-verbose --tries=1 --spider http://localhost:${BACKEND_PORT} || exit 1
         interval: 20s
         retries: 1 
         start_period: 10s
