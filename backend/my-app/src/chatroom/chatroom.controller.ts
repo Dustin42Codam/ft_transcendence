@@ -39,15 +39,21 @@ export class ChatroomController {
 	async isAllowedToJoinChatroom(@Param('id') id: number) {
 		const chatroom = await this.chatroomService.findOne({id});
 		// if (!chatroom)
-		// 	throw "Chatroom does not exists";						TODO check how this is done best
-		if (chatroom.type == ChatroomType.PRIVATE)
-			return false;
-		if (chatroom.type == ChatroomType.DIRECT)
-			return false;
-		if (chatroom.type == ChatroomType.PROTECTED)
+		// 	throw "Chatroom does not exists";					TODO check how this is done best
+		switch (chatroom.type)
 		{
-			//Passwordcheck 
-			return false;
+			case ChatroomType.PRIVATE:
+				//only on creation??
+				// inventation??
+				return false;
+			case ChatroomType.PROTECTED:
+				// check for password
+				return false;
+			case ChatroomType.DIRECT:
+				//only on creation
+				return false;
+			default:
+				return true;
 		}
 	}
 

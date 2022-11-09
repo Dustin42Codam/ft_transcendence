@@ -8,7 +8,7 @@ import { MemberMutedUpdateDto } from './models/member-muted-update.dto';
 import { MemberRoleUpdateDto } from './models/member-role-update.dto';
 import { Member, UserRole } from './models/member.entity';
 
-@Controller('member')
+@Controller('members')
 export class MemberController {
 	constructor(
 		private memberService: MemberService

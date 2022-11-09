@@ -24,7 +24,7 @@ export class Member {
 	@Column()
 	muted: boolean;
 
-	@Column({nullable: true})
+	@Column('date', {default: null})
 	muted_until: Date;
 
 	@Column()

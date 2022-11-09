@@ -13,8 +13,9 @@ import { MessageModule } from './message/message.module';
 import { FriendModule } from './friend/friend.module';
 import { FriendRequestModule } from './friend_request/friend_request.module';
 import { BannedModule } from './banned/banned.module';
+import * as dotenv from "dotenv";
 
-require("dotenv").config();
+dotenv.config();
 
 @Module({
 	imports: [
