@@ -15,7 +15,11 @@ async function bootstrap() {
 
 	app.setGlobalPrefix('api');
 	app.useGlobalPipes(new ValidationPipe());
-	app.use(cors({origin: true, credentials: true}));
+	// app.use(cors({origin: true, credentials: true}));
+	app.enableCors({
+		origin: 'http://localhost:4242',
+		credentials: true
+	});
 	app.use(morgan("common"));
 	app.use(express.json());
 	app.use(cookieParser());

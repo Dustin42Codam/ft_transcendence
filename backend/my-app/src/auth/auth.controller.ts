@@ -78,6 +78,7 @@ export class AuthController {
 	@UseGuards(AuthGuard)
 	@Get('user')
 	async user(@Req() request: Request) {
+		console.log('Getting user by jwt token...')
 		const id = await this.authService.userId(request);
 		
 		return this.userService.findOne({id})

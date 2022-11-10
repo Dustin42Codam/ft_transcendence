@@ -1,23 +1,55 @@
-import React, {Component} from 'react';
+import { User } from '@auth0/auth0-react';
+import axios from 'axios';
+import React, {useEffect, useState} from 'react';
+import { Link } from 'react-router-dom';
+
+const fetchDataCall = async () => {
+	let data = await axios
+	.get('user')
+	.then(async function(response) {
+		return response;
+	})
+	.catch(function(error) {
+		console.log(error);
+	});
+	return data;
+}
 
 const Nav = () => {
-	return (
-		<header className="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
-		  <a className="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6" href="/#">ft_transcendence</a>
-		  <button className="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
-		    <span className="navbar-toggler-icon"></span>
-		  </button>
-		  <input className="form-control form-control-dark w-100 rounded-0 border-0" type="text" placeholder="Search" aria-label="Search"/>
-		  <div className="navbar-nav">
-		    <div className="nav-item text-nowrap">
-				<form id="logout" action='http://localhost:3000/api/logout'>
-					<button>Sign out</button>
-				</form>
-		      {/* <a className="nav-link px-3" href="/authenticate">Sign out</a> */}
-		    </div>
-		  </div>
-		</header>
-	)
+
+	const [user, setUser] = useState(new User());
+
+	useEffect(() => {
+		const fetchData = async () => {
+			let response:any = await fetchDataCall();
+			setUser(new User(
+				0, 'lol', 'lol', 'lol'
+				// response.data.id,
+				// response.data.first_name,
+				// response.data.last_name,
+				// response.data.email
+			));
+		};
+
+		fetchData();
+	}, [])
+
+	const logout = async () => {
+		await axios.post('logout', {});
+	}
+
+    return (
+        <nav className="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
+            <a className="navbar-brand col-md-3 col-lg-2 mr-0 px-3" href="#">Company name</a>
+
+            <ul className="my-2 my-md-0 mr-md-3">
+				<ul>
+					<Link to="/profile" className="p-2 text-white text-decoration-none">{user?.first_name} {user?.last_name}</Link>
+					<Link to="/login" className="p-2 text-white text-decoration-none" onClick={logout}>Sign out</Link>
+				</ul>
+            </ul>
+        </nav>
+    );
 }
 
 export default Nav
