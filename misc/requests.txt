@@ -1,15 +1,19 @@
 Short collection of different requests to our API endpoints.
 
+Create a permission
+POST http://localhost:300/api/permissions
+
+Create a role
+POST http://localhost:300/api/roles
+
 POST http://localhost:300/api/register
 {
-	"display_name": "John Doe",
 	"first_name": "John",
 	"last_name": "Doe",
 	"email": "john@doe.com",
 	"password": "abc",
 	"password_confirm": "abc",
-	"avatar": "john.png",
-	"auth_state": "authenticated"
+	"avatar": "john.png"
 }
 
 POST http://localhost:300/api/login
