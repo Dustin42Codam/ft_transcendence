@@ -58,6 +58,8 @@ ENV PATH /node_modules/.bin:$PATH
 
 COPY --chown=node:node --from=build ./backend/dist ./dist
 
+COPY .env ./.env
+
 USER node
 
 HEALTHCHECK  --interval=30s --timeout=3s \
