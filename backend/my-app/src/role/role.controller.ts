@@ -1,4 +1,4 @@
-import { Controller, Post, Get, Put, Delete, Param, Body } from '@nestjs/common';
+import { BadRequestException, Controller, Post, Get, Put, Delete, Param, Body } from '@nestjs/common';
 import { HasPermission } from 'src/permission/has-permission.decorator';
 import { RoleService }from './role.service';
 
@@ -13,11 +13,19 @@ export class RoleController {
 	}
 	
 	@Post()
-	@HasPermission('roles')
+	// @HasPermission('roles')
 	async create(
 		@Body('name') name: string,
 		@Body('permissions') ids: number[]
 		){
+			const role = await this.roleService.findOne({name: name});
+			console.log("🚀 ~ file: role.controller.ts ~ line 22 ~ RoleController ~ role", role)
+
+			
+
+			if (role)
+				throw new BadRequestException('This role already exists!');
+
 			return this.roleService.create({
 				name,
 				permissions: ids.map(id => ({id}))

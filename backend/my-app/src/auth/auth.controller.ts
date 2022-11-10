@@ -57,6 +57,8 @@ export class AuthController {
 		@Res({passthrough: true}) response: Response,
 	) {
 		const user = await this.userService.findOne({email: email});
+		
+		console.log(`Backend: Logging in user: ${user} email: ${email} password: ${password}`);
 
 		if (!user) {
 			throw new NotFoundException('User not found!');
