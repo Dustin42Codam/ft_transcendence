@@ -1,6 +1,8 @@
 ###BASE###
 FROM node:18.12.0-alpine3.15 as base
 
+ENV PATH /node_modules/.bin:$PATH
+
 ENV NODE_ENV=production
 
 LABEL maintainer=ft_trancedance
@@ -18,20 +20,18 @@ ENTRYPOINT ["tini", "--"]
 ###DEV###
 FROM base as dev
 
-ENV PATH /node_modules/.bin:$PATH
-
 ENV NODE_ENV=development
 
 RUN npm install && npm cache clean --force
 
 COPY . ./backend
 
+WORKDIR /backend
+
 CMD ["nest", "start", "--watch"] 
 
 ###PRE-PROD###
 FROM dev as build
-
-WORKDIR /backend
 
 RUN npm run build
 

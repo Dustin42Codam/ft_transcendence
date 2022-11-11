@@ -26,12 +26,12 @@ RUN npm install && npm cache clean --force
 
 COPY . ./frontend
 
+WORKDIR /frontend
+
 CMD ["npm", "start"] 
 
 ###PRE-PROD###
 FROM dev as build
-
-WORKDIR /frontend
 
 RUN npm run build
 
