@@ -9,7 +9,7 @@ COPY package.json package-lock.json tsconfig.json ./
 
 RUN apk add tini --no-cache \
 	&& npm config list \
-	&& npm install \
+	&& npm ci \
 #	&& npm outdated \
 	&& npm cache clean --force
 
@@ -31,10 +31,6 @@ CMD ["nest", "start", "--watch"]
 ###PRE-PROD###
 FROM dev as build
 
-ENV NODE_ENV=development
-
-RUN npm install && npm cache clean --force
-
 WORKDIR /backend
 
 RUN npm run build
@@ -51,8 +47,6 @@ CMD ["npm", "run", "audit"]
 
 ###PROD###
 FROM base as prod
-
-ENV PATH /node_modules/.bin:$PATH
 
 COPY --chown=node:node --from=build ./backend/dist ./dist
 

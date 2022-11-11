@@ -1,14 +1,13 @@
 import React, { Component } from "react";
 import "../login.css";
 
-export class Register extends Component {
+export class Authenticate extends Component {
   render() {
     const mystyle = {
       padding: "10px",
       fontFamily: "verdana",
       fontSize: 35,
     };
-
     return (
       <>
         <main className="form-signin w-100 m-auto center">
@@ -41,5 +40,4 @@ export class Register extends Component {
     );
   }
 }
-
-export default Register;
+export default Authenticate

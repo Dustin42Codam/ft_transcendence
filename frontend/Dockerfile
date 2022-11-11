@@ -31,10 +31,6 @@ CMD ["npm", "start"]
 ###PRE-PROD###
 FROM dev as build
 
-ENV NODE_ENV=development
-
-RUN npm install && npm cache clean --force
-
 WORKDIR /frontend
 
 RUN npm run build

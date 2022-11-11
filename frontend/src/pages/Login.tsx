@@ -1,5 +1,4 @@
-import PropTypes from "prop-types";
-import React, { Component, SyntheticEvent, useState } from "react";
+import React, { SyntheticEvent, useState } from "react";
 import axios from "axios";
 import { Navigate } from "react-router-dom";
 
@@ -12,7 +11,7 @@ const Login = () => {
     e.preventDefault();
 
     await axios.post(
-      `http://localhost:3000/api/login`,
+      'login',
       {
         email,
         password,
