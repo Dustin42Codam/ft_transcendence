@@ -11,7 +11,7 @@ const Login = () => {
     e.preventDefault();
 
     await axios.post(
-      'login',
+      "login",
       {
         email,
         password,

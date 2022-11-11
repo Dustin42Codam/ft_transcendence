@@ -40,4 +40,4 @@ export class Authenticate extends Component {
     );
   }
 }
-export default Authenticate
+export default Authenticate;
