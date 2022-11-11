@@ -12,6 +12,7 @@ export class UserService extends AbstractService {
 	) {
 		super(userRepository);
 	}
+	/*
 	login() {
 		const user = await this.userService.findOne({display_name: display_name});
 
@@ -32,4 +33,5 @@ export class UserService extends AbstractService {
 
 		response.cookie('jwt', jwt, {httpOnly: true});
 	}
+ */
 }

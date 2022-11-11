@@ -26,8 +26,6 @@ RUN npm install && npm cache clean --force
 
 COPY . ./backend
 
-WORKDIR /backend
-
 CMD ["nest", "start", "--watch"] 
 
 ###PRE-PROD###
@@ -37,7 +35,7 @@ ENV NODE_ENV=development
 
 RUN npm install && npm cache clean --force
 
-COPY . .
+WORKDIR /backend
 
 RUN npm run build
 

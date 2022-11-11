@@ -9,7 +9,7 @@ COPY *.json ./
 
 RUN apk add tini --no-cache \
 	&& npm config list \
-	&& npm install \
+	&& npm ci \
 #	&& npm outdated \
 	&& npm cache clean --force
 
@@ -26,8 +26,6 @@ RUN npm install && npm cache clean --force
 
 COPY . ./frontend
 
-WORKDIR /frontend
-
 CMD ["npm", "start"] 
 
 ###PRE-PROD###
@@ -37,9 +35,7 @@ ENV NODE_ENV=development
 
 RUN npm install && npm cache clean --force
 
-COPY . .
-
-COPY . ./frontend
+WORKDIR /frontend
 
 RUN npm run build
 
