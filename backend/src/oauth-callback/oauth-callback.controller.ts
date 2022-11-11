@@ -1,5 +1,5 @@
 import { Controller, Get, Req, Res, UseInterceptors } from '@nestjs/common';
-import { Request, Response } from 'express';
+import { Request, Response } from 'express-session';
 import { UserService } from 'src/user/user.service';
 
 require("dotenv").config();
@@ -48,11 +48,11 @@ export class OauthCallbackController {
 		)
 		.then((result) => {
 
-			// request.session.token = result.data.access_token; TODO
+			request.session.token = result.data.access_token;
 
 			axios.get(`https://api.intra.42.fr/v2/me`, {
 				headers: {
-					// 'Authorization': 'Bearer ' + request.session.token,
+					'Authorization': 'Bearer ' + request.session.token,
 				}
 			})
 			.then(ret => ret.data)
@@ -60,7 +60,6 @@ export class OauthCallbackController {
 			.then(loginUser)
 			.then((ret) => {
 				console.log('reg user ret: ', ret);
-
 				response.redirect(`http://localhost:${process.env.FRONTEND_PORT}`);
 			})
 			.catch(err => console.log(err))

@@ -1,7 +1,7 @@
 import React, { Component} from 'react'
 import '../login.css'
 
-export class Register extends Component {
+export class Authenticate extends Component {
 
 	render() {
     	const mystyle = {
@@ -31,4 +31,4 @@ export class Register extends Component {
 	}
 }
 
-export default Register
+export default Authenticate
