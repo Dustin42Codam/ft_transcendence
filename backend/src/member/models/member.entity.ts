@@ -2,7 +2,7 @@ import { Chatroom } from "src/chatroom/models/chatroom.entity";
 import { User } from "src/user/models/user.entity";
 import { Column, Entity, Index, JoinColumn, ManyToOne, PrimaryGeneratedColumn, RelationId, Unique } from "typeorm";
 
-export enum UserRole {
+export enum MemberRole {
 	OWNER = 'owner',
 	ADMIN = 'admin',
 	USER = 'user'
@@ -16,28 +16,25 @@ export class Member {
 
 	@Column({
 		type: 'enum',
-		enum: UserRole,
-		default: UserRole.USER
+		enum: MemberRole,
+		default: MemberRole.USER
 	})
-	role: UserRole;
+	role: MemberRole;
 
-	@Column()
-	muted: boolean;
+	@Column({type: 'bigint', default: Date.now()}) // TODO how do others progress date, invest time and maybe cahnge it
+	muted_until: number;
 
-	@Column('date', {default: null})
-	muted_until: Date;
-
-	@Column()
+	@Column({default: false})
 	banned: boolean;
 
-	@ManyToOne(() => User, (user) => user.chatrooms)
+	@ManyToOne(() => User, (user) => user.members)
 	@JoinColumn({name: 'user_id'})
 	user: User;
 	
 	@Column()
 	user_id: number
 	
-	@ManyToOne(() => Chatroom, (chatroom) => chatroom.users)
+	@ManyToOne(() => Chatroom, (chatroom) => chatroom.members)
 	@JoinColumn({name: 'chatroom_id'})
 	chatroom: Chatroom;
 

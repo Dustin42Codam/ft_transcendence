@@ -1,6 +1,5 @@
 import { Member } from "src/member/models/member.entity";
-import { Message } from "src/message/models/message.entity";
-import { User } from "src/user/models/user.entity";
+// import { Message } from "src/message/models/message.entity";
 import { Column, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 export enum ChatroomType {
@@ -15,8 +14,11 @@ export class Chatroom {
 	@PrimaryGeneratedColumn()
 	id: number;
 
-	@Column({unique: true})
+	@Column()
 	name: string;
+
+	@Column({nullable: true}) // TODO should be hash and make sure that everything is protected
+	password: string;
 
 	@Column({
 		type: 'enum',
@@ -26,8 +28,8 @@ export class Chatroom {
 	type: ChatroomType;
 
 	@OneToMany(() => Member, (members) => members.chatroom)
-	users: Member[];
+	members: Member[];
 
-	@OneToMany(() => Message, (message) => message.chatroom)
-	messages: Message[];
+	// @OneToMany(() => Message, (message) => message.chatroom)
+	// messages: Message[];
 }

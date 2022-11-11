@@ -1,5 +1,6 @@
+import { Blocked } from "src/blocked/entities/blocked.entity";
+import { FriendRequest } from "src/friend_request/entities/friend_request.entity";
 import { Member } from "src/member/models/member.entity";
-import { Message } from "src/message/models/message.entity";
 import { Column, Entity, JoinColumn, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 export enum UserStatus {
@@ -30,11 +31,23 @@ export class User {
 	status: UserStatus;
 
 	@OneToMany(() => Member, (member : Member) => member.user)
-	public chatrooms?: Member[];
+	public members: Member[];
 
-	@ManyToMany(() => User)
-  	@JoinTable()
-  	public friends: User[];
+	@OneToMany(() => FriendRequest, (friendRequest : FriendRequest) => friendRequest.send_by)
+	public sendFriendRequest: FriendRequest[];
+
+	@OneToMany(() => FriendRequest, (friendRequest : FriendRequest) => friendRequest.received_by)
+	public receivedFriendRequest: FriendRequest[];
+
+	@OneToMany(() => Blocked, (blocked : Blocked) => blocked.send_by)
+	public blocked: Blocked[];
+
+	@OneToMany(() => Blocked, (blocked : Blocked) => blocked.received_by)
+	public blocked_by: Blocked[];
+
+	// @ManyToMany(() => User)
+  	// @JoinTable()
+  	// public friends: User[];
 
 	// @OneToMany(() => Message, (message) => message.chatroom)
 	// messages: Message[];

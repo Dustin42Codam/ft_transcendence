@@ -3,13 +3,13 @@ import { UserModule } from './user/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import { CommonModule } from './common/common.module';
-import { APP_GUARD } from '@nestjs/core';
+// import { APP_GUARD } from '@nestjs/core';
 import { LoginModule } from './login/login.module';
 import { LogoutModule } from './logout/logout.module';
 import { OauthCallbackModule } from './oauth-callback/oauth-callback.module';
 import { ChatroomModule } from './chatroom/chatroom.module';
 import { MemberModule } from './member/member.module';
-import { MessageModule } from './message/message.module';
+import { BlockedModule } from './blocked/blocked.module';
 import * as dotenv from "dotenv";
 
 dotenv.config();
@@ -34,7 +34,7 @@ dotenv.config();
 		OauthCallbackModule,
 		ChatroomModule,
 		MemberModule,
-		MessageModule,
+		BlockedModule,
 	]
 })
 

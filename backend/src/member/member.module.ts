@@ -11,6 +11,7 @@ import { CommonModule } from 'src/common/common.module';
 		CommonModule
 	],
 	providers: [MemberService],
-	controllers: [MemberController]
+	controllers: [MemberController],
+	exports: [MemberService]
 })
 export class MemberModule {}

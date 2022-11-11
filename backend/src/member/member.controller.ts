@@ -3,12 +3,12 @@ import { AuthGuard } from '@nestjs/passport';
 import RequestWithUser from 'src/interfaces/IRequestWithUser';
 import { User } from 'src/user/models/user.entity';
 import { MemberService } from './member.service';
+import { MemberBanInfoDto } from './models/member-ban_info.dto';
 import { MemberCreateDto } from './models/member-create.dto';
-import { MemberMutedUpdateDto } from './models/member-muted-update.dto';
-import { MemberRoleUpdateDto } from './models/member-role-update.dto';
-import { Member, UserRole } from './models/member.entity';
+import { MemberUpdateDto } from './models/member-update.dto';
+import { Member} from './models/member.entity';
 
-@Controller('members')
+@Controller('member')
 export class MemberController {
 	constructor(
 		private memberService: MemberService
@@ -39,7 +39,7 @@ export class MemberController {
 // }
 
 	@Post()
-	async createMember(@Body() body: MemberCreateDto): Promise<Member> {
+	async createMember(@Body() body: MemberCreateDto): Promise<Member> { //TODO check if we chould also add the user and chatroom here
 
 		const member = await this.memberService.findOne({
 			user_id: body.user_id,
@@ -47,61 +47,34 @@ export class MemberController {
 		});
 		if (member)
 			return member;
-		console.log('Creating Member: \n', body);
-
 		return this.memberService.createMember(body);
 	}
 
 	@Get('user/:id')
 	async getAllMembersFromUser(@Param('id') id: number) {
-		console.log('id:', id);
 		return this.memberService.getAllMembersFromUser(id);
 	}
 
 	@Get('chatroom/:id')
 	async getAllMembersFromChatroom(@Param('id') id: number) {
-		console.log('id:', id);
 		return this.memberService.getAllMembersFromChatroom(id);
 	}
 	
 	@Post('role/:id')
 	async updateRoleMember(
 		@Param('id') id: number,
-		@Body() body: MemberRoleUpdateDto
+		@Body() body: MemberUpdateDto
 	) : Promise<any> {
 		var member = await this.memberService.findOne({id});
 		member.role = body.role;
 		await this.memberService.update(id, member);
-		return member;
-	}
-
-	@Get(':id')
-	async isAllowedToSendMessages(@Param('id') id: number) {
-		const member = await this.memberService.findOne({id});
-		if (member.banned)
-			return false;
-		const date = new Date();
-		if (member.muted_until > date)
-			return false;
-		return true;
-	}
-
-	@Get('isOwner/:id')
-	async isOwner(@Param('id') id: number) {
-		const member = await this.memberService.findOne({id});
-		return member.role == UserRole.OWNER;
-	}
-
-	@Get('isAdmin:id')
-	async isAdmin(@Param('id') id: number) {
-		const member = await this.memberService.findOne({id});
-		return member.role == UserRole.ADMIN;
+		return this.updateRoleMember(id, body);
 	}
 
 	@Post('mute/:id')
 	async muteMemberById(
 		@Param('id') id: number,
-		@Body() body: MemberMutedUpdateDto
+		@Body() body: MemberUpdateDto
 	) : Promise<any> {
 		var member = await this.memberService.findOne({id});
 		member.muted_until = body.muted_until;
@@ -114,7 +87,7 @@ export class MemberController {
 		@Param('id') id: number,
 	) : Promise<any> {
 		var member = await this.memberService.findOne({id});
-		member.muted_until = new Date();
+		member.muted_until = Date.now();
 		await this.memberService.update(id, member);
 		return member;
 	}
@@ -122,23 +95,23 @@ export class MemberController {
 	@Post('ban/:id')
 	async banMemberById(
 		@Param('id') id: number,
+		@Body() body: MemberBanInfoDto
 	) : Promise<any> {
-		var member = await this.memberService.findOne({id});
-		if (member.role == UserRole.OWNER)
-			throw("Member is the owner and can not be banned");
-		member.banned = true;
-		await this.memberService.update(id, member);
-		return await member;
+		const client = await this.memberService.getById(body.client_id);
+		if (!this.memberService.isAllowedToDoActions(client))
+			throw "Member is not allowed to ban players";
+		this.memberService.banMemberById(id);
 	}
 
 	@Post('unban/:id')
 	async unbanMemberById(
 		@Param('id') id: number,
+		@Body() body: MemberBanInfoDto
 	) : Promise<any> {
-		var member = await this.memberService.findOne({id});
-		member.banned = false;
-		await this.memberService.update(id, member);
-		return await member;
+		const client = await this.memberService.getById(body.client_id);
+		if (!this.memberService.isAllowedToDoActions(client))
+			throw "You are not allowed to ban players";
+		this.memberService.unbanMemberById(id);
 	}
 
 	// @Put(':id')

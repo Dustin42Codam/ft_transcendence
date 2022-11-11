@@ -5,7 +5,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Chatroom } from './models/chatroom.entity';
 import { AuthModule } from 'src/auth/auth.module';
 import { UserModule } from 'src/user/user.module';
-import { MessageModule } from 'src/message/message.module';
+import { MemberModule } from 'src/member/member.module';
+import { MemberService } from 'src/member/member.service';
 
 
 @Module({
@@ -13,10 +14,11 @@ import { MessageModule } from 'src/message/message.module';
 		TypeOrmModule.forFeature([Chatroom]),
 		AuthModule,
 		UserModule,
-		MessageModule
+		MemberModule
 	],
 	providers: [ChatroomService],
 	controllers: [ChatroomController],
 	exports: [ChatroomService]
 })
+
 export class ChatroomModule {}

@@ -1,19 +1,14 @@
 import { Body, Controller, Delete, Get, HttpCode, Param, Post, Put, Query, Req } from '@nestjs/common';
 import { ChatroomService } from './chatroom.service';
-import { Request } from 'express';
 import { ChatroomCreateDto } from './models/chatroom-create.dto';
+import { ChatroomMemberUpdateDto } from './models/chatroom-member-update.dto';
 import { ChatroomUpdateDto } from './models/chatroom-update.dto';
 import { Chatroom, ChatroomType } from './models/chatroom.entity';
-import { AuthGuard } from '@nestjs/passport';
-import { MessageService } from 'src/message/message.service';
-import { request } from 'http';
-import { Message } from 'src/message/models/message.entity';
 
-@Controller('chatrooms')
+@Controller('chatroom')
 export class ChatroomController {
 	constructor(
-		private chatroomService: ChatroomService,
-		private messageService: MessageService
+		private chatroomService: ChatroomService
 	) {}
 
 	@Get()
@@ -23,11 +18,9 @@ export class ChatroomController {
 
 	@Post()
 	async create(@Body() body: ChatroomCreateDto): Promise<Chatroom> {
-
-		const chatroom = await this.chatroomService.findOne({name: body.name});
-		if (chatroom)
-			return chatroom;
-		return this.chatroomService.create(body);
+		if (body.type == ChatroomType.DIRECT)
+			throw "You are not allowed to make a direct chatroom";
+		return this.chatroomService.createChatroom(body);
 	}
 
 	@Get(':id')
@@ -35,26 +28,47 @@ export class ChatroomController {
 		return this.chatroomService.findOne({id});
 	}
 
-	@Get('chatroom:id')
-	async isAllowedToJoinChatroom(@Param('id') id: number) {
+	@Post('join/:id')
+	async joinChatroomById(
+		@Param('id') id: number, 
+		@Body() body: ChatroomMemberUpdateDto
+	) {
 		const chatroom = await this.chatroomService.findOne({id});
 		// if (!chatroom)
 		// 	throw "Chatroom does not exists";					TODO check how this is done best
-		switch (chatroom.type)
-		{
-			case ChatroomType.PRIVATE:
-				//only on creation??
-				// inventation??
-				return false;
-			case ChatroomType.PROTECTED:
-				// check for password
-				return false;
-			case ChatroomType.DIRECT:
-				//only on creation
-				return false;
-			default:
-				return true;
-		}
+		if (!this.chatroomService.isAllowedToJoinChatroom(chatroom.type))
+			throw "You are not allowed to enter this chat";
+		this.chatroomService.joinChatroomById(id, body.client_id);
+	}
+
+	@Post('password/:id')
+	async changepassword(
+		@Param('id') id: number, 
+		@Body() body: ChatroomMemberUpdateDto
+	) {
+		const chatroom = await this.chatroomService.findOne({id});
+		// if (!chatroom)
+		// 	throw "Chatroom does not exists";					TODO check how this is done best
+		if (chatroom.type != ChatroomType.PROTECTED)
+			throw "This chatroom does not have a password";
+		if (!body.password)
+			throw "Need a new name to change the name of a chatroom";
+		this.chatroomService.changePassword(chatroom, body);
+	}
+
+	@Post('name/:id')
+	async changeName(
+		@Param('id') id: number, 
+		@Body() body: ChatroomMemberUpdateDto
+	) {
+		const chatroom = await this.chatroomService.findOne({id});
+		// if (!chatroom)
+		// 	throw "Chatroom does not exists";					TODO check how this is done best
+		if (chatroom.type == ChatroomType.DIRECT)
+			throw "The name of this chatroom can not be changed";
+		if (!body.name)
+			throw "Need a new name to change the name of a chatroom";
+		this.chatroomService.changeName(chatroom, body);
 	}
 
 	@Put(':id')
@@ -62,6 +76,7 @@ export class ChatroomController {
 		@Param('id') id: number,
 		@Body() body: ChatroomUpdateDto,
 	) {
+		//Make sure that te type of a chatroom can not be changed
 		await this.chatroomService.update(id, body);
 
 		return this.chatroomService.findOne({id});

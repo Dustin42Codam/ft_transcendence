@@ -2,10 +2,10 @@ import { Query, Delete, Put, BadRequestException, Param, UseGuards, Controller, 
 import { UserService } from './user.service';
 import { Request } from 'express';
 import { User } from './models/user.entity';
-import * as bcrypt from 'bcrypt';
+// import * as bcrypt from 'bcrypt';
 import { UserCreateDto } from './models/user-create.dto';
 import { UserUpdateDto } from './models/user-update.dto';
-import { AuthGuard } from 'src/auth/auth.guard';
+// import { AuthGuard } from 'src/auth/auth.guard';
 import { AuthService } from 'src/auth/auth.service';
 
 // @UseGuards(AuthGuard)
