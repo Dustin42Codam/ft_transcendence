@@ -7,14 +7,14 @@ export class FriendRequest {
 	id: number;
 
     @ManyToOne(() => User, (user) => user.sendFriendRequest)
-	@JoinColumn({name: 'user_id'})
+	@JoinColumn({name: 'sender_id'})
 	send_by: User;
 	
 	@Column()
 	sender_id: number
 
     @ManyToOne(() => User, (user) => user.receivedFriendRequest)
-	@JoinColumn({name: 'user_id'})
+	@JoinColumn({name: 'receiver_id'})
 	received_by: User;
 	
 	@Column()

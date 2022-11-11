@@ -37,4 +37,8 @@ export class BlockedService extends AbstractService {
 		});
 		return blocks;
   }
+
+  async deleteAllBlockedWithUser(user_id: number) {
+	//TODO should be called when the user is deleted
+  }
 }

@@ -10,6 +10,7 @@ import { OauthCallbackModule } from './oauth-callback/oauth-callback.module';
 import { ChatroomModule } from './chatroom/chatroom.module';
 import { MemberModule } from './member/member.module';
 import { BlockedModule } from './blocked/blocked.module';
+import { FriendModule } from './friend/friend.module';
 import * as dotenv from "dotenv";
 
 dotenv.config();
@@ -35,6 +36,7 @@ dotenv.config();
 		ChatroomModule,
 		MemberModule,
 		BlockedModule,
+		FriendModule,
 	]
 })
 

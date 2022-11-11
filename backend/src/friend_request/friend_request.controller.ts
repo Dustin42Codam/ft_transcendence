@@ -2,6 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { FriendRequestService } from './friend_request.service';
 import { CreateFriendRequestDto } from './dto/create-friend_request.dto';
 import { UpdateFriendRequestDto } from './dto/update-friend_request.dto';
+import { AcceptFriendRequestDto } from './dto/accept-friend-request.dto';
 
 @Controller('friend-request')
 export class FriendRequestController {
@@ -28,27 +29,31 @@ export class FriendRequestController {
   getAllSendFriendRequest(
     @Param('id') id: number
   ) {
+    return this.friendRequestService.getAllSendFriendRequest(id);
   }
 
   @Get('received/:id')
   getAllReceivedFriendRequest(
     @Param('id') id: number
   ) {
-    return this.
+    return this.friendRequestService.getAllReceivedFriendRequest(id);
   }
 
   @Post('accept/:id')
   acceptfriendRequestById(
-
+    @Param('id') id: number,
+    @Body() body: AcceptFriendRequestDto
   ) {
-
+    //check if the request exist
+    //check if the user that accepts is also the person hte request is send to;
+    return this.
   }
 
   @Post('decline/:id')
   declinefriendRequestById(
-
+    @Param('id') id: number
   ) {
-    
+    return this.friendRequestService.delete(id);
   }
 
   @Get(':id')

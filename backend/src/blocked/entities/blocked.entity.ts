@@ -7,14 +7,14 @@ export class Blocked {
 	id: number;
 
     @ManyToOne(() => User, (user) => user.blocked_by)
-	@JoinColumn({name: 'user_id'})
+	@JoinColumn({name: 'sender_id'})
 	send_by: User;
 	
 	@Column()
 	sender_id: number
 
     @ManyToOne(() => User, (user) => user.blocked)
-	@JoinColumn({name: 'user_id'})
+	@JoinColumn({name: 'receiver_id'})
 	received_by: User;
 	
 	@Column()

@@ -1,4 +1,5 @@
 import { Blocked } from "src/blocked/entities/blocked.entity";
+import { Friend } from "src/friend/entities/friend.entity";
 import { FriendRequest } from "src/friend_request/entities/friend_request.entity";
 import { Member } from "src/member/models/member.entity";
 import { Column, Entity, JoinColumn, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
@@ -42,12 +43,9 @@ export class User {
 	@OneToMany(() => Blocked, (blocked : Blocked) => blocked.send_by)
 	public blocked: Blocked[];
 
-	@OneToMany(() => Blocked, (blocked : Blocked) => blocked.received_by)
-	public blocked_by: Blocked[];
+	@OneToMany(() => Friend, (Friend : Friend) => Friend.id)
+	public Friend_by: Friend[];
 
-	// @ManyToMany(() => User)
-  	// @JoinTable()
-  	// public friends: User[];
 
 	// @OneToMany(() => Message, (message) => message.chatroom)
 	// messages: Message[];

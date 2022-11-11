@@ -78,5 +78,9 @@ export class ChatroomService extends AbstractService {
 		await this.memberService.updateRoleMember(ownerMember.id, {role: MemberRole.OWNER});
 		return newChatroom;
 	}
+
+	async deleteAllChatroomWithOwner(user_id: number) {
+		//delete all the chatroom with user_id as owner;
+	}
 }
 
