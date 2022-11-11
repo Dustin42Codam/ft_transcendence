@@ -15,6 +15,6 @@ async function bootstrap() {
 	app.useGlobalPipes(new ValidationPipe());
 	app.use(cors({origin: true, credentials: true}));
 	app.use(express.json());
-	await app.listen(parseInt(process.env.POSTGRES_PORT));
+	await app.listen(parseInt(process.env.BACKEND_PORT));
 }
 bootstrap();

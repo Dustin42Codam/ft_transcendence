@@ -2,6 +2,9 @@
   "name": "frontend_new",
   "version": "0.1.0",
   "private": true,
+  "rules": {
+    "react/react-in-jsx-scope": "off"
+  },
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
@@ -17,11 +20,14 @@
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.4.3",
     "react-scripts": "5.0.1",
-    "typescript": "^4.8.4",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "PORT=4242 react-scripts start",
+    "prestart": "npx prettier --write src/",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix",
+    "format": "prettier --write './**/*.{js,jsx,ts,tsx,css,md,json}' --config ./.prettierrc",
+    "start": " PORT=4242 react-scripts start",
     "build": "PORT=4242 react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -43,5 +49,18 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.42.1",
+    "eslint": "^8.27.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-config-standard-with-typescript": "^23.0.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-n": "^15.5.1",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-promise": "^6.1.1",
+    "eslint-plugin-react": "^7.31.10",
+    "prettier": "2.7.1",
+    "typescript": "^4.8.4"
   }
 }

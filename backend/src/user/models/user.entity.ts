@@ -1,6 +1,6 @@
 import { Member } from "src/member/models/member.entity";
 import { Message } from "src/message/models/message.entity";
-import { Column, Entity, JoinColumn, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 export enum UserStatus {
 	ONLINE = 'online',

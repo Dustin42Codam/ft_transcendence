@@ -9,27 +9,27 @@
   z-index: 2;
 }
 form {
-    background: #00ff99;
-    padding: 1.5em;
-    border-radius: 1em;
+  background: #00ff99;
+  padding: 1.5em;
+  border-radius: 1em;
 }
 .center {
-	display: flex;
-    justify-content: center;
-    align-items: center;
-    height:100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 }
 
 .error-message {
-	margin-top: 1em;
-    color: red;
+  margin-top: 1em;
+  color: red;
 }
 
 .btn {
-	background: black;
+  background: black;
 }
 
 .btn:hover {
-	background: #14b173;
-	transition: 0.7s;
+  background: #14b173;
+  transition: 0.7s;
 }
