@@ -15,8 +15,12 @@ const Login = () => {
 			email,
 			password
 		})
-
-		setRedirect(true);
+		.then(async () => {
+			setRedirect(true);
+		})
+		.catch(function(error) {
+			console.log("🚀 ~ file: Login.tsx ~ line 22 ~ submit ~ error", error)
+		})
 	}
 
 	if (redirect)

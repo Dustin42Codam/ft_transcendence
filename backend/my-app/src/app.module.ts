@@ -20,7 +20,7 @@ require("dotenv").config();
 		UserModule,
 		TypeOrmModule.forRoot({
 			type: 'postgres',
-			host: 'postgres',
+			host: 'postgres_udemy',
 			port: parseInt(process.env.POSTGRES_PORT),
 			username: process.env.POSTGRES_USER,
 			password: process.env.POSTGRES_PASSWORD,

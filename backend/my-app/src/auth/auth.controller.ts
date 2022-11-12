@@ -72,6 +72,8 @@ export class AuthController {
 
 		response.cookie('jwt', jwt, {httpOnly: true});
 
+		console.log('user logged in')
+
 		return user;
 	}
 

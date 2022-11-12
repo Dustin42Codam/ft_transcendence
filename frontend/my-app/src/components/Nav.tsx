@@ -22,13 +22,15 @@ const Nav = () => {
 	useEffect(() => {
 		const fetchData = async () => {
 			let response:any = await fetchDataCall();
-			setUser(new User(
-				0, 'lol', 'lol', 'lol'
-				// response.data.id,
-				// response.data.first_name,
-				// response.data.last_name,
-				// response.data.email
-			));
+
+			const user = new User();
+
+			user.id = response.data.id;
+			user.first_name = response.data.first_name;
+			user.last_name = response.data.last_name;
+			user.email = response.data.email;
+
+			setUser(user);
 		};
 
 		fetchData();

@@ -8,16 +8,8 @@ import * as dotenv from "dotenv";
 
 // dotenv.config();
 
-// console.log('+++++++++++++++++++++++++++++++++++++++++++++++++')
-// console.log('+++++++++++++++++++++++++++++++++++++++++++++++++')
-// console.log('+++++++++++++++++++++++++++++++++++++++++++++++++')
-// console.log('+++++++++++++++++++++++++++++++++++++++++++++++++')
-// console.log('+++++++++++++++++++++++++++++++++++++++++++++++++')
-// console.log('+++++++++++++++++++++++++++++++++++++++++++++++++')
-// console.log('+++++++++++++++++++++++++++++++++++++++++++++++++')
 axios.defaults.baseURL = 'http://localhost:3000/api/';
 axios.defaults.withCredentials = true;
-// console.log("🚀 ~ file: index.tsx ~ line 12 ~ ${process.env.BACKEND_PORT}", process.env.BACKEND_PORT)
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
