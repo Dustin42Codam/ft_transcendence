@@ -1,11 +1,11 @@
 //import React from "react";
 import "./App.css";
-import Users from "./pages/Users";
+import Users from "./pages/users/Users";
 import NotFound from "./pages/NotFound";
-import Dashboard from "./pages/Dashboard";
+import Dashboard from "./pages/users/Dashboard";
 import Authenticate from "./pages/Authenticate";
 import { Navigate, BrowserRouter, Routes, Route } from "react-router-dom";
-import Login from "./pages/Login";
+import Login from "./pages/users/Login";
 import Game from "./pages/Game";
 import Profile from "./pages/Profile";
 import Chat from "./pages/Chat";
