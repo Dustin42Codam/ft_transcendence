@@ -68,6 +68,7 @@ export class AuthController {
 	@Post('logout')
 	async logout(@Res({passthrough: true}) response: Response) {
 		response.clearCookie('jwt');
+		response.clearCookie('connect.sid');
 
 		return {message: 'Success'};
 	}

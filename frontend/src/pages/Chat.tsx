@@ -2,10 +2,10 @@ import React, { Component } from "react";
 import Wrapper from "../components/Wrapper";
 
 export enum ChatroomType {
-  PUBLIC = 'public',
-  PROTECTED = 'protected',
-  PRIVATE = 'private',
-  DIRECT = 'direct'
+  PUBLIC = "public",
+  PROTECTED = "protected",
+  PRIVATE = "private",
+  DIRECT = "direct",
 }
 
 type Messages = {
@@ -20,7 +20,7 @@ type Chats = {
 };
 
 export default class Chat extends Component {
-/*
+  /*
   state = {
     this.state =
   }

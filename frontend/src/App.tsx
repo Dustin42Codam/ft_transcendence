@@ -11,36 +11,27 @@ import Profile from "./pages/Profile";
 import Chat from "./pages/Chat";
 import axios from "axios";
 import { useEffect, useState } from "react";
-
-const fetchDataCall = async () => {
-	let data = await axios
-	.get('user')
-	.then(async function() {
-		console.log("🚀 ~ file: App.tsx ~ line 21 ~ .then ~ true", true)
-		return true;
-	})
-	.catch(function(error) {
-		console.log(error);
-		return false;
-	});
-
-	console.log("🚀 ~ file: App.tsx ~ line 29 ~ fetchDataCall ~ data", data)
-
-	return data;
-}
+import { useAsync } from "react-async";
 
 function App() {
-  // const [auth, setAuth] = useState(false);
-// 
-  async () => {
-    const auth = await fetchDataCall();
-  }
+  const [token, setToken] = useState(false);
 
-  // setAuth(true);
-  
-  console.log("🚀 ~ file: App.tsx ~ line 41 ~ App ~ auth", auth)
+  useEffect(() => {
+    // React advises to declare the async function directly inside useEffect
+    async function fetchDataCall() {
+      const response = await axios.get("user").then((res) => {
+        setToken(true);
+      }).catch((err) => {
+        setToken(false);
+      });
+    };
+     if (!token) {
+       fetchDataCall();
+    }
+  }, []);
+  console.log("this is token", token);
 
-  if (!auth) {
+  if (!token) {
     return (
       <div className="App">
         <BrowserRouter>
@@ -57,6 +48,7 @@ function App() {
       <div className="App">
         <BrowserRouter>
           <Routes>
+            <Route path="/authenticate" element={<Navigate to="/" />} />
             <Route path={"/"} element={<Dashboard />} />
             <Route path={"/users"} element={<Users />} />
             <Route path={"/authenticate"} element={<Authenticate />} />

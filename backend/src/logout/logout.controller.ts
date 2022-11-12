@@ -6,7 +6,7 @@ export class LogoutController {
 	@Get()
 	userLogout(@Req() request: Request, @Res() response: Response) {
 		  // delete the session
-		//   request.session.destroy(); TODO
+		 // request.session.destroy(); TODO
 		  // end FusionAuth session
 		  // res.redirect(`http://localhost:${process.env.FUSIONAUTH_PORT}/oauth2/logout?client_id=${process.env.CLIENT_ID}`);
 		  response.redirect(`http://localhost:4242/authenticate`);
