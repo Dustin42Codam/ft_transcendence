@@ -17,7 +17,6 @@ function App() {
   const [token, setToken] = useState(false);
 
   useEffect(() => {
-    // React advises to declare the async function directly inside useEffect
     async function fetchDataCall() {
       const response = await axios.get("user").then((res) => {
         setToken(true);
@@ -29,7 +28,6 @@ function App() {
        fetchDataCall();
     }
   }, []);
-  console.log("this is token", token);
 
   if (!token) {
     return (
