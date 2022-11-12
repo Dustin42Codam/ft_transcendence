@@ -6,6 +6,7 @@ import Dashboard from "./pages/Dashboard";
 import Authenticate from "./pages/Authenticate";
 import { Navigate, BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
+import Profile from "./pages/Profile";
 
 function App() {
   if (!document.cookie) {
@@ -29,6 +30,8 @@ function App() {
             <Route path={"/users"} element={<Users />} />
             <Route path={"/authenticate"} element={<Authenticate />} />
             <Route path={"/login"} element={<Login />} />
+            <Route path={"/profile"} element={<Profile />} />
+            <Route path={"/users"} element={<Users />} />
             <Route path={"*"} element={<NotFound />} />
           </Routes>
         </BrowserRouter>

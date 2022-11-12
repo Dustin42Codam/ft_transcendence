@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 const Menu = () => {
   return (
@@ -9,24 +9,29 @@ const Menu = () => {
       <div className="position-sticky pt-3 sidebar-sticky">
         <ul className="nav flex-column">
           <li className="nav-item">
-            <Link to={"/"} className="nav-link">
+            <NavLink to={"/"} className="nav-link">
               Dashboard
-            </Link>
+            </NavLink>
           </li>
           <li className="nav-item">
-            <Link to={"/users"} className="nav-link">
+            <NavLink to={"/profile"} className="nav-link">
+              Profile
+            </NavLink>
+          </li>
+          <li className="nav-item">
+            <NavLink to={"/users"} className="nav-link">
               Users
-            </Link>
+            </NavLink>
           </li>
           <li className="nav-item">
-            <Link to={"/chat"} className="nav-link">
+            <NavLink to={"/chat"} className="nav-link">
               Chat
-            </Link>
+            </NavLink>
           </li>
           <li className="nav-item">
-            <Link to={"/game"} className="nav-link">
+            <NavLink to={"/game"} className="nav-link">
               Game
-            </Link>
+            </NavLink>
           </li>
         </ul>
       </div>
