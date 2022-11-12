@@ -24,13 +24,13 @@ const Menu = () => {
             </NavLink>
           </li>
           <li className="nav-item">
-            <NavLink to={"/chat"} className="nav-link">
-              Chat
+            <NavLink to={"/chats"} className="nav-link">
+              Chats
             </NavLink>
           </li>
           <li className="nav-item">
-            <NavLink to={"/game"} className="nav-link">
-              Game
+            <NavLink to={"/games"} className="nav-link">
+              Games
             </NavLink>
           </li>
         </ul>
