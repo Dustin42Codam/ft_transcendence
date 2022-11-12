@@ -10,7 +10,7 @@ export class NotFound extends Component {
     };
     return (
       <h2 className="h1 mb-4 fw-normal" style={mystyle}>
-        404 NOT FOUND 
+        404 NOT FOUND
       </h2>
     );
   }

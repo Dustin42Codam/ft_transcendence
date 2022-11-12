@@ -5,9 +5,7 @@ export default class Game extends Component {
   render() {
     return (
       <Wrapper>
-        <div>
-          Games
-        </div>
+        <div>Games</div>
       </Wrapper>
     );
   }

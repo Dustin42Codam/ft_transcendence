@@ -54,9 +54,12 @@ services:
         condition: service_healthy
     ports:
       - 8082:80
+    networks:
+      - ft_trance
     environment:
       PGADMIN_DEFAULT_EMAIL:    ${PGADMIN_DEFAULT_EMAIL}
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
+      GUNICORN_ACCESS_LOGFILE: "/tmp/pg.log" 
     healthcheck:
         test: wget --no-verbose --tries=1 --spider localhost:80 || exit 1
         interval: 5s

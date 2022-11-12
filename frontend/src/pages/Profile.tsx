@@ -5,9 +5,7 @@ class Profile extends Component {
   render() {
     return (
       <Wrapper>
-        <div className="h3 mb-3 fw-normal">
-          User Profile
-        </div>
+        <div className="h3 mb-3 fw-normal">User Profile</div>
       </Wrapper>
     );
   }
