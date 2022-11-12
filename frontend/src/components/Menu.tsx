@@ -18,6 +18,16 @@ const Menu = () => {
               Users
             </Link>
           </li>
+          <li className="nav-item">
+            <Link to={"/chat"} className="nav-link">
+              Chat
+            </Link>
+          </li>
+          <li className="nav-item">
+            <Link to={"/game"} className="nav-link">
+              Game
+            </Link>
+          </li>
         </ul>
       </div>
     </nav>
