@@ -37,6 +37,10 @@ build: dep
 
 clean: dep
 	./docker-nuke.sh
+down:
+	docker-compose -f $(SRC) down 
+stop:
+	docker-compose down 
 
 re: dep
 	make clean && make all
