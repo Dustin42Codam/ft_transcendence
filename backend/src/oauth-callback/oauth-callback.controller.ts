@@ -1,6 +1,7 @@
 import { Controller, Get, Req, Res, UseInterceptors } from '@nestjs/common';
 import { Request, Response } from 'express-session';
-import { UserService } from 'src/user/user.service';
+import { UserService } from '../user/user.service';
+import { JwtService } from '@nestjs/jwt';
 
 require("dotenv").config();
 
@@ -18,7 +19,8 @@ const config = {
 export class OauthCallbackController {
 
 	constructor (
-		private userService: UserService
+		private userService: UserService,
+		private jwtService: JwtService
 	) {}
 
 	@Get('oauth-callback')
@@ -57,19 +59,33 @@ export class OauthCallbackController {
 			})
 			.then(ret => ret.data)
 			.then(registerUser)
-			.then(loginUser)
+			.then(async (ret) => {
+				console.log('Logging in user...');
+				console.log('Data:', ret);
+				
+				console.log('this.userService:', this.userService);
+				const user = await this.userService.findOne({display_name: ret.display_name})
+				const jwt = await this.jwtService.signAsync({id: user.id});
+		
+				response.cookie('jwt', jwt, {httpOnly: true});
+
+				return (user)
+			})
 			.then((ret) => {
 				console.log('reg user ret: ', ret);
 				response.redirect(`http://localhost:${process.env.FRONTEND_PORT}`);
 			})
-			.catch(err => console.log(err))
+			.catch(err => {
+				console.log(err)
+				response.redirect(`http://localhost:${process.env.FRONTEND_PORT}/authenticate`);
+			})
 		})
 		.catch((err) => {
 			console.error(err);
 			response.redirect(`http://localhost:${process.env.FRONTEND_PORT}/authenticate`);
 		})
 
-		function registerUser(data: any) {
+		function registerUser(data: any, userService: UserService) {
 			console.log('Registering user...');
 			console.log('Data: ', data.displayname);
 			return (
@@ -87,21 +103,6 @@ export class OauthCallbackController {
 					console.log(err);
 					response.redirect(`http://localhost:${process.env.FRONTEND_PORT}/authenticate`);
 				})
-			)
-		}
-					
-		function loginUser(data: any) {
-			console.log('Logging in user...');
-			console.log('Data:', data);
-			return (
-				axios.post(
-					`http://localhost:${process.env.BACKEND_PORT}/api/login`,
-					{
-						display_name: data.displayname
-					}
-				)
-				.then(ret => ret)
-				.catch(err => console.log(err))
 			)
 		}
 	}
