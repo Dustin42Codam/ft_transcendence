@@ -67,7 +67,7 @@ export class OauthCallbackController {
 				const user = await this.userService.findOne({display_name: ret.display_name})
 				const jwt = await this.jwtService.signAsync({id: user.id});
 		
-				response.cookie('jwt', jwt);
+				response.cookie('jwt', jwt, {httpOnly: true});
 
 				return (user)
 			})
