@@ -18,14 +18,17 @@ function App() {
 
   useEffect(() => {
     async function fetchDataCall() {
-      const response = await axios.get("user").then((res) => {
-        setToken(true);
-      }).catch((err) => {
-        setToken(false);
-      });
-    };
-     if (!token) {
-       fetchDataCall();
+      const response = await axios
+        .get("user")
+        .then((res) => {
+          setToken(true);
+        })
+        .catch((err) => {
+          setToken(false);
+        });
+    }
+    if (!token) {
+      fetchDataCall();
     }
   }, []);
 

@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 const Nav = () => {
   const logout = async () => {
-    await axios.post("logout", {});
+    await axios.post("logout", {}).then( res => window.location.href = 'http://localhost:4242').catch( err => console.log("failed to logout", err));
   };
 
   return (
