@@ -46,7 +46,7 @@ export class FriendRequestController {
   ) {
     //check if the request exist
     //check if the user that accepts is also the person hte request is send to;
-    return this.
+    // return this.
   }
 
   @Post('decline/:id')

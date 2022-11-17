@@ -43,8 +43,11 @@ export class User {
 	@OneToMany(() => Blocked, (blocked : Blocked) => blocked.send_by)
 	public blocked: Blocked[];
 
+	@OneToMany(() => Blocked, (blocked : Blocked) => blocked.send_by)
+	public blocked_by: Blocked[];
+
 	@OneToMany(() => Friend, (Friend : Friend) => Friend.id)
-	public Friend_by: Friend[];
+	public friends: Friend[];
 
 
 	// @OneToMany(() => Message, (message) => message.chatroom)

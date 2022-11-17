@@ -12,12 +12,12 @@ import { MemberModule } from './member/member.module';
 import { BlockedModule } from './blocked/blocked.module';
 import { FriendModule } from './friend/friend.module';
 import * as dotenv from "dotenv";
+import { FriendRequestModule } from './friend_request/friend_request.module';
 
 dotenv.config();
 
 @Module({
 	imports: [
-		UserModule,
 		TypeOrmModule.forRoot({
 			type: 'postgres',
 			host: 'postgres',
@@ -29,14 +29,16 @@ dotenv.config();
 			synchronize: true,
 		}),
 		AuthModule,
+		BlockedModule,
+		ChatroomModule,
 		CommonModule,
+		FriendModule,
+		FriendRequestModule,
 		LoginModule,
 		LogoutModule,
-		OauthCallbackModule,
-		ChatroomModule,
 		MemberModule,
-		BlockedModule,
-		FriendModule,
+		OauthCallbackModule,
+		UserModule,
 	]
 })
 

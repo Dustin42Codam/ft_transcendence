@@ -14,7 +14,8 @@ import { MemberService } from 'src/member/member.service';
 		TypeOrmModule.forFeature([Chatroom]),
 		AuthModule,
 		UserModule,
-		MemberModule
+		MemberModule,
+		UserModule
 	],
 	providers: [ChatroomService],
 	controllers: [ChatroomController],

@@ -1,6 +1,5 @@
 import { Body, Controller, Get, Param, Post, Req} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import RequestWithUser from 'src/interfaces/IRequestWithUser';
 import { User } from 'src/user/models/user.entity';
 import { MemberService } from './member.service';
 import { MemberBanInfoDto } from './models/member-ban_info.dto';
