@@ -1,8 +1,12 @@
 import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
+import * as session from 'express-session';
+import * as cookieParser from 'cookie-parser'
+import * as dotenv from "dotenv";
 
-import express from "express";
+const express = require("express");
+const cors = require("cors");
 
 require("dotenv").config();
 
@@ -11,6 +15,8 @@ async function bootstrap() {
 
 	app.setGlobalPrefix('api');
 	app.useGlobalPipes(new ValidationPipe());
+	app.use(cors({origin: true, credentials: true}));
+	app.use(express.json());
 	await app.listen(3000);
 }
 bootstrap();

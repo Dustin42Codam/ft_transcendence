@@ -48,8 +48,4 @@ export class User {
 
 	@OneToMany(() => Friend, (Friend : Friend) => Friend.id)
 	public friends: Friend[];
-
-
-	// @OneToMany(() => Message, (message) => message.chatroom)
-	// messages: Message[];
 }

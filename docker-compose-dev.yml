@@ -16,10 +16,10 @@ services:
     volumes:
       - ./backend/src/:/backend/src/:delegated
     healthcheck:
-        test: wget --no-verbose --tries=3 --spider http://127.0.0.1:${BACKEND_PORT}/ || exit 1
-        interval: 30s
-        retries: 2
-        start_period: 20s
+        test: wget --no-verbose --tries=3 --spider http://127.0.0.1:3000/api/users || exit 1
+        interval: 5s
+        retries: 5 
+        start_period: 5s
         timeout: 3s
   frontend:
     hostname: frontend
@@ -33,13 +33,15 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+      backend:
+        condition: service_healthy
     volumes:
       - ./frontend/src/:/frontend/src/:delegated
     healthcheck:
         test: wget --no-verbose --tries=3 --spider http://127.0.0.1:${FRONTEND_PORT}/ || exit 1
-        interval: 30s
-        retries: 2
-        start_period: 20s
+        interval: 5s
+        retries: 5 
+        start_period: 5s
         timeout: 3s
 
   pgAdmin4:
@@ -52,15 +54,18 @@ services:
         condition: service_healthy
     ports:
       - 8082:80
+    networks:
+      - ft_trance
     environment:
       PGADMIN_DEFAULT_EMAIL:    ${PGADMIN_DEFAULT_EMAIL}
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
+      GUNICORN_ACCESS_LOGFILE: "/tmp/pg.log" 
     healthcheck:
         test: wget --no-verbose --tries=1 --spider localhost:80 || exit 1
-        interval: 10s
-        retries: 2
-        start_period: 60s
-        timeout: 10s
+        interval: 5s
+        retries: 5 
+        start_period: 5s
+        timeout: 3s
   postgres:
     restart: always
     container_name: postgres
@@ -78,10 +83,10 @@ services:
       POSTGRES_DB:          ${POSTGRES_DB}
     healthcheck:
         test: pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}
-        interval: 10s
-        retries: 2
-        start_period: 20s
-        timeout: 10s
+        interval: 5s
+        retries: 5 
+        start_period: 5s
+        timeout: 3s
 
 networks:
   ft_trance:

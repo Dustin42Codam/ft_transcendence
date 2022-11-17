@@ -32,4 +32,5 @@ if [ $RET -ne 0 ]; then
 fi
 
 echo "File was successfully decrypted!"
-ln -f .env backend/my-app/.env
+ln -f .env backend/.env
+ln -f .env frontend/.env

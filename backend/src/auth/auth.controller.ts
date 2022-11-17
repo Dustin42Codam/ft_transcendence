@@ -1,9 +1,9 @@
-import { UseGuards, ClassSerializerInterceptor, UseInterceptors, BadRequestException, Body, Controller, Get, NotFoundException, Post, Req, Res } from '@nestjs/common';
+import { Redirect, UseGuards, ClassSerializerInterceptor, UseInterceptors, BadRequestException, Body, Controller, Get, NotFoundException, Post, Req, Res } from '@nestjs/common';
 import { UserService } from '../user/user.service';
 import * as bcrypt from 'bcrypt';
 import { RegisterDto } from './models/register.dto';
 import { JwtService } from '@nestjs/jwt';
-import { Request, Response } from 'express'
+import { Request, Response } from 'express';
 import { AuthGuard } from './auth.guard';
 import { AuthService } from './auth.service';
 
@@ -21,34 +21,21 @@ export class AuthController {
 	async register(@Body() body: RegisterDto) {
 		console.log('registering...')
 
-		const user = await this.userService.findOne({email: body.email});
+		const user = await this.userService.findOne({display_name: body.display_name});
 
 		if (user) {
-			throw new BadRequestException('User with this email already exists!');
+			throw new BadRequestException('User with this name already exists!');
 		}
-
-		if (body.password !== body.password_confirm) {
-			throw new BadRequestException('Passwords do not match!');
-		}
-
-		const hashed = await bcrypt.hash(body.password, 12);
-
-		const {password, ...data} = body;
 
 		console.log('Body:', body);
 
 		await this.userService.create({
 			display_name: body.display_name,
-			first_name: body.first_name,
-			last_name: body.last_name,
-			email: body.email,
-			password: hashed,
 			avatar: body.avatar,
-			auth_state: body.auth_state,
-			role: {id: 1}
+			two_factor_auth: body.two_factor_auth
 		});
 
-		return this.userService.findOne({email: body.email});
+		return user;
 	}
 
 	@Post('login')
@@ -64,7 +51,7 @@ export class AuthController {
 		
 		const jwt = await this.jwtService.signAsync({id: user.id});
 
-		response.cookie('jwt', jwt, {httpOnly: true});
+		response.cookie('jwt', jwt, {httpOnly: true, sameSite: "strict"});
 
 		return user;
 	}
@@ -78,9 +65,11 @@ export class AuthController {
 	}
 	
 	@UseGuards(AuthGuard)
+	//@Redirect(`http://localhost:4242/authenticate`, 301)
 	@Post('logout')
 	async logout(@Res({passthrough: true}) response: Response) {
 		response.clearCookie('jwt');
+		response.clearCookie('connect.sid');
 
 		return {message: 'Success'};
 	}

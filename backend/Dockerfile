@@ -1,6 +1,8 @@
 ###BASE###
 FROM node:18.12.0-alpine3.15 as base
 
+ENV PATH /node_modules/.bin:$PATH
+
 ENV NODE_ENV=production
 
 LABEL maintainer=ft_trancedance
@@ -9,7 +11,7 @@ COPY package.json package-lock.json tsconfig.json ./
 
 RUN apk add tini --no-cache \
 	&& npm config list \
-	&& npm install \
+	&& npm ci \
 #	&& npm outdated \
 	&& npm cache clean --force
 
@@ -17,8 +19,6 @@ ENTRYPOINT ["tini", "--"]
 
 ###DEV###
 FROM base as dev
-
-ENV PATH /node_modules/.bin:$PATH
 
 ENV NODE_ENV=development
 
@@ -32,12 +32,6 @@ CMD ["nest", "start", "--watch"]
 
 ###PRE-PROD###
 FROM dev as build
-
-ENV NODE_ENV=development
-
-RUN npm install && npm cache clean --force
-
-COPY . .
 
 RUN npm run build
 
@@ -54,9 +48,9 @@ CMD ["npm", "run", "audit"]
 ###PROD###
 FROM base as prod
 
-ENV PATH /node_modules/.bin:$PATH
-
 COPY --chown=node:node --from=build ./backend/dist ./dist
+
+COPY .env ./.env
 
 USER node
 
