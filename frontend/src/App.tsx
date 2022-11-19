@@ -10,6 +10,7 @@ import Game from "./pages/Game";
 import Profile from "./pages/Profile";
 import Chat from "./pages/Chat";
 import Channels from "./pages/channels/Channels";
+import ChannelCreate from "./pages/channels/ChannelCreate";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import UserCreate from "./pages/users/UserCreate";
@@ -58,6 +59,7 @@ function App() {
             <Route path={"/login"} element={<Login />} />
             <Route path={"/profile"} element={<Profile />} />
             <Route path={"/channels"} element={<Channels />} />
+            <Route path={"/channels/create"} element={<ChannelCreate />} />
             <Route path={"/chats"} element={<Chat />} />
             <Route path={"/games"} element={<Game />} />
             <Route path={"*"} element={<NotFound />} />

@@ -26,9 +26,9 @@ const Nav = () => {
           >
             Sign out
           </Link> */}
-            <button className="btn btn_sign_out btn-lg" onClick={logout}>
-              Sign out
-            </button>
+          <button className="btn btn_sign_out btn-lg" onClick={logout}>
+            Sign out
+          </button>
         </ul>
       </ul>
     </nav>

@@ -24,7 +24,10 @@ export class Authenticate extends Component {
               ft_transcendence
             </h2>
 
-            <button className="w-100 btn btn_sign_in btn-lg btn-primary" type="submit">
+            <button
+              className="w-100 btn btn_sign_in btn-lg btn-primary"
+              type="submit"
+            >
               Sign In
             </button>
 

@@ -92,36 +92,34 @@ body {
 }
 
 .btn_sign_out {
-	background-color: #5c5c5c;
-	border: none;
-	color: white;
-	padding: 7px 16px;
-	text-align: center;
-	text-decoration: none;
-	display: inline-block;
-	font-size: 20px;
+  background-color: #5c5c5c;
+  border: none;
+  color: white;
+  padding: 7px 16px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 20px;
 }
-
 
 .btn_sign_out:hover {
-	background: #14b173;
-	transition: 0.7s;
+  background: #14b173;
+  transition: 0.7s;
 }
-
 
 .btn_delete {
-	background-color: #5c5c5c;
-	border: none;
-	color: white;
-	padding: 7px 16px;
-	text-align: center;
-	text-decoration: none;
-	display: inline-block;
-	font-size: 16px;
-	color: white;
+  background-color: #5c5c5c;
+  border: none;
+  color: white;
+  padding: 7px 16px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  color: white;
 }
-  
+
 .btn_delete:hover {
-	background: #ff0101;
-	transition: 0.5s;
+  background: #ff0101;
+  transition: 0.5s;
 }

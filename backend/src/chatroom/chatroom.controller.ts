@@ -23,10 +23,11 @@ export class ChatroomController {
 
 	@Post()
 	async create(@Body() body: ChatroomCreateDto): Promise<Chatroom> {
-
+		console.log('Creating chatroom: ', body);
 		const chatroom = await this.chatroomService.findOne({name: body.name});
 		if (chatroom)
 			return chatroom;
+		console.log('Creating chatroom: ', body);
 		return this.chatroomService.create(body);
 	}
 
