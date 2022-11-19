@@ -22,14 +22,14 @@ form {
 
 .error-message {
   margin-top: 1em;
-  color: red;
+  color: rgb(255, 143, 143);
 }
 
-.btn {
+.btn_sign_in {
   background: black;
 }
 
-.btn:hover {
+.btn_sign_in:hover {
   background: #14b173;
   transition: 0.7s;
 }

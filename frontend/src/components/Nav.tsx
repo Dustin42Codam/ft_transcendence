@@ -19,13 +19,16 @@ const Nav = () => {
       <ul className="my-2 my-md-0 mr-md-3">
         <ul>
           {/* <Link to="/profile" className="p-2 text-white text-decoration-none">{user?.first_name} {user?.last_name}</Link> */}
-          <Link
+          {/* <Link
             to="/authenticate"
             className="p-2 text-white text-decoration-none"
             onClick={logout}
           >
             Sign out
-          </Link>
+          </Link> */}
+            <button className="btn btn_sign_out btn-lg" onClick={logout}>
+              Sign out
+            </button>
         </ul>
       </ul>
     </nav>

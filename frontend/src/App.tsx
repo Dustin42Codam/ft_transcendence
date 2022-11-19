@@ -2,16 +2,17 @@
 import "./App.css";
 import Users from "./pages/users/Users";
 import NotFound from "./pages/NotFound";
-import Dashboard from "./pages/users/Dashboard";
+import Dashboard from "./pages/Dashboard";
 import Authenticate from "./pages/Authenticate";
 import { Navigate, BrowserRouter, Routes, Route } from "react-router-dom";
-import Login from "./pages/users/Login";
+import Login from "./pages/Login";
 import Game from "./pages/Game";
 import Profile from "./pages/Profile";
 import Chat from "./pages/Chat";
+import Channels from "./pages/channels/Channels";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useAsync } from "react-async";
+import UserCreate from "./pages/users/UserCreate";
 
 function App() {
   const [token, setToken] = useState(false);
@@ -52,9 +53,11 @@ function App() {
             <Route path="/authenticate" element={<Navigate to="/" />} />
             <Route path={"/"} element={<Dashboard />} />
             <Route path={"/users"} element={<Users />} />
+            <Route path={"/users/create"} element={<UserCreate />} />
             <Route path={"/authenticate"} element={<Authenticate />} />
             <Route path={"/login"} element={<Login />} />
             <Route path={"/profile"} element={<Profile />} />
+            <Route path={"/channels"} element={<Channels />} />
             <Route path={"/chats"} element={<Chat />} />
             <Route path={"/games"} element={<Game />} />
             <Route path={"*"} element={<NotFound />} />

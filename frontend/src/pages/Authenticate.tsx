@@ -24,9 +24,7 @@ export class Authenticate extends Component {
               ft_transcendence
             </h2>
 
-            {/* <button className="w-100 btn btn-lg btn-primary" type="submit" >Sign in</button> */}
-            {/* <a className="w-100 btn btn-lg btn-primary" href='http://localhost:9000/login' type="submit">Sign In</a> */}
-            <button className="w-100 btn btn-lg btn-primary" type="submit">
+            <button className="w-100 btn btn_sign_in btn-lg btn-primary" type="submit">
               Sign In
             </button>
 
