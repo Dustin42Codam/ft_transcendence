@@ -1,6 +1,5 @@
 import { IsNotEmpty } from 'class-validator'
-import { Member } from 'src/member/models/member.entity';
-import { UserStatus } from './user.entity';
+import { UserStatus } from '../entity/user.entity';
 export class UserCreateDto {
 
 	@IsNotEmpty()
@@ -14,6 +13,4 @@ export class UserCreateDto {
 	
 	@IsNotEmpty()
 	status: UserStatus;
-
-	chatrooms?: Member[]
 }

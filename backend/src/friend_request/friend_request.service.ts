@@ -1,80 +1,40 @@
-import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { BlockedService } from 'src/blocked/blocked.service';
-import { ChatroomService } from 'src/chatroom/chatroom.service';
-import { ChatroomCreateDto } from 'src/chatroom/models/chatroom-create.dto';
-import { ChatroomType } from 'src/chatroom/models/chatroom.entity';
-import { AbstractService } from 'src/common/abstract.service';
-import { UserService } from 'src/user/user.service';
-import { Repository } from 'typeorm';
-import { AcceptFriendRequestDto } from './dto/accept-friend-request.dto';
-import { CreateFriendRequestDto } from './dto/create-friend_request.dto';
-import { FriendRequest } from './entities/friend_request.entity';
+import { Injectable, BadRequestException, forwardRef } from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Repository } from "typeorm";
+
+import { AbstractService } from "src/common/abstract.service";
+
+import { FriendRequest } from "./entity/friend_request.entity";
+import { FriendRequestCreateDto } from "./dto/friend-request-create.dto";
+
+import { BlockService } from "src/blocked/block.service";
 
 @Injectable()
 export class FriendRequestService extends AbstractService {
   constructor(
-		private bannedService: BlockedService,
-		private chatroomService: ChatroomService,
-		private userService: UserService,
+		private blockService : BlockService,
 		@InjectRepository(FriendRequest) private readonly friendRequestRepository: Repository<FriendRequest>
 	) {
 		super(friendRequestRepository);
 	}
-  
-	async createFriendRequest(friendRequest: CreateFriendRequestDto) {
-		const receiverBanned = this.bannedService.findOne({
-			sender_id: friendRequest.sender_id,
-			receiver_id: friendRequest.receiver_id,
-		})
-		if (receiverBanned)
-			throw "You can not send a friend request to a user that you blocked";
 
-		const senderBanned = this.bannedService.findOne({
-			receiver_id: friendRequest.sender_id,
-			sender_id: friendRequest.receiver_id,
-		})
-		if (senderBanned)
-			throw "You can not send a friend request to a user that blocked you";
-		return await this.friendRequestRepository.save(friendRequest);
+	async getFriendRequestById(id: number) {
+		return await this.findOne({id}, ["sender", "receiver"]);
 	}
 
-	async getAllReceivedFriendRequest(user_id: number) {
-		const friendRequests = await this.friendRequestRepository.find({
-			where: {
-				receiver_id : user_id,
-			},
-			relations: ['user']
+	async createFriendRequest(friendRequestCreateDto : FriendRequestCreateDto) {
+		const blockBySender = await this.blockService.findOne({
+			sender: friendRequestCreateDto.sender,
+			receiver: friendRequestCreateDto.receiver
 		});
-		return friendRequests;
-	}
-
-	async getAllSendFriendRequest(user_id: number) {
-		const friendRequests = await this.friendRequestRepository.find({
-			where: {
-				sender_id : user_id,
-			},
-			relations: ['user']
+		if (blockBySender)
+			throw new BadRequestException("You can not send a friendReqest to a User that you blocked.");
+		const blockByReceiver = await this.blockService.findOne({
+			sender: friendRequestCreateDto.receiver,
+			receiver: friendRequestCreateDto.sender
 		});
-		return friendRequests;
+		if (blockBySender)
+			throw new BadRequestException("You can not send a friendReqest to a User that blocked you.");
+		return this.create(friendRequestCreateDto);
 	}
-
-	async deleteAllFriendRequestWithUser(user_id: number) {
-		//TODO Should be called when the user is deleted
-	}
-
-	async acceptFriendRequest(id: number, body: AcceptFriendRequestDto) {
-		const friendRequest = await this.findOne({id});
-		if (!friendRequest)
-		throw "Friend request does not exists";
-		if (friendRequest.receiver_id != body.user_id) //TODO this should be handled by auth gaurd I think
-		throw "This request was not send to you";
-		//add to friends;
-		const friendOne = await this.userService.findOne({id: friendRequest.sender_id});
-		const newChatroom: ChatroomCreateDto = {name: "DIRECT" + friendOne.name + "-add name second person-", type: ChatroomType.DIRECT, owner: friendOne.id, users: [friendRequest.receiver_id]};
-		this.chatroomService.createChatroom(newChatroom);
-		return this.delete(id);
-	}
-
-
 }

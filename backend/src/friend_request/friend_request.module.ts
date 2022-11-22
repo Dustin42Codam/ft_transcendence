@@ -1,22 +1,21 @@
-import { Module } from '@nestjs/common';
-import { FriendRequestService } from './friend_request.service';
-import { FriendRequestController } from './friend_request.controller';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { FriendRequest } from './entities/friend_request.entity';
-import { CommonModule } from 'src/common/common.module';
-import { BlockedModule } from 'src/blocked/blocked.module';
-import { ChatroomModule } from 'src/chatroom/chatroom.module';
-import { UserModule } from 'src/user/user.module';
+import { Module, forwardRef } from "@nestjs/common";
+import { TypeOrmModule } from "@nestjs/typeorm";
+import { CommonModule } from "src/common/common.module";
+
+import { FriendRequest } from "./entity/friend_request.entity";
+import { FriendRequestController } from "./friend_request.controller";
+import { FriendRequestService } from "./friend_request.service";
+
+import { BlockModule } from "src/blocked/block.module";
 
 @Module({
 	imports: [
 		TypeOrmModule.forFeature([FriendRequest]),
 		CommonModule,
-		BlockedModule,
-		ChatroomModule,
-		UserModule
+		forwardRef(() => BlockModule),
 	],
   controllers: [FriendRequestController],
-  providers: [FriendRequestService]
+  providers: [FriendRequestService],
+  exports: [FriendRequestService]
 })
 export class FriendRequestModule {}

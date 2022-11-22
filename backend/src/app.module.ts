@@ -7,12 +7,8 @@ import { CommonModule } from './common/common.module';
 import { LoginModule } from './login/login.module';
 import { LogoutModule } from './logout/logout.module';
 import { OauthCallbackModule } from './oauth-callback/oauth-callback.module';
-import { ChatroomModule } from './chatroom/chatroom.module';
-import { MemberModule } from './member/member.module';
-import { BlockedModule } from './blocked/blocked.module';
-import { FriendModule } from './friend/friend.module';
+import { BlockModule } from './blocked/block.module';
 import * as dotenv from "dotenv";
-import { FriendRequestModule } from './friend_request/friend_request.module';
 
 dotenv.config();
 
@@ -29,14 +25,10 @@ dotenv.config();
 			synchronize: true,
 		}),
 		AuthModule,
-		BlockedModule,
-		ChatroomModule,
+		BlockModule,
 		CommonModule,
-		FriendModule,
-		FriendRequestModule,
 		LoginModule,
 		LogoutModule,
-		MemberModule,
 		OauthCallbackModule,
 		UserModule,
 	]

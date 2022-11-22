@@ -30,19 +30,19 @@ services:
       target: dev
     ports:
       - ${FRONTEND_PORT}:${FRONTEND_PORT}
-    depends_on:
-      postgres:
-        condition: service_healthy
-      backend:
-        condition: service_healthy
+    # depends_on:
+    #   postgres:
+    #     condition: service_healthy
+    #   backend:
+    #     condition: service_healthy
     volumes:
       - ./frontend/src/:/frontend/src/:delegated
-    healthcheck:
-        test: wget --no-verbose --tries=3 --spider http://127.0.0.1:${FRONTEND_PORT}/ || exit 1
-        interval: 5s
-        retries: 5 
-        start_period: 5s
-        timeout: 3s
+    # healthcheck:
+    #     test: wget --no-verbose --tries=3 --spider http://127.0.0.1:${FRONTEND_PORT}/ || exit 1
+    #     interval: 5s
+    #     retries: 5 
+    #     start_period: 5s
+    #     timeout: 3s
 
   pgAdmin4:
     restart: always

@@ -11,37 +11,38 @@ const fetchDataCall = async (page: any) => {
       return response;
     })
     .catch(function (error) {
-      console.log("🚀 ~ file: Users.tsx ~ line 14 ~ fetchDataCall ~ error", error)
+      console.log(
+        "🚀 ~ file: Users.tsx ~ line 14 ~ fetchDataCall ~ error",
+        error
+      );
     });
   return data;
 };
 
 const Users = () => {
-  	const [users, setUsers] = useState([]);
-  	const [page, setPage] = useState(1);
-  	const [lastPage, setLastPage] = useState(0);
+  const [users, setUsers] = useState([]);
+  const [page, setPage] = useState(1);
+  const [lastPage, setLastPage] = useState(0);
 
-	useEffect(() => {
+  useEffect(() => {
     const fetchData = async () => {
-      	let response: any = await fetchDataCall(page);
+      let response: any = await fetchDataCall(page);
 
-      	setUsers(response.data.data);
-	  	setLastPage(response.data.meta.last_page);
+      setUsers(response.data.data);
+      setLastPage(response.data.meta.last_page);
     };
-	
+
     fetchData();
   }, [page]);
 
-	const next = () => {
-		console.log("🚀 ~ file: Users.tsx ~ line 37 ~ next ~ lastPage", lastPage)
-		if (page < lastPage)
-			setPage(page + 1);
-	}
-		
-	const prev = () => {
-		if (page > 1)
-			setPage(page - 1);
-	}
+  const next = () => {
+    console.log("🚀 ~ file: Users.tsx ~ line 37 ~ next ~ lastPage", lastPage);
+    if (page < lastPage) setPage(page + 1);
+  };
+
+  const prev = () => {
+    if (page > 1) setPage(page - 1);
+  };
 
   return (
     <Wrapper>
@@ -66,16 +67,20 @@ const Users = () => {
         </table>
       </div>
 
-	  <nav>
-		<ul className="pagination">
-			<li className="page-item">
-				<a href="#" className="page-link" onClick={prev}>Previous</a>
-			</li>
-			<li className="page-item">
-				<a href="#" className="page-link" onClick={next}>Next</a>
-			</li>
-		</ul>
-	  </nav>
+      <nav>
+        <ul className="pagination">
+          <li className="page-item">
+            <a href="#" className="page-link" onClick={prev}>
+              Previous
+            </a>
+          </li>
+          <li className="page-item">
+            <a href="#" className="page-link" onClick={next}>
+              Next
+            </a>
+          </li>
+        </ul>
+      </nav>
     </Wrapper>
   );
 };
