@@ -1,6 +1,7 @@
-import { Body, Controller, Get, Param, Post } from "@nestjs/common";
+import { Body, BadRequestException, Controller, Get, Param, Post } from "@nestjs/common";
 import { FriendRequestService } from "./friend_request.service";
 import { FriendRequestCreateDto } from "./dto/friend-request-create.dto";
+import { BlockService } from "src/blocked/block.service";
 
 @Controller('friendRequest')
 export class FriendRequestController {
@@ -29,11 +30,42 @@ export class FriendRequestController {
 		return await this.friendRequestService.createFriendRequest(friendRequestCreateDto);
 	}
 
-	@Post(':id')
-	remove(
+	@Post('accept/:id')
+	async acceptFriendRequest(
+		@Param('id') id : number,
+	) {
+		const friendRequest = await this.friendRequestService.findOne({id}, ["sender", "receiver"]);
+		if (!friendRequest)
+			throw new BadRequestException("This friendRequest does not exist");
+		//TODO authgaurd to make sure that the receiver is the auth user
+		// if (req.session.userId !== friendRequest.receiver.id)
+		// 	throw BadRequestException("You can only accept friend request that where send to you")
+		return await this.friendRequestService.acceptFriendRequest(friendRequest);
+	}
+
+	@Post('decline/:id')
+	declineFriendRequest(
     	@Param('id') id: number
     ) {
-    	//TODO authgaurd to make sure that the sender of the friendReqeust is the auth user
+		const friendRequest = this.friendRequestService.findOne({id});
+		if (!friendRequest)
+			throw new BadRequestException("This friendRequest does not exist");
+    	//TODO authgaurd to make sure that the receiver is the auth user
+		// if (req.session.userId !== friendRequest.receiver.id)
+		// 	throw BadRequestException("You can only accept friend request that where send to you")
+    	return this.friendRequestService.delete(id);
+	}
+
+	@Post('remove/:id')
+	removeSendFriendRequest(
+    	@Param('id') id: number
+    ) {
+		const friendRequest = this.friendRequestService.findOne({id});
+		if (!friendRequest)
+			throw new BadRequestException("This friendRequest does not exist");
+		//TODO authgaurd to make sure that the sender is the auth user
+		// if (req.session.userId !== friendRequest.sender.id)
+		// 	throw BadRequestException("You can only remove friend request that you send")
     	return this.friendRequestService.delete(id);
 	}
 }

@@ -7,9 +7,9 @@ export class FriendRequest {
     @PrimaryGeneratedColumn()
 	id: number;
 
-    @ManyToOne(() => User, (user: User) => user.send_blocks, {eager: true})
+    @ManyToOne(() => User, (user: User) => user.send_friend_requests)
 	sender: User;
 
-    @ManyToOne(() => User, (user) => user.received_blocks, {eager: true})
+    @ManyToOne(() => User, (user: User) => user.received_friend_requests)
 	receiver: User;
 }

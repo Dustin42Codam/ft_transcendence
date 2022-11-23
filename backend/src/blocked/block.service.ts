@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, forwardRef, Inject  } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 
@@ -12,7 +12,8 @@ import { FriendRequestService } from "../friend_request/friend_request.service";
 @Injectable()
 export class BlockService extends AbstractService {
   constructor(
-		private friendReqeustService : FriendRequestService,
+		@Inject(forwardRef(() => FriendRequestService))
+		private friendRequestService : FriendRequestService,
 		@InjectRepository(Block) private readonly blockRepository: Repository<Block>
 	) {
 		super(blockRepository);
@@ -23,18 +24,18 @@ export class BlockService extends AbstractService {
 	}
 
 	async block(blockCreateDto: BlockCreateDto) {
-		const friendRequestBySender = await this.friendReqeustService.findOne({
+		const friendRequestBySender = await this.friendRequestService.findOne({
 			sender: blockCreateDto.sender,
 			receiver: blockCreateDto.receiver
 		});
 		if (friendRequestBySender)
-			await this.friendReqeustService.delete(friendRequestBySender.id);
-		const friendRequestByReceiver = await this.friendReqeustService.findOne({
+			await this.friendRequestService.delete(friendRequestBySender.id);
+		const friendRequestByReceiver = await this.friendRequestService.findOne({
 			sender: blockCreateDto.receiver,
 			receiver: blockCreateDto.sender
 		});
 		if (friendRequestBySender)
-			await this.friendReqeustService.delete(friendRequestBySender.id);
-		return this.create(blockCreateDto);
+			await this.friendRequestService.delete(friendRequestBySender.id);
+		return await this.create(blockCreateDto);
 	}
 }

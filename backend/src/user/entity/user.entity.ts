@@ -1,4 +1,7 @@
 import { Block } from "src/blocked/entity/block.entity";
+import { Friend } from "src/friend/entity/friend.entity";
+import { FriendRequest } from "src/friend_request/entity/friend_request.entity";
+import { Member } from "src/member/entity/member.entity";
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 export enum UserStatus {
@@ -33,4 +36,13 @@ export class User {
 
     @OneToMany(() => Block, (block : Block) => block.receiver)
     received_blocks: Block[]
+
+	@OneToMany(() => FriendRequest, (friendRequest: FriendRequest) => friendRequest.sender)
+    send_friend_requests: FriendRequest[]
+
+    @OneToMany(() => FriendRequest, (friendRequest : FriendRequest) => friendRequest.receiver)
+    received_friend_requests: FriendRequest[]
+
+	@OneToMany(() => Member, (member: Member) => member.user)
+    chatrooms: FriendRequest[]
 }

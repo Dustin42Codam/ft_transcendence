@@ -9,6 +9,10 @@ import { LogoutModule } from './logout/logout.module';
 import { OauthCallbackModule } from './oauth-callback/oauth-callback.module';
 import { BlockModule } from './blocked/block.module';
 import * as dotenv from "dotenv";
+import { FriendRequestModule } from './friend_request/friend_request.module';
+import { FriendModule } from './friend/friend.module';
+import { MemberModule } from './member/member.module';
+import { ChatroomModule } from './chatroom/chatroom.module';
 
 dotenv.config();
 
@@ -26,9 +30,13 @@ dotenv.config();
 		}),
 		AuthModule,
 		BlockModule,
+		ChatroomModule,
 		CommonModule,
+		FriendModule,
+		FriendRequestModule,
 		LoginModule,
 		LogoutModule,
+		MemberModule,
 		OauthCallbackModule,
 		UserModule,
 	]
