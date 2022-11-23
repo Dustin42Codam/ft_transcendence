@@ -1,5 +1,4 @@
 body {
-  font-size: 0.875rem;
 }
 
 .feather {
@@ -61,8 +60,8 @@ body {
 }
 
 /*
-   * Navbar
-   */
+* Navbar
+*/
 
 .navbar-brand {
   padding-top: 0.75rem;
