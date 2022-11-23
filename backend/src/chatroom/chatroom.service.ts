@@ -26,21 +26,18 @@ export class ChatroomService extends AbstractService {
 	}
 
     async createChatroom(chatroomCreatDto: ChatroomCreateDto) {
-        console.log("create chatroom");
         const {user_ids, owner_id, ...chatroom} = chatroomCreatDto;
         const uniqueUsers = [...new Set(user_ids)];
         
         const newChatroom = await this.create(chatroom);
         for (var user_id of uniqueUsers) {
             const user = await this.userServcie.findOne({id: user_id});
-            console.log(user_id + " " + newChatroom.id)
             if (user_id === owner_id) {
 			    await this.memberService.createMember({user: user, chatroom: newChatroom, role: MemberRole.OWNER});
             } else {
                 await this.memberService.createMember({user: user, chatroom: newChatroom, role: MemberRole.USER});
             }
         }
-        console.log("return chatroom");
         return newChatroom;
     }
 
