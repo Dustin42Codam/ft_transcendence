@@ -8,7 +8,7 @@ import { Chatroom, ChatroomType } from "./entity/chatroom.entity";
 import { ChatroomCreateDto } from "./dto/chatroom-create.dto";
 
 import { MemberService } from "src/member/member.service";
-import { MemberRole } from "src/member/entity/member.entity";
+import { Member, MemberRole } from "src/member/entity/member.entity";
 import { UserService } from "src/user/user.service";
 
 @Injectable()
@@ -25,8 +25,8 @@ export class ChatroomService extends AbstractService {
 		return await this.findOne({id}, ["users"]);
 	}
 
-    async createChatroom(chatroomCreatDto: ChatroomCreateDto) {
-        const {user_ids, owner_id, ...chatroom} = chatroomCreatDto;
+    async createChatroom(chatroomCreatDto: ChatroomCreateDto, owner_id: number) {
+        const {user_ids, ...chatroom} = chatroomCreatDto;
         const uniqueUsers = [...new Set(user_ids)];
         
         const newChatroom = await this.create(chatroom);
@@ -42,7 +42,10 @@ export class ChatroomService extends AbstractService {
     }
 
 	async deleteChatroom(chatroom: Chatroom) {
-        //TODO delete direct chatroom, delete members
+        // TODO delete direct chatroom, delete members
+        for (let i = 0; i < chatroom.users.length; i++) {
+            await this.memberService.delete(chatroom.users[i].id);
+        }
         return await this.delete(chatroom.id);
     }
 }

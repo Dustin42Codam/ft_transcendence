@@ -25,15 +25,15 @@ export class FriendService extends AbstractService {
 	}
 
     async createFriendship(friendCreateDto: FriendCreateDto) {
-        const chatroomCreateDto : ChatroomCreateDto = {name: "", type: ChatroomType.DIRECT, password: null, owner_id: -1, user_ids: [friendCreateDto.user_1_id, friendCreateDto.user_2_id]};
-        const newChatroom = await this.chatroomService.createChatroom(chatroomCreateDto);
+        const chatroomCreateDto : ChatroomCreateDto = {name: "", type: ChatroomType.DIRECT, password: null, user_ids: [friendCreateDto.user_1_id, friendCreateDto.user_2_id]};
+        const newChatroom = await this.chatroomService.createChatroom(chatroomCreateDto, -1);
         //TODO add the chatroom id to rthe friendship
         const friendship = {chatroom_id: newChatroom.id, ...friendCreateDto};
         return await this.create(friendship);
     }
 
 	async deleteFriendship(friendship: Friend) {
-        const chatroom = await this.chatroomService.findOne({id: friendship.chatroom_id});
+        const chatroom = await this.chatroomService.findOne({id: friendship.chatroom_id}, ["users"]);
         await this.chatroomService.deleteChatroom(chatroom);
         return await this.delete(friendship.id);
     }

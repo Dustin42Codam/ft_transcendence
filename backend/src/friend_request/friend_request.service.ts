@@ -51,12 +51,11 @@ export class FriendRequestService extends AbstractService {
 		})
 		if (friendRequest)
 			throw new BadRequestException("The user you want to send a friend request to already send a friendrequest to you.");
-		// const friendship = await this.friendService.findOne({
-		// 	sender: friendRequestCreateDto.receiver,
-		// 	receiver: friendRequestCreateDto.sender
-		// })
-		// if (friendship)
-		// 	throw new BadRequestException("You are already friends with this user."); // TODO make sure it checks both ways
+		const friendship = await this.friendService.findOne([
+			{sender: friendRequestCreateDto.receiver, receiver: friendRequestCreateDto.sender},
+			{sender: friendRequestCreateDto.sender, receiver: friendRequestCreateDto.receiver}]);
+		if (friendship)
+			throw new BadRequestException("You are already friends with this user.");
 		return this.create(friendRequestCreateDto);
 	}
 }

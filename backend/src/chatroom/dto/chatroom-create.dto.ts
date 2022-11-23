@@ -12,8 +12,5 @@ export class ChatroomCreateDto {
 	password: string;
 
 	@IsNotEmpty()
-	owner_id: number;
-
-	@IsNotEmpty()
 	user_ids: number[];
 }

@@ -8,12 +8,14 @@ import { BlockCreateDto } from "./dto/block-create.dto";
 import { Block } from "./entity/block.entity";
 
 import { FriendRequestService } from "../friend_request/friend_request.service";
+import { FriendService } from "src/friend/friend.service";
 
 @Injectable()
 export class BlockService extends AbstractService {
   constructor(
 		@Inject(forwardRef(() => FriendRequestService))
 		private friendRequestService : FriendRequestService,
+		private friendService : FriendService,
 		@InjectRepository(Block) private readonly blockRepository: Repository<Block>
 	) {
 		super(blockRepository);
@@ -27,7 +29,7 @@ export class BlockService extends AbstractService {
 		const friendRequestBySender = await this.friendRequestService.findOne({
 			sender: blockCreateDto.sender,
 			receiver: blockCreateDto.receiver
-		});
+		}, ["sender", "receiver"]);
 		if (friendRequestBySender)
 			await this.friendRequestService.delete(friendRequestBySender.id);
 		const friendRequestByReceiver = await this.friendRequestService.findOne({
@@ -36,6 +38,11 @@ export class BlockService extends AbstractService {
 		});
 		if (friendRequestBySender)
 			await this.friendRequestService.delete(friendRequestBySender.id);
+		const friendship = await this.friendService.findOne([
+									{user_1_id: blockCreateDto.sender.id, user_2_id: blockCreateDto.receiver.id},
+									{user_1_id: blockCreateDto.receiver.id, user_2_id: blockCreateDto.sender.id}]);
+		if (friendship)
+			await this.friendService.deleteFriendship(friendship);
 		return await this.create(blockCreateDto);
 	}
 }
