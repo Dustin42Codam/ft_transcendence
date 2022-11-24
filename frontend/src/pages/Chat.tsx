@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import Wrapper from "../components/Wrapper";
 import axios from "axios";
 import "./Chat.css";
@@ -55,46 +55,58 @@ function createChat() {
   alert(1);
 }
 
-export default class Chat extends Component {
-  constructor(props: any) {
-    super(props);
-    this.state = { chats: [] };
-  }
-  async componentDidMount() {
-    await axios
-      .get("chats")
-      .then((response) => this.setState({ chats: response.data }))
-      .catch((err) => console.log(err));
-  }
-  render() {
-    return (
-      <Wrapper>
-        <div className="chatGridContainer" id="chatGridContainer">
-          <h1 id="chatHeader" className="gridItem header-1">
-            Create a Chat
-          </h1>
-          <h4 id="chatDescription" className="gridItem header-2">
-            Feel free to create a chat room.
-          </h4>
-          <label id="nameInputLable">Name</label>
-          <SelectInput id="selectChatInput"/>
-          <TextInput id="nameInput" className="textInput" type="text" minLength={4} maxLength={100} size={20} />
-          <label id="chatPasswordInputLable" className="gridItem chatLable">Password</label>
-          <TextInput
-						id="passwordInput"
-            type="password"
-            minLength={8}
-            size={20}
-          />
-          <label id="chatPasswordInputLableConfirm" className="gridItem chatLable">Password confirm:</label>
-          <TextInput
-						id="confirmPasswordInput"
-            type="password"
-            minLength={8}
-            size={20}
-          />
-        </div>
-      </Wrapper>
-    );
-  }
-}
+const Chat = () => {
+  const [name, setName] = useState("");
+  const [password, setPassword] = useState("");
+  const [passwordConfrim, setPasswordConfirm] = useState("");
+  const [chatType, setChatType] = useState<ChatroomType>(
+    ChatroomType.PROTECTED
+  );
+	console.log("this is name:", name);
+	console.log("this is password:", password);
+	console.log("this is passwordConfirm:", passwordConfrim);
+	console.log("this is chat type:", chatType, ChatroomType.PROTECTED, chatType === ChatroomType.PROTECTED);
+
+  return (
+    <Wrapper>
+      <div className="chatGridContainer" id="chatGridContainer">
+        <h1 id="chatHeader" className="gridItem header-1">
+          Create a Chat
+        </h1>
+        <h6 id="chatDescription" className="gridItem header-2">
+          Feel free to create a chat room.
+				</h6>
+        <label id="nameInputLable"><p>Name</p></label>
+        <SelectInput id="selectChatInput" setter={setChatType}/>
+        <TextInput
+					setter={setName}
+          id="nameInput"
+          className="textInput"
+          type="text"
+        />
+				{chatType === ChatroomType.PROTECTED ? (
+				<React.Fragment>
+        <label id="chatPasswordInputLable" className="gridItem chatLable">
+         Password
+        </label>
+        <TextInput id="passwordInput" type="password"
+					setter={setPassword} />
+        <label
+          id="chatPasswordInputLableConfirm"
+          className="gridItem chatLable"
+        >
+          Password confirm
+        </label>
+        <TextInput
+					setter={setPasswordConfirm}
+          id="confirmPasswordInput"
+          type="password"
+        />
+				</React.Fragment>
+				) : null}
+      </div>
+    </Wrapper>
+  );
+};
+
+export default Chat;

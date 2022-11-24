@@ -5,9 +5,7 @@ const TextInput = (props: any) => {
     <input
       type={props.type}
       id={props.id}
-      minLength={props.minLength}
-      maxLength={props.maxLength}
-      size={props.size}
+		  onChange={e => props.setter(e.target.value)}
     />
   );
 };
