@@ -120,6 +120,23 @@ body {
 }
 
 .btn_delete:hover {
-  background: #ff0101;
+  background: #ff5353;
+  transition: 0.5s;
+}
+
+.btn_edit {
+  background-color: #929292;
+  border: none;
+  color: white;
+  padding: 7px 16px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  color: white;
+}
+
+.btn_edit:hover {
+  background: #6f91ff;
   transition: 0.5s;
 }

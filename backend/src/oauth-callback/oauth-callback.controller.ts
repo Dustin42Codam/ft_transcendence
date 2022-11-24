@@ -93,7 +93,7 @@ export class OauthCallbackController {
 					`http://localhost:${process.env.BACKEND_PORT}/api/users`,
 					{
 						display_name: data.login,
-						avatar: data.image_url,
+						avatar: data.image.link,
 						two_factor_auth: 0,
 						status: 'online'
 					}

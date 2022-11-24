@@ -1,22 +1,46 @@
+import userEvent from "@testing-library/user-event";
 import axios from "axios";
-import React, { SyntheticEvent, useState } from "react";
-import { Navigate } from "react-router-dom";
-import ImageUpload from "../../components/ImageUpload";
+import React, { SyntheticEvent, useEffect, useState } from "react";
+import { Navigate, useLocation, useParams } from "react-router-dom";
 import Wrapper from "../../components/Wrapper";
 import { UserStatus } from "../../models/Channel";
 
-const UserCreate = () => {
+const fetchDataCall = async (id: number) => {
+  let response = await axios.get(`users/${id}`).catch(function (error) {
+    console.log(
+      "🚀 ~ file: UserEdit.tsx ~ line 11 ~ fetchDataCall ~ error",
+      error
+    );
+  });
+  return response;
+};
+
+const UserEdit = () => {
   const [name, setName] = useState("");
-  const [redirect, setRedirect] = useState(false);
   const [avatar, setAvatar] = useState("");
   const [status, setStatus] = useState("offline");
   const [twoFA, setTwoFA] = useState("false");
+  const [redirect, setRedirect] = useState(false);
+  const params: any = useParams();
+  let response: any;
+
+  useEffect(() => {
+    const fetchData = async () => {
+      response = await fetchDataCall(params.id);
+      setName(response.data.display_name);
+      setAvatar(response.data.avatar);
+      setStatus(response.data.status);
+      setTwoFA(response.data.twoFA);
+    };
+
+    fetchData();
+  }, []);
 
   const submit = async (e: SyntheticEvent) => {
     e.preventDefault();
 
     await axios
-      .post("users", {
+      .put(`users/${params.id}`, {
         display_name: name,
         avatar,
         status,
@@ -32,10 +56,6 @@ const UserCreate = () => {
     setRedirect(true);
   };
 
-  const goBack = () => {
-    setRedirect(true);
-  };
-
   if (redirect) {
     return <Navigate to="/users" />;
   }
@@ -47,24 +67,23 @@ const UserCreate = () => {
           <label>Name</label>
           <input
             className="form-control"
+            value={name}
             onChange={(e) => setName(e.target.value)}
           />
         </div>
         <div className="mb-3">
           <label>Avatar</label>
-          <div>
-              <input
-                className="form-control"
-                value={avatar}
-                onChange={(e) => setAvatar(e.target.value)}
-                />
-              <ImageUpload uploaded={setAvatar}/>
-          </div>
+          <input
+            className="form-control"
+            type="file"
+            onChange={(e) => setAvatar(e.target.value)}
+          />
         </div>
         <div className="mb-3">
           <label>Status</label>
           <select
             className="form-control"
+            value={status}
             onChange={(e) => setStatus(e.target.value)}
           >
             <option key={UserStatus.OFFLINE} defaultValue={UserStatus.OFFLINE}>
@@ -80,6 +99,7 @@ const UserCreate = () => {
           <label>2FA</label>
           <select
             className="form-control"
+            value={twoFA}
             onChange={(e) => setTwoFA(e.target.value)}
           >
             <option key="false" defaultValue="false">
@@ -92,12 +112,9 @@ const UserCreate = () => {
         </div>
 
         <button className="btn btn-outline-secondary">Save</button>
-        <button className="m-3 btn btn-outline-secondary" onClick={goBack}>
-          Go Back
-        </button>
       </form>
     </Wrapper>
   );
 };
 
-export default UserCreate;
+export default UserEdit;

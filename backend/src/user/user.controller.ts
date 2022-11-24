@@ -57,6 +57,7 @@ export class UserController {
 		@Param('id') id: number,
 		@Body() body: UserUpdateDto,
 	) {
+			
 		await this.userService.update(id, body);
 
 		return this.userService.findOne({id});

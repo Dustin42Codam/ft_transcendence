@@ -38,6 +38,11 @@ const Menu = () => {
               Games
             </NavLink>
           </li>
+          <li className="nav-item">
+            <NavLink to={"/achievements"} className="nav-link">
+              Achievements
+            </NavLink>
+          </li>
         </ul>
       </div>
     </nav>

@@ -14,6 +14,8 @@ import ChannelCreate from "./pages/channels/ChannelCreate";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import UserCreate from "./pages/users/UserCreate";
+import UserEdit from "./pages/users/UserEdit";
+import Achievements from "./pages/achievements/Achievements";
 
 function App() {
   const [token, setToken] = useState(false);
@@ -55,6 +57,7 @@ function App() {
             <Route path={"/"} element={<Dashboard />} />
             <Route path={"/users"} element={<Users />} />
             <Route path={"/users/create"} element={<UserCreate />} />
+            <Route path={"/users/:id/edit"} element={<UserEdit />} />
             <Route path={"/authenticate"} element={<Authenticate />} />
             <Route path={"/login"} element={<Login />} />
             <Route path={"/profile"} element={<Profile />} />
@@ -62,6 +65,7 @@ function App() {
             <Route path={"/channels/create"} element={<ChannelCreate />} />
             <Route path={"/chats"} element={<Chat />} />
             <Route path={"/games"} element={<Game />} />
+            <Route path={"/achievements"} element={<Achievements />} />
             <Route path={"*"} element={<NotFound />} />
           </Routes>
         </BrowserRouter>
