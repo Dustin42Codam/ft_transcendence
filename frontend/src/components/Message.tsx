@@ -1,7 +1,5 @@
 const Message = () => {
-	return (
-		<p>Message</p>
-	);
+  return <p>Message</p>;
 };
 
 export default Message;

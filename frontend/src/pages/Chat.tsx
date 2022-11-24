@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import Wrapper from "../components/Wrapper";
 import axios from "axios";
 import "./Chat.css";
-import TextInput from '../components/TextInput';
-import SelectInput from '../components/SelectInput';
+import TextInput from "../components/TextInput";
+import SelectInput from "../components/SelectInput";
 
 //https://www.geeksforgeeks.org/how-to-fetch-data-from-an-api-in-reactjs/
 export enum UserRole {
@@ -68,19 +68,33 @@ export default class Chat extends Component {
   }
   render() {
     return (
-			<Wrapper>
-				 <div className="chatGridContainer" id="chatGridContainer">
-					 <h1 className="gridItem header-1" id="chatGridH1">Create a Chat</h1>
-					 <h4 className="gridItem header-2">Feel free to create a chat room.</h4>
-					 <label className="gridItem chatLable">Name</label>
-					 <SelectInput className="selectInput"/>
-					 <TextInput type="text" minLength={4} maxLength={100} size={20}/>
-					 <label className="gridItem chatLable">Password</label>
-					 <TextInput type="password" id="chatPasswordInput" minLength={8} size={20}/>
-					 <label className="gridItem chatLable">Password confirm:</label>
-					 <TextInput type="password" id="chatPasswordInputRepet" minLength={8} size={20}/>
-				 </div>
-			</Wrapper>
+      <Wrapper>
+        <div className="chatGridContainer" id="chatGridContainer">
+          <h1 id="chatHeader" className="gridItem header-1">
+            Create a Chat
+          </h1>
+          <h4 id="chatDescription" className="gridItem header-2">
+            Feel free to create a chat room.
+          </h4>
+          <label id="nameInputLable">Name</label>
+          <SelectInput id="selectChatInput"/>
+          <TextInput id="nameInput" className="textInput" type="text" minLength={4} maxLength={100} size={20} />
+          <label id="chatPasswordInputLable" className="gridItem chatLable">Password</label>
+          <TextInput
+						id="passwordInput"
+            type="password"
+            minLength={8}
+            size={20}
+          />
+          <label id="chatPasswordInputLableConfirm" className="gridItem chatLable">Password confirm:</label>
+          <TextInput
+						id="confirmPasswordInput"
+            type="password"
+            minLength={8}
+            size={20}
+          />
+        </div>
+      </Wrapper>
     );
   }
 }
