@@ -60,6 +60,7 @@ textarea {
 }
 
 #selectChatInput {
+  margin-left: auto;
   color: rgb(244, 241, 208);
   background: rgb(16, 16, 20);
   grid-column-start: 2;
