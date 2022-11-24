@@ -5,7 +5,7 @@ const TextInput = (props: any) => {
     <input
       type={props.type}
       id={props.id}
-		  onChange={e => props.setter(e.target.value)}
+      onChange={(e) => props.setter(e.target.value)}
     />
   );
 };

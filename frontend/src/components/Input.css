@@ -1,3 +1,4 @@
+/*TODO need to add changes margins because thos are clced by the ax window size and thattts why input goes out */
 input {
   background-color: rgb(16, 16, 20);
   border: none; /* <-- removes input borders */
@@ -32,7 +33,7 @@ textarea {
 
 .chatGridContainer {
   grid-template-columns: repeat(auto-fit, auto);
-	gap: 7px;
+  gap: 7px;
 }
 
 #chatHeader {
@@ -49,22 +50,23 @@ textarea {
 }
 
 #nameInputLable {
-	margin-top: 5%;
+  margin-top: 5%;
   grid-column-start: 1;
   grid-row-start: 3;
   grid-column-end: 2;
-	margin-left: 5%;
+  margin-left: 5%;
 }
 
 #nameInput {
   grid-column-start: 1;
   grid-row-start: 4;
   grid-column-end: 3;
-	height: calc(5vw - 1.5rem);
-	min-height: 40px;
-	max-height: 60px;
-	margin-right: 2.5%;
-	margin-left: 2.5%;
+  height: calc(5vw - 1.5rem);
+  min-height: 40px;
+  max-height: 60px;
+  margin-right: 2.5%;
+  margin-left: 2.5%;
+  margin-bottom: 5%;
 }
 
 #selectChatInput {
@@ -73,54 +75,52 @@ textarea {
   grid-column-start: 2;
   grid-row-start: 3;
   grid-column-end: 3;
-	height: calc(5vw - 1.5rem);
-	min-height: 40px;
-	max-height: 60px;
-	margin-left: 5%;
-	margin-left: auto;
-	margin-right: 5%;
+  height: calc(5vw - 1.5rem);
+  min-height: 40px;
+  max-height: 60px;
+  margin-left: 5%;
+  margin-left: auto;
+  margin-right: 5%;
 }
 
 #chatPasswordInputLable {
-	margin-top: 5%;
   grid-column-start: 1;
   grid-row-start: 5;
   grid-column-end: 2;
-	min-height: 25px;
-	max-height: 40px;
-	margin-bottom: 2%;
-	margin-right: 5%;
-	margin-left: 5%;
+  min-height: 25px;
+  max-height: 40px;
+  margin-bottom: 2%;
+  margin-right: 5%;
+  margin-left: 5%;
 }
 
 #chatPasswordInputLableConfirm {
-	margin-top: 5%;
   grid-column-start: 2;
   grid-row-start: 5;
   grid-column-end: 3;
-	margin-left: 5%;
+  margin-left: 5%;
 }
 
 #confirmPasswordInput {
   grid-column-start: 1;
   grid-row-start: 6;
   grid-column-end: 2;
-	height: calc(5vw - 1.5rem);
-	min-height: 40px;
-	max-height: 60px;
-	margin-bottom: 5%;
-	margin-right: 5%;
-	margin-left: 5%;
+  height: calc(5vw - 1.5rem);
+  min-height: 40px;
+  max-height: 60px;
+  margin-bottom: 5%;
+  margin-right: 5%;
+  margin-left: 5%;
 }
 
 #passwordInput {
   grid-column-start: 2;
   grid-row-start: 6;
   grid-column-end: 3;
-	height: calc(5vw - 1.5rem);
-	min-height: 40px;
-	max-height: 60px;
-	margin-bottom: 2%;
-	margin-right: 5%;
-	margin-left: 5%;
+  height: calc(5vw - 1.5rem);
+  min-height: 40px;
+  max-height: 60px;
+  margin-bottom: 2%;
+  margin-right: 5%;
+  margin-left: 5%;
 }
