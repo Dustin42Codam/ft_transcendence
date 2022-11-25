@@ -1,4 +1,4 @@
-import { Injectable, forwardRef, Inject  } from "@nestjs/common";
+import { Injectable, BadRequestException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 
@@ -15,17 +15,20 @@ import { ChatroomType } from "src/chatroom/entity/chatroom.entity";
 export class FriendService extends AbstractService {
   constructor(
         private chatroomService : ChatroomService,
-		@InjectRepository(Friend) private readonly FriendRepository: Repository<Friend>
+		@InjectRepository(Friend) private readonly friendRepository: Repository<Friend>
 	) {
-		super(FriendRepository);
+		super(friendRepository);
 	}
 
 	async getFriendshipById(id: number) {
-		return await this.findOne({id});
+        const friendship = this.findOne({id});
+        if (!friendship)
+            throw new BadRequestException("This friendship does not exist");
+		return friendship;
 	}
 
     async createFriendship(friendCreateDto: FriendCreateDto) {
-        const chatroomCreateDto : ChatroomCreateDto = {name: "", type: ChatroomType.DIRECT, password: null, user_ids: [friendCreateDto.user_1_id, friendCreateDto.user_2_id]};
+        const chatroomCreateDto : ChatroomCreateDto = {name: "", type: ChatroomType.DIRECT, password: null, users: [friendCreateDto.user_1_id, friendCreateDto.user_2_id]};
         const newChatroom = await this.chatroomService.createChatroom(chatroomCreateDto, -1);
         //TODO add the chatroom id to rthe friendship
         const friendship = {chatroom_id: newChatroom.id, ...friendCreateDto};

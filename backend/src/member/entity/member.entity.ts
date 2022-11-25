@@ -23,8 +23,8 @@ export class Member {
 	// @Column({type: 'bigint', default: Date.now()}) // TODO how do others progress date, invest time and maybe cahnge it
 	// muted_until: number;
 
-	// @Column({default: false})
-	// banned: boolean;
+	@Column({default: false})
+	banned: boolean;
 
     @ManyToOne(() => User, (user: User) => user.chatrooms)
 	user: User;

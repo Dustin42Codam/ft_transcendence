@@ -8,9 +8,8 @@ export class ChatroomCreateDto {
 	@IsNotEmpty()
 	type: ChatroomType;
 
-	@IsNotEmpty()
-	password: string;
+	password?: string;
 
 	@IsNotEmpty()
-	user_ids: number[];
+	users: any[];
 }

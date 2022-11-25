@@ -10,6 +10,7 @@ import { ChatroomCreateDto } from "./dto/chatroom-create.dto";
 import { MemberService } from "src/member/member.service";
 import { Member, MemberRole } from "src/member/entity/member.entity";
 import { UserService } from "src/user/user.service";
+import { User } from "src/user/entity/user.entity";
 
 @Injectable()
 export class ChatroomService extends AbstractService {
@@ -25,17 +26,20 @@ export class ChatroomService extends AbstractService {
 		return await this.findOne({id}, ["users"]);
 	}
 
+    async getAllOpenChatrooms() {
+		return await this.ChatroomRepository.find({
+            where: [{type: ChatroomType.PUBLIC},{type: ChatroomType.PROTECTED}],
+        });
+	}
+
     async createChatroom(chatroomCreatDto: ChatroomCreateDto, owner_id: number) {
-        const {user_ids, ...chatroom} = chatroomCreatDto;
-        const uniqueUsers = [...new Set(user_ids)];
-        
+        const {users, ...chatroom} = chatroomCreatDto;
         const newChatroom = await this.create(chatroom);
-        for (var user_id of uniqueUsers) {
-            const user = await this.userServcie.findOne({id: user_id});
-            if (user_id === owner_id) {
-			    await this.memberService.createMember({user: user, chatroom: newChatroom, role: MemberRole.OWNER});
+        for (let i = 0; i < users.length; i++) {
+            if (users[i].id === owner_id) {
+			    await this.memberService.createMember({user: users[i], chatroom: newChatroom, role: MemberRole.OWNER});
             } else {
-                await this.memberService.createMember({user: user, chatroom: newChatroom, role: MemberRole.USER});
+                await this.memberService.createMember({user: users[i], chatroom: newChatroom, role: MemberRole.USER});
             }
         }
         return newChatroom;

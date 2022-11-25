@@ -23,7 +23,10 @@ export class FriendRequestService extends AbstractService {
 	}
 
 	async getFriendRequestById(id: number) {
-		return await this.findOne({id}, ["sender", "receiver"]);
+		const friendRequest = await this.findOne({id}, ["sender", "receiver"]);
+		if (!friendRequest)
+			throw new BadRequestException("This friendRequest does not exist");
+		return friendRequest;
 	}
 
 	async acceptFriendRequest(friendRequest: FriendRequest) {
@@ -33,29 +36,6 @@ export class FriendRequestService extends AbstractService {
 	}
 
 	async createFriendRequest(friendRequestCreateDto : FriendRequestCreateDto) {
-		const blockBySender = await this.blockService.findOne({
-			sender: friendRequestCreateDto.sender,
-			receiver: friendRequestCreateDto.receiver
-		});
-		if (blockBySender)
-			throw new BadRequestException("You can not send a friendRequest to a User that you blocked.");
-		const blockByReceiver = await this.blockService.findOne({
-			sender: friendRequestCreateDto.receiver,
-			receiver: friendRequestCreateDto.sender
-		});
-		if (blockByReceiver)
-			throw new BadRequestException("You can not send a friendRequest to a User that blocked you.");
-		const friendRequest = await this.findOne({
-			sender: friendRequestCreateDto.receiver,
-			receiver: friendRequestCreateDto.sender
-		})
-		if (friendRequest)
-			throw new BadRequestException("The user you want to send a friend request to already send a friendrequest to you.");
-		const friendship = await this.friendService.findOne([
-			{user_1_id: friendRequestCreateDto.receiver.id, user_2_id: friendRequestCreateDto.sender.id},
-			{user_1_id: friendRequestCreateDto.sender.id, user_2_id: friendRequestCreateDto.receiver.id}]);
-		if (friendship)
-			throw new BadRequestException("You are already friends with this user.");
 		return this.create(friendRequestCreateDto);
 	}
 }

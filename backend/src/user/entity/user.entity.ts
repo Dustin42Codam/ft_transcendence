@@ -1,6 +1,7 @@
 import { Block } from "src/blocked/entity/block.entity";
 import { Friend } from "src/friend/entity/friend.entity";
 import { FriendRequest } from "src/friend_request/entity/friend_request.entity";
+import { Match } from "src/match/entity/match.entity";
 import { Member } from "src/member/entity/member.entity";
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 

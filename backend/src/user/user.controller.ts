@@ -15,9 +15,9 @@ export class UserController {
 
     @Get(':id')
     async getUserById(
-        @Param('id') id : number
+        @Param('id') id : string
     ) {
-        return this.userService.getUserById(id);
+        return this.userService.getUserById(Number(id));
     }
 
     @Post()
@@ -30,11 +30,11 @@ export class UserController {
 		return this.userService.create(body);
 	}
 
-    @Post(':id') //TODO authgaurd should be added, user id should be used
+    @Post(':id') //TODO authgaurd should be added, user id should be used then the param can be removed
     async update(
-        @Param('id') id: number,
+        @Param('id') id: string,
         @Body() body: UserUpdateDto,
     ) {
-        this.userService.update(id, body);
+        this.userService.update(Number(id), body);
     }
 }

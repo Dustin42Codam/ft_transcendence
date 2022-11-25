@@ -6,9 +6,9 @@ export class Block {
     @PrimaryGeneratedColumn()
 	id: number;
 
-    @ManyToOne(() => User, (user: User) => user.send_blocks)
+    @ManyToOne(() => User)
 	sender: User;
 
-    @ManyToOne(() => User, (user) => user.received_blocks)
+    @ManyToOne(() => User)
 	receiver: User;
 }

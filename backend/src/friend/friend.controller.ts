@@ -8,18 +8,16 @@ export class FriendController {
 	
 	@Get(':id')
 	async getFriendshipById(
-		@Param('id') id : number
+		@Param('id') id : string
 	) {
-		return this.friendService.getFriendshipById(id);
+		return this.friendService.getFriendshipById(Number(id));
 	}
 
 	@Post('remove/:id')
 	async removeFriendship(
-		@Param('id') id: number
+		@Param('id') id: string
 	) {
-		const friendship = await this.friendService.findOne({id});
-		if (!friendship)
-			throw new BadRequestException("This friendship does not exist");
+		const friendship = await this.friendService.getFriendshipById(Number(id));
 		//TODO check if the auth user is one of the two uses in the friendship
 		return await this.friendService.deleteFriendship(friendship);
 	}

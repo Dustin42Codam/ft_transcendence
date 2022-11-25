@@ -17,6 +17,9 @@ export class UserService extends AbstractService {
     }
 
 	async getUserById(id: number) {
-		return this.findOne({id}, ["send_blocks", "received_blocks"]);
+		const user = await this.findOne({id}, ["send_blocks", "received_blocks"]);
+		if (!user)
+			throw new BadRequestException("This user does not exist");
+		return user;
 	}
 }

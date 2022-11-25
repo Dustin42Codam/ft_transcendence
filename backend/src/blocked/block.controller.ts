@@ -8,9 +8,9 @@ export class BlockController {
 	
 	@Get(':id')
 	async getUserById(
-		@Param('id') id : number
+		@Param('id') id : string
 	) {
-		return this.blockService.getBlockById(id);
+		return this.blockService.getBlockById(Number(id));
 	}
 
 	@Post()
@@ -31,9 +31,9 @@ export class BlockController {
 
 	@Post(':id')
 	remove(
-    	@Param('id') id: number
+    	@Param('id') id: string
     ) {
     	//TODO authgaurd to make sure that the sender of the block is the auth user
-    	return this.blockService.delete(id);
+    	return this.blockService.delete(Number(id));
 	}
 }
