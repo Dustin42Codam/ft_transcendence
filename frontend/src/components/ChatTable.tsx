@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import "./Chat.css";
+import "./ChatTable.css";
 
 export enum ChatroomType {
   PUBLIC = "public",
@@ -19,17 +19,18 @@ interface IState {
 }
 
 const CreateChat = () => {
-	const rows = [];
+  const rows = [];
 
-	for (let i = 0; i < 3; i++) {
-		rows.push(<li>Test</li>)
-	}
+  for (let i = 0; i < 3; i++) {
+    rows.push(<div className="chatRow">Test</div>);
+  }
 
   return (
-		<div>
+		<div className="chatTableContainer">
+			<h1>Joint a chat</h1>
 			{rows}
 		</div>
-	)
+	);
 };
 
 export default CreateChat;
