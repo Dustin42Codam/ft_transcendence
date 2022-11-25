@@ -1,0 +1,19 @@
+@import url("https://fonts.cdnfonts.com/css/studio-sans");
+
+.message {
+	display: flex;
+	font-family: "Studio Sans", sans-serif;
+  color: rgb(244, 241, 208);
+  border-radius: 5px;
+  background-color: rgb(31, 33, 40);
+}
+
+.message:nth-child(even) {
+	justify-content: flex-end;
+	align-self: flex-end;
+}
+
+.message:nth-child(odd) {
+	justify-content: flex-start;
+	align-self: flex-start;
+}

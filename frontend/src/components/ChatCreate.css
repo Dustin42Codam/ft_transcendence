@@ -5,18 +5,12 @@
   font-family: "Studio Sans", sans-serif;
   background-color: rgb(16, 16, 20);
   color: rgb(244, 241, 208);
-  grid-template-columns: repeat(auto-fit, auto);
-  font-size: calc(12px + 1.4vw - 0.1rem);
-    grid-gap: 5px;
+	grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
 }
 
 h1 {
-  font-size: calc(24px + 2vw - 0.5rem);
   font-weight: bold;
-  margin-left: 5%;
 }
 
 h6 {
-  font-size: calc(16px + 2vw - 0.5rem);
-  margin-left: 5%;
 }

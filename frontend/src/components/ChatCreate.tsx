@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Wrapper from "./Wrapper";
 import axios from "axios";
-import "./Chat.css";
+import "./ChatCreate.css";
 import TextInput from "./TextInput";
 import SelectInput from "./SelectInput";
 
@@ -55,7 +55,7 @@ function createChat() {
   alert(1);
 }
 
-const CreateChat = () => {
+const ChatCreate = () => {
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfrim, setPasswordConfirm] = useState("");
@@ -87,7 +87,6 @@ const CreateChat = () => {
       <TextInput
         setter={setName}
         id="nameInput"
-        className="textInput"
         type="text"
       />
       {chatType === ChatroomType.PROTECTED ? (
@@ -113,4 +112,4 @@ const CreateChat = () => {
   );
 };
 
-export default CreateChat;
+export default ChatCreate;

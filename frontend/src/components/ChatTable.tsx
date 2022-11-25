@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./ChatTable.css";
 
@@ -21,13 +22,17 @@ interface IState {
 const CreateChat = () => {
   const rows = [];
 
+  let navigate = useNavigate();
+
+	function handleClick() {
+		navigate("../chats/Test", { replace: true });
+	}
   for (let i = 0; i < 3; i++) {
-    rows.push(<div className="chatRow">Test</div>);
+    rows.push(<div key={i} className="chatRow" onClick={handleClick}>Test</div>);
   }
 
   return (
 		<div className="chatTableContainer">
-			<h1>Joint a chat</h1>
 			{rows}
 		</div>
 	);
