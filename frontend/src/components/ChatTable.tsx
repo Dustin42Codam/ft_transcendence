@@ -24,18 +24,18 @@ const CreateChat = () => {
 
   let navigate = useNavigate();
 
-	function handleClick() {
-		navigate("../chats/Test", { replace: true });
-	}
+  function handleClick() {
+    navigate("../chats/Test", { replace: true });
+  }
   for (let i = 0; i < 3; i++) {
-    rows.push(<div key={i} className="chatRow" onClick={handleClick}>Test</div>);
+    rows.push(
+      <div key={i} className="chatRow" onClick={handleClick}>
+        Test
+      </div>
+    );
   }
 
-  return (
-		<div className="chatTableContainer">
-			{rows}
-		</div>
-	);
+  return <div className="chatTableContainer">{rows}</div>;
 };
 
 export default CreateChat;

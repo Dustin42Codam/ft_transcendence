@@ -1,29 +1,29 @@
 @import url("https://fonts.cdnfonts.com/css/studio-sans");
 
 .chatContainer {
-	display:flex;
-	font-family: "Studio Sans", sans-serif;
-	background-color: rgb(16, 16, 20);
-	height: 100vh;
+  display: flex;
+  font-family: "Studio Sans", sans-serif;
+  background-color: rgb(16, 16, 20);
+  height: 100vh;
 }
 
 .chatTableLeft {
-	flex-grow: 1;
-	width: 25%;
-	float:left;
+  flex-grow: 1;
+  width: 25%;
+  float: left;
 }
 
 .Messages {
-	flex-grow: 1;
-	width: 75%;
-	flex-direction: column;
-  align-content: space-between;
+  flex-grow: 1;
+  width: 75%;
+  flex-direction: column;
+    align-content: space-between;
 }
 
 .chatButtonContainer {
-	flex-wrap: wrap;
-	display: flex;
-	align-items: stretch;
-	flex-direction: row;
-	align-items: stretch;
+  flex-wrap: wrap;
+  display: flex;
+  align-items: stretch;
+  flex-direction: row;
+  align-items: stretch;
 }

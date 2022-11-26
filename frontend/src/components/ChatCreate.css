@@ -5,7 +5,7 @@
   font-family: "Studio Sans", sans-serif;
   background-color: rgb(16, 16, 20);
   color: rgb(244, 241, 208);
-	grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
 }
 
 h1 {

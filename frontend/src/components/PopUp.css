@@ -2,8 +2,8 @@
 .popup-box {
   position: fixed;
   background: #00000050;
-	width: 70%;
-	position: fixed;
+  width: 70%;
+  position: fixed;
   width: 100%;
   height: 100%;
   top: 0;
@@ -26,7 +26,7 @@
 }
 
 .close-icon {
-  content: 'x';
+  content: "x";
   cursor: pointer;
   position: fixed;
   right: calc(15% - 30px);

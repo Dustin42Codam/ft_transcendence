@@ -84,11 +84,7 @@ const ChatCreate = () => {
         <p>Name</p>
       </label>
       <SelectInput id="selectChatInput" setter={setChatType} />
-      <TextInput
-        setter={setName}
-        id="nameInput"
-        type="text"
-      />
+      <TextInput setter={setName} id="nameInput" type="text" />
       {chatType === ChatroomType.PROTECTED ? (
         <React.Fragment>
           <label id="chatPasswordInputLable" className="gridItem chatLable">

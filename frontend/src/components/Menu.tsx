@@ -1,6 +1,13 @@
+import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 
 const Menu = () => {
+  const [active, setActive] = useState(true);
+	function chatClick() {
+		setActive(!active);
+	}
   return (
     <nav
       id="sidebarMenu"
@@ -31,6 +38,16 @@ const Menu = () => {
           <li className="nav-item">
             <NavLink to={"/games"} className="nav-link">
               Games
+            </NavLink>
+          </li>
+          <li className="nav-item">
+            <NavLink to={"/chats"} className="nav-link">
+              @DM
+            </NavLink>
+          </li>
+          <li className="nav-item">
+            <NavLink to={"/chats"} className="nav-link" onClick={chatClick}>
+						{ active === false ? <ArrowDropDownIcon/> : <ArrowRightIcon/>} Chats
             </NavLink>
           </li>
         </ul>
