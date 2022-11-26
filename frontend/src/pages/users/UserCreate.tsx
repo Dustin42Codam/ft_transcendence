@@ -53,12 +53,12 @@ const UserCreate = () => {
         <div className="mb-3">
           <label>Avatar</label>
           <div>
-              <input
-                className="form-control"
-                value={avatar}
-                onChange={(e) => setAvatar(e.target.value)}
-                />
-              <ImageUpload uploaded={setAvatar}/>
+            <input
+              className="form-control"
+              value={avatar}
+              onChange={(e) => setAvatar(e.target.value)}
+            />
+            <ImageUpload uploaded={setAvatar} />
           </div>
         </div>
         <div className="mb-3">

@@ -36,7 +36,6 @@ const Users = () => {
     fetchData();
   }, [page]);
 
-
   const deleteUser = async (id: number) => {
     if (window.confirm("Are you sure to delete this record?")) {
       await axios.delete(`users/${id}`);
@@ -66,7 +65,12 @@ const Users = () => {
             {users.map((user: User) => {
               return (
                 <tr key={user.id}>
-                  <td><Avatar src={user.avatar} sx={{ height: "70px", width: "70px" }}></Avatar></td>
+                  <td>
+                    <Avatar
+                      src={user.avatar}
+                      sx={{ height: "70px", width: "70px" }}
+                    ></Avatar>
+                  </td>
                   <td>{user.display_name}</td>
                   <td>{user.status}</td>
                   <td>
@@ -92,7 +96,7 @@ const Users = () => {
           </tbody>
         </table>
       </div>
-      <Paginator lastPage={lastPage} pageChanged={setPage} page={page}/>
+      <Paginator lastPage={lastPage} pageChanged={setPage} page={page} />
     </Wrapper>
   );
 };

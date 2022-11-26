@@ -5,6 +5,7 @@ import { User } from './models/user.entity'
 import { UserService } from './user.service';
 import { CommonModule } from 'src/common/common.module';
 import { AuthModule } from 'src/auth/auth.module';
+import { UploadController } from './upload.controller';
 
 @Module({
 	imports: [
@@ -12,7 +13,7 @@ import { AuthModule } from 'src/auth/auth.module';
 		CommonModule,
 		AuthModule
 	],
-  	controllers: [UserController],
+  	controllers: [UserController, UploadController],
   	providers: [UserService],
 	exports: [UserService]
 })

@@ -1,7 +1,8 @@
 import userEvent from "@testing-library/user-event";
 import axios from "axios";
-import React, { SyntheticEvent, useEffect, useState } from "react";
+import React, { SyntheticEvent, useEffect, useRef, useState } from "react";
 import { Navigate, useLocation, useParams } from "react-router-dom";
+import ImageUpload from "../../components/ImageUpload";
 import Wrapper from "../../components/Wrapper";
 import { UserStatus } from "../../models/Channel";
 
@@ -23,6 +24,7 @@ const UserEdit = () => {
   const [redirect, setRedirect] = useState(false);
   const params: any = useParams();
   let response: any;
+  const ref = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -60,6 +62,13 @@ const UserEdit = () => {
     return <Navigate to="/users" />;
   }
 
+  const updateImage = (url: string) => {
+    if (ref.current) {
+      ref.current.value = url;
+    }
+    setAvatar(url);
+  };
+
   return (
     <Wrapper>
       <form onSubmit={submit}>
@@ -73,11 +82,15 @@ const UserEdit = () => {
         </div>
         <div className="mb-3">
           <label>Avatar</label>
-          <input
-            className="form-control"
-            type="file"
-            onChange={(e) => setAvatar(e.target.value)}
-          />
+          <div>
+            <input
+              ref={ref}
+              className="form-control"
+              value={avatar}
+              onChange={(e) => setAvatar(e.target.value)}
+            />
+            <ImageUpload uploaded={updateImage} />
+          </div>
         </div>
         <div className="mb-3">
           <label>Status</label>

@@ -62,7 +62,7 @@ const Achievements = () => {
           </tbody>
         </table>
       </div>
-      <Paginator lastPage={lastPage} pageChanged={setPage} page={page}/>
+      <Paginator lastPage={lastPage} pageChanged={setPage} page={page} />
     </Wrapper>
   );
 };
