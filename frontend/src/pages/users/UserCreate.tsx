@@ -16,7 +16,7 @@ const UserCreate = () => {
     e.preventDefault();
 
     await axios
-      .post("users", {
+      .put("users", {
         display_name: name,
         avatar,
         status,

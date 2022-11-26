@@ -51,6 +51,21 @@ export class UserController {
 
 		return this.userService.findOne({id});
 	}
+	
+	@Post('info')
+	async _updateInfo(
+		@Req() request: Request,
+		@Body() body: UserUpdateDto
+	) {
+		console.log("Posting user")
+		console.log("🚀 ~ file: user.controller.ts ~ line 60 ~ UserController ~ body", body)
+		
+		const id = await this.authService.userId(request);
+
+		await this.userService.update(id, body);
+
+		return this.userService.findOne({id});
+	}
 
 	@Put(':id')
 	async update(

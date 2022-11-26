@@ -1,8 +1,11 @@
 import axios from "axios";
 import React, { Component, useState } from "react";
 import { Link } from "react-router-dom";
+import { connect } from "react-redux";
+import { User } from "../models/User";
 
-const Nav = () => {
+const Nav = (props: { user: User }) => {
+  console.log("🚀 ~ file: Nav.tsx ~ line 8 ~ Nav ~ user", props.user)
   const logout = async () => {
     await axios
       .post("logout", {})
@@ -16,23 +19,21 @@ const Nav = () => {
         ft_transcendence
       </a>
 
-      <ul className="my-2 my-md-0 mr-md-3">
-        <ul>
-          {/* <Link to="/profile" className="p-2 text-white text-decoration-none">{user?.first_name} {user?.last_name}</Link> */}
-          {/* <Link
-            to="/authenticate"
-            className="p-2 text-white text-decoration-none"
-            onClick={logout}
-          >
-            Sign out
-          </Link> */}
-          <button className="btn btn_sign_out btn-lg" onClick={logout}>
-            Sign out
-          </button>
-        </ul>
-      </ul>
+	  <ul className="my-2 my-md-0 mr-md-3">
+                <Link to="/profile"
+                      className="p-2 text-white text-decoration-none">{props.user.avatar}</Link>
+                <Link to="/login" className="p-2 text-white text-decoration-none"
+                      onClick={logout}
+                >Sign out</Link>
+            </ul>
     </nav>
   );
 };
 
-export default Nav;
+export default connect(
+    (state: { user: User }) => {
+        return {
+            user: state.user
+        };
+    }
+)(Nav);

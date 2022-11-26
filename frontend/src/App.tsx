@@ -16,6 +16,10 @@ import { useEffect, useState } from "react";
 import UserCreate from "./pages/users/UserCreate";
 import UserEdit from "./pages/users/UserEdit";
 import Achievements from "./pages/achievements/Achievements";
+import { connect } from "react-redux";
+import { Dispatch } from "redux";
+import { User } from "./models/User";
+import { setUser } from "./redux/actions/setUserAction";
 
 function App() {
   const [token, setToken] = useState(false);
@@ -73,5 +77,16 @@ function App() {
     );
   }
 }
+const mapStateToProps = (state: { user: User }) => {
+  return {
+    user: state.user,
+  };
+};
 
-export default App;
+const mapDispatchToProps = (dispatch: Dispatch<any>) => {
+  return {
+    setUser: (user: User) => dispatch(setUser(user)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

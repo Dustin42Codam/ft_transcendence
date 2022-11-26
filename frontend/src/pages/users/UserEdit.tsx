@@ -42,7 +42,7 @@ const UserEdit = () => {
     e.preventDefault();
 
     await axios
-      .put(`users/${params.id}`, {
+      .post(`users/${params.id}`, {
         display_name: name,
         avatar,
         status,
