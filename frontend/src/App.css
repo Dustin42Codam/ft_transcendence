@@ -1,23 +1,26 @@
+@import url("https://fonts.cdnfonts.com/css/studio-sans");
 body {
+	font-family: "Studio Sans", sans-serif;
+  background-color: rgb(16, 16, 20);
+  color: rgb(244, 241, 208);
 }
 
-.feather {
-  width: 16px;
-  height: 16px;
+h2 {
+  font-weight: bold;
+  display: grid;
+  font-family: "Studio Sans", sans-serif;
+  background-color: rgb(16, 16, 20);
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
 }
 
 /*
-   * Sidebar
-   */
+* Sidebar
+*/
 
 .sidebar {
   position: fixed;
   top: 0;
-  /* rtl:raw:
-	right: 0;
-	*/
   bottom: 0;
-  /* rtl:remove */
   left: 0;
   z-index: 100; /* Behind the navbar */
   padding: 48px 0 0; /* Height of navbar */
@@ -47,12 +50,10 @@ body {
 }
 
 .sidebar .nav-link.active {
-  color: #2470dc;
 }
 
 .sidebar .nav-link:hover .feather,
 .sidebar .nav-link.active .feather {
-  color: inherit;
 }
 
 .sidebar-heading {
@@ -66,7 +67,6 @@ body {
 .navbar-brand {
   padding-top: 0.75rem;
   padding-bottom: 0.75rem;
-  background-color: rgba(0, 0, 0, 0.25);
   box-shadow: inset -1px 0 0 rgba(0, 0, 0, 0.25);
 }
 
@@ -80,12 +80,8 @@ body {
 }
 
 .form-control-dark {
-  color: #fff;
-  background-color: rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 255, 255, 0.1);
 }
 
 .form-control-dark:focus {
-  border-color: transparent;
   box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.25);
 }

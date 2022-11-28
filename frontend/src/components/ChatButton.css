@@ -1,4 +1,33 @@
+@import url("https://fonts.cdnfonts.com/css/studio-sans");
+
+.chatButtonContainer {
+	max-width: 20%;
+	max-height: 20%;
+	border: solid 5px rgb(244, 241, 208);
+  border-width: 5px;
+  border-style: solid;
+	display: flex;
+  align-items: baseline;
+	justify-content: space-evenly;
+	flex-direction: row;
+}
+
 .chatButton {
-  min-height: 50px;
-  min-width: 50%;
+  background-color: rgb(31, 33, 40);
+  font-family: "Studio Sans", sans-serif;
+  font-size: calc(12px + 1.4vw - 0.1rem);
+	color: rgb(244, 241, 208);
+  border-radius: 5px;
+  border-color: rgb(105, 105, 105);
+  transition-duration: 1s;
+}
+
+.chatButton:hover {
+  border-color: rgb(244, 241, 208);
+  font-size: calc(20px + 1.4vw - 0.1rem);
+}
+
+.chatButton:selection {
+  border-color: rgb(244, 241, 208);
+  font-size: calc(20px + 1.4vw - 0.1rem);
 }
