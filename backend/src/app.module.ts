@@ -4,7 +4,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import { CommonModule } from './common/common.module';
 // import { APP_GUARD } from '@nestjs/core';
-import { LoginModule } from './login/login.module';
 import { LogoutModule } from './logout/logout.module';
 import { OauthCallbackModule } from './oauth-callback/oauth-callback.module';
 import { BlockModule } from './blocked/block.module';
@@ -36,7 +35,6 @@ dotenv.config();
 		CommonModule,
 		FriendModule,
 		FriendRequestModule,
-		LoginModule,
 		LogoutModule,
 		GameModule,
 		GameStatsModule,

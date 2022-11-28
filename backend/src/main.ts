@@ -15,7 +15,7 @@ async function bootstrap() {
 
 	app.setGlobalPrefix('api');
 	app.useGlobalPipes(new ValidationPipe());
-	app.use(cors({origin: ['http://localhost:4242', "https://api.intra.42.fr"],allowedHeaders: ['Access-Control-Allow-Origin', 'content-type'], credentials: true}));
+	app.use(cors({origin: 'http://localhost:4242', allowedHeaders: ['Access-Control-Allow-Origin', 'content-type', 'Location', 'Authorization', 'origin', 'accept'], credentials: true}));
 	app.use(express.json());
 	app.use(cookieParser());
 	app.use(session(
