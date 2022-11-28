@@ -18,8 +18,9 @@ export class MemberController {
 
 	@Get(':id')
 	async getMemberById(
-		@Param(':id') id : string,
+		@Param('id') id : string,
 	) {
+		console.group(id)
 		return this.memberService.getMemberById(Number(id));
 	}
 

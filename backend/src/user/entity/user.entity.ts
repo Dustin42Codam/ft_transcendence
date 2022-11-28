@@ -1,9 +1,9 @@
 import { Block } from "src/blocked/entity/block.entity";
 import { Friend } from "src/friend/entity/friend.entity";
 import { FriendRequest } from "src/friend_request/entity/friend_request.entity";
-import { Match } from "src/match/entity/match.entity";
+import { GameStats } from "src/games_stats/entity/game_stats.entity";
 import { Member } from "src/member/entity/member.entity";
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn, OneToOne,  JoinColumn, } from "typeorm";
 
 export enum UserStatus {
 	ONLINE = 'online',
@@ -46,4 +46,8 @@ export class User {
 
 	@OneToMany(() => Member, (member: Member) => member.user)
     chatrooms: FriendRequest[]
+
+	@OneToOne(() => GameStats, {eager: true, cascade: true})
+    @JoinColumn()
+    game_stats: GameStats
 }

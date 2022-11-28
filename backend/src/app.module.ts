@@ -13,7 +13,8 @@ import { FriendRequestModule } from './friend_request/friend_request.module';
 import { FriendModule } from './friend/friend.module';
 import { MemberModule } from './member/member.module';
 import { ChatroomModule } from './chatroom/chatroom.module';
-import { MatchModule } from './match/match.module';
+import { GameModule } from './game/game.module';
+import { GameStatsModule } from './games_stats/game_stats.module';
 
 dotenv.config();
 
@@ -37,7 +38,8 @@ dotenv.config();
 		FriendRequestModule,
 		LoginModule,
 		LogoutModule,
-		MatchModule,
+		GameModule,
+		GameStatsModule,
 		MemberModule,
 		OauthCallbackModule,
 		UserModule,

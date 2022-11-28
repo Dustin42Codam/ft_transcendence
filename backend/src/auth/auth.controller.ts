@@ -6,6 +6,7 @@ import { JwtService } from '@nestjs/jwt';
 import { Request, Response } from 'express';
 import { AuthGuard } from './auth.guard';
 import { AuthService } from './auth.service';
+import { UserStatus } from 'src/user/entity/user.entity';
 
 @UseInterceptors(ClassSerializerInterceptor)
 @Controller()
@@ -29,10 +30,11 @@ export class AuthController {
 
 		console.log('Body:', body);
 
-		await this.userService.create({
+		await this.userService.createUser({
 			display_name: body.display_name,
 			avatar: body.avatar,
-			two_factor_auth: body.two_factor_auth
+			two_factor_auth: false, //CHECK is this always false when initialized
+			status: UserStatus.ONLINE //CHECK is this always ONLINE when initialized
 		});
 
 		return user;

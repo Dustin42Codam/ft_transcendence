@@ -7,7 +7,7 @@ export class BlockController {
 	constructor(private readonly blockService: BlockService) {}
 	
 	@Get(':id')
-	async getUserById(
+	async getBlockById(
 		@Param('id') id : string
 	) {
 		return this.blockService.getBlockById(Number(id));

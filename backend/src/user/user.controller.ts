@@ -27,7 +27,7 @@ export class UserController {
 		const user = await this.userService.findOne({display_name: body.display_name});
 		if (user)
 			return user;
-		return this.userService.create(body);
+		return this.userService.createUser(body);
 	}
 
     @Post(':id') //TODO authgaurd should be added, user id should be used then the param can be removed
