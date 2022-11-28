@@ -1,6 +1,21 @@
+import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import ArrowRightIcon from "@mui/icons-material/ArrowRight";
+import ChatTable from "./ChatTable";
+import AddIcon from "@mui/icons-material/Add";
+import PopUp from "./PopUp";
 
 const Menu = () => {
+  const [active, setActive] = useState(true);
+  function showPopUp(event: any) {
+    event.stopPropagation();
+    alert(1);
+    return false;
+  }
+  function chatClick() {
+    setActive(!active);
+  }
   return (
     <nav
       id="sidebarMenu"
@@ -31,6 +46,45 @@ const Menu = () => {
           <li className="nav-item">
             <NavLink to={"/games"} className="nav-link">
               Games
+            </NavLink>
+          </li>
+          <li className="nav-item">
+            <NavLink to={"/chats"} className="nav-link">
+              {active === false ? (
+                <React.Fragment>
+                  <ArrowDropDownIcon />
+                  DM
+                  <ChatTable />
+                </React.Fragment>
+              ) : (
+                <React.Fragment>
+                  <ArrowRightIcon />
+                  DM
+                </React.Fragment>
+              )}
+            </NavLink>
+          </li>
+          <li className="nav-item">
+            <NavLink to={"/chats"} className="nav-link">
+              {active === false ? (
+                <React.Fragment>
+                  <div onClick={chatClick}>
+                    <ArrowDropDownIcon />
+                    Chats
+                    <ChatTable />
+                    <div onClick={() => showPopUp(event)}>
+                      <AddIcon /> Add a chanel
+                    </div>
+                  </div>
+                </React.Fragment>
+              ) : (
+                <React.Fragment>
+                  <div onClick={chatClick}>
+                    <ArrowRightIcon />
+                    Chats
+                  </div>
+                </React.Fragment>
+              )}
             </NavLink>
           </li>
         </ul>

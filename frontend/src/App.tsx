@@ -1,4 +1,3 @@
-//import React from "react";
 import "./App.css";
 import Users from "./pages/users/Users";
 import NotFound from "./pages/NotFound";
@@ -9,6 +8,7 @@ import Login from "./pages/users/Login";
 import Game from "./pages/Game";
 import Profile from "./pages/Profile";
 import Chat from "./pages/Chat";
+import ChatLobby from "./pages/ChatLobby";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useAsync } from "react-async";
@@ -55,7 +55,8 @@ function App() {
             <Route path={"/authenticate"} element={<Authenticate />} />
             <Route path={"/login"} element={<Login />} />
             <Route path={"/profile"} element={<Profile />} />
-            <Route path={"/chats"} element={<Chat />} />
+            <Route path={"/chats"} element={<ChatLobby />} />
+            <Route path={"/chats/:name"} element={<Chat />} />
             <Route path={"/games"} element={<Game />} />
             <Route path={"*"} element={<NotFound />} />
           </Routes>
