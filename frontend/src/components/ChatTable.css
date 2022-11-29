@@ -5,19 +5,18 @@
   font-family: "Studio Sans", sans-serif;
   background-color: rgb(16, 16, 20);
   color: rgb(244, 241, 208);
-  row-gap: calc(1px + 0.5vw - 0.1rem);
-    grid-gap: 5px;
+  grid-gap: 5px;
   flex-direction: column;
   align-items: stretch;
 }
 
 .chatRow {
   background-color: rgb(31, 33, 40);
-  transition-duration: 1s;
+  transition-duration: 2s;
   border-left: thick solid rgb(255, 165, 0);
   border-radius: 5px;
 }
 
 .chatRow:hover {
-  font-size: calc(12px + 1.4vw - 0.1rem);
+  font-size: calc(12px + 0.3rem);
 }

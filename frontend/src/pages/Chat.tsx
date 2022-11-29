@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import Wrapper from "../components/Wrapper";
 import Message from "../components/Message";
 import ChatButton from "../components/ChatButton";
 import ChatTable from "../components/ChatTable";
@@ -39,60 +40,27 @@ const Chat = () => {
   const toggleCreateChatPopUp = () => {
     setCreateChatPopUp(!createChatPopUp);
   };
-  function joinChat() {
-    alert("Joind Chat");
-  }
   if (width > 800) {
     return (
-      <div>
-        <div className="chatContainer">
-          <div className="chatTableLeft">
-            <div className="chatButtonContainer">
-              <ChatButton onClick={joinChat} name="Join a Chat" />
-              <ChatButton
-                onClick={toggleCreateChatPopUp}
-                name="Create a Chat"
-              />
-            </div>
-            <h2>group chats</h2>
-            <ChatTable />
-            <h2>DM</h2>
-            <ChatTable />
-          </div>
-          <div className="Messages">
-            <Message />
-            <Message />
-            <Message />
-            <Message />
-          </div>
-        </div>
-        {createChatPopUp && (
-          <PopUp content={<ChatCreate />} handleClose={toggleCreateChatPopUp} />
-        )}
-      </div>
+			<Wrapper>
+        <div className="Messages">
+          <Message />
+          <Message />
+          <Message />
+          <Message />
+				</div>
+			</Wrapper>
     );
   } else {
     return (
-      <div>
-        <div className="chatContainer">
-          <div className="chatTableLeft">
-            <div className="chatButtonContainer">
-              <ChatButton onClick={joinChat} name="Join a Chat" />
-              <ChatButton
-                onClick={toggleCreateChatPopUp}
-                name="Create a Chat"
-              />
-            </div>
-            <h2>group chats</h2>
-            <ChatTable />
-            <h2>DM</h2>
-            <ChatTable />
-          </div>
-        </div>
-        {createChatPopUp && (
-          <PopUp content={<ChatCreate />} handleClose={toggleCreateChatPopUp} />
-        )}
-      </div>
+			<Wrapper>
+				<div className="Messages">
+					<Message />
+					<Message />
+					<Message />
+					<Message />
+				</div>
+			</Wrapper>
     );
   }
 };

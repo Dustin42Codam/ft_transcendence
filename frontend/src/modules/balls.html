@@ -1,15 +1,32 @@
-<object id="svg-object" data="path/to/external.svg" type="image/svg+xml"></object>
-<input type="range" min="1" max="60" value="20" oninput="moveSlider(this, 'x')"/>
-<input type="range" min="1" max="40" value="10" oninput="moveSlider(this, 'y')"/>
+<object
+  id="svg-object"
+  data="path/to/external.svg"
+  type="image/svg+xml"
+></object>
+<input
+  type="range"
+  min="1"
+  max="60"
+  value="20"
+  oninput="moveSlider(this, 'x')"
+/>
+<input
+  type="range"
+  min="1"
+  max="40"
+  value="10"
+  oninput="moveSlider(this, 'y')"
+/>
 
 <script>
-var element = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-    var element = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-    element.setAttributeNS(null, 'x', 5);
-    element.setAttributeNS(null, 'y', 15);
-    var txt = document.createTextNode("Hello World");
-    element.appendChild(txt);
-    svg.appendChild(element);
+  var element = document.createElementNS(
+    "http://www.w3.org/2000/svg",
+    "circle"
+  );
+  var element = document.createElementNS("http://www.w3.org/2000/svg", "text");
+  element.setAttributeNS(null, "x", 5);
+  element.setAttributeNS(null, "y", 15);
+  var txt = document.createTextNode("Hello World");
+  element.appendChild(txt);
+  svg.appendChild(element);
 </script>
-
-
