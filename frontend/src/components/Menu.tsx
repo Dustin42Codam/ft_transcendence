@@ -39,17 +39,12 @@ const Menu = () => {
             </NavLink>
           </li>
           <li className="nav-item">
-            <NavLink to={"/chats"} className="nav-link">
-              Chats
-            </NavLink>
-          </li>
-          <li className="nav-item">
             <NavLink to={"/games"} className="nav-link">
               Games
             </NavLink>
           </li>
           <li className="nav-item">
-            <NavLink to={"/chats"} className="nav-link">
+            <div className="nav-link">
               {active === false ? (
                 <React.Fragment>
                   <ArrowDropDownIcon />
@@ -62,10 +57,10 @@ const Menu = () => {
                   DM
                 </React.Fragment>
               )}
-            </NavLink>
+            </div>
           </li>
           <li className="nav-item">
-            <NavLink to={"/chats"} className="nav-link">
+            <div className="nav-link">
               {active === false ? (
                 <React.Fragment>
                   <div onClick={chatClick}>
@@ -85,7 +80,7 @@ const Menu = () => {
                   </div>
                 </React.Fragment>
               )}
-            </NavLink>
+						</div>
           </li>
         </ul>
       </div>

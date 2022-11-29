@@ -55,7 +55,6 @@ function App() {
             <Route path={"/authenticate"} element={<Authenticate />} />
             <Route path={"/login"} element={<Login />} />
             <Route path={"/profile"} element={<Profile />} />
-            <Route path={"/chats"} element={<ChatLobby />} />
             <Route path={"/chats/:name"} element={<Chat />} />
             <Route path={"/games"} element={<Game />} />
             <Route path={"*"} element={<NotFound />} />
