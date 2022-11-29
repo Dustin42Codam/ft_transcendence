@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import { User } from "../models/User";
 
 const Nav = (props: { user: User }) => {
-  console.log("🚀 ~ file: Nav.tsx ~ line 8 ~ Nav ~ user", props.user)
+  console.log("🚀 ~ file: Nav.tsx ~ line 8 ~ Nav ~ user", props.user);
   const logout = async () => {
     await axios
       .post("logout", {})
@@ -19,21 +19,24 @@ const Nav = (props: { user: User }) => {
         ft_transcendence
       </a>
 
-	  <ul className="my-2 my-md-0 mr-md-3">
-                <Link to="/profile"
-                      className="p-2 text-white text-decoration-none">{props.user.avatar}</Link>
-                <Link to="/login" className="p-2 text-white text-decoration-none"
-                      onClick={logout}
-                >Sign out</Link>
-            </ul>
+      <ul className="my-2 my-md-0 mr-md-3">
+        <Link to="/profile" className="p-2 text-white text-decoration-none">
+          {props.user.avatar}
+        </Link>
+        <Link
+          to="/login"
+          className="p-2 text-white text-decoration-none"
+          onClick={logout}
+        >
+          Sign out
+        </Link>
+      </ul>
     </nav>
   );
 };
 
-export default connect(
-    (state: { user: User }) => {
-        return {
-            user: state.user
-        };
-    }
-)(Nav);
+export default connect((state: { user: User }) => {
+  return {
+    user: state.user,
+  };
+})(Nav);

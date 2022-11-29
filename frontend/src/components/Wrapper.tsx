@@ -9,37 +9,39 @@ import axios from "axios";
 import { Navigate } from "react-router-dom";
 
 const fetchDataCall = async () => {
-	let response = await axios.get(`user`).catch(function (error) {
-	  console.log(error);
-	});
-	return response;
-  };
+  let response = await axios.get(`user`).catch(function (error) {
+    console.log(error);
+  });
+  return response;
+};
 
 const Wrapper = (props: any) => {
-    const [redirect, setRedirect] = useState(false);
+  const [redirect, setRedirect] = useState(false);
 
-	useEffect(() => {
-		const fetchData = async () => {
-		  const response: any = await fetchDataCall();
+  useEffect(() => {
+    const fetchData = async () => {
+      const response: any = await fetchDataCall();
 
-			props.setUser(new User(
-				response.id,
-				response.display_name,
-				response.status,
-				response.avatar,
-			));
-		};
-	
-		fetchData();
-	  }, []);
+      props.setUser(
+        new User(
+          response.id,
+          response.display_name,
+          response.status,
+          response.avatar
+        )
+      );
+    };
 
-	  if (redirect) {
-        return <Navigate to="/login"/>
-    }
+    fetchData();
+  }, []);
+
+  if (redirect) {
+    return <Navigate to="/login" />;
+  }
 
   return (
     <>
-      <Nav props={props}/>
+      <Nav />
 
       <div className="container-fluid">
         <div className="row">
