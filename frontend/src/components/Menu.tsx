@@ -46,14 +46,18 @@ const Menu = () => {
             <div className="nav-link">
               {activeDm === true ? (
                 <React.Fragment>
+                  <div onClick={ () => setActiveDm(!activeDm)}>
                   <ArrowDropDownIcon />
                   DM
+                  </div>
                   <ChatTable />
                 </React.Fragment>
               ) : (
                 <React.Fragment>
+                  <div onClick={ () => setActiveDm(!activeDm)}>
                   <ArrowRightIcon />
                   DM
+                  </div>
                 </React.Fragment>
               )}
             </div>
