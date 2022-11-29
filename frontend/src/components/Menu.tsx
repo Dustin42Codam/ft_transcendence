@@ -7,14 +7,13 @@ import AddIcon from "@mui/icons-material/Add";
 import PopUp from "./PopUp";
 
 const Menu = () => {
-  const [active, setActive] = useState(true);
+  const [activeDm, setActiveDm] = useState(false);
+  const [activeChanels, setActiveChanels] = useState(false);
+
   function showPopUp(event: any) {
     event.stopPropagation();
     alert(1);
     return false;
-  }
-  function chatClick() {
-    setActive(!active);
   }
   return (
     <nav
@@ -45,7 +44,7 @@ const Menu = () => {
           </li>
           <li className="nav-item">
             <div className="nav-link">
-              {active === false ? (
+              {activeDm === true ? (
                 <React.Fragment>
                   <ArrowDropDownIcon />
                   DM
@@ -61,9 +60,9 @@ const Menu = () => {
           </li>
           <li className="nav-item">
             <div className="nav-link">
-              {active === false ? (
+              {activeChanels === true ? (
                 <React.Fragment>
-                  <div onClick={chatClick}>
+                  <div onClick={ () => setActiveChanels(!activeChanels)}>
                     <ArrowDropDownIcon />
                     Chats
                     <ChatTable />
@@ -74,7 +73,7 @@ const Menu = () => {
                 </React.Fragment>
               ) : (
                 <React.Fragment>
-                  <div onClick={chatClick}>
+                  <div onClick={ () => setActiveChanels(!activeChanels)}>
                     <ArrowRightIcon />
                     Chats
                   </div>
