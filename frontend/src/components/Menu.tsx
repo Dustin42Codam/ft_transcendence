@@ -3,15 +3,15 @@ import { NavLink } from "react-router-dom";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import ChatTable from "./ChatTable";
+import ChatCreate from "./ChatCreate";
 import AddIcon from "@mui/icons-material/Add";
 import PopUp from "./PopUp";
 
 const Menu = () => {
   const [activeDm, setActiveDm] = useState(false);
   const [activeChanels, setActiveChanels] = useState(false);
+	const [createChatPopUp, setCreateChatPopUp] = useState(false);
 
-  function showPopUp(event: any) {
-  }
   return (
     <nav
       id="sidebarMenu"
@@ -48,12 +48,15 @@ const Menu = () => {
 										DM
                   </div>
                   <ChatTable />
+                  <div onClick={() => setCreateChatPopUp(!createChatPopUp)}>
+                    <AddIcon /> Message someone
+                  </div>
                 </React.Fragment>
               ) : (
                 <React.Fragment>
                   <div onClick={ () => setActiveDm(!activeDm)}>
                   <ArrowRightIcon />
-                  DM
+										DM
                   </div>
                 </React.Fragment>
               )}
@@ -67,9 +70,12 @@ const Menu = () => {
                     <ArrowDropDownIcon /> Chats
 									</div>
                   <ChatTable />
-                  <div onClick={() => showPopUp(event)}>
+                  <div onClick={() => setCreateChatPopUp(!createChatPopUp)}>
                     <AddIcon /> Add a chanel
                   </div>
+									{createChatPopUp && (
+										<PopUp content={<ChatCreate />} handleClose={() => setCreateChatPopUp(!createChatPopUp)} />
+									)}
                 </React.Fragment>
               ) : (
                 <React.Fragment>
