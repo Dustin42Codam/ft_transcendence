@@ -3,8 +3,9 @@ import React, { Component, useState } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { User } from "../models/User";
+import { setUser } from "../redux/actions/setUserAction";
 
-const Nav = (props: { user: User }) => {
+const Nav = (props: any) => {
   console.log("🚀 ~ file: Nav.tsx ~ line 8 ~ Nav ~ user", props.user);
   const logout = async () => {
     await axios
@@ -29,14 +30,29 @@ const Nav = (props: { user: User }) => {
           onClick={logout}
         >
           Sign out
+          {props.user.avatar}
         </Link>
       </ul>
     </nav>
   );
 };
 
-export default connect((state: { user: User }) => {
+const mapStateToProps = (state: { user: User }) => {
   return {
     user: state.user,
   };
-})(Nav);
+};
+
+const mapDispatchToProps = (dispatch: any) => {
+  return {
+    setUser: setUser,
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Nav);
+
+// export default connect((state: { user: User }) => {
+//   return {
+//     user: state.user,
+//   };
+// })(Nav);
