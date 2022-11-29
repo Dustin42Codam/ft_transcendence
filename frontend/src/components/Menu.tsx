@@ -11,9 +11,6 @@ const Menu = () => {
   const [activeChanels, setActiveChanels] = useState(false);
 
   function showPopUp(event: any) {
-    event.stopPropagation();
-    alert(1);
-    return false;
   }
   return (
     <nav
@@ -48,7 +45,7 @@ const Menu = () => {
                 <React.Fragment>
                   <div onClick={ () => setActiveDm(!activeDm)}>
                   <ArrowDropDownIcon />
-                  DM
+										DM
                   </div>
                   <ChatTable />
                 </React.Fragment>
@@ -67,12 +64,11 @@ const Menu = () => {
               {activeChanels === true ? (
                 <React.Fragment>
                   <div onClick={ () => setActiveChanels(!activeChanels)}>
-                    <ArrowDropDownIcon />
-                    Chats
-                    <ChatTable />
-                    <div onClick={() => showPopUp(event)}>
-                      <AddIcon /> Add a chanel
-                    </div>
+                    <ArrowDropDownIcon /> Chats
+									</div>
+                  <ChatTable />
+                  <div onClick={() => showPopUp(event)}>
+                    <AddIcon /> Add a chanel
                   </div>
                 </React.Fragment>
               ) : (
@@ -80,7 +76,7 @@ const Menu = () => {
                   <div onClick={ () => setActiveChanels(!activeChanels)}>
                     <ArrowRightIcon />
                     Chats
-                  </div>
+									</div>
                 </React.Fragment>
               )}
 						</div>
