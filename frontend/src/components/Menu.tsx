@@ -10,7 +10,7 @@ import PopUp from "./PopUp";
 const Menu = () => {
   const [activeDm, setActiveDm] = useState(false);
   const [activeChanels, setActiveChanels] = useState(false);
-	const [createChatPopUp, setCreateChatPopUp] = useState(false);
+  const [createChatPopUp, setCreateChatPopUp] = useState(false);
 
   return (
     <nav
@@ -43,9 +43,9 @@ const Menu = () => {
             <div className="nav-link">
               {activeDm === true ? (
                 <React.Fragment>
-                  <div onClick={ () => setActiveDm(!activeDm)}>
-                  <ArrowDropDownIcon />
-										DM
+                  <div onClick={() => setActiveDm(!activeDm)}>
+                    <ArrowDropDownIcon />
+                    DM
                   </div>
                   <ChatTable />
                   <div onClick={() => setCreateChatPopUp(!createChatPopUp)}>
@@ -54,9 +54,9 @@ const Menu = () => {
                 </React.Fragment>
               ) : (
                 <React.Fragment>
-                  <div onClick={ () => setActiveDm(!activeDm)}>
-                  <ArrowRightIcon />
-										DM
+                  <div onClick={() => setActiveDm(!activeDm)}>
+                    <ArrowRightIcon />
+                    DM
                   </div>
                 </React.Fragment>
               )}
@@ -66,26 +66,29 @@ const Menu = () => {
             <div className="nav-link">
               {activeChanels === true ? (
                 <React.Fragment>
-                  <div onClick={ () => setActiveChanels(!activeChanels)}>
+                  <div onClick={() => setActiveChanels(!activeChanels)}>
                     <ArrowDropDownIcon /> Chats
-									</div>
+                  </div>
                   <ChatTable />
                   <div onClick={() => setCreateChatPopUp(!createChatPopUp)}>
                     <AddIcon /> Add a chanel
                   </div>
-									{createChatPopUp && (
-										<PopUp content={<ChatCreate />} handleClose={() => setCreateChatPopUp(!createChatPopUp)} />
-									)}
+                  {createChatPopUp && (
+                    <PopUp
+                      content={<ChatCreate />}
+                      handleClose={() => setCreateChatPopUp(!createChatPopUp)}
+                    />
+                  )}
                 </React.Fragment>
               ) : (
                 <React.Fragment>
-                  <div onClick={ () => setActiveChanels(!activeChanels)}>
+                  <div onClick={() => setActiveChanels(!activeChanels)}>
                     <ArrowRightIcon />
                     Chats
-									</div>
+                  </div>
                 </React.Fragment>
               )}
-						</div>
+            </div>
           </li>
         </ul>
       </div>

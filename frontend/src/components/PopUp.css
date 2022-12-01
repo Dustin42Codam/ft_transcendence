@@ -13,8 +13,8 @@
 }
 
 .box {
-	max-width: 50%;
-	max-height: 50%;
+  max-width: 50%;
+  max-height: 50%;
   position: relative;
   margin: 0 auto;
   margin-top: calc(100vh - 85vh);
@@ -24,5 +24,4 @@
 }
 
 .close-icon {
-
 }

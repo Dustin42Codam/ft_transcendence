@@ -14,6 +14,7 @@ import { MemberModule } from './member/member.module';
 import { ChatroomModule } from './chatroom/chatroom.module';
 import { GameModule } from './game/game.module';
 import { GameStatsModule } from './games_stats/game_stats.module';
+import { WebSocketModule } from './web-socket/web-socket.module';
 
 dotenv.config();
 
@@ -29,6 +30,7 @@ dotenv.config();
 			autoLoadEntities: true,
 			synchronize: true,
 		}),
+		WebSocketModule,
 		AuthModule,
 		BlockModule,
 		ChatroomModule,
@@ -41,7 +43,7 @@ dotenv.config();
 		MemberModule,
 		OauthCallbackModule,
 		UserModule,
-	]
+	],
 })
 
 export class AppModule {}

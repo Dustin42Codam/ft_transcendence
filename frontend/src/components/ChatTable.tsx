@@ -25,7 +25,10 @@ const chats = [
   { name: "unit testing chat", type: ChatroomType.PUBLIC },
   { name: "HACKING chat", type: ChatroomType.PROTECTED },
   { name: "Club mate", type: ChatroomType.PROTECTED },
-  { name: "asdlfjsalkdjflksdjfiawojgoaet;jhd;favj ;dsja ;kj", type: ChatroomType.PROTECTED },
+  {
+    name: "asdlfjsalkdjflksdjfiawojgoaet;jhd;favj ;dsja ;kj",
+    type: ChatroomType.PROTECTED,
+  },
 ];
 
 const CreateChat = () => {

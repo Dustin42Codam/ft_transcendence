@@ -42,25 +42,25 @@ const Chat = () => {
   };
   if (width > 800) {
     return (
-			<Wrapper>
+      <Wrapper>
         <div className="Messages">
           <Message />
           <Message />
           <Message />
           <Message />
-				</div>
-			</Wrapper>
+        </div>
+      </Wrapper>
     );
   } else {
     return (
-			<Wrapper>
-				<div className="Messages">
-					<Message />
-					<Message />
-					<Message />
-					<Message />
-				</div>
-			</Wrapper>
+      <Wrapper>
+        <div className="Messages">
+          <Message />
+          <Message />
+          <Message />
+          <Message />
+        </div>
+      </Wrapper>
     );
   }
 };
