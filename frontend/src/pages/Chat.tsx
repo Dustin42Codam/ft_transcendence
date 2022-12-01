@@ -1,14 +1,6 @@
 import React, { useEffect, useState } from "react";
-<<<<<<< HEAD
-=======
 import Wrapper from "../components/Wrapper";
->>>>>>> origin/FE_merged_alex_able
 import Message from "../components/Message";
-import ChatButton from "../components/ChatButton";
-import ChatTable from "../components/ChatTable";
-import ChatCreate from "../components/ChatCreate";
-import PopUp from "../components/PopUp";
-import axios from "axios";
 import "./Chat.css";
 
 function getWindowDimensions() {
@@ -36,13 +28,6 @@ function useWindowDimensions() {
 }
 
 const Chat = () => {
-  const [createChatPopUp, setCreateChatPopUp] = useState(false);
-  const [joinChatPopUp, setJoinChatPopUp] = useState(false);
-  const { height, width } = useWindowDimensions();
-
-  const toggleCreateChatPopUp = () => {
-    setCreateChatPopUp(!createChatPopUp);
-  };
     return (
       <Wrapper>
         <div className="Messages">
