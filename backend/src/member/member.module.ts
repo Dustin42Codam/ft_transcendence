@@ -13,7 +13,7 @@ import { MemberService } from './member.service';
 	imports: [
 		TypeOrmModule.forFeature([Member]),
 		forwardRef(() => ChatroomModule),
-		UserModule,
+		forwardRef(() => UserModule),
 		CommonModule
 	],
 	providers: [MemberService],

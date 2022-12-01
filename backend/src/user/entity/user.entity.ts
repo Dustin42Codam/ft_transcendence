@@ -1,9 +1,10 @@
+import { Achievement } from "src/achievement/entity/achievement.entity";
 import { Block } from "src/blocked/entity/block.entity";
 import { Friend } from "src/friend/entity/friend.entity";
 import { FriendRequest } from "src/friend_request/entity/friend_request.entity";
 import { GameStats } from "src/games_stats/entity/game_stats.entity";
 import { Member } from "src/member/entity/member.entity";
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn, OneToOne,  JoinColumn, } from "typeorm";
+import { Column, Entity, OneToMany, JoinTable, PrimaryGeneratedColumn, OneToOne,  JoinColumn, } from "typeorm";
 
 export enum UserStatus {
 	ONLINE = 'online',
@@ -50,4 +51,7 @@ export class User {
 	@OneToOne(() => GameStats, {eager: true, cascade: true})
     @JoinColumn()
     game_stats: GameStats
+
+	@OneToMany(() => Achievement, (achievement: Achievement) => achievement.user)
+  	public achievements: Achievement[];
 }

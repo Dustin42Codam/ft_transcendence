@@ -8,12 +8,14 @@ import { UserController } from './user.controller';
 import { UserService } from './user.service';
 
 import { GameStatsModule } from "src/games_stats/game_stats.module";
+import { AchievementModule } from "src/achievement/achievement.module";
 
 @Module({
 	imports: [
 		TypeOrmModule.forFeature([User]),
 		CommonModule,
 		GameStatsModule,
+		AchievementModule,
 		AuthModule
 	],
   	controllers: [UserController],

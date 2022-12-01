@@ -7,9 +7,6 @@ export class UserCreateDto {
 
 	@IsNotEmpty()
 	avatar: string;
-
-	@IsNotEmpty()
-	two_factor_auth: boolean;
 	
 	@IsNotEmpty()
 	status: UserStatus;

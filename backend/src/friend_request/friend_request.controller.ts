@@ -44,7 +44,7 @@ export class FriendRequestController {
 		});
 		if (blockByReceiver)
 			throw new BadRequestException("You can not send a friendRequest to a User that blocked you.");
-		const friendRequestFromReceiver = await this.friendService.findOne({
+		const friendRequestFromReceiver = await this.friendRequestService.findOne({
 			sender: friendRequestCreateDto.receiver,
 			receiver: friendRequestCreateDto.sender
 		})
