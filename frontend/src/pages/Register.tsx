@@ -33,7 +33,7 @@ class Register extends Component {
 
   render() {
     if (this.state.redirect) {
-      return <Navigate to={"/login"} />;
+      return <Navigate to={"/authenticate"} />;
     }
 
     return (

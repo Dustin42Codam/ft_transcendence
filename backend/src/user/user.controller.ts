@@ -1,4 +1,5 @@
-import { Body, Controller, Get, Param, Post } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post, Req } from "@nestjs/common";
+import { AuthService } from "src/auth/auth.service";
 import { UserCreateDto } from "./dto/user-create.dto";
 import { UserUpdateDto } from "./dto/user-update.dto";
 import { User } from "./entity/user.entity";
@@ -6,7 +7,10 @@ import { UserService } from "./user.service";
 
 @Controller('user')
 export class UserController {
-    constructor(private readonly userService: UserService) {}
+    constructor(
+		private readonly userService: UserService,
+		private readonly authService: AuthService,
+	) {}
 
     @Get()
     async getUsers() {
@@ -30,20 +34,20 @@ export class UserController {
 		return this.userService.createUser(body);
 	}
 	
-	@Post('info')
-	async _updateInfo(
-		@Req() request: Request,
-		@Body() body: UserUpdateDto
-	) {
-		console.log("Posting user")
-		console.log("🚀 ~ file: user.controller.ts ~ line 60 ~ UserController ~ body", body)
+	// @Post('info')
+	// async _updateInfo(
+	// 	@Req() request: Request,
+	// 	@Body() body: UserUpdateDto
+	// ) {
+	// 	console.log("Posting user")
+	// 	console.log("🚀 ~ file: user.controller.ts ~ line 60 ~ UserController ~ body", body)
 		
-		const id = await this.authService.userId(request);
+	// 	const id = await this.authService.userId(request);
 
-		await this.userService.update(id, body);
+	// 	await this.userService.update(id, body);
 
-		return this.userService.findOne({id});
-	}
+	// 	return this.userService.findOne({id});
+	// }
 
     @Post(':id') //TODO authgaurd should be added, user id should be used then the param can be removed
     async update(

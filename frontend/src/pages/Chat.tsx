@@ -28,15 +28,15 @@ function useWindowDimensions() {
 }
 
 const Chat = () => {
-    return (
-      <Wrapper>
-        <div className="Messages">
-          <Message />
-          <Message />
-          <Message />
-          <Message />
-        </div>
-      </Wrapper>
-    );
+  return (
+    <Wrapper>
+      <div className="Messages">
+        <Message />
+        <Message />
+        <Message />
+        <Message />
+      </div>
+    </Wrapper>
+  );
 };
 export default Chat;

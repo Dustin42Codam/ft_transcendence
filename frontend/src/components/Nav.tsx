@@ -25,7 +25,7 @@ const Nav = (props: any) => {
           {props.user.avatar}
         </Link>
         <Link
-          to="/login"
+          to="/authenticate"
           className="p-2 text-white text-decoration-none"
           onClick={logout}
         >

@@ -1,36 +1,15 @@
-import { Avatar, Pagination } from "@mui/material";
+import { Avatar } from "@mui/material";
 import axios from "axios";
-import { UserInfo } from "os";
-import React, { Component, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Paginator from "../../components/Paginator";
 import Wrapper from "../../components/Wrapper";
-import { MockUsers } from "../../mockdata/users";
 import { User } from "../../models/User";
-import { UserStatus } from "../Chat";
 
-<<<<<<< HEAD
 const fetchDataCall = async (page: number) => {
   let data = await axios.get(`users?page=${page}`).catch((error) => {
-    console.log(
-      "🚀 ~ file: Users.tsx ~ line 12 ~ fetchDataCall ~ error",
-      error
-    );
+    console.log(error);
   });
-=======
-const fetchDataCall = async (page: any) => {
-  let data = await axios
-    .get(`users?page=${page}`)
-    .then(async function (response) {
-      return response;
-    })
-    .catch(function (error) {
-      console.log(
-        "🚀 ~ file: Users.tsx ~ line 14 ~ fetchDataCall ~ error",
-        error
-      );
-    });
->>>>>>> origin/FE_merged_alex_able
   return data;
 };
 
@@ -50,22 +29,12 @@ const Users = () => {
     fetchData();
   }, [page]);
 
-<<<<<<< HEAD
   const deleteUser = async (id: number) => {
     if (window.confirm("Are you sure to delete this record?")) {
       await axios.delete(`users/${id}`);
 
       setUsers(users.filter((u: User) => u.id !== id));
     }
-=======
-  const next = () => {
-    console.log("🚀 ~ file: Users.tsx ~ line 37 ~ next ~ lastPage", lastPage);
-    if (page < lastPage) setPage(page + 1);
-  };
-
-  const prev = () => {
-    if (page > 1) setPage(page - 1);
->>>>>>> origin/FE_merged_alex_able
   };
 
   return (
@@ -120,25 +89,7 @@ const Users = () => {
           </tbody>
         </table>
       </div>
-<<<<<<< HEAD
       <Paginator lastPage={lastPage} pageChanged={setPage} page={page} />
-=======
-
-      <nav>
-        <ul className="pagination">
-          <li className="page-item">
-            <a href="#" className="page-link" onClick={prev}>
-              Previous
-            </a>
-          </li>
-          <li className="page-item">
-            <a href="#" className="page-link" onClick={next}>
-              Next
-            </a>
-          </li>
-        </ul>
-      </nav>
->>>>>>> origin/FE_merged_alex_able
     </Wrapper>
   );
 };

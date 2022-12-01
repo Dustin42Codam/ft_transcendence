@@ -16,7 +16,6 @@ const fetchDataCall = async () => {
 };
 
 const Wrapper = (props: any) => {
-  const [redirect, setRedirect] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -34,10 +33,6 @@ const Wrapper = (props: any) => {
 
     fetchData();
   }, []);
-
-  if (redirect) {
-    return <Navigate to="/login" />;
-  }
 
   return (
     <>
