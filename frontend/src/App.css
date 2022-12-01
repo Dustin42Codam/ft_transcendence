@@ -1,6 +1,6 @@
 @import url("https://fonts.cdnfonts.com/css/studio-sans");
 body {
-	font-family: "Studio Sans", sans-serif;
+  font-family: "Studio Sans", sans-serif;
   background-color: rgb(16, 16, 20);
   color: rgb(244, 241, 208);
 }
@@ -45,7 +45,6 @@ h2 {
 }
 
 .sidebar .nav-link .feather {
-  margin-right: 4px;
   color: #727272;
 }
 

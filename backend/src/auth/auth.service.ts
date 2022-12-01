@@ -9,9 +9,7 @@ export class AuthService {
 	}
 
 	async userId(request: Request): Promise<number> {
-		//console.log(request);
 		const cookie = request.cookies['jwt'];
-		console.log(cookie);
 
 		const data = await this.jwtService.verifyAsync(cookie);
 

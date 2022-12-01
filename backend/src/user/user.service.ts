@@ -1,37 +1,32 @@
-import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { AbstractService } from 'src/common/abstract.service';
-import { PaginatedResult } from 'src/common/paginated-result.interface';
-import { Repository } from 'typeorm';
-import { User } from './models/user.entity'
+import { BadRequestException, Injectable } from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
+import { AbstractService } from "src/common/abstract.service";
+import { GameStatsService } from "src/games_stats/game_stats.service";
+import { Repository } from "typeorm";
+import { UserCreateDto } from "./dto/user-create.dto";
+import { User } from "./entity/user.entity";
 
 @Injectable()
 export class UserService extends AbstractService {
 	constructor(
+		private gameStatsService: GameStatsService,
 		@InjectRepository(User) private readonly userRepository: Repository<User>
 	) {
 		super(userRepository);
 	}
-	/*
-	login() {
-		const user = await this.userService.findOne({display_name: display_name});
 
-		if (!user) {
-			await this.userService.create({
-				display_name: body.display_name,
-				first_name: body.first_name,
-				last_name: body.last_name,
-				email: body.email,
-				password: hashed,
-				avatar: body.avatar,
-				auth_state: body.auth_state,
-				role: {id: 1}
-			});
-		}
+    async getUsers() {
+        this.userRepository.find();
+    }
 
-		const jwt = await this.jwtService.signAsync({id: user.id});
-
-		response.cookie('jwt', jwt, {httpOnly: true});
+	async getUserById(id: number) {
+		const user = await this.findOne({id}, ["send_blocks", "received_blocks", "game_stats"]);
+		if (!user)
+			throw new BadRequestException("This user does not exist");
+		return user;
 	}
- */
+
+	async createUser(userCreateDto: UserCreateDto) {
+		return await this.create(userCreateDto);
+	}
 }

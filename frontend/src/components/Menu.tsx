@@ -3,19 +3,15 @@ import { NavLink } from "react-router-dom";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import ChatTable from "./ChatTable";
+import ChatCreate from "./ChatCreate";
 import AddIcon from "@mui/icons-material/Add";
 import PopUp from "./PopUp";
 
 const Menu = () => {
-  const [active, setActive] = useState(true);
-  function showPopUp(event: any) {
-    event.stopPropagation();
-    alert(1);
-    return false;
-  }
-  function chatClick() {
-    setActive(!active);
-  }
+  const [activeDm, setActiveDm] = useState(false);
+  const [activeChanels, setActiveChanels] = useState(false);
+  const [createChatPopUp, setCreateChatPopUp] = useState(false);
+
   return (
     <nav
       id="sidebarMenu"
@@ -39,63 +35,60 @@ const Menu = () => {
             </NavLink>
           </li>
           <li className="nav-item">
-            <NavLink to={"/chats"} className="nav-link">
-              Chats
-            </NavLink>
-          </li>
-          <li className="nav-item">
-            <NavLink to={"/channels"} className="nav-link">
-              Channels
-            </NavLink>
-          </li>
-          <li className="nav-item">
             <NavLink to={"/games"} className="nav-link">
               Games
             </NavLink>
           </li>
           <li className="nav-item">
-            <NavLink to={"/achievements"} className="nav-link">
-              Achievements
-            </NavLink>
-          </li>
-          <li className="nav-item">
-            <NavLink to={"/chats"} className="nav-link">
-              {active === false ? (
+            <div className="nav-link">
+              {activeDm === true ? (
                 <React.Fragment>
-                  <ArrowDropDownIcon />
-                  DM
-                  <ChatTable />
-                </React.Fragment>
-              ) : (
-                <React.Fragment>
-                  <ArrowRightIcon />
-                  DM
-                </React.Fragment>
-              )}
-            </NavLink>
-          </li>
-          <li className="nav-item">
-            <NavLink to={"/chats"} className="nav-link">
-              {active === false ? (
-                <React.Fragment>
-                  <div onClick={chatClick}>
+                  <div onClick={() => setActiveDm(!activeDm)}>
                     <ArrowDropDownIcon />
-                    Chats
-                    <ChatTable />
-                    <div onClick={() => showPopUp(event)}>
-                      <AddIcon /> Add a chanel
-                    </div>
+                    DM
+                  </div>
+                  <ChatTable />
+                  <div onClick={() => setCreateChatPopUp(!createChatPopUp)}>
+                    <AddIcon /> Message someone
                   </div>
                 </React.Fragment>
               ) : (
                 <React.Fragment>
-                  <div onClick={chatClick}>
+                  <div onClick={() => setActiveDm(!activeDm)}>
+                    <ArrowRightIcon />
+                    DM
+                  </div>
+                </React.Fragment>
+              )}
+            </div>
+          </li>
+          <li className="nav-item">
+            <div className="nav-link">
+              {activeChanels === true ? (
+                <React.Fragment>
+                  <div onClick={() => setActiveChanels(!activeChanels)}>
+                    <ArrowDropDownIcon /> Chats
+                  </div>
+                  <ChatTable />
+                  <div onClick={() => setCreateChatPopUp(!createChatPopUp)}>
+                    <AddIcon /> Add a chanel
+                  </div>
+                  {createChatPopUp && (
+                    <PopUp
+                      content={<ChatCreate />}
+                      handleClose={() => setCreateChatPopUp(!createChatPopUp)}
+                    />
+                  )}
+                </React.Fragment>
+              ) : (
+                <React.Fragment>
+                  <div onClick={() => setActiveChanels(!activeChanels)}>
                     <ArrowRightIcon />
                     Chats
                   </div>
                 </React.Fragment>
               )}
-            </NavLink>
+            </div>
           </li>
         </ul>
       </div>

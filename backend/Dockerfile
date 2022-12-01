@@ -9,6 +9,8 @@ LABEL maintainer=ft_trancedance
 
 COPY package.json package-lock.json tsconfig.json ./
 
+RUN npm install -g npm@latest
+
 RUN apk add tini --no-cache \
 	&& npm config list \
 	&& npm ci \

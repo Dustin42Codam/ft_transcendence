@@ -1,4 +1,3 @@
-//import React from "react";
 import "./App.css";
 import Users from "./pages/users/Users";
 import NotFound from "./pages/NotFound";
@@ -8,6 +7,7 @@ import { Navigate, BrowserRouter, Routes, Route } from "react-router-dom";
 import Game from "./pages/Game";
 import Profile from "./pages/Profile";
 import Chat from "./pages/Chat";
+import ChatLobby from "./pages/ChatLobby";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import UserCreate from "./pages/users/UserCreate";

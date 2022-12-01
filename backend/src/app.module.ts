@@ -3,20 +3,23 @@ import { UserModule } from './user/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import { CommonModule } from './common/common.module';
-import { APP_GUARD } from '@nestjs/core';
-import { LoginModule } from './login/login.module';
+// import { APP_GUARD } from '@nestjs/core';
 import { LogoutModule } from './logout/logout.module';
 import { OauthCallbackModule } from './oauth-callback/oauth-callback.module';
-import { ChatroomModule } from './chatroom/chatroom.module';
-import { MemberModule } from './member/member.module';
-import { MessageModule } from './message/message.module';
+import { BlockModule } from './blocked/block.module';
 import * as dotenv from "dotenv";
+import { FriendRequestModule } from './friend_request/friend_request.module';
+import { FriendModule } from './friend/friend.module';
+import { MemberModule } from './member/member.module';
+import { ChatroomModule } from './chatroom/chatroom.module';
+import { GameModule } from './game/game.module';
+import { GameStatsModule } from './games_stats/game_stats.module';
+import { WebSocketModule } from './web-socket/web-socket.module';
 
 dotenv.config();
 
 @Module({
 	imports: [
-		UserModule,
 		TypeOrmModule.forRoot({
 			type: 'postgres',
 			host: 'postgres',
@@ -27,15 +30,20 @@ dotenv.config();
 			autoLoadEntities: true,
 			synchronize: true,
 		}),
+		WebSocketModule,
 		AuthModule,
-		CommonModule,
-		LoginModule,
-		LogoutModule,
-		OauthCallbackModule,
+		BlockModule,
 		ChatroomModule,
+		CommonModule,
+		FriendModule,
+		FriendRequestModule,
+		LogoutModule,
+		GameModule,
+		GameStatsModule,
 		MemberModule,
-		MessageModule,
-	]
+		OauthCallbackModule,
+		UserModule,
+	],
 })
 
 export class AppModule {}

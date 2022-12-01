@@ -1,11 +1,13 @@
-import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { AbstractService } from 'src/common/abstract.service';
-import UserInterface  from 'src/interfaces/IUser';
-import { User } from 'src/user/models/user.entity';
+import { Injectable, BadRequestException } from '@nestjs/common';
 import { Repository } from 'typeorm';
-import { MemberCreateDto } from './models/member-create.dto';
-import { Member } from './models/member.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+
+import { AbstractService } from 'src/common/abstract.service';
+
+import { Member } from './entity/member.entity';
+import { MemberCreateDto } from './dto/member-create.dto';
+import { Chatroom, ChatroomType } from 'src/chatroom/entity/chatroom.entity';
+import { User } from 'src/user/entity/user.entity';
 
 @Injectable()
 export class MemberService extends AbstractService {
@@ -15,46 +17,32 @@ export class MemberService extends AbstractService {
 		super(memberRepository);
 	}
 
-
-	async createMember(member: MemberCreateDto) {
-		const newMember = await this.memberRepository.create({
-		  ...member,
-		});
-		await this.memberRepository.save(newMember);
-		return newMember;
-	  }
-
-	getAllMembers() {
-		return this.memberRepository.find({ relations: ['user', 'chatroom'] });
-	}
-
-	async getAllMembersFromUser(user_id: number) {
-		const member = await this.memberRepository.find({
-			where: {
-				user_id : user_id,
-			},
-			relations: ['chatroom']
-		});
+	async getMemberByUserAndChatroom(user: User, chatroom: Chatroom) {
+		const member = await this.findOne({user, chatroom}, ["user", "chatroom"]);
+		if (!member)
+			throw new BadRequestException("This member does not exist.");
 		return member;
 	}
 
-	async getAllMembersFromChatroom(chatroom_id: number) {
+	async getMemberById(id: number) {
+		const member = await this.findOne({id}, ["user", "chatroom"]);
+		if (!member)
+			throw new BadRequestException("This member does not exist.");
+		return member;
+	}
 
-		const member = await this.memberRepository.find({
+	async getAllMembersFromChatroom(chatroom: Chatroom) {
+
+		const members = await this.memberRepository.find({
 			where: {
-				chatroom_id : chatroom_id,
+				chatroom : chatroom,
 			},
 			relations: ['user']
 		});
-		return member;
+		return members;
 	}
 
-	// async getMemberByUser(user_id: number) {
-	// 	const post = await this.memberRepository.find(user_id, { relations: ['user'] });
-	// 	if (post) {
-	// 	  return post;
-	// 	}
-	// 	console.log('coud not find user, fix');
-	// 	// throw new PostNotFoundException(user_id);
-	//   }
+	async createMember(memberCreateDto: MemberCreateDto) {
+		return await this.memberRepository.save(memberCreateDto);
+	}
 }

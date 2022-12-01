@@ -7,23 +7,6 @@
   height: 100vh;
 }
 
-.chatTableLeft {
-  flex-grow: 1;
-  width: 25%;
-  float: left;
-}
-
 .Messages {
-  flex-grow: 1;
-  width: 75%;
   flex-direction: column;
-    align-content: space-between;
-}
-
-.chatButtonContainer {
-  flex-wrap: wrap;
-  display: flex;
-  align-items: stretch;
-  flex-direction: row;
-  align-items: stretch;
 }
