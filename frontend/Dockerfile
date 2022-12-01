@@ -1,11 +1,13 @@
 ###BASE###
-FROM node:18.12.0-alpine3.15 as base
+FROM node:18.12.0-alpine3.16 as base
 
 ENV NODE_ENV=production
 
 LABEL maintainer=ft_trancedance
 
 COPY *.json ./
+
+RUN npm install -g npm@latest
 
 RUN apk add tini --no-cache \
 	&& npm config list \

@@ -23,7 +23,6 @@ const Users = () => {
   const [users, setUsers] = useState([]);
   const [page, setPage] = useState(1);
   const [lastPage, setLastPage] = useState(0);
-  let users_mock: any = MockUsers;
 
   useEffect(() => {
     const fetchData = async () => {
