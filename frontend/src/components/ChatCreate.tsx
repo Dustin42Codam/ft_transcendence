@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import CloseIcon from "@mui/icons-material/Close";
 import Wrapper from "./Wrapper";
 import axios from "axios";
 import "./ChatCreate.css";
@@ -68,7 +69,7 @@ const ChatCreate = () => {
   );
 	function createChat() {
 		axios.post('chatroom/1', {
-			name: "This is sauce",
+			name: {name},
 			password: "",
 			users: [],
 			type: ChatroomType.PUBLIC
