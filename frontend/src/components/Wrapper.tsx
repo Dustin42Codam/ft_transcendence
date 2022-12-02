@@ -16,7 +16,6 @@ const fetchDataCall = async () => {
 };
 
 const Wrapper = (props: any) => {
-
   useEffect(() => {
     const fetchData = async () => {
       const response: any = await fetchDataCall();

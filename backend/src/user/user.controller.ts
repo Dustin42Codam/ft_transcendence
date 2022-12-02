@@ -36,7 +36,7 @@ export class UserController {
 	
 	// @Post('info')
 	// async _updateInfo(
-	// 	@Req() request: Request,
+	// 	@Req() body: Request,//DTO
 	// 	@Body() body: UserUpdateDto
 	// ) {
 	// 	console.log("Posting user")

@@ -15,7 +15,7 @@
 .chatButton {
   background-color: rgb(31, 33, 40);
   font-family: "Studio Sans", sans-serif;
-  font-size: calc(12px + 1.4vw - 0.1rem);
+  font-size: 12px;
   color: rgb(244, 241, 208);
   border-radius: 5px;
   border-color: rgb(105, 105, 105);
@@ -24,10 +24,10 @@
 
 .chatButton:hover {
   border-color: rgb(244, 241, 208);
-  font-size: calc(20px + 1.4vw - 0.1rem);
+  font-size: 12px;
 }
 
 .chatButton:selection {
   border-color: rgb(244, 241, 208);
-  font-size: calc(20px + 1.4vw - 0.1rem);
+  font-size: 12px;
 }

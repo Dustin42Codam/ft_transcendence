@@ -18,9 +18,7 @@
   position: relative;
   margin: 0 auto;
   margin-top: calc(100vh - 85vh);
-  border-radius: 5px;
   padding: 10px;
-  border-left: thick solid rgb(255, 165, 0);
 }
 
 .close-icon {
