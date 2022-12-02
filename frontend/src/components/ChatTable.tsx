@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import CastleIcon from "@mui/icons-material/Castle";
@@ -10,6 +10,7 @@ export enum ChatroomType {
   PROTECTED = "protected",
   PRIVATE = "private",
   DIRECT = "direct",
+  DEFAULT = "",
 }
 
 type Chats = {
@@ -21,6 +22,7 @@ interface IState {
   chats: Chats;
 }
 
+/*
 const chats = [
   { name: "unit testing chat", type: ChatroomType.PUBLIC },
   { name: "HACKING chat", type: ChatroomType.PROTECTED },
@@ -30,26 +32,40 @@ const chats = [
     type: ChatroomType.PROTECTED,
   },
 ];
+*/
 
 const CreateChat = () => {
   const rows = [];
+	const [chats, setChats] = useState<Chats[]>([]);
+
+	useEffect(() => {
+    async function fetchChats() {
+      const response = await axios
+        .get("chatroom")
+        .then(res => setChats(res.data))
+        .catch(err => console.log(err));
+    }
+    if (!chats.length) {
+      fetchChats();
+    }
+  }, []);
 
   let navigate = useNavigate();
 
-  function handleClick() {
-    navigate("../chats/Test", { replace: true });
+  function handleClick(name: string) {
+    navigate("../chats/" + name, { replace: true });
   }
   for (let i = 0; chats.length > i; i++) {
     if (chats[i].type === ChatroomType.PROTECTED) {
       rows.push(
-        <div key={i} className="chatRow" onClick={handleClick}>
+        <div key={i} className="chatRow" onClick={() => handleClick(chats[i].name)}>
           <CastleIcon />
           {chats[i].name}
         </div>
       );
     } else if (chats[i].type === ChatroomType.PUBLIC) {
       rows.push(
-        <div key={i} className="chatRow" onClick={handleClick}>
+        <div key={i} className="chatRow" onClick={() => handleClick(chats[i].name)}>
           <PublicIcon />
           {chats[i].name}
         </div>
