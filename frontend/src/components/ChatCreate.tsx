@@ -67,21 +67,30 @@ const ChatCreate = () => {
     ChatroomType.PROTECTED,
     chatType === ChatroomType.PROTECTED
   );
-	function createChat() {
-		axios.post('chatroom/1', {
-			name: {name},
-			password: "",
-			users: [],
-			type: ChatroomType.PUBLIC
-		}).then( res => console.log("this is res:", res)).catch(err => console.log(err));
-	}
+  function createChat() {
+    axios
+      .post("chatroom/1", {
+        name: { name },
+        password: "",
+        users: [],
+        type: ChatroomType.PUBLIC,
+      })
+      .then((res) => console.log("this is res:", res))
+      .catch((err) => console.log(err));
+  }
 
   return (
     <div className="chatGridContainer" id="chatGridContainer">
       <h1 id="chatHeader" className="gridItem header-1">
         Create a Chat
       </h1>
-		 <button className="gridItem chatButton" onClick={createChat} type="button">GO!</button>
+      <button
+        className="gridItem chatButton"
+        onClick={createChat}
+        type="button"
+      >
+        GO!
+      </button>
       <h6 id="chatDescription" className="gridItem header-2">
         Feel free to create a chat room.
       </h6>

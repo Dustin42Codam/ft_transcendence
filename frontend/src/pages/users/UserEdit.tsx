@@ -4,7 +4,7 @@ import React, { SyntheticEvent, useEffect, useRef, useState } from "react";
 import { Navigate, useLocation, useParams } from "react-router-dom";
 import ImageUpload from "../../components/ImageUpload";
 import Wrapper from "../../components/Wrapper";
-import { UserStatus } from "../../models/Channel";
+import { UserStatus } from "../../models/Chat";
 
 const fetchDataCall = async (id: number) => {
   let response = await axios.get(`users/${id}`).catch(function (error) {

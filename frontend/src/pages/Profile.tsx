@@ -7,9 +7,13 @@ import React, {
   useRef,
   useState,
 } from "react";
+import { connect } from "react-redux";
 import { Navigate } from "react-router-dom";
+import { Dispatch } from "redux";
 import ImageUpload from "../components/ImageUpload";
 import Wrapper from "../components/Wrapper";
+import { User } from "../models/User";
+import { setUser } from "../redux/user/userActions";
 
 const fetchDataCall = async () => {
   let response = await axios.get(`user`).catch(function (error) {
@@ -18,7 +22,7 @@ const fetchDataCall = async () => {
   return response;
 };
 
-const Profile = () => {
+const Profile = (props: { user: User; setUser: (user: User) => void }) => {
   const [name, setName] = useState("");
   const [avatar, setAvatar] = useState("");
   const [status, setStatus] = useState("offline");
@@ -27,36 +31,32 @@ const Profile = () => {
   const ref = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    const fetchData = async () => {
-      const response: any = await fetchDataCall();
-      setName(response.data.display_name);
-      setAvatar(response.data.avatar);
-      setStatus(response.data.status);
-      setTwoFA(response.data.twoFA);
-    };
+    // const fetchData = async () => {
+    //   const response: any = await fetchDataCall();
+    setName(props.user.display_name);
+    setAvatar(props.user.avatar);
+    setStatus(props.user.status);
+    setTwoFA(props.user.twoFA);
+    // };
 
-    fetchData();
-  }, []);
+    // fetchData();
+  }, [props.user]);
 
   const infoSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
 
-    const user: any = await axios.get("user");
+    // const user: any = await axios.get("user");
 
-    await axios
-      .put(`users/${user.data.id}`, {
-        display_name: name,
-        avatar,
-        status,
-        two_factor_auth: twoFA,
-      })
-      .then(() => {
-        console.log("success");
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    const { data } = await axios.put(`users/info`, {
+      display_name: name,
+      avatar,
+      status,
+      two_factor_auth: twoFA,
+    });
 
+    props.setUser(
+      new User(data.id, data.display_name, data.status, data.avatar, data.twoFA)
+    );
     setRedirect(true);
   };
 
@@ -118,4 +118,17 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+const mapStateToProps = (state: { user: User }) => {
+  return {
+    user: state.user,
+  };
+};
+
+const mapDispatchToProps = (dispatch: Dispatch<any>) => {
+  return {
+    //   fetchUser: () => dispatch(fetchUser()),
+    setUser: (user: User) => dispatch(setUser(user)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Profile);

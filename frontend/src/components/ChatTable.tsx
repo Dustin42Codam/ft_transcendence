@@ -36,14 +36,14 @@ const chats = [
 
 const CreateChat = () => {
   const rows = [];
-	const [chats, setChats] = useState<Chats[]>([]);
+  const [chats, setChats] = useState<Chats[]>([]);
 
-	useEffect(() => {
+  useEffect(() => {
     async function fetchChats() {
       const response = await axios
         .get("chatroom")
-        .then(res => setChats(res.data))
-        .catch(err => console.log(err));
+        .then((res) => setChats(res.data))
+        .catch((err) => console.log(err));
     }
     if (!chats.length) {
       fetchChats();
@@ -58,14 +58,22 @@ const CreateChat = () => {
   for (let i = 0; chats.length > i; i++) {
     if (chats[i].type === ChatroomType.PROTECTED) {
       rows.push(
-        <div key={i} className="chatRow" onClick={() => handleClick(chats[i].name)}>
+        <div
+          key={i}
+          className="chatRow"
+          onClick={() => handleClick(chats[i].name)}
+        >
           <CastleIcon />
           {chats[i].name}
         </div>
       );
     } else if (chats[i].type === ChatroomType.PUBLIC) {
       rows.push(
-        <div key={i} className="chatRow" onClick={() => handleClick(chats[i].name)}>
+        <div
+          key={i}
+          className="chatRow"
+          onClick={() => handleClick(chats[i].name)}
+        >
           <PublicIcon />
           {chats[i].name}
         </div>

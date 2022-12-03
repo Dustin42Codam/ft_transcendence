@@ -3,7 +3,7 @@ import React, { SyntheticEvent, useState } from "react";
 import { Navigate } from "react-router-dom";
 import ImageUpload from "../../components/ImageUpload";
 import Wrapper from "../../components/Wrapper";
-import { UserStatus } from "../../models/Channel";
+import { UserStatus } from "../../models/Chat";
 
 const UserCreate = () => {
   const [name, setName] = useState("");

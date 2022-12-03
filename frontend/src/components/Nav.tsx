@@ -1,18 +1,23 @@
 import axios from "axios";
-import React, { Component, useState } from "react";
+import React, { Component, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { User } from "../models/User";
 import { setUser } from "../redux/actions/setUserAction";
+import { fetchUser } from "../redux/user/userActions";
 
+// const Nav = (props: { userData: User, fetchUser: any }) => {
 const Nav = (props: any) => {
-  console.log("🚀 ~ file: Nav.tsx ~ line 8 ~ Nav ~ user", props.user);
   const logout = async () => {
     await axios
       .post("logout", {})
       .then((res) => (window.location.href = "http://localhost:4242"))
       .catch((err) => console.log("failed to logout", err));
   };
+
+  //   useEffect(() => {
+  //     fetchUser();
+  //   }, []);
 
   return (
     <nav className="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
@@ -22,7 +27,7 @@ const Nav = (props: any) => {
 
       <ul className="my-2 my-md-0 mr-md-3">
         <Link to="/profile" className="p-2 text-white text-decoration-none">
-          {props.user.avatar}
+          {props.userData.display_name}
         </Link>
         <Link
           to="/authenticate"
@@ -30,29 +35,28 @@ const Nav = (props: any) => {
           onClick={logout}
         >
           Sign out
-          {props.user.avatar}
         </Link>
       </ul>
     </nav>
   );
 };
 
-const mapStateToProps = (state: { user: User }) => {
+const mapStateToProps = (state: any) => {
   return {
-    user: state.user,
+    userData: state.user,
   };
 };
-
-const mapDispatchToProps = (dispatch: any) => {
-  return {
-    setUser: setUser,
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Nav);
-
-// export default connect((state: { user: User }) => {
+// const mapDispatchToProps = (dispatch: any) => {
 //   return {
-//     user: state.user,
+//     fetchUsers: () => dispatch(fetchUser()),
 //   };
-// })(Nav);
+// };
+export default connect(mapStateToProps)(Nav);
+
+// export default connect(
+//     (state: { user: User }) => {
+//         return {
+//             user: state.user
+//         };
+//     }
+// )(Nav);

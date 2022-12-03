@@ -7,7 +7,6 @@ import { Navigate, BrowserRouter, Routes, Route } from "react-router-dom";
 import Game from "./pages/Game";
 import Profile from "./pages/Profile";
 import Chat from "./pages/Chat";
-import ChatLobby from "./pages/ChatLobby";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import UserCreate from "./pages/users/UserCreate";
@@ -16,9 +15,9 @@ import Achievements from "./pages/achievements/Achievements";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { User } from "./models/User";
-import { setUser } from "./redux/actions/setUserAction";
+import { fetchUser } from "./redux/user/userActions";
 
-function App() {
+function App(props: any) {
   const [token, setToken] = useState(false);
 
   useEffect(() => {
@@ -36,6 +35,14 @@ function App() {
       fetchDataCall();
     }
   }, []);
+
+  //   useEffect(() => {
+  // 		props.fetchUser();
+  // 		// if (props.user.)
+  // 		console.log("🚀 ~ file: App.tsx:55 ~ useEffect ~ props.user", props.user)
+  // 		console.log("🚀 ~ file: App.tsx:55 ~ useEffect ~ props.user.id", props.user.id)
+  // 		console.log("🚀 ~ file: App.tsx:55 ~ useEffect ~ props.user.display_name", props.user.display_name)
+  //   }, []);
 
   if (!token) {
     return (
@@ -71,6 +78,7 @@ function App() {
     );
   }
 }
+
 const mapStateToProps = (state: { user: User }) => {
   return {
     user: state.user,
@@ -79,7 +87,7 @@ const mapStateToProps = (state: { user: User }) => {
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => {
   return {
-    setUser: (user: User) => dispatch(setUser(user)),
+    fetchUser: () => dispatch(fetchUser()),
   };
 };
 
