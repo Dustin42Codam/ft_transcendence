@@ -3,6 +3,7 @@ import CallMadeIcon from "@mui/icons-material/CallMade";
 import ChatButton from "../components/ChatButton";
 import "../login.css";
 import axios from "axios";
+import logo from "./white42.png";
 
 const Authenticate = () => {
   async function login() {
@@ -19,8 +20,8 @@ const Authenticate = () => {
   return (
     <div className="authCard">
       <img
-        src="https://upload.wikimedia.org/wikipedia/commons/8/8d/42_Logo.svg"
-        alt="42_logo"
+				src="https://profile.intra.42.fr/assets/42_logo-7dfc9110a5319a308863b96bda33cea995046d1731cebb735e41b16255106c12.svg"
+				alt="42logo"
         width="175"
         height="150"
       />

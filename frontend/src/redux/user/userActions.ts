@@ -25,6 +25,10 @@ export const fetchUsersFailure = (error: any) => {
   };
 };
 
+//mock axios
+//axios.succes()
+//axios.fial()
+
 export const fetchUsers = () => {
   return (dispatch: any) => {
     dispatch(fetchUsersRequest());

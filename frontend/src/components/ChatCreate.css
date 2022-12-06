@@ -1,7 +1,7 @@
 @import url("https://fonts.cdnfonts.com/css/studio-sans");
 
 .chatGridContainer {
-	display: grid;
+  display: grid;
   font-family: "Studio Sans", sans-serif;
   background-color: rgb(16, 16, 20);
   color: rgb(244, 241, 208);

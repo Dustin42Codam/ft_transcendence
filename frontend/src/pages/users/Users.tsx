@@ -22,7 +22,7 @@ const Users = () => {
     const fetchData = async () => {
       let response: any = await fetchDataCall(page);
 
-      setUsers(response.data.data);
+      setUsers(response.data);
       setLastPage(response.data.meta.last_page);
     };
 
