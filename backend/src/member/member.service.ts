@@ -31,6 +31,13 @@ export class MemberService extends AbstractService {
 		return member;
 	}
 
+	public isRestricted(member: Member) {
+		const timeNow = new Date(new Date().getTime())
+		if (member.banned == true || member.muted_until > timeNow)
+			return true
+		return false;
+	}
+
 	async getAllMembersFromChatroom(chatroom: Chatroom) {
 
 		const members = await this.memberRepository.find({
@@ -43,6 +50,6 @@ export class MemberService extends AbstractService {
 	}
 
 	async createMember(memberCreateDto: MemberCreateDto) {
-		return await this.memberRepository.save(memberCreateDto);
+		return await this.memberRepository.save({muted_until: new Date(new Date().getTime()), ...memberCreateDto});
 	}
 }

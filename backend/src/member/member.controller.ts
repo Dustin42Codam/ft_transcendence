@@ -7,6 +7,7 @@ import { ChatroomType } from 'src/chatroom/entity/chatroom.entity';
 import { ChatroomService } from 'src/chatroom/chatroom.service';
 import { MemberSenderDto } from './dto/member-sender.dto';
 import { UserService } from 'src/user/user.service';
+import { MuteMemberDto } from './dto/member-mute-create.dto';
 
 @Controller('member')
 export class MemberController {
@@ -82,20 +83,43 @@ export class MemberController {
 		return await this.memberService.update(receiver.id, receiver);
 	}
 
-	// TODO implement
-	// @Post('mute/:id')
-	// async muteMemberForTimePeriod(
-		
-	// ) {
+	@Post('mute/:id')
+	async muteMemberForTimePeriod(
+		@Param('id') id: string,
+		@Body() muteCreateDto: MuteMemberDto
+	) {
+		if (muteCreateDto.time_in_seconds > 31556926)
+			throw new BadRequestException("You can not mute someone for more than a year.");
+		if (muteCreateDto.time_in_seconds < 0)
+			throw new BadRequestException("You can not mute someone for a negative amount of time.");
+		const receiver = await this.memberService.getMemberById(Number(id));
+		if (receiver.role === MemberRole.OWNER)
+			throw new BadRequestException("The OWNER of a chatroom can not be muted.");
+		const user = await this.userServcie.getUserById(muteCreateDto.sender_id);
+		const sender = await this.memberService.getMemberByUserAndChatroom(user, receiver.chatroom); //TODO maybe change this way to get a better error message, can we change the error message it throws with catch for example?
+		if (sender.role !== MemberRole.ADMIN && sender.role !== MemberRole.OWNER)
+			throw new BadRequestException("You do not have the rights to mute members of this chatroom.");
+		if (sender.id === receiver.id)
+			throw new BadRequestException("You can not mute yourself.");
+		receiver.muted_until = new Date(new Date().getTime() + muteCreateDto.time_in_minutes * 1000)
+		return await this.memberService.update(receiver.id, receiver);
+	}
 
-	// }
-
-	// @Post('unmute/:id')
-	// async unmuteMember(
-		
-	// ) {
-
-	// }
+	@Post('unmute/:id')
+	async unmuteMember(
+		@Param('id') id: string,
+		@Body() sender_user_id: MemberSenderDto //This var is temperary till session guards
+	) {
+		const receiver = await this.memberService.getMemberById(Number(id));
+		const user = await this.userServcie.getUserById(sender_user_id.sender_id);
+		const sender = await this.memberService.getMemberByUserAndChatroom(user, receiver.chatroom); //TODO maybe change this way to get a better error message, can we change the error message it throws with catch for example?
+		if (sender.role !== MemberRole.ADMIN && sender.role !== MemberRole.OWNER)
+			throw new BadRequestException("You do not have the rights to unmute members of this chatroom.");
+		if (sender.id === receiver.id)
+			throw new BadRequestException("You can not unmute yourself.");
+		receiver.muted_until = new Date(new Date().getTime())
+		return await this.memberService.update(receiver.id, receiver);
+	}
 
 	@Post('makeAdmin/:id')
 	async makeMemberAdmin(
@@ -127,6 +151,14 @@ export class MemberController {
 			throw new BadRequestException("You do not have the rights to remove a ADMIN role from member.");
 		receiver.role = MemberRole.USER;
 		return await this.memberService.update(receiver.id, receiver);
+	}
+
+	@Get('restricted/:id') //TODO this is only for testing, should be removed probably
+	async isRestricted(
+		@Param('id') id: string,
+	) {
+		const member = await this.memberService.getMemberById(Number(id));
+		return this.memberService.isRestricted(member);
 	}
 
 	// NOTE I do not think we neet this, if you want it I will add it
