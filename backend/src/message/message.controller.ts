@@ -32,10 +32,13 @@ export class MessageController {
       const messages : Message[] = []; 
       const check_messages = await this.messageService.all();
       const user: User = await this.userService.getUserById(id);
+      const member: Member = await this.memberService.getMemberById(id);
       for (const message of check_messages) {
         const block: Block = await this.blockService.getBlockById(message.member.user.id);
         if (block.receiver.id === message.member.user.id && block.sender.id === user.id)
           console.log("This user is blocked");
+        if (await this.memberService.isRestricted(member))
+          console.log("This user is banned or muted");
         else
           messages.push(message);
       }
