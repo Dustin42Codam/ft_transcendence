@@ -28,11 +28,11 @@ export const fetchChatsFailure = (error: any) => {
   };
 };
 
-export const fetchChats = (id: number) => {
+export const fetchChats = () => {
   return (dispatch: any) => {
     dispatch(fetchChatsRequest());
     axios
-      .get("chatroom/" + id)
+      .get("chatroom/")
       .then((response) => {
         const chats = response.data;
         dispatch(fetchChatsSuccess(chats));

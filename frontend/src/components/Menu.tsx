@@ -5,12 +5,15 @@ import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import ChatTable from "./ChatTable";
 import ChatCreate from "./ChatCreate";
 import AddIcon from "@mui/icons-material/Add";
+import GroupAdd from "@mui/icons-material/GroupAdd";
+import PersonSearch from "@mui/icons-material/PersonSearch";
 import PopUp from "./PopUp";
 
 const Menu = () => {
   const [activeDm, setActiveDm] = useState(false);
   const [activeChanels, setActiveChanels] = useState(false);
   const [createChatPopUp, setCreateChatPopUp] = useState(false);
+  const [joinChanel, setJoinChanel] = useState(false);
 
   return (
     <nav
@@ -49,7 +52,7 @@ const Menu = () => {
                   </div>
                   <ChatTable />
                   <div onClick={() => setCreateChatPopUp(!createChatPopUp)}>
-                    <AddIcon /> Message someone
+                    <PersonSearch /> Message someone
                   </div>
                 </React.Fragment>
               ) : (
@@ -71,7 +74,10 @@ const Menu = () => {
                   </div>
                   <ChatTable />
                   <div onClick={() => setCreateChatPopUp(!createChatPopUp)}>
-                    <AddIcon /> Add a chanel
+                    <AddIcon /> Create chanel
+                  </div>
+                  <div onClick={() => setJoinChanel(joinChanel!)}>
+                    <GroupAdd /> Join chanel
                   </div>
                   {createChatPopUp && (
                     <PopUp
