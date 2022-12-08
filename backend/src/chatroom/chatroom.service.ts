@@ -9,6 +9,7 @@ import { ChatroomCreateDto } from "./dto/chatroom-create.dto";
 
 import { MemberService } from "src/member/member.service";
 import { Member, MemberRole } from "src/member/entity/member.entity";
+import { User } from "src/user/entity/user.entity";
 
 @Injectable()
 export class ChatroomService extends AbstractService {
@@ -22,8 +23,18 @@ export class ChatroomService extends AbstractService {
 	async getChatroomById(id: number) {
 		return await this.findOne({id}, ["users"]);
 	}
+    
+    async getDMsFromUser(user: User) {
+        // membersFromUsers = await this.memberService.ge
+		const allDMs =  await this.ChatroomRepository.find({
+            where: {type: ChatroomType.DIRECT},
+        });
+        var allDmUser = []
+        // var allDms
+	}
 
     async getAllOpenChatrooms() {
+
 		return await this.ChatroomRepository.find({
             where: [{type: ChatroomType.PUBLIC},{type: ChatroomType.PROTECTED}],
         });

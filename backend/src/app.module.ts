@@ -16,6 +16,7 @@ import { ChatroomModule } from './chatroom/chatroom.module';
 import { GameModule } from './game/game.module';
 import { GameStatsModule } from './games_stats/game_stats.module';
 import { AchievementModule } from './achievement/achievement.module';
+import { MessageModule } from './message/message.module';
 
 dotenv.config();
 
@@ -43,6 +44,7 @@ dotenv.config();
 		GameModule,
 		GameStatsModule,
 		MemberModule,
+		MessageModule,
 		OauthCallbackModule,
 		UserModule,
 	]

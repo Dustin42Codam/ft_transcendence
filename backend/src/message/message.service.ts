@@ -1,5 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from '@nestjs/typeorm';
+import { Chatroom } from "src/chatroom/entity/chatroom.entity";
 import { AbstractService } from 'src/common/abstract.service';
 import { Member } from "src/member/entity/member.entity";
 import { MemberService } from "src/member/member.service";
@@ -15,6 +16,21 @@ export class MessageService extends AbstractService{
     ) {
         super(messageRepository);
     }
+
+    /*
+    SELECT * FROM
+    message as m JOIN chatroom ON mesasage.chatroomId = chatroom.id
+    WHERE chatroom.em
+    */
+
+
+    //TODO maybe make work
+    // async getAllMessagesFromChatroom(chatroom: Chatroom) { 
+    //     return await this.messageRepository.createQueryBuilder('message')
+    //         .innerJoinAndSelect('message.member', 'member')
+    //         .where('member.chatroom = :c', { c: chatroom})
+    //         .getMany();
+    // }
 
     async getChatroomById(id: number) {
         return await this.getChatroomById(id);

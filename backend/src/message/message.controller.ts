@@ -10,40 +10,53 @@ import { Member } from "src/member/entity/member.entity";
 import { BlockService } from "src/blocked/block.service";
 import { Block } from "src/blocked/entity/block.entity";
 import { User } from "src/user/entity/user.entity";
+import { MessageUserDto } from "./dto/message-user.dto";
+import { ChatroomService } from "src/chatroom/chatroom.service";
+import { Chatroom } from "src/chatroom/entity/chatroom.entity";
 
 @Controller('message')
 export class MessageController {
   constructor(private readonly messageService: MessageService,
     private readonly memberService: MemberService,
     private readonly blockService: BlockService,
-    private readonly userService: UserService) {}
+    private readonly userService: UserService,
+    private readonly chatroomService: ChatroomService,
+  ) {}
 
   @Get()
   async getAllMessages(
   ) {
-    return this.messageService.all();
+    return await this.messageService.all(['member', 'member.user', 'member.chatroom']);
   }
 
 
-  @Get(':id') //TODO: this
-  async getMessages(
-    @Param('id') id: string,//TODO this should be the session id
-  ) {
-      const messages : Message[] = []; 
-      const check_messages = await this.messageService.all();
-      const user: User = await this.userService.getUserById(Number(id));
-      const member: Member = await this.memberService.getMemberById(Number(id));
-      for (const message of check_messages) {
-        const block: Block = await this.blockService.getBlockById(message.member.user.id);
-        if (block.receiver.id === blocks.includes(message.member.user.id) && block.sender.id === user.id)
-          console.log("This user is blocked");
-        // if (await this.memberService.isRestricted(member))
-        //   console.log("This user is banned or muted");
-        else
-          messages.push(message);
-      }
-      return messages;
-  }
+  	@Get(':id') //TODO: this
+	async getMessagesfromChatroom(
+  		@Param('id') chatroomId: string,
+		@Body() messageUserDto: MessageUserDto//TODO this should be the session id
+	) {
+		const chatroom: Chatroom = await this.chatroomService.getChatroomById(Number(chatroomId));
+		const check_messages = await this.getAllMessages();
+		const user: User = await this.userService.getUserById(messageUserDto.user_id);
+
+		const blocks: Block[] = await this.blockService.getBlocksFromUser(user);
+		const messages : Message[] = []; 
+		for (const message of check_messages) {
+			if (message.member.chatroom.id === chatroom.id) {
+				let isBlocked = false;
+				for (const block of blocks) {
+					if (block.receiver.id === message.member.user.id) {
+						console.log("this happens sometimes")
+						isBlocked = true;
+					}
+				}
+				if (!isBlocked) {
+					messages.push(message);
+				}
+			}
+		}
+		return messages;
+	}
 
   @Post()
   async createMessage(
@@ -51,7 +64,7 @@ export class MessageController {
   ) {
     const member : Member = await this.memberService.getMemberById(Number(body.member));
     if (this.memberService.isRestricted(member)) {
-      throw new BadRequestException("You are banned from this chatroom.");
+      throw new BadRequestException("You are restricted from this chatroom.");
     }
     return this.messageService.create({timestamp: new Date(), member: member, message: body.message});
   }

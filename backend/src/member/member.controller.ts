@@ -101,7 +101,6 @@ export class MemberController {
 			throw new BadRequestException("You do not have the rights to mute members of this chatroom.");
 		if (sender.id === receiver.id)
 			throw new BadRequestException("You can not mute yourself.");
-		//dont know if it should be time in second or time_in_minutes but I changed it for now
 		receiver.muted_until = new Date(new Date().getTime() + muteCreateDto.time_in_seconds * 1000)
 		return await this.memberService.update(receiver.id, receiver);
 	}
