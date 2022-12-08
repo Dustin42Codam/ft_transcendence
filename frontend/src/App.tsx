@@ -17,8 +17,9 @@ import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import { User } from "./models/User";
 import { setUser } from "./redux/actions/setUserAction";
+import { fetchUser } from "./redux/user/userActions";
 
-function App() {
+function App(props: any) {
   const [token, setToken] = useState(false);
 
   useEffect(() => {
@@ -79,6 +80,7 @@ const mapStateToProps = (state: { user: User }) => {
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => {
   return {
+    fetchUser: () => dispatch(fetchUser()),
     setUser: (user: User) => dispatch(setUser(user)),
   };
 };

@@ -40,16 +40,16 @@ const chats = [
 const CreateChat = (props: any) => {
   const rows = [];
 
-  useEffect(() => {
-    props.fetchChats();
-  }, []);
+  //   useEffect(() => {
+  //     props.fetchChats();
+  //   }, []);
 
   let navigate = useNavigate();
 
   function handleClick(name: string) {
     navigate("../chats/" + name, { replace: true });
   }
-	console.log("HI", props.chats)
+  console.log("HI", props);
   for (let i = 0; props.chats.length > i; i++) {
     if (props.chats[i].type === ChatroomType.PROTECTED) {
       rows.push(
@@ -79,16 +79,17 @@ const CreateChat = (props: any) => {
   return <div className="chatTableContainer">{rows}</div>;
 };
 
-const mapStateToProps = (state: { chats: Chats }) => {
+const mapStateToProps = (state: any) => {
   return {
     chats: state.chats,
   };
 };
 
-const mapDispatchToProps = (dispatch: Dispatch<any>) => {
-  return {
-    fetchChats: () => dispatch(fetchChats()),
-  };
-};
+// const mapDispatchToProps = (dispatch: Dispatch<any>) => {
+//   return {
+//     fetchChats: () => dispatch(fetchChats()),
+//   };
+// };
 
-export default connect(mapStateToProps, mapDispatchToProps)(CreateChat);
+// export default connect(mapStateToProps, mapDispatchToProps)(CreateChat);
+export default connect(mapStateToProps)(CreateChat);
