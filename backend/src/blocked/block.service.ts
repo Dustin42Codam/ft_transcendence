@@ -1,4 +1,4 @@
-import { Injectable, forwardRef, Inject  } from "@nestjs/common";
+import { BadRequestException, Injectable, forwardRef, Inject  } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 
@@ -9,6 +9,7 @@ import { Block } from "./entity/block.entity";
 
 import { FriendRequestService } from "../friend_request/friend_request.service";
 import { FriendService } from "src/friend/friend.service";
+import { User } from "src/user/entity/user.entity";
 
 @Injectable()
 export class BlockService extends AbstractService {
@@ -22,7 +23,16 @@ export class BlockService extends AbstractService {
 	}
 
 	async getBlockById(id: number) {
-		return await this.findOne({id}, ["sender", "receiver"]);
+		const block = await this.findOne({id}, ["sender", "receiver"]);
+		if (!block)
+			throw new BadRequestException("This block does not exist");
+		return block
+	}
+
+	async getBlocksFromUser(user: User) {
+		return await this.blockRepository.find({
+			where: {sender: user}
+		});
 	}
 
 	async block(blockCreateDto: BlockCreateDto) {
