@@ -38,6 +38,16 @@ export class MemberService extends AbstractService {
 		return false;
 	}
 
+	async getAllMembersFromUser(user: User) {
+
+		const members = await this.memberRepository.find({
+			where: {
+				user : user,
+			},
+		});
+		return members;
+	}
+
 	async getAllMembersFromChatroom(chatroom: Chatroom) {
 
 		const members = await this.memberRepository.find({
