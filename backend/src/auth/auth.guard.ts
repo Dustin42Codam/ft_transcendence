@@ -8,10 +8,12 @@ export class AuthGuard implements CanActivate {
 	canActivate(context: ExecutionContext)
 	{
 		const request = context.switchToHttp().getRequest();
-
+		console.log("trying to printout the session");
+		console.log(request.session);
 		try {
+			if (request.session.logged_in != true)
+				return false;
 			const jwt = request.cookies['jwt'];
-			
 			return this.jwtService.verify(jwt);
 		} catch (e) {
 			return false;

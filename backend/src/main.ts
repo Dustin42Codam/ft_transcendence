@@ -13,6 +13,13 @@ require("dotenv").config();
 async function bootstrap() {
 	const app = await NestFactory.create(AppModule);
 
+	app.use(
+		session({
+			secret: 'session-secret',
+			resave: false,
+			saveUninitialized: false,
+		})
+	)
 	app.setGlobalPrefix('api');
 	app.useGlobalPipes(new ValidationPipe());
 	app.use(cors({origin: true, credentials: true}));

@@ -18,7 +18,7 @@ export class UserService extends AbstractService {
 	}
 
     async getUsers() {
-        this.userRepository.find();
+        return await this.userRepository.find();
     }
 
 	async getUserById(id: number) {

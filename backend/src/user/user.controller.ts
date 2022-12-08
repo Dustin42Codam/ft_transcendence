@@ -1,23 +1,28 @@
-import { Body, Controller, Get, Param, Post } from "@nestjs/common";
+import { Req, Body, Controller, Get, Param, Post } from "@nestjs/common";
 import { UserCreateDto } from "./dto/user-create.dto";
 import { UserUpdateDto } from "./dto/user-update.dto";
 import { User } from "./entity/user.entity";
 import { UserService } from "./user.service";
+import * as session from 'express-session';
+import express, { Request } from 'express';
 
-@Controller('user')
+@Controller('users')
 export class UserController {
     constructor(private readonly userService: UserService) {}
 
-    @Get()
-    async getUsers() {
-        return await this.userService.getUsers();
-    }
-
+    
     @Get(':id')
     async getUserById(
         @Param('id') id : string
-    ) {
-        return this.userService.getUserById(Number(id));
+        ) {
+            return this.userService.getUserById(Number(id));
+        }
+        
+    @Get()
+    async getUsers(@Req() request: Request) {
+        request.session.visits = request.session.visits ? request.session.visits + 1 : 1;
+        console.log(request.session);
+        return await this.userService.getUsers();
     }
 
     @Post()
