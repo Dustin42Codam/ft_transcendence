@@ -20,10 +20,19 @@ export class ChatroomController {
 		private readonly userService: UserService
 	) {}
 
-	@Get()
-	async getAllOpenChatrooms(
+	@Get('join/:id')
+	async getJoinableChatroomsFromUser(
+		@Param('id') id: string, //TODO this should be authguard
 	) {
 		return this.chatroomService.getAllOpenChatrooms();
+	}
+
+	@Get('dm/:id')
+	async getDMsFromUser(
+		@Param('id') id: string, //TODO this should be authguard
+	) {
+		const user = await this.userService.getUserById(Number(id));
+		return this.chatroomService.getDMsFromUser(user);
 	}
 
 	@Get(':id')
