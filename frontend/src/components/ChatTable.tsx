@@ -49,7 +49,7 @@ const CreateChat = (props: any) => {
   function handleClick(name: string) {
     navigate("../chats/" + name, { replace: true });
   }
-	console.log("HI", props.chats)
+  console.log("HI", props.chats);
   for (let i = 0; props.chats.length > i; i++) {
     if (props.chats[i].type === ChatroomType.PROTECTED) {
       rows.push(
