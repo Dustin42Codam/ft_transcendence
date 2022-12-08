@@ -25,20 +25,20 @@ export class MessageController {
   }
 
 
-  @Get(':id')
+  @Get(':id') //TODO: this
   async getMessages(
-    @Param('id') id: number,
+    @Param('id') id: string,//TODO this should be the session id
   ) {
       const messages : Message[] = []; 
       const check_messages = await this.messageService.all();
-      const user: User = await this.userService.getUserById(id);
-      const member: Member = await this.memberService.getMemberById(id);
+      const user: User = await this.userService.getUserById(Number(id));
+      const member: Member = await this.memberService.getMemberById(Number(id));
       for (const message of check_messages) {
         const block: Block = await this.blockService.getBlockById(message.member.user.id);
-        if (block.receiver.id === message.member.user.id && block.sender.id === user.id)
+        if (block.receiver.id === blocks.includes(message.member.user.id) && block.sender.id === user.id)
           console.log("This user is blocked");
-        if (await this.memberService.isRestricted(member))
-          console.log("This user is banned or muted");
+        // if (await this.memberService.isRestricted(member))
+        //   console.log("This user is banned or muted");
         else
           messages.push(message);
       }
@@ -50,7 +50,7 @@ export class MessageController {
     @Body() body: MessageCreateDto,
   ) {
     const member : Member = await this.memberService.getMemberById(Number(body.member));
-    if (member.banned === true) {
+    if (this.memberService.isRestricted(member)) {
       throw new BadRequestException("You are banned from this chatroom.");
     }
     return this.messageService.create({timestamp: new Date(), member: member, message: body.message});

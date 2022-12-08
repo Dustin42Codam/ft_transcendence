@@ -21,7 +21,7 @@ export class BlockService extends AbstractService {
 		super(blockRepository);
 	}
 
-	async getBlockById(id: number) {
+	async getBlockById(id: number) { //TODO check if exists
 		return await this.findOne({id}, ["sender", "receiver"]);
 	}
 
