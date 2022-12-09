@@ -10,7 +10,6 @@ async function createNestApp(...gateways): Promise<INestApplication> {
     providers: gateways,
   }).compile();
   const app = testingModule.createNestApplication();
-  app.useWebSocketAdapter(new WsAdapter(app) as any);
   return app;
 }
 
@@ -18,31 +17,50 @@ describe("Testing baisic connections", () => {
 	let app: INestApplication;
 	let socket: Socket;
 
-	it("Testing simple connection to websocks: ", async () => {
+	it("Socket connects to server: ", async () => {
 		app = await createNestApp(WebSocketGateways);
 		await app.listen(3001);
-		socket = io("ws://localhost:3001", { transports: ["websocket", "polling"], autoConnect: false },);
-
-    socket.connect();
-		console.log(socket);
-
-		/*
-    socket.send(
-      JSON.stringify({
-        event: 'push',
-        data: {
-          test: 'test',
-        },
-      }),
-    );
+		socket = io("ws://localhost:3001", { transports: ["websocket", "polling"], autoConnect: true },);
+	
     await new Promise<void>(resolve =>
-      socket.on('message', data => {
-				console.log("This is data", data);
-        expect(JSON.parse(data).data.test).toBe('test');
-        socket.close();
+			socket.on('connect', () => {
+				expect(socket.connected).toBe(true);
         resolve();
       }),
     );
-	 */
 	});
+
+	/*
+	it("Socket disconnects from server: ", async () => {
+		app = await createNestApp(WebSocketGateways);
+		await app.listen(3001);
+		socket = io("ws://localhost:3001", { transports: ["websocket", "polling"], autoConnect: true },);
+		socket.disconnect();
+		socket.close();
+	
+    await new Promise<void>(resolve =>
+			socket.on('disconnect', () => {
+				console.log("dicsco dico");
+				expect(socket.disconnected).toBe(true);
+        resolve();
+      }),
+    );
+	});
+ do not know how to test this
+ */
+
+	it("Socket send and recives data: ", async () => {
+		app = await createNestApp(WebSocketGateways);
+		await app.listen(3001);
+		socket = io("ws://localhost:3001", { transports: ["websocket", "polling"], autoConnect: true },);
+		socket.emit("msgToServer", "test");
+
+    await new Promise<void>(resolve =>
+      socket.on("msgToClient", msg => {
+        expect(msg).toBe("test");
+        resolve();
+      }),
+    );
+	});
+	afterEach(() => app.close());
 });
