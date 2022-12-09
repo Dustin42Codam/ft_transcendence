@@ -8,7 +8,7 @@ import {
 
 const initialState = {
   loading: false,
-  user: User,
+  user: [],
   error: "",
 };
 
@@ -36,7 +36,7 @@ const userReducer = (state = initialState, action: any) => {
       return {
         error: action.payload,
         loading: false,
-        user: User,
+        user: [],
       };
     default:
       return state;

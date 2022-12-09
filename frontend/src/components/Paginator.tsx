@@ -5,8 +5,6 @@ const Paginator = (props: {
   pageChanged: (page: number) => void;
   page: number;
 }) => {
-  // let page = 1;
-
   const next = () => {
     if (props.page < props.lastPage) props.pageChanged(props.page + 1);
   };

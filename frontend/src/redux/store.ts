@@ -1,18 +1,18 @@
 import { configureStore } from "@reduxjs/toolkit";
 import rootReducer from "./rootReducer";
 // import userReducer from "./user/userReducer";
-import userReducer from "./user/userSlice";
-import chatReducer from "./chat/chatReducer";
+import usersReducer from "./user/usersSlice";
+// import chatReducer from "./chat/chatReducer";
+import chatsReducer from "./chat/chatsSlice";
 
 const store = configureStore({
   reducer: {
-    // reducer: rootReducer,
-    user: userReducer,
-	// chat: chatReducer
-    // middleware: new MiddlewareArray().concat(logger, thunk),
-  }
-  //   rootReducer,
-  //   composeWithDevTools(applyMiddleware(logger, thunk))
+    chats: chatsReducer,
+    users: usersReducer,
+
+    // add later
+    //   currentUser: userReducer
+  },
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

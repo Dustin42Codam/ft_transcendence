@@ -8,8 +8,10 @@ import Game from "./pages/Game";
 import Profile from "./pages/Profile";
 import Chat from "./pages/Chat";
 import ChatLobby from "./pages/ChatLobby";
+import { UserList } from "./pages/UserList";
+import { ChatList } from "./pages/ChatList";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import UserCreate from "./pages/users/UserCreate";
 import UserEdit from "./pages/users/UserEdit";
 import Achievements from "./pages/achievements/Achievements";
@@ -18,6 +20,9 @@ import { Dispatch } from "redux";
 import { User } from "./models/User";
 import { setUser } from "./redux/actions/setUserAction";
 import { fetchUser } from "./redux/user/userActions";
+import { AddChatForm } from "./pages/AddChatForm";
+import { SingleChatPage } from "./pages/SingleChatPage";
+import { EditChatForm } from "./pages/EditChatForm";
 
 function App(props: any) {
   const [token, setToken] = useState(false);
@@ -55,9 +60,15 @@ function App(props: any) {
       <div className="App">
         <BrowserRouter>
           <Routes>
-            <Route path="/authenticate" element={<Navigate to="/" />} />
             <Route path={"/"} element={<Dashboard />} />
-            <Route path={"/users"} element={<Users />} />
+            <Route path="/authenticate" element={<Navigate to="/" />} />
+            <Route path={"/users"} element={<UserList />} />
+            <Route path={"/chats"} element={<ChatList />} />
+            <Route path={"/add/chat"} element={<AddChatForm />} />
+            <Route path={"/chats/:chatId"} element={<SingleChatPage />} />
+            <Route path={"/editChat/:chatId"} element={<EditChatForm />} />
+
+            {/* <Route path={"/users"} element={<Users />} />
             <Route path={"/users/create"} element={<UserCreate />} />
             <Route path={"/users/:id/edit"} element={<UserEdit />} />
             <Route path={"/authenticate"} element={<Authenticate />} />
@@ -65,24 +76,25 @@ function App(props: any) {
             <Route path={"/chats/:name"} element={<Chat />} />
             <Route path={"/games"} element={<Game />} />
             <Route path={"/achievements"} element={<Achievements />} />
-            <Route path={"*"} element={<NotFound />} />
+            <Route path={"*"} element={<NotFound />} /> */}
           </Routes>
         </BrowserRouter>
       </div>
     );
   }
 }
-const mapStateToProps = (state: { user: User }) => {
-  return {
-    user: state.user,
-  };
-};
+// const mapStateToProps = (state: { user: User }) => {
+//   return {
+//     user: state.user,
+//   };
+// };
 
-const mapDispatchToProps = (dispatch: Dispatch<any>) => {
-  return {
-    fetchUser: () => dispatch(fetchUser()),
-    setUser: (user: User) => dispatch(setUser(user)),
-  };
-};
+// const mapDispatchToProps = (dispatch: Dispatch<any>) => {
+//   return {
+//     fetchUser: () => dispatch(fetchUser()),
+//     setUser: (user: User) => dispatch(setUser(user)),
+//   };
+// };
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+// export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default App;

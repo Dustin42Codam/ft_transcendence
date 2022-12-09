@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import CastleIcon from "@mui/icons-material/Castle";
@@ -37,59 +38,43 @@ const chats = [
 ];
 */
 
-const CreateChat = (props: any) => {
-  const rows = [];
-
-  //   useEffect(() => {
-  //     props.fetchChats();
-  //   }, []);
+const ChatTable = () => {
+  const rows: any = [];
+  //   const chats = useSelector(state => state.chats);
 
   let navigate = useNavigate();
 
   function handleClick(name: string) {
     navigate("../chats/" + name, { replace: true });
   }
-  console.log("HI", props);
-  for (let i = 0; props.chats.length > i; i++) {
-    if (props.chats[i].type === ChatroomType.PROTECTED) {
-      rows.push(
-        <div
-          key={i}
-          className="chatRow"
-          onClick={() => handleClick(props.chats[i].name)}
-        >
-          <CastleIcon />
-          {props.chats[i].name}
-        </div>
-      );
-    } else if (props.chats[i].type === ChatroomType.PUBLIC) {
-      rows.push(
-        <div
-          key={i}
-          className="chatRow"
-          onClick={() => handleClick(props.chats[i].name)}
-        >
-          <PublicIcon />
-          {props.chats[i].name}
-        </div>
-      );
-    }
-  }
+
+  //   for (let i = 0; props.chats.length > i; i++) {
+  //     if (props.chats[i].type === ChatroomType.PROTECTED) {
+  //       rows.push(
+  //         <div
+  //           key={i}
+  //           className="chatRow"
+  //           onClick={() => handleClick(props.chats[i].name)}
+  //         >
+  //           <CastleIcon />
+  //           {/* {props.chats[i].name} */}
+  //         </div>
+  //       );
+  //     } else if (props.chats[i].type === ChatroomType.PUBLIC) {
+  //       rows.push(
+  //         <div
+  //           key={i}
+  //           className="chatRow"
+  //           onClick={() => handleClick(props.chats[i].name)}
+  //         >
+  //           <PublicIcon />
+  //           {/* {props.chats[i].name} */}
+  //         </div>
+  //       );
+  //     }
+  //   }
 
   return <div className="chatTableContainer">{rows}</div>;
 };
 
-const mapStateToProps = (state: any) => {
-  return {
-    chats: state.chats,
-  };
-};
-
-// const mapDispatchToProps = (dispatch: Dispatch<any>) => {
-//   return {
-//     fetchChats: () => dispatch(fetchChats()),
-//   };
-// };
-
-// export default connect(mapStateToProps, mapDispatchToProps)(CreateChat);
-export default connect(mapStateToProps)(CreateChat);
+export default ChatTable;

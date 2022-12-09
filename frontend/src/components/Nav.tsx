@@ -6,7 +6,6 @@ import { User } from "../models/User";
 import { setUser } from "../redux/actions/setUserAction";
 
 const Nav = (props: any) => {
-  console.log("🚀 ~ file: Nav.tsx ~ line 8 ~ Nav ~ user", props.user);
   const logout = async () => {
     await axios
       .post("logout", {})
@@ -22,7 +21,7 @@ const Nav = (props: any) => {
 
       <ul className="my-2 my-md-0 mr-md-3">
         <Link to="/profile" className="p-2 text-white text-decoration-none">
-          {props.user.avatar}
+          {/* {props.user.avatar} */}
         </Link>
         <Link
           to="/authenticate"
@@ -30,29 +29,24 @@ const Nav = (props: any) => {
           onClick={logout}
         >
           Sign out
-          {props.user.avatar}
+          {/* {props.user.avatar} */}
         </Link>
       </ul>
     </nav>
   );
 };
 
-const mapStateToProps = (state: { user: User }) => {
-  return {
-    user: state.user,
-  };
-};
-
-const mapDispatchToProps = (dispatch: any) => {
-  return {
-    setUser: setUser,
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Nav);
-
-// export default connect((state: { user: User }) => {
+// const mapStateToProps = (state: { user: User }) => {
 //   return {
 //     user: state.user,
 //   };
-// })(Nav);
+// };
+
+// const mapDispatchToProps = (dispatch: any) => {
+//   return {
+//     setUser: setUser,
+//   };
+// };
+
+// export default connect(mapStateToProps, mapDispatchToProps)(Nav);
+export default Nav;

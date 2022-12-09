@@ -3,6 +3,7 @@ export class User {
     public id: number = 0,
     public display_name: string = "",
     public status: string = "",
-    public avatar: string = ""
+    public avatar: string = "",
+    public two_factor_auth: boolean = false
   ) {}
 }
