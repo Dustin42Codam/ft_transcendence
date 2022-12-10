@@ -6,13 +6,12 @@ import { Link } from "react-router-dom";
 import { ChatCreator } from "./ChatCreator";
 import { TimeAgo } from "./TimeAgo";
 import { ReactionButtons } from "./ReactionButtons";
+import { selectChatById } from "../redux/chat/chatsSlice";
 
 export const SingleChatPage = () => {
   const { chatId } = useParams();
 
-  const chat = useAppSelector((state) =>
-    state.chats.find((chat) => chat.id === chatId)
-  );
+  const chat = useAppSelector((state) => selectChatById(state, chatId));
 
   if (!chat) {
     return (
@@ -28,11 +27,11 @@ export const SingleChatPage = () => {
     <Wrapper>
       <section>
         <article className="chat">
-          <h2>{chat.title}</h2>
+          <h2>{chat.name}</h2>
           <ChatCreator userId={chat.user} />
-		  <TimeAgo timestamp={chat.date} />
+          <TimeAgo timestamp={chat.date} />
           <p className="chat-content">{chat.content}</p>
-		  <ReactionButtons message={chat}/>
+          <ReactionButtons message={chat} />
           <Link to={`/editChat/${chat.id}`}>Edit Chat</Link>
         </article>
       </section>

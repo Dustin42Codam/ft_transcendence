@@ -3,15 +3,13 @@ import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import Wrapper from "../components/Wrapper";
-import { chatUpdated } from "../redux/chat/chatsSlice";
+import { chatUpdated, selectChatById } from "../redux/chat/chatsSlice";
 import { useAppSelector, useAppDispatch } from "../redux/hooks";
 
 export const EditChatForm = () => {
   const { chatId } = useParams();
 
-  const chat = useAppSelector((state) =>
-    state.chats.find((chat) => chat.id === chatId)
-  );
+  const chat = useAppSelector((state) => selectChatById(state, chatId));
 
   const [title, setTitle] = useState(chat?.title);
   const [content, setContent] = useState(chat?.content);
