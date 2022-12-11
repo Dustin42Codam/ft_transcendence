@@ -10,6 +10,7 @@ export class WebSocketGateways implements OnGatewayInit, OnGatewayConnection {
 	private logger: Logger = new Logger("AppGateway");
 
 	afterInit(server: Server) {
+	//You know that green stuff when api boots up? It will print something at start up
 		this.logger.log("socket.io websocket server is inited!");
 	}
 
@@ -21,6 +22,7 @@ export class WebSocketGateways implements OnGatewayInit, OnGatewayConnection {
     console.log(`Client disconnected: ${client.id}`);
   }
 	//IF IS A MEMBER OF A CHAT THIS ROOM before connection and it AUTH
+	//if payload is undefined it becomes null
   @SubscribeMessage('msgToServer')
   handleMessage(client: Socket, payload: string): WsResponse<string> {
 		//IF I WANT TO SEND
@@ -32,10 +34,7 @@ export class WebSocketGateways implements OnGatewayInit, OnGatewayConnection {
 		//returns data to the client
 		return { event: "msgToClient", data: payload};
   }
-	//send message to evert one
-
 	/*
-
 	@WebSocketServer ws: Server;
   @SubscribeMessage('chatroom')
   handleMessage(client: Socket, payload: string): void {

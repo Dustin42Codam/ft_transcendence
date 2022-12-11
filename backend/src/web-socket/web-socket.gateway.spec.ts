@@ -5,6 +5,16 @@ import { WsAdapter } from '@nestjs/platform-ws';
 import { io, Socket } from "socket.io-client";
 import { expect } from '@jest/globals';
 
+function randomString(length:number): string {
+    let result: string           = "";
+    let characters:string       = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    let charactersLength:number = characters.length;
+    for ( let i = 0; i < length; i++ ) {
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
+}
+
 async function createNestApp(...gateways): Promise<INestApplication> {
   const testingModule = await Test.createTestingModule({
     providers: gateways,
@@ -49,18 +59,47 @@ describe("Testing baisic connections", () => {
  do not know how to test this
  */
 
-	it("Socket send and recives data: ", async () => {
+	for (let i = 0; i < 20; i++) {
+		it("Socket send and recives data: ", async () => {
+			let randMsg: string = randomString(Math.random() * 20);
+			app = await createNestApp(WebSocketGateways);
+			await app.listen(3001);
+			socket = io("ws://localhost:3001", { transports: ["websocket", "polling"], autoConnect: true },);
+			socket.emit("msgToServer", randMsg);
+
+			await new Promise<void>(resolve =>
+				socket.on("msgToClient", msg => {
+					expect(msg).toBe(randMsg);
+					resolve();
+				}),
+			);
+		});
+	}
+	it ("send null as arg", async () => {
 		app = await createNestApp(WebSocketGateways);
 		await app.listen(3001);
 		socket = io("ws://localhost:3001", { transports: ["websocket", "polling"], autoConnect: true },);
-		socket.emit("msgToServer", "test");
+		socket.emit("msgToServer", null);
 
-    await new Promise<void>(resolve =>
-      socket.on("msgToClient", msg => {
-        expect(msg).toBe("test");
-        resolve();
-      }),
-    );
+		await new Promise<void>(resolve =>
+			socket.on("msgToClient", msg => {
+				expect(msg).toBe(null);
+				resolve();
+			}),
+		);
+	});
+	it ("send undefined as arg", async () => {
+		app = await createNestApp(WebSocketGateways);
+		await app.listen(3001);
+		socket = io("ws://localhost:3001", { transports: ["websocket", "polling"], autoConnect: true },);
+		socket.emit("msgToServer", undefined);
+
+		await new Promise<void>(resolve =>
+			socket.on("msgToClient", msg => {
+				expect(msg).toBe(null);
+				resolve();
+			}),
+		);
 	});
 	afterEach(() => app.close());
 });

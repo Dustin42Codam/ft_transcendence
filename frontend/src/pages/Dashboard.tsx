@@ -1,34 +1,49 @@
-import React, { Component, useState } from "react";
+import React, { useRef, useEffect, Component, useState } from "react";
 import { io, Socket } from "socket.io-client";
 import Wrapper from "../components/Wrapper";
+import { fetchChats } from "../redux/chat/chatActions";
 
 const Dashboard = () => {
-  const [test, setTest] = useState("");
   const socket: Socket = io("ws://localhost:3000", {
-    withCredentials: true,
-    transports: ["websocket", "polling"],
-  });
+		withCredentials: true,
+		transports: ["websocket", "polling"],
+	});
+  const [newMsg, setNewMsg] = useState<string>("");
+	const [isConnected, setIsConnected] = useState<boolean>(socket.connected);
+
+  useEffect(() => {
+    props.fetchChats();
+  }, []);
+
+	useEffect(() => {
+		const connectToServer = async () => {
+			console.log("conneing");
+			await new Promise<void>(resolve => {
+					setIsConnected(true);
+					console.log("connected again");
+					socket.on("connect", () => resolve());
+				}
+			);
+		}
+		if (isConnected == false) {
+			connectToServer();
+		}
+	});
+	console.log("done connecting", isConnected);
 
   function sendMessage(msg: string) {
     socket.emit("msgToServer", msg);
   }
   function reciveMessage(msg: string) {
-    console.log(msg);
+
   }
   //const ws = new WebSocket("ws://localhost:3000");
-  socket.onAny((event, ...args) => {
-    console.log(event, args);
-  });
-  // socket.emit("users", users);
-  socket.on("msgToClient", (msg: string) => {
-    reciveMessage(msg);
-  });
-
   return (
     <Wrapper>
-      <input type="test" onChange={(e) => setTest(e.target.value)}></input>
-      <button onClick={() => sendMessage(test)}>Submit</button>
+      <input type="msg" onChange={(e) => setNewMsg(e.target.value)}></input>
+      <button onClick={ () => sendMessage(newMsg)}>Submit</button>
       <div>Dashboard</div>
+      <p>Connected: { '' + isConnected }</p>
     </Wrapper>
   );
 };
