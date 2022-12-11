@@ -10,7 +10,7 @@ export enum UserStatus {
   IN_A_GAME = "in_a_game",
 }
 
-type User = {
+export type User = {
   role: UserRole;
   muted: boolean;
   muted_unti: Date;
@@ -30,16 +30,18 @@ export enum ChatroomType {
   DIRECT = "direct",
 }
 
-type Messages = {
-  content: string;
-  date: Date;
-  type: ChatroomType;
+export type Messages = {
+  content: string,
+  date: Date,
+	username: string
 };
+
 
 export class Chat {
   constructor(
     public id: number = 0,
     public name: string = "",
+		public password: string = "",
     public type: ChatroomType = ChatroomType.PRIVATE,
     public users: User[] = [],
     public messages: Messages[] = []

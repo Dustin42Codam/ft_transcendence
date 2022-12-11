@@ -4,5 +4,4 @@ jest.mock("axios");
 import axios from "axios";
 
 test("", () => {
-  console.log("lol");
 });
