@@ -1,33 +1,42 @@
+import { User } from "../../models/User";
 import {
-  FETCH_USERS_REQUEST,
-  FETCH_USERS_SUCCESS,
-  FETCH_USERS_FAILURE,
+  SET_USER,
+  FETCH_USER_REQUEST,
+  FETCH_USER_SUCCESS,
+  FETCH_USER_FAILURE,
 } from "./userTypes";
 
 const initialState = {
   loading: false,
-  users: [],
+  user: [],
   error: "",
 };
 
 const userReducer = (state = initialState, action: any) => {
   switch (action.type) {
-    case FETCH_USERS_REQUEST:
+    case SET_USER:
+      return {
+        ...state,
+        user: action.user,
+        loading: false,
+        error: "",
+      };
+    case FETCH_USER_REQUEST:
       return {
         ...state,
         loading: true,
       };
-    case FETCH_USERS_SUCCESS:
+    case FETCH_USER_SUCCESS:
       return {
         loading: false,
-        users: action.payload,
+        user: action.payload,
         error: "",
       };
-    case FETCH_USERS_FAILURE:
+    case FETCH_USER_FAILURE:
       return {
         error: action.payload,
         loading: false,
-        users: [],
+        user: [],
       };
     default:
       return state;

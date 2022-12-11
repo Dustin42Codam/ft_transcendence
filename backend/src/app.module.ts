@@ -15,6 +15,7 @@ import { ChatroomModule } from './chatroom/chatroom.module';
 import { GameModule } from './game/game.module';
 import { GameStatsModule } from './games_stats/game_stats.module';
 import { WebSocketModule } from './web-socket/web-socket.module';
+import { PostModule } from './post/post.module';
 
 dotenv.config();
 
@@ -43,6 +44,7 @@ dotenv.config();
 		MemberModule,
 		OauthCallbackModule,
 		UserModule,
+		PostModule,
 	],
 })
 

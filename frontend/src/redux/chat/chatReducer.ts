@@ -1,3 +1,4 @@
+import { Chat } from "../../models/Chats";
 import {
   FETCH_CHATS_REQUEST,
   FETCH_CHATS_SUCCESS,

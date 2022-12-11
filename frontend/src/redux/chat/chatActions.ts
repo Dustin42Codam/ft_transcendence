@@ -35,6 +35,7 @@ export const fetchChats = () => {
       .get("chatroom/")
       .then((response) => {
         const chats = response.data;
+        console.log("+++++++++++++++++++", chats);
         dispatch(fetchChatsSuccess(chats));
       })
       .catch((error) => dispatch(fetchChatsFailure(error.message)));

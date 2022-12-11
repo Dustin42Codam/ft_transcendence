@@ -1,45 +1,50 @@
 import axios from "axios";
+import { User } from "../../models/User";
 import {
-  FETCH_USERS_REQUEST,
-  FETCH_USERS_SUCCESS,
-  FETCH_USERS_FAILURE,
+  SET_USER,
+  FETCH_USER_REQUEST,
+  FETCH_USER_SUCCESS,
+  FETCH_USER_FAILURE,
 } from "./userTypes";
 
-export const fetchUsersRequest = () => {
+export const setUser = (user: User) => {
   return {
-    type: FETCH_USERS_REQUEST,
+    type: SET_USER,
+    user: user,
   };
 };
 
-export const fetchUsersSuccess = (users: any) => {
+export const fetchUserRequest = () => {
   return {
-    type: FETCH_USERS_SUCCESS,
-    payload: users,
+    type: FETCH_USER_REQUEST,
   };
 };
 
-export const fetchUsersFailure = (error: any) => {
+export const fetchUserSuccess = (user: User) => {
   return {
-    type: FETCH_USERS_FAILURE,
+    type: FETCH_USER_SUCCESS,
+    payload: user,
+  };
+};
+
+export const fetchUserFailure = (error: User) => {
+  return {
+    type: FETCH_USER_FAILURE,
     payload: error,
   };
 };
 
-//mock axios
-//axios.succes()
-//axios.fial()
-
-export const fetchUsers = () => {
+export const fetchUser = () => {
   return (dispatch: any) => {
-    dispatch(fetchUsersRequest());
+    dispatch(fetchUserRequest());
     axios
       .get("user")
       .then((response) => {
-        const users = response.data;
-        dispatch(fetchUsersSuccess(users));
+        const user = response.data;
+        dispatch(fetchUserSuccess(user));
       })
       .catch((error) => {
-        dispatch(fetchUsersFailure(error.message));
+        dispatch(fetchUserFailure(error.message));
       });
   };
 };
