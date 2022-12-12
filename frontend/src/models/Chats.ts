@@ -31,17 +31,16 @@ export enum ChatroomType {
 }
 
 export type Messages = {
-  content: string,
-  date: Date,
-	username: string
+  content: string;
+  date: Date;
+  username: string;
 };
-
 
 export class Chat {
   constructor(
     public id: number = 0,
     public name: string = "",
-		public password: string = "",
+    public password: string = "",
     public type: ChatroomType = ChatroomType.PRIVATE,
     public users: User[] = [],
     public messages: Messages[] = []
