@@ -15,7 +15,7 @@ export enum ChatroomType {
 }
 
 type Chats = {
-	id: number
+  id: number;
   name: string;
   type: ChatroomType;
 };
@@ -37,15 +37,14 @@ const ChatTable = () => {
   	generate map table using the chats array we got from the redux store
   */
   const renderedChats = chats.map((chat: Chats) => (
-          <div
-            key={chat.id}
-            className="chatRow"
-            onClick={() => handleClick(chat.name)}
-          >
-            {chat.type === ChatroomType.PROTECTED ? <CastleIcon /> : <PublicIcon />}
-            {chat.name}
-          </div>
-
+    <div
+      key={chat.id}
+      className="chatRow"
+      onClick={() => handleClick(chat.name)}
+    >
+      {chat.type === ChatroomType.PROTECTED ? <CastleIcon /> : <PublicIcon />}
+      {chat.name}
+    </div>
   ));
 
   return <div className="chatTableContainer">{renderedChats}</div>;

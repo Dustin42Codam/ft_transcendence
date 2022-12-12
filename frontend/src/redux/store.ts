@@ -2,15 +2,14 @@ import { configureStore } from "@reduxjs/toolkit";
 import usersReducer from "./slices/usersSlice";
 import postsReducer from "./slices/postsSlice";
 import chatsReducer from "./slices/chatsSlice";
+import currentUserReducer from "./slices/currentUserSlice";
 
 const store = configureStore({
   reducer: {
     chats: chatsReducer,
     users: usersReducer,
     posts: postsReducer,
-
-    // add later
-    //   currentUser: userReducer
+    currentUser: currentUserReducer,
   },
 });
 

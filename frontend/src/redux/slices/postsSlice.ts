@@ -2,15 +2,15 @@ import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 
 type Post = {
-	title: string,
-	content: string,
-	user: string
-}
+  title: string;
+  content: string;
+  user: string;
+};
 
 const initialState = {
-	posts: [],
-  	status: "idle",
-  	error: null,
+  posts: [],
+  status: "idle",
+  error: null,
 };
 
 export const fetchPosts = createAsyncThunk("posts/fetchPosts", async () => {
@@ -19,15 +19,15 @@ export const fetchPosts = createAsyncThunk("posts/fetchPosts", async () => {
 });
 
 export const addNewPost = createAsyncThunk(
-	'posts/addNewPost',
-	// The payload creator receives the partial `{title, content, user}` object
-	async (post: Post) => {
-	  // We send the initial data to the API
-	  const response = await axios.post('post', post)
-	  // The response includes the complete post object, including unique ID
-	  return response.data;
-	}
-  )
+  "posts/addNewPost",
+  // The payload creator receives the partial `{title, content, user}` object
+  async (post: Post) => {
+    // We send the initial data to the API
+    const response = await axios.post("post", post);
+    // The response includes the complete post object, including unique ID
+    return response.data;
+  }
+);
 
 const postsSlice = createSlice({
   name: "posts",
@@ -66,10 +66,13 @@ const postsSlice = createSlice({
         state.status = "failed";
         state.error = action.error.message;
       })
-	  .addCase(addNewPost.fulfilled, (state: any, action: PayloadAction<Post>) => {
-		// We can directly add the new post object to our posts array
-		state.posts.posts.push(action.payload)
-		})
+      .addCase(
+        addNewPost.fulfilled,
+        (state: any, action: PayloadAction<Post>) => {
+          // We can directly add the new post object to our posts array
+          state.posts.posts.push(action.payload);
+        }
+      );
   },
 });
 

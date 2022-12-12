@@ -2,7 +2,7 @@ import axios from "axios";
 import React from "react";
 import { Link } from "react-router-dom";
 
-const Nav = (props: any) => {
+const Nav = () => {
   const logout = async () => {
     await axios
       .post("logout", {})
@@ -17,16 +17,12 @@ const Nav = (props: any) => {
       </a>
 
       <ul className="my-2 my-md-0 mr-md-3">
-        <Link to="/profile" className="p-2 text-white text-decoration-none">
-          {/* {props.user.avatar} */}
-        </Link>
         <Link
           to="/authenticate"
           className="p-2 text-white text-decoration-none"
           onClick={logout}
         >
           Sign out
-          {/* {props.user.avatar} */}
         </Link>
       </ul>
     </nav>

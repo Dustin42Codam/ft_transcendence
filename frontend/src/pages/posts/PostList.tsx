@@ -39,22 +39,22 @@ export const PostList = () => {
     }
   }, [postStatus, dispatch]);
 
-//   let content;
+  //   let content;
 
-//   if (postStatus === "loading") {
-//     // content = <Spinner text="Loading..." />
-//   } else if (postStatus === "succeeded") {
-//     // Sort posts in reverse chronological order by datetime string
-//     // const orderedPosts = posts
-//     //   .slice()
-//     //   .sort((a, b) => b.date.localeCompare(a.date))
+  //   if (postStatus === "loading") {
+  //     // content = <Spinner text="Loading..." />
+  //   } else if (postStatus === "succeeded") {
+  //     // Sort posts in reverse chronological order by datetime string
+  //     // const orderedPosts = posts
+  //     //   .slice()
+  //     //   .sort((a, b) => b.date.localeCompare(a.date))
 
-//     content = posts.map((post: any) => (
-//       <PostExcerpt key={post.id} post={post} />
-//     ));
-//   } else if (postStatus === "failed") {
-//     content = <div>{error}</div>;
-//   }
+  //     content = posts.map((post: any) => (
+  //       <PostExcerpt key={post.id} post={post} />
+  //     ));
+  //   } else if (postStatus === "failed") {
+  //     content = <div>{error}</div>;
+  //   }
 
   const renderedPosts = posts.map((post: any) => (
     <article className="post-excerpt" key={post.id}>
