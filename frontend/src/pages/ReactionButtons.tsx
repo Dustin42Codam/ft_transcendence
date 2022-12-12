@@ -1,6 +1,6 @@
 import React from "react";
 import { useAppSelector, useAppDispatch } from "../redux/hooks";
-import { reactionAdded } from "../redux/chat/chatsSlice";
+import { reactionAdded } from "../redux/slices/postsSlice";
 
 const reactionEmoji = {
   thumbsUp: "👍",

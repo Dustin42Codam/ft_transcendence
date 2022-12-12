@@ -1,14 +1,14 @@
-import { nanoid } from "@reduxjs/toolkit";
-import React, { SyntheticEvent, useState } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import Wrapper from "../components/Wrapper";
-import { chatAdded } from "../redux/chat/chatsSlice";
-import { useAppSelector, useAppDispatch } from "../redux/hooks";
+import Wrapper from "../../components/Wrapper";
+import { addNewPost } from "../../redux/slices/postsSlice";
+import { useAppSelector, useAppDispatch } from "../../redux/hooks";
 
-export const AddChatForm = () => {
+export const AddPostForm = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [userId, setUserId] = useState("");
+  const [addRequestStatus, setAddRequestStatus] = useState("idle");
 
   const dispatch = useAppDispatch();
 
@@ -18,29 +18,42 @@ export const AddChatForm = () => {
   const onContentChanged = (e: any) => setContent(e.target.value);
   const onUserChanged = (e: any) => setUserId(e.target.value);
 
-  const onSaveChatClicked = () => {
-    if (title && content) {
-      dispatch(chatAdded(title, content, userId));
+  let canSave = [title, content, userId].every(Boolean) && addRequestStatus === 'idle'
+  
+  const onSavePostClicked = async () => {
+	  if (canSave) {
+		  try {
+        setAddRequestStatus('pending')
+		
+		/* 
+		unwrap returns a new Promise that either has the actual action.payload
+		value from a fulfilled action, or throws an error if it's the rejected action.		
+		*/
+        await dispatch(addNewPost({ title, content, user: userId })).unwrap()
 
-      setTitle("");
-      setContent("");
+		setTitle('')
+        setContent('')
+        setUserId('')
+      } catch (err) {
+        console.error('Failed to save the post: ', err)
+      } finally {
+        setAddRequestStatus('idle')
+      }
     }
-  };
-
-  const canSave = Boolean(title) && Boolean(content) && Boolean(userId);
+  }
 
   const usersOptions = users.map((user) => (
     <option key={user.id} value={user.id}>
-      {user.name}
+      {user.display_name}
     </option>
   ));
 
   return (
     <Wrapper>
       <section>
-        <h2>Add a New fake chat</h2>
+        <h2>Add a New fake post</h2>
         <form>
-          <label htmlFor="postTitle">chat Title:</label>
+          <label htmlFor="postTitle">post Title:</label>
           <input
             type="text"
             id="postTitle"
@@ -60,13 +73,13 @@ export const AddChatForm = () => {
             value={content}
             onChange={onContentChanged}
           />
-          <button type="button" onClick={onSaveChatClicked} disabled={!canSave}>
-            Save Chat
+          <button type="button" onClick={onSavePostClicked} disabled={!canSave}>
+            Save Post
           </button>
         </form>
         <div className="navContent">
           <div className="navLinks">
-            <Link to="/chats">Back</Link>
+            <Link to="/posts">Back</Link>
           </div>
         </div>
       </section>

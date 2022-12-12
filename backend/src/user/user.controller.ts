@@ -1,11 +1,11 @@
-import { Body, Controller, Get, Param, Post, Req } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post, Query, Req } from "@nestjs/common";
 import { AuthService } from "src/auth/auth.service";
 import { UserCreateDto } from "./dto/user-create.dto";
 import { UserUpdateDto } from "./dto/user-update.dto";
 import { User } from "./entity/user.entity";
 import { UserService } from "./user.service";
 
-@Controller('user')
+@Controller('users')
 export class UserController {
     constructor(
 		private readonly userService: UserService,
@@ -13,8 +13,8 @@ export class UserController {
 	) {}
 
     @Get()
-    async getUsers() {
-        return await this.userService.getUsers();
+    async all(@Query('page') page = 1) {
+        return this.userService.paginate(page);
     }
 
     @Get(':id')

@@ -1,9 +1,6 @@
 import axios from "axios";
-import React, { Component, useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
-import { connect } from "react-redux";
-import { User } from "../models/User";
-import { setUser } from "../redux/actions/setUserAction";
 
 const Nav = (props: any) => {
   const logout = async () => {
@@ -36,17 +33,4 @@ const Nav = (props: any) => {
   );
 };
 
-// const mapStateToProps = (state: { user: User }) => {
-//   return {
-//     user: state.user,
-//   };
-// };
-
-// const mapDispatchToProps = (dispatch: any) => {
-//   return {
-//     setUser: setUser,
-//   };
-// };
-
-// export default connect(mapStateToProps, mapDispatchToProps)(Nav);
 export default Nav;

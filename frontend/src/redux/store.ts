@@ -1,14 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
-import rootReducer from "./rootReducer";
-// import userReducer from "./user/userReducer";
-import usersReducer from "./user/usersSlice";
-// import chatReducer from "./chat/chatReducer";
-import chatsReducer from "./chat/chatsSlice";
+import usersReducer from "./slices/usersSlice";
+import postsReducer from "./slices/postsSlice";
+import chatsReducer from "./slices/chatsSlice";
 
 const store = configureStore({
   reducer: {
     chats: chatsReducer,
     users: usersReducer,
+    posts: postsReducer,
 
     // add later
     //   currentUser: userReducer
