@@ -54,12 +54,12 @@ const UserEdit = () => {
   return (
     <Wrapper>
       <h3>User Profile</h3>
-		  <div className="mb-3">
-	 	 	<Avatar
-    		  src={user.avatar}
-    		  sx={{ height: "70px", width: "70px" }}
-    		></Avatar>
-		</div>
+      <div className="mb-3">
+        <Avatar
+          src={user.avatar}
+          sx={{ height: "70px", width: "70px" }}
+        ></Avatar>
+      </div>
       <form onSubmit={infoSubmit}>
         <div className="mb-3">
           <label> Name </label>
@@ -82,7 +82,7 @@ const UserEdit = () => {
           </div>
         </div>
 
-		<div className="mb-3">
+        <div className="mb-3">
           <label>Status</label>
           <select
             className="form-control"

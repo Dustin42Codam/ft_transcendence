@@ -10,6 +10,7 @@ import { fetchUsers } from "./redux/slices/usersSlice";
 import { fetchChats } from "./redux/slices/chatsSlice";
 import { useAppDispatch } from "./redux/hooks";
 import { fetchCurrentUser } from "./redux/slices/currentUserSlice";
+import { fetchFriends } from "./redux/slices/friendsSlice";
 
 axios.defaults.baseURL = "http://localhost:3000/api/";
 axios.defaults.withCredentials = true;

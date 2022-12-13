@@ -8,19 +8,23 @@ import Wrapper from "../../components/Wrapper";
 import { User } from "../../models/User";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { selectCurrentUser } from "../../redux/slices/currentUserSlice";
-import { fetchUsers, selectAllUsers, selectUsersWithoutUser } from "../../redux/slices/usersSlice";
-import './User.css'
+import {
+  fetchUsers,
+  selectAllUsers,
+  selectUsersWithoutUser,
+} from "../../redux/slices/usersSlice";
+import "./User.css";
 
 const Users = () => {
   const [page, setPage] = useState(1);
   const [lastPage, setLastPage] = useState(0);
   const currentUser = useAppSelector(selectCurrentUser);
 
-  const filteredUsers = useAppSelector(state => selectUsersWithoutUser(state, currentUser.id));
+  const filteredUsers = useAppSelector((state) =>
+    selectUsersWithoutUser(state, currentUser.id)
+  );
 
-  const addFriend = async (id: number) => {
-
-  };
+  const addFriend = async (id: number) => {};
 
   return (
     <Wrapper>
@@ -38,12 +42,12 @@ const Users = () => {
               return (
                 <tr key={user.id}>
                   <td>
-					<Link to={`/users/${user.id}`}>
-                    	<Avatar
-                    	  src={user.avatar}
-                    	  sx={{ height: "70px", width: "70px" }}
-						  ></Avatar>
-					</Link>
+                    <Link to={`/users/${user.id}`}>
+                      <Avatar
+                        src={user.avatar}
+                        sx={{ height: "70px", width: "70px" }}
+                      ></Avatar>
+                    </Link>
                   </td>
                   <td>{user.display_name}</td>
                   <td>{user.status}</td>

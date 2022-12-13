@@ -6,6 +6,12 @@ import { FriendCreateDto } from "./dto/friend-create.dto";
 export class FriendController {
 	constructor(private readonly friendService: FriendService) {}
 	
+	@Get()
+	async getAllFriends(
+	) {
+		return this.friendService.all();
+	}
+
 	@Get(':id')
 	async getFriendshipById(
 		@Param('id') id : string

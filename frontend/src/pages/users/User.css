@@ -5,46 +5,46 @@
 }
 
 .User_table {
-    --bs-table-color: var(--bs-body-color);
-    --bs-table-bg: transparent;
-    --bs-table-border-color: var(--bs-border-color);
-    --bs-table-accent-bg: transparent;
-    --bs-table-striped-color: var(--bs-body-color);
-    --bs-table-striped-bg: rgba(44, 44, 44, 0.05);
-    --bs-table-active-color: var(--bs-body-color);
-    --bs-table-active-bg: rgba(148, 148, 148, 0.1);
-    --bs-table-hover-color: var(--bs-body-color);
-    --bs-table-hover-bg: rgba(192, 192, 192, 0.075);
-    width: 100%;
-    margin-bottom: 1rem;
-    color: #ffffff;
-    vertical-align: top;
-    border-color: var(--bs-table-border-color);
+  --bs-table-color: var(--bs-body-color);
+  --bs-table-bg: transparent;
+  --bs-table-border-color: var(--bs-border-color);
+  --bs-table-accent-bg: transparent;
+  --bs-table-striped-color: var(--bs-body-color);
+  --bs-table-striped-bg: rgba(44, 44, 44, 0.05);
+  --bs-table-active-color: var(--bs-body-color);
+  --bs-table-active-bg: rgba(148, 148, 148, 0.1);
+  --bs-table-hover-color: var(--bs-body-color);
+  --bs-table-hover-bg: rgba(192, 192, 192, 0.075);
+  width: 100%;
+  margin-bottom: 1rem;
+  color: #ffffff;
+  vertical-align: top;
+  border-color: var(--bs-table-border-color);
 }
 
-.User_table-striped>tbody>tr:nth-of-type(odd)>* {
-	--bs-table-accent-bg: var(--bs-table-striped-bg);
-    color: #d1d1d1;
+.User_table-striped > tbody > tr:nth-of-type(odd) > * {
+  --bs-table-accent-bg: var(--bs-table-striped-bg);
+  color: #d1d1d1;
 }
 
-.User_table-striped>tbody>tr:nth-of-type(even)>* {
-	--bs-table-accent-bg: var(--bs-table-striped-bg);
-    color: #bcbcbc;
+.User_table-striped > tbody > tr:nth-of-type(even) > * {
+  --bs-table-accent-bg: var(--bs-table-striped-bg);
+  color: #bcbcbc;
 }
 
 .User_btn_friend {
-	background-color: #929292;
-	border: none;
-	color: white;
-	padding: 7px 16px;
-	text-align: center;
-	text-decoration: none;
-	display: inline-block;
-	font-size: 16px;
-	color: white;
-  }
-  
-  .User_btn_friend:hover {
-	background: #6a6a6a;
-	transition: 0.5s;
-  }
+  background-color: #929292;
+  border: none;
+  color: white;
+  padding: 7px 16px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  color: white;
+}
+
+.User_btn_friend:hover {
+  background: #6a6a6a;
+  transition: 0.5s;
+}

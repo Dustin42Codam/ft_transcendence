@@ -51,11 +51,13 @@ export class OauthCallbackController {
 					'Authorization': 'Bearer ' + request.session.token,
 				}
 			});
+			console.log("🚀 ~ file: oauth-callback.controller.ts:54 ~ OauthCallbackController ~ resp", resp)
 			user = await this.userService.findOne({display_name: resp.display_name})
+			console.log("🚀 ~ file: oauth-callback.controller.ts:55 ~ OauthCallbackController ~ user", user)
 			if (!user) {
 				user = await registerUser(resp.data, this.userService);
 			}
-			
+
 			const jwt = await this.jwtService.signAsync({id: user.id});
 		
 			response.cookie('jwt', jwt, {httpOnly: true, sameSite: 'lax'});

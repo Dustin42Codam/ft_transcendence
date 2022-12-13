@@ -3,6 +3,7 @@ import usersReducer from "./slices/usersSlice";
 import postsReducer from "./slices/postsSlice";
 import chatsReducer from "./slices/chatsSlice";
 import currentUserReducer from "./slices/currentUserSlice";
+import friendsReducer from "./slices/friendsSlice";
 
 const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ const store = configureStore({
     users: usersReducer,
     posts: postsReducer,
     currentUser: currentUserReducer,
+    friends: friendsReducer,
   },
 });
 

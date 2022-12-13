@@ -1,4 +1,9 @@
-import { createSlice, createAsyncThunk, createSelector, createEntityAdapter } from "@reduxjs/toolkit";
+import {
+  createSlice,
+  createAsyncThunk,
+  createSelector,
+  createEntityAdapter,
+} from "@reduxjs/toolkit";
 import axios from "axios";
 import { User } from "../../models/User";
 
@@ -29,7 +34,7 @@ const usersSlice = createSlice({
       .addCase(fetchUsers.rejected, (state: any, action) => {
         state.status = "failed";
         state.error = action.error.message;
-      })
+      });
   },
 });
 
@@ -41,8 +46,8 @@ export const selectUserById = (state: any, userId: any) =>
 
 // Memoized selectors
 export const selectUsersWithoutUser = createSelector(
-	[selectAllUsers, (state, userId) => userId],
-	(users, userId) => users.filter((user: any) => user.id !== userId)
-  )
+  [selectAllUsers, (state, userId) => userId],
+  (users, userId) => users.filter((user: any) => user.id !== userId)
+);
 
 export default usersSlice.reducer;

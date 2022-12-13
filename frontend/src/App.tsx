@@ -32,7 +32,7 @@ function App() {
   const userStatus = useAppSelector((state) => state.currentUser.status);
   const currentUser = useAppSelector(selectCurrentUser);
 
-  if (userStatus === 'failed') {
+  if (userStatus === "failed") {
     return (
       <div className="App">
         <BrowserRouter>
@@ -44,14 +44,9 @@ function App() {
         </BrowserRouter>
       </div>
     );
-  } 
-  else if (userStatus === 'loading') {
-	return (
-		<div className="App">
-		</div>
-	)
-  }
-  else {
+  } else if (userStatus === "loading") {
+    return <div className="App"></div>;
+  } else {
     return (
       <div className="App">
         <BrowserRouter>
@@ -68,15 +63,15 @@ function App() {
 
             <Route path={"/games"} element={<Game />} />
 
-			<Route path={"*"} element={<NotFound />} />
+            <Route path={"*"} element={<NotFound />} />
 
-			{/* to delete */}
+            {/* to delete */}
             <Route path={"/posts"} element={<PostList />} />
             <Route path={"/add/post"} element={<AddPostForm />} />
             <Route path={"/posts/:postId"} element={<SinglePostPage />} />
             <Route path={"/editPost/:postId"} element={<EditPostForm />} />
 
-			{/* maybe to delete */}
+            {/* maybe to delete */}
             {/*
             <Route path={"/users/:id/edit"} element={<UserEdit />} />
             <Route path={"/users/create"} element={<UserCreate />} />
