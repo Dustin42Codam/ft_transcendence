@@ -1,66 +1,48 @@
-import userEvent from "@testing-library/user-event";
+import { accordionSummaryClasses, Avatar } from "@mui/material";
 import axios from "axios";
-import React, { SyntheticEvent, useEffect, useRef, useState } from "react";
-import { Navigate, useLocation, useParams } from "react-router-dom";
+import React, {
+  Component,
+  SyntheticEvent,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+import { Navigate, useNavigate } from "react-router-dom";
 import ImageUpload from "../../components/ImageUpload";
 import Wrapper from "../../components/Wrapper";
+import { useAppSelector, useAppDispatch } from "../../redux/hooks";
+import {
+  selectCurrentUser,
+  updateCurrentUser,
+} from "../../redux/slices/currentUserSlice";
 import { UserStatus } from "../../models/Channel";
 
-const fetchDataCall = async (id: number) => {
-  let response = await axios.get(`users/${id}`).catch(function (error) {
-    console.log(
-      "🚀 ~ file: UserEdit.tsx ~ line 11 ~ fetchDataCall ~ error",
-      error
-    );
-  });
-  return response;
-};
-
 const UserEdit = () => {
-  const [name, setName] = useState("");
-  const [avatar, setAvatar] = useState("");
-  const [status, setStatus] = useState("offline");
-  const [twoFA, setTwoFA] = useState("false");
-  const [redirect, setRedirect] = useState(false);
-  const params: any = useParams();
-  let response: any;
+  const user = useAppSelector(selectCurrentUser);
+
+  const [name, setName] = useState(user.display_name);
+  const [avatar, setAvatar] = useState(user.avatar);
+  const [status, setStatus] = useState(user.status);
+  const [twoFA, setTwoFA] = useState(user.two_factor_auth);
+
   const ref = useRef<HTMLInputElement>(null);
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      response = await fetchDataCall(params.id);
-      setName(response.data.display_name);
-      setAvatar(response.data.avatar);
-      setStatus(response.data.status);
-      setTwoFA(response.data.twoFA);
-    };
-
-    fetchData();
-  }, []);
-
-  const submit = async (e: SyntheticEvent) => {
-    e.preventDefault();
-
-    await axios
-      .post(`users/${params.id}`, {
-        display_name: name,
-        avatar,
-        status,
-        two_factor_auth: twoFA,
-      })
-      .then(() => {
-        console.log("sucess");
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-
-    setRedirect(true);
+  const infoSubmit = () => {
+    if (name || avatar || status || twoFA) {
+      dispatch(
+        updateCurrentUser({
+          id: user.id,
+          display_name: name,
+          avatar,
+          status,
+          two_factor_auth: twoFA,
+        })
+      );
+      navigate("/profile");
+    }
   };
-
-  if (redirect) {
-    return <Navigate to="/users" />;
-  }
 
   const updateImage = (url: string) => {
     if (ref.current) {
@@ -71,12 +53,19 @@ const UserEdit = () => {
 
   return (
     <Wrapper>
-      <form onSubmit={submit}>
+      <h3>User Profile</h3>
+		  <div className="mb-3">
+	 	 	<Avatar
+    		  src={user.avatar}
+    		  sx={{ height: "70px", width: "70px" }}
+    		></Avatar>
+		</div>
+      <form onSubmit={infoSubmit}>
         <div className="mb-3">
-          <label>Name</label>
+          <label> Name </label>
           <input
             className="form-control"
-            value={name}
+            defaultValue={user.display_name}
             onChange={(e) => setName(e.target.value)}
           />
         </div>
@@ -86,13 +75,14 @@ const UserEdit = () => {
             <input
               ref={ref}
               className="form-control"
-              value={avatar}
+              value={user.avatar}
               onChange={(e) => setAvatar(e.target.value)}
             />
             <ImageUpload uploaded={updateImage} />
           </div>
         </div>
-        <div className="mb-3">
+
+		<div className="mb-3">
           <label>Status</label>
           <select
             className="form-control"
@@ -109,10 +99,10 @@ const UserEdit = () => {
         </div>
 
         <div className="mb-3">
-          <label>2FA</label>
+          <label>Two Factor Authentication</label>
           <select
             className="form-control"
-            value={twoFA}
+            value={user.twoFA}
             onChange={(e) => setTwoFA(e.target.value)}
           >
             <option key="false" defaultValue="false">
