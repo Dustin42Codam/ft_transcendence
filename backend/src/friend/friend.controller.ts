@@ -13,6 +13,13 @@ export class FriendController {
 		return this.friendService.getFriendshipById(Number(id));
 	}
 
+	@Get('user/:id')
+	async getAllFriendshipsFromUser(
+		@Param('id') id : string
+	) {
+		return this.friendService.getAllFriendshipsFromUser(Number(id));
+	}
+
 	@Post('remove/:id')
 	async removeFriendship(
 		@Param('id') id: string
@@ -21,4 +28,6 @@ export class FriendController {
 		//TODO check if the auth user is one of the two uses in the friendship
 		return await this.friendService.deleteFriendship(friendship);
 	}
+
+
 }

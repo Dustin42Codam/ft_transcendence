@@ -14,8 +14,8 @@ import { MemberModule } from './member/member.module';
 import { ChatroomModule } from './chatroom/chatroom.module';
 import { GameModule } from './game/game.module';
 import { GameStatsModule } from './games_stats/game_stats.module';
-import { WebSocketModule } from './web-socket/web-socket.module';
-import { PostModule } from './post/post.module';
+import { AchievementModule } from './achievement/achievement.module';
+import { MessageModule } from './message/message.module';
 
 dotenv.config();
 
@@ -33,6 +33,7 @@ dotenv.config();
 		}),
 		WebSocketModule,
 		AuthModule,
+		AchievementModule,
 		BlockModule,
 		ChatroomModule,
 		CommonModule,
@@ -42,6 +43,7 @@ dotenv.config();
 		GameModule,
 		GameStatsModule,
 		MemberModule,
+		MessageModule,
 		OauthCallbackModule,
 		UserModule,
 		PostModule,

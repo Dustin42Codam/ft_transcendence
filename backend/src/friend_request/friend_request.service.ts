@@ -30,8 +30,8 @@ export class FriendRequestService extends AbstractService {
 	}
 
 	async acceptFriendRequest(friendRequest: FriendRequest) {
-		const friendCreatDto : FriendCreateDto = {user_1_id: friendRequest.sender.id, user_2_id: friendRequest.receiver.id};
-		await this.friendService.createFriendship(friendCreatDto);
+		const friendCreateDto : FriendCreateDto = {user_1_id: friendRequest.sender.id, user_2_id: friendRequest.receiver.id};
+		await this.friendService.createFriendship(friendCreateDto);
 		return this.delete(friendRequest.id);
 	}
 
