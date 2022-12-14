@@ -5,7 +5,8 @@ import { AbstractService } from "src/common/abstract.service";
 import { GameStatsService } from "src/games_stats/game_stats.service";
 import { Repository } from "typeorm";
 import { UserCreateDto } from "./dto/user-create.dto";
-import { User } from "./entity/user.entity";
+import { User, UserStatus } from "./entity/user.entity";
+
 
 @Injectable()
 export class UserService extends AbstractService {
@@ -18,7 +19,7 @@ export class UserService extends AbstractService {
 	}
 
     async getUsers() {
-        this.userRepository.find();
+        return await this.userRepository.find();
     }
 
 	async getUserById(id: number, relations?: any[]) {
@@ -33,4 +34,14 @@ export class UserService extends AbstractService {
 		await this.achievementService.createAllAchievements(newUser)
 		return await this.getUserById(newUser.id);
 	}
+
+	async changeStatus(id: number, status: UserStatus) {
+		
+		const user = await this.getUserById(id);
+		user.status = status;
+		Object.assign(user, status);
+		await this.userRepository.save(user);
+		return user;
+	}
+	
 }

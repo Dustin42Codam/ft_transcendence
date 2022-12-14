@@ -1,23 +1,27 @@
-import { Body, Controller, Get, Param, Post } from "@nestjs/common";
+import { Req, UseGuards, Body, Controller, Get, Param, Post } from "@nestjs/common";
 import { UserCreateDto } from "./dto/user-create.dto";
 import { UserUpdateDto } from "./dto/user-update.dto";
 import { User } from "./entity/user.entity";
 import { UserService } from "./user.service";
+import * as session from 'express-session';
+import express, { Request } from 'express';
+import { AuthGuard } from "src/auth/auth.guard";
 
-@Controller('user')
+@Controller('users')
 export class UserController {
     constructor(private readonly userService: UserService) {}
 
-    @Get()
-    async getUsers() {
-        return await this.userService.getUsers();
-    }
-
+    
     @Get(':id')
     async getUserById(
         @Param('id') id : string
-    ) {
-        return this.userService.getUserById(Number(id));
+        ) {
+            return this.userService.getUserById(Number(id));
+        }
+        
+    @Get()
+    async getUsers(@Req() request: Request) {
+        return await this.userService.getUsers();
     }
 
     @Post()
@@ -30,11 +34,14 @@ export class UserController {
 		return this.userService.createUser(body);
 	}
 
-    @Post(':id') //TODO authgaurd should be added, user id should be used then the param can be removed
+    //TODO: change password
+    
+    @UseGuards(AuthGuard)
+    @Post(':id')
     async update(
-        @Param('id') id: string,
         @Body() body: UserUpdateDto,
+        @Req() request: Request
     ) {
-        this.userService.update(Number(id), body);
+        this.userService.update(request.session.user_id, body);
     }
 }

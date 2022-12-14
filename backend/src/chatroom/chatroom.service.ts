@@ -10,6 +10,8 @@ import { ChatroomCreateDto } from "./dto/chatroom-create.dto";
 import { MemberService } from "src/member/member.service";
 import { Member, MemberRole } from "src/member/entity/member.entity";
 import { User } from "src/user/entity/user.entity";
+import * as bcrypt from "bcrypt";
+
 
 @Injectable()
 export class ChatroomService extends AbstractService {
@@ -82,10 +84,13 @@ export class ChatroomService extends AbstractService {
     }
 
 	async deleteChatroom(chatroom: Chatroom) {
-        // TODO delete direct chatroom, delete members
         for (let i = 0; i < chatroom.users.length; i++) {
             await this.memberService.delete(chatroom.users[i].id);
         }
         return await this.delete(chatroom.id);
+    }
+
+    hashPassword(password: string) {
+        return (bcrypt.hash(password, 12));
     }
 }

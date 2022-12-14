@@ -8,6 +8,7 @@ import { FriendRequestService } from "./friend_request.service";
 
 import { BlockModule } from "src/blocked/block.module";
 import { FriendModule } from "src/friend/friend.module";
+import { UserModule } from "src/user/user.module";
 
 @Module({
 	imports: [
@@ -15,6 +16,7 @@ import { FriendModule } from "src/friend/friend.module";
 		CommonModule,
 		forwardRef(() => BlockModule),
 		FriendModule,
+		UserModule
 	],
   controllers: [FriendRequestController],
   providers: [FriendRequestService],

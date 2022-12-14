@@ -1,7 +1,8 @@
-import { Body, BadRequestException, Controller, Get, Param, Post } from "@nestjs/common";
+import { Body, UseGuards, BadRequestException, Controller, Get, Param, Post, Req } from "@nestjs/common";
 import { GameCreateDto } from "./dto/game-create.dto";
 import { GameService } from "./game.service";
-
+import { AuthGuard } from "src/auth/auth.guard";
+import express, { Request } from "express";
 @Controller('game')
 export class GameController {
 	constructor(private readonly gameService: GameService) {}
@@ -20,11 +21,13 @@ export class GameController {
     ) {
         return await this.gameService.createGame(body);
     }
-
+    @UseGuards(AuthGuard)
     @Get('games/:id')
     async getAllGamesFromUser(
-        @Param('games/id') id: string // TODO this should the Auth guard
-    ) {
-        return await this.gameService.getAllGamesFromUser(Number(id));
+        @Param('games/id') id: string,
+        @Req() request: Request
+        ) {
+        
+        return await this.gameService.getAllGamesFromUser(request.session.user_id);
     }
 }
