@@ -5,44 +5,47 @@ import { Link } from "react-router-dom";
 import Paginator from "../../components/Paginator";
 import Wrapper from "../../components/Wrapper";
 import { User } from "../../models/User";
-
-const fetchDataCall = async (page: number) => {
-  let data = await axios.get(`users?page=${page}`).catch((error) => {
-    console.log(error);
-  });
-  return data;
-};
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { fetchUsers, selectAllUsers } from "../../redux/slices/usersSlice";
 
 const Users = () => {
-  const [users, setUsers] = useState([]);
   const [page, setPage] = useState(1);
   const [lastPage, setLastPage] = useState(0);
+  const dispatch = useAppDispatch();
+
+  const usersStatus = useAppSelector((state) => state.users.status);
+  const users = useAppSelector(selectAllUsers);
 
   useEffect(() => {
-    const fetchData = async () => {
-      let response: any = await fetchDataCall(page);
-
-      setUsers(response.data);
-      setLastPage(response.data.meta.last_page);
-    };
-
-    fetchData();
-  }, [page]);
+    console.log(
+      "🚀 ~ file: Users.tsx:21 ~ useEffect ~ usersStatus",
+      usersStatus
+    );
+    if (usersStatus === "idle") {
+      dispatch(fetchUsers);
+      console.log("🚀 ~ file: Users.tsx:18 ~ Users ~ users", users);
+    }
+  }, [usersStatus, dispatch]);
 
   const deleteUser = async (id: number) => {
     if (window.confirm("Are you sure to delete this record?")) {
       await axios.delete(`users/${id}`);
 
-      setUsers(users.filter((u: User) => u.id !== id));
+      //   setUsers(users.filter((u: User) => u.id !== id));
+      users.filter((u: User) => u.id !== id);
     }
   };
 
   return (
     <Wrapper>
-      <div className="pt-3 pb-2 mb-3 border-bottom">
+      {/* <div className="pt-3 pb-2 mb-3 border-bottom">
         <Link to="/users/create" className="btn btn-sm btn-outline-secondary">
           Add User
         </Link>
+      </div> */}
+      <div>
+        {/* <Link to="/users/create">Add User</Link> */}
+        Hello
       </div>
 
       <div className="table-responsive">
@@ -55,7 +58,7 @@ const Users = () => {
             </tr>
           </thead>
           <tbody>
-            {users.map((user: User) => {
+            {users.map((user: any) => {
               return (
                 <tr key={user.id}>
                   <td>
@@ -89,7 +92,7 @@ const Users = () => {
           </tbody>
         </table>
       </div>
-      <Paginator lastPage={lastPage} pageChanged={setPage} page={page} />
+      {/* <Paginator lastPage={lastPage} pageChanged={setPage} page={page} /> */}
     </Wrapper>
   );
 };

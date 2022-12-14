@@ -17,10 +17,6 @@ export class UserService extends AbstractService {
 		super(userRepository);
 	}
 
-    async getUsers() {
-        this.userRepository.find();
-    }
-
 	async getUserById(id: number) {
 		const user = await this.findOne({id}, ["send_blocks", "received_blocks", "game_stats", "achievements"]);
 		if (!user)

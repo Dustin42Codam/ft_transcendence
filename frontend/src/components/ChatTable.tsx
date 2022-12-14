@@ -1,13 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { useSelector } from "react-redux";
+import React from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import CastleIcon from "@mui/icons-material/Castle";
 import PublicIcon from "@mui/icons-material/Public";
-import { fetchChats } from "../redux/chat/chatActions";
 import "./ChatTable.css";
+import { useAppSelector } from "../redux/hooks";
+import { selectAllChats } from "../redux/slices/chatsSlice";
 
 export enum ChatroomType {
   PUBLIC = "public",
@@ -18,6 +15,7 @@ export enum ChatroomType {
 }
 
 type Chats = {
+  id: number;
   name: string;
   type: ChatroomType;
 };
@@ -26,21 +24,8 @@ interface IState {
   chats: Chats;
 }
 
-/*
-const chats = [
-  { name: "unit testing chat", type: ChatroomType.PUBLIC },
-  { name: "HACKING chat", type: ChatroomType.PROTECTED },
-  { name: "Club mate", type: ChatroomType.PROTECTED },
-  {
-    name: "asdlfjsalkdjflksdjfiawojgoaet;jhd;favj ;dsja ;kj",
-    type: ChatroomType.PROTECTED,
-  },
-];
-*/
-
 const ChatTable = () => {
-  const rows: any = [];
-  //   const chats = useSelector(state => state.chats);
+  const chats = useAppSelector(selectAllChats); //get chats from redux store
 
   let navigate = useNavigate();
 
@@ -48,33 +33,21 @@ const ChatTable = () => {
     navigate("../chats/" + name, { replace: true });
   }
 
-  //   for (let i = 0; props.chats.length > i; i++) {
-  //     if (props.chats[i].type === ChatroomType.PROTECTED) {
-  //       rows.push(
-  //         <div
-  //           key={i}
-  //           className="chatRow"
-  //           onClick={() => handleClick(props.chats[i].name)}
-  //         >
-  //           <CastleIcon />
-  //           {/* {props.chats[i].name} */}
-  //         </div>
-  //       );
-  //     } else if (props.chats[i].type === ChatroomType.PUBLIC) {
-  //       rows.push(
-  //         <div
-  //           key={i}
-  //           className="chatRow"
-  //           onClick={() => handleClick(props.chats[i].name)}
-  //         >
-  //           <PublicIcon />
-  //           {/* {props.chats[i].name} */}
-  //         </div>
-  //       );
-  //     }
-  //   }
+  /*
+  	generate map table using the chats array we got from the redux store
+  */
+  const renderedChats = chats.map((chat: Chats) => (
+    <div
+      key={chat.id}
+      className="chatRow"
+      onClick={() => handleClick(chat.name)}
+    >
+      {chat.type === ChatroomType.PROTECTED ? <CastleIcon /> : <PublicIcon />}
+      {chat.name}
+    </div>
+  ));
 
-  return <div className="chatTableContainer">{rows}</div>;
+  return <div className="chatTableContainer">{renderedChats}</div>;
 };
 
 export default ChatTable;

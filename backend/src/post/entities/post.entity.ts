@@ -1,7 +1,7 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from "typeorm";
 import { ReactNativeConnectionOptions } from "typeorm/driver/react-native/ReactNativeConnectionOptions";
 
-type Reactions = {
+export type Reactions = {
 	thumbsUp: number,
 	hooray: number,
 	heart: number,
@@ -10,7 +10,7 @@ type Reactions = {
 }
 
 @Entity('post')
-export class Post {
+export class Posts {
 	@PrimaryGeneratedColumn()
 	id: string;
 
@@ -23,9 +23,18 @@ export class Post {
 	@Column()
 	user: string;
 
-	@Column()
+	@CreateDateColumn()
 	date: Date;
 	
-	@Column("simple-json")
+	@Column({
+		type: "simple-json",
+		default: {
+			thumbsUp: 0,
+			hooray: 0,
+			heart: 0,
+			rocket: 0,
+			eyes: 0
+		}
+	})
 	reactions: Reactions;
 }
