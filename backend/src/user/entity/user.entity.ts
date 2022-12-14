@@ -48,7 +48,7 @@ export class User {
 	@OneToMany(() => Member, (member: Member) => member.user)
     chatrooms: FriendRequest[]
 
-	@OneToOne(() => GameStats, {eager: true, cascade: true})
+	@OneToOne(() => GameStats, {cascade: true})
     @JoinColumn()
     game_stats: GameStats
 
