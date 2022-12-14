@@ -1,10 +1,13 @@
-import { Body, Controller, Get, Param, Post, Query, Req } from "@nestjs/common";
 import { AuthService } from "src/auth/auth.service";
+import { Req, Query, UseGuards, Body, Controller, Get, Param, Post } from "@nestjs/common";
 import { UserCreateDto } from "./dto/user-create.dto";
 import { UserUpdateDto } from "./dto/user-update.dto";
 import { User } from "./entity/user.entity";
 import { UserService } from "./user.service";
-
+import * as session from 'express-session';
+import express, { Request } from 'express';
+import { AuthGuard } from "src/auth/auth.guard";
+@UseGuards(AuthGuard)
 @Controller('users')
 export class UserController {
     constructor(
@@ -20,8 +23,13 @@ export class UserController {
     @Get(':id')
     async getUserById(
         @Param('id') id : string
-    ) {
-        return this.userService.getUserById(Number(id));
+        ) {
+            return this.userService.getUserById(Number(id));
+        }
+        
+    @Get()
+    async getUsers(@Req() request: Request) {
+        return await this.userService.getUsers();
     }
 
     @Post()
@@ -33,27 +41,14 @@ export class UserController {
 			return user;
 		return this.userService.createUser(body);
 	}
-	
-	// @Post('info')
-	// async _updateInfo(
-	// 	@Req() body: Request,//DTO
-	// 	@Body() body: UserUpdateDto
-	// ) {
-	// 	console.log("Posting user")
-	// 	console.log("🚀 ~ file: user.controller.ts ~ line 60 ~ UserController ~ body", body)
-		
-	// 	const id = await this.authService.userId(request);
 
-	// 	await this.userService.update(id, body);
-
-	// 	return this.userService.findOne({id});
-	// }
-
-    @Post(':id') //TODO authgaurd should be added, user id should be used then the param can be removed
+    //TODO: change password
+    
+    @Post(':id')
     async update(
-        @Param('id') id: string,
         @Body() body: UserUpdateDto,
+        @Req() request: Request
     ) {
-        this.userService.update(Number(id), body);
+        this.userService.update(request.session.user_id, body);
     }
 }

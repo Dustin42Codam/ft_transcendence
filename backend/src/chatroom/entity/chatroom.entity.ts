@@ -13,7 +13,7 @@ export class Chatroom {
 	@PrimaryGeneratedColumn()
 	id: number;
 
-	@Column() //TODO should nu type name unique, or do we make direct messages different
+	@Column()
 	name: string;
 
 	@Column({nullable: true}) // TODO should be hash and make sure that everything is protected

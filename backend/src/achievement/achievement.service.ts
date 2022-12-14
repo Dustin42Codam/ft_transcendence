@@ -38,7 +38,8 @@ export class AchievementService extends AbstractService {
 	}
 
 	async checkFriendshipAchievement(user_id: number) {
-		const user = await this.userService.getUserById(user_id);
+		const user = await this.userService.getUserById(user_id, ["achievements"]);
+		console.log(user);
 		const achievement = await this.getAchievementByUserAndType(user, AchievementType.FRIENDS)
 	
 		if (achievement.level === achievement.max_level)
@@ -47,7 +48,7 @@ export class AchievementService extends AbstractService {
 		const amountOfFriends = (await this.friendService.getAllFriendshipsFromUser(user.id)).length
 		if (amountOfFriends > achievements[achievement.type].level_border[achievement.level]) {
 			achievement.level++;
-			this.update(achievement.id, achievement);
+			await this.update(achievement.id, achievement);
 		}
 	}
 
@@ -59,12 +60,12 @@ export class AchievementService extends AbstractService {
 		if (achievementGamesPlayed.level === achievementGamesPlayed.max_level &&
 				user.game_stats.played > achievements[achievementGamesPlayed.type].level_border[achievementGamesPlayed.level]) {
 			achievementGamesPlayed.level++;
-			this.update(achievementGamesPlayed.id, achievementGamesPlayed);
+			await this.update(achievementGamesPlayed.id, achievementGamesPlayed);
 		}
 		if (achievementGamesWon.level === achievementGamesWon.max_level &&
 				user.game_stats.win > achievements[achievementGamesWon.type].level_border[achievementGamesWon.level]) {
 			achievementGamesWon.level++;
-			this.update(achievementGamesWon.id, achievementGamesWon);
+			await this.update(achievementGamesWon.id, achievementGamesWon);
 		}
 	}
 
@@ -77,7 +78,7 @@ export class AchievementService extends AbstractService {
 
 	// 	if (amountOfMessages > achievements[achievement.type].level_border[achievement.level]) {
 	// 		achievement.level++;
-	// 		this.update(achievement.id, achievement);
+	// 		await this.update(achievement.id, achievement);
 	// 	}
 	// }
 
@@ -86,7 +87,7 @@ export class AchievementService extends AbstractService {
 		const achievement = await this.getAchievementByUserAndType(user, AchievementType.ADDED_AVATAR)
 		if (achievement.level == 0) {
 			achievement.level++;
-			this.update(achievement.id, achievement);
+			await this.update(achievement.id, achievement);
 		}
 	}
 }
