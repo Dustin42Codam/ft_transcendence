@@ -6,6 +6,8 @@ import "./ChatCreate.css";
 import TextInput from "./TextInput";
 import SelectInput from "./SelectInput";
 import { ChatroomType } from "../models/Chats";
+//import { useAppSelector } from "../redux/hooks";
+//import { selectCurrentUser } from "../redux/user/currentUserSlice";
 
 const ChatCreate = () => {
   const [name, setName] = useState("");
@@ -14,15 +16,9 @@ const ChatCreate = () => {
   const [chatType, setChatType] = useState<ChatroomType>(
     ChatroomType.PROTECTED
   );
-  console.log("this is name:", name);
-  console.log("this is password:", password);
-  console.log("this is passwordConfirm:", passwordConfrim);
-  console.log(
-    "this is chat type:",
-    chatType,
-    ChatroomType.PROTECTED,
-    chatType === ChatroomType.PROTECTED
-  );
+
+	//console.log(useAppSelector(selectAllUsers));
+	//TODO add chatroom/user.id
   function createChat() {
     axios
       .post("chatroom/1", {

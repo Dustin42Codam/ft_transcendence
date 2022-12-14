@@ -20,8 +20,8 @@ export class Member {
 	})
 	role: MemberRole;
 
-	// @Column({type: 'bigint', default: Date.now()}) // TODO how do others progress date, invest time and maybe cahnge it
-	// muted_until: number;
+	@Column()
+	muted_until: Date
 
 	@Column({default: false})
 	banned: boolean;
