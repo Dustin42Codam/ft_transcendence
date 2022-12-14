@@ -43,7 +43,7 @@ export const UserPage = () => {
     <Wrapper>
       <section>
         <h2>{user.display_name}</h2>
-        hello
+        Friends:
         <ul>{renderedFriends}</ul>
       </section>
     </Wrapper>

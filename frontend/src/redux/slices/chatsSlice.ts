@@ -15,6 +15,7 @@ const initialState = {
 
 export const fetchChats = createAsyncThunk("chats/fetchChats", async () => {
   const response = await axios.get("chatroom");
+  console.log("🚀 ~ file: chatsSlice.ts:18 ~ fetchChats ~ response", response);
   return response.data;
 });
 

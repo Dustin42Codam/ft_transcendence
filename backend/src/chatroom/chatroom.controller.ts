@@ -20,6 +20,12 @@ export class ChatroomController {
 		private readonly userService: UserService
 	) {}
 
+	@Get()
+	async all(
+	) {
+		return this.chatroomService.getAllOpenChatrooms();
+	}
+
 	@Get('join/:id')
 	async getJoinableChatroomsFromUser(
 		@Param('id') id: string, //TODO this should be authguard

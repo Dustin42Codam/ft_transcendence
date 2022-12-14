@@ -1,6 +1,7 @@
 import { Body, BadRequestException, Controller, Get, Param, Post } from "@nestjs/common";
 import { FriendService } from "./friend.service";
 import { FriendCreateDto } from "./dto/friend-create.dto";
+import { Friend } from "./entity/friend.entity";
 
 @Controller('friend')
 export class FriendController {
@@ -35,5 +36,10 @@ export class FriendController {
 		return await this.friendService.deleteFriendship(friendship);
 	}
 
-
+	@Post()
+	async createFriendship(
+		@Body() body: FriendCreateDto
+	) : Promise<Friend> {
+		return this.friendService.create(body);
+	}
 }

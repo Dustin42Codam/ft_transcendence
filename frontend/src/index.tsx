@@ -20,9 +20,9 @@ const root = ReactDOM.createRoot(
 );
 
 async function main() {
+  store.dispatch(fetchCurrentUser());
   store.dispatch(fetchUsers());
   store.dispatch(fetchChats());
-  store.dispatch(fetchCurrentUser());
 
   root.render(
     <React.StrictMode>
