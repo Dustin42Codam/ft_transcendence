@@ -25,27 +25,27 @@ export class ChatroomController {
 		private readonly userService: UserService
 	) {}
 
-	@Get('join/:id')
+	@Get('join')
 	async getJoinableChatroomsFromUser(
 		@Req() request : Request,
 	) {
-		const user = await this.userService.getUserById(Number(id), ["chatrooms"]);
+		const user = await this.userService.getUserById(request.session.user_id, ["chatrooms"]);
 		return this.chatroomService.getAllJoinableChatroomForUser(user);
 	}
 
-	@Get('group/:id')
+	@Get('group')
 	async getGroupchatsFromUser(
-		@Param('id') id: string, //TODO this should be authguard
+		@Req() request : Request,
 	) {
-		const user = await this.userService.getUserById(Number(id));
+		const user = await this.userService.getUserById(request.session.user_id);
 		return this.chatroomService.getGroupchatsFromUser(user);
 	}
 
-	@Get('dm/:id')
+	@Get('dm')
 	async getDMsFromUser(
 		@Req() request: Request,
 	) {
-		const user = await this.userService.getUserById(Number(request.session.user_id));
+		const user = await this.userService.getUserById(request.session.user_id);
 		return await this.chatroomService.getDMsFromUser(user);
 	}
 

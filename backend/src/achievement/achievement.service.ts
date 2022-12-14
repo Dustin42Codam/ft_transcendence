@@ -38,7 +38,8 @@ export class AchievementService extends AbstractService {
 	}
 
 	async checkFriendshipAchievement(user_id: number) {
-		const user = await this.userService.getUserById(user_id);
+		const user = await this.userService.getUserById(user_id, ["achievements"]);
+		console.log(user);
 		const achievement = await this.getAchievementByUserAndType(user, AchievementType.FRIENDS)
 	
 		if (achievement.level === achievement.max_level)
