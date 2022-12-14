@@ -3,8 +3,5 @@ import { User } from 'src/user/entity/user.entity';
 export class FriendRequestCreateDto {
 
 	@IsNotEmpty()
-	sender: User;
-
-	@IsNotEmpty()
 	receiver: User;
 }

@@ -5,9 +5,7 @@ declare global {
         interface Request {
             session: {
                 logged_in: boolean;
-                visits: number;
                 user_id: number;
-                jwt: any
             };
         }
     }

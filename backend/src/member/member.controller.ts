@@ -1,14 +1,16 @@
-import { Body,BadRequestException, Controller, Get, Param, Post} from '@nestjs/common';
+import { Body, UseGuards, BadRequestException, Controller, Get, Param, Post, Req} from '@nestjs/common';
 
 import { Member, MemberRole } from './entity/member.entity';
 import { MemberService } from './member.service';
 import { MemberCreateDto } from './dto/member-create.dto';
 import { ChatroomType } from 'src/chatroom/entity/chatroom.entity';
 import { ChatroomService } from 'src/chatroom/chatroom.service';
-import { MemberSenderDto } from './dto/member-sender.dto';
 import { UserService } from 'src/user/user.service';
 import { MuteMemberDto } from './dto/member-mute-create.dto';
+import { AuthGuard } from 'src/auth/auth.guard';
+import express, { Request } from 'express';
 
+@UseGuards(AuthGuard)
 @Controller('member')
 export class MemberController {
 	constructor(
@@ -35,9 +37,11 @@ export class MemberController {
 	@Post('leave/:id')
 	async leaveChatroom( // NOTE If this need to be changed so it gets a chatroom id instead of a member id say it then I can change it, love Abel
 		@Param('id') id: string,
+		@Req() request: Request,
 	) {
 		const member = await this.memberService.getMemberById(Number(id));
-		//TODO check if the auth user is the user in the chatroom
+		if (request.session.user_id !== member.user.id)
+			throw new BadRequestException("You can not leave a chatroom you are not in.");
 		const members = await this.memberService.getAllMembersFromChatroom(member.chatroom);
 		if (members.length === 1) {
 			return await this.chatroomService.deleteChatroom(member.chatroom.id);
@@ -52,13 +56,13 @@ export class MemberController {
 	@Post('ban/:id')
 	async banMember(
 		@Param('id') id: string,
-		@Body() sender_user_id: MemberSenderDto //This var is temperary till session guards
+		@Req() request: Request
 	) {
 		const receiver = await this.memberService.getMemberById(Number(id));
 		if (receiver.role === MemberRole.OWNER)
 			throw new BadRequestException("The OWNER of a chatroom can not be banned.");
-		const user = await this.userServcie.getUserById(sender_user_id.sender_id);
-		const sender = await this.memberService.getMemberByUserAndChatroom(user, receiver.chatroom); //TODO maybe change this way to get a better error message, can we change the error message it throws with catch for example?
+		const user = await this.userServcie.getUserById(request.session.user_id);
+		const sender = await this.memberService.getMemberByUserAndChatroom(user, receiver.chatroom); 
 		if (sender.role !== MemberRole.ADMIN && sender.role !== MemberRole.OWNER)
 			throw new BadRequestException("You do not have the rights to ban members of this chatroom.");
 		if (sender.id === receiver.id)
@@ -70,11 +74,11 @@ export class MemberController {
 	@Post('unban/:id')
 	async unbanMember(
 		@Param('id') id: string,
-		@Body() sender_user_id: MemberSenderDto //This var is temperary till session guards
-	) {
+		@Req() request: Request
+		) {
 		const receiver = await this.memberService.getMemberById(Number(id));
-		const user = await this.userServcie.getUserById(sender_user_id.sender_id);
-		const sender = await this.memberService.getMemberByUserAndChatroom(user, receiver.chatroom); //TODO maybe change this way to get a better error message, can we change the error message it throws with catch for example?
+		const user = await this.userServcie.getUserById(request.session.user_id);
+		const sender = await this.memberService.getMemberByUserAndChatroom(user, receiver.chatroom);
 		if (sender.role !== MemberRole.ADMIN && sender.role !== MemberRole.OWNER)
 			throw new BadRequestException("You do not have the rights to unban members of this chatroom.");
 		if (sender.id === receiver.id)
@@ -96,7 +100,7 @@ export class MemberController {
 		if (receiver.role === MemberRole.OWNER)
 			throw new BadRequestException("The OWNER of a chatroom can not be muted.");
 		const user = await this.userServcie.getUserById(muteCreateDto.sender_id);
-		const sender = await this.memberService.getMemberByUserAndChatroom(user, receiver.chatroom); //TODO maybe change this way to get a better error message, can we change the error message it throws with catch for example?
+		const sender = await this.memberService.getMemberByUserAndChatroom(user, receiver.chatroom); 
 		if (sender.role !== MemberRole.ADMIN && sender.role !== MemberRole.OWNER)
 			throw new BadRequestException("You do not have the rights to mute members of this chatroom.");
 		if (sender.id === receiver.id)
@@ -108,11 +112,11 @@ export class MemberController {
 	@Post('unmute/:id')
 	async unmuteMember(
 		@Param('id') id: string,
-		@Body() sender_user_id: MemberSenderDto //This var is temperary till session guards
+		@Req() request: Request
 	) {
 		const receiver = await this.memberService.getMemberById(Number(id));
-		const user = await this.userServcie.getUserById(sender_user_id.sender_id);
-		const sender = await this.memberService.getMemberByUserAndChatroom(user, receiver.chatroom); //TODO maybe change this way to get a better error message, can we change the error message it throws with catch for example?
+		const user = await this.userServcie.getUserById(request.session.user_id);
+		const sender = await this.memberService.getMemberByUserAndChatroom(user, receiver.chatroom); 
 		if (sender.role !== MemberRole.ADMIN && sender.role !== MemberRole.OWNER)
 			throw new BadRequestException("You do not have the rights to unmute members of this chatroom.");
 		if (sender.id === receiver.id)
@@ -124,13 +128,13 @@ export class MemberController {
 	@Post('makeAdmin/:id')
 	async makeMemberAdmin(
 		@Param('id') id: string,
-		@Body() sender_user_id: MemberSenderDto //This var is temperary till session guards
-	) {
+		@Req() request: Request
+		) {
 		const receiver = await this.memberService.getMemberById(Number(id));
 		if (receiver.role === MemberRole.OWNER)
 			throw new BadRequestException("The OWNER of a chatroom can not be made Admin.");
-		const user = await this.userServcie.getUserById(sender_user_id.sender_id);
-		const sender = await this.memberService.getMemberByUserAndChatroom(user, receiver.chatroom); //TODO maybe change this way to get a better error message, can we change the error message it throws with catch for example?
+			const user = await this.userServcie.getUserById(request.session.user_id);
+			const sender = await this.memberService.getMemberByUserAndChatroom(user, receiver.chatroom); 
 		if (sender.role !== MemberRole.ADMIN && sender.role !== MemberRole.OWNER)
 			throw new BadRequestException("You do not have the rights to a member a ADMIN.");
 		receiver.role = MemberRole.ADMIN;
@@ -140,13 +144,13 @@ export class MemberController {
 	@Post('removeAdmin/:id')
 	async removeAdmin(
 		@Param('id') id: string,
-		@Body() sender_user_id: MemberSenderDto //This var is temperary till session guards
-	) {
+		@Req() request: Request
+		) {
 		const receiver = await this.memberService.getMemberById(Number(id));
 		if (receiver.role !== MemberRole.ADMIN)
 			throw new BadRequestException("This member is not an admin.");
-		const user = await this.userServcie.getUserById(sender_user_id.sender_id);
-		const sender = await this.memberService.getMemberByUserAndChatroom(user, receiver.chatroom); //TODO maybe change this way to get a better error message, can we change the error message it throws with catch for example?
+		const user = await this.userServcie.getUserById(request.session.user_id);
+		const sender = await this.memberService.getMemberByUserAndChatroom(user, receiver.chatroom); 
 		if (sender.role !== MemberRole.OWNER)
 			throw new BadRequestException("You do not have the rights to remove a ADMIN role from member.");
 		receiver.role = MemberRole.USER;
@@ -160,12 +164,4 @@ export class MemberController {
 		const member = await this.memberService.getMemberById(Number(id));
 		return this.memberService.isRestricted(member);
 	}
-
-	// NOTE I do not think we neet this, if you want it I will add it
-	// @Post()
-	// async createMember(
-	// 	@Body() body: MemberCreateDto
-	// ): Promise<Member> { //TODO check if we chould also add the user and chatroom here
-	// 	return this.memberService.createMember(body);
-	// }
 }

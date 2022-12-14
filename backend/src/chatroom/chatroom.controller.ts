@@ -1,4 +1,6 @@
-import { Body, BadRequestException, Controller, Get, Param, Post } from "@nestjs/common";
+import { Body, UseGuards, BadRequestException, Controller, Get, Param, Post, Req } from "@nestjs/common";
+import { AuthGuard } from "src/auth/auth.guard";
+// import { AuthGuard } from "@nestjs/passport";
 import { MemberRole } from "src/member/entity/member.entity";
 import { MemberService } from "src/member/member.service";
 import { User } from "src/user/entity/user.entity";
@@ -10,7 +12,10 @@ import { ChatroomChangeTypeDto } from "./dto/chatroom-change-type.dto";
 import { ChatroomCreateDto } from "./dto/chatroom-create.dto";
 import { ChatroomChangePasswordDto } from "./dto/chtroom-change-password.dto";
 import { ChatroomType } from "./entity/chatroom.entity";
+import express, { Request } from 'express';
+import * as bcrypt from "bcrypt";
 
+@UseGuards(AuthGuard)
 @Controller('chatroom')
 export class ChatroomController {
 	
@@ -22,17 +27,17 @@ export class ChatroomController {
 
 	@Get('join/:id')
 	async getJoinableChatroomsFromUser(
-		@Param('id') id: string, //TODO this should be authguard
+		@Req() request : Request,
 	) {
 		return this.chatroomService.getAllOpenChatrooms();
 	}
 
 	@Get('dm/:id')
 	async getDMsFromUser(
-		@Param('id') id: string, //TODO this should be authguard
+		@Req() request: Request,
 	) {
-		const user = await this.userService.getUserById(Number(id));
-		return this.chatroomService.getDMsFromUser(user);
+		const user = await this.userService.getUserById(Number(request.session.user_id));
+		return await this.chatroomService.getDMsFromUser(user);
 	}
 
 	@Get(':id')
@@ -44,64 +49,66 @@ export class ChatroomController {
 
 	@Post('remove/:id')
 	async removeChatroom(
+		@Req() request: Request,
 		@Param('id') id: string
 	) {
 		const chatroom = await this.chatroomService.getChatroomById(Number(id));
-		//TODO use the auth user to check if they are the owner of this chatroom otherwise they can not delete it
+		const user = await this.userService.getUserById(Number(request.session.user_id));
+		const member = await this.memberService.getMemberByUserAndChatroom(user, chatroom);
+		if (member.role != MemberRole.OWNER)
+			throw new BadRequestException("You are not the owner of this chatroom.");
 		return await this.chatroomService.deleteChatroom(chatroom);
 	}
 
 	@Post('name/:id')
 	async changeName(
 		@Param('id') id: string, 
-		@Body() body: ChatroomChangeNameDto
+		@Body() body: ChatroomChangeNameDto,
+		@Req() request: Request
 	) {
-		//TODO use user auth instead of the body
 		const chatroom = await this.chatroomService.getChatroomById(Number(id));
 		if (chatroom.type == ChatroomType.DIRECT)
 			throw new BadRequestException("The name of this chatroom can not be changed.");
-		const user = await this.userService.findOne({id: body.user_id}) //TODO use user auth instead of the body
+		const user = await this.userService.findOne({id: request.session.user_id})
 		const member = await this.memberService.getMemberByUserAndChatroom(user, chatroom)
 		if (!member)
 			throw new BadRequestException("You are not a Member of this chatroom.");
 		if (member.role == MemberRole.USER)
 			throw new BadRequestException("A USER of a chatroom is not allowed to change the name of a chatroom.");
-		const {user_id, ...newchatroomData} = body; //TODO this should not be needed
-		this.chatroomService.update(chatroom.id, newchatroomData);
+		this.chatroomService.update(chatroom.id, body);
 	}
 
 	@Post('password/:id')
 	async changePassword(
 		@Param('id') id: string, 
-		@Body() body: ChatroomChangePasswordDto
+		@Body() body: ChatroomChangePasswordDto,
+		@Req() request: Request
 	) {
-		//TODO use user auth instead of the body
 		const chatroom = await this.chatroomService.getChatroomById(Number(id));
 		if (chatroom.type !== ChatroomType.PROTECTED)
 			throw new BadRequestException("This chatroom does not have a password.");
-		const user = await this.userService.findOne({id: body.user_id}) //TODO use user auth instead of the body
+		const user = await this.userService.findOne({id: request.session.user_id})
 		const member = await this.memberService.getMemberByUserAndChatroom(user, chatroom)
 		if (!member)
 			throw new BadRequestException("You are not a Member of this chatroom.");
 		if (member.role !== MemberRole.OWNER)
 			throw new BadRequestException("Onl a OWNER is allowed to change the password of a chatroom");
-		const {user_id, ...newchatroomData} = body; //TODO this should not be needed
-		this.chatroomService.update(chatroom.id, newchatroomData);
+		this.chatroomService.update(chatroom.id, body);
 	}
 
 	@Post('type/:id')
 	async changeChatroomType(
 		@Param('id') id: string, 
-		@Body() body: ChatroomChangeTypeDto
+		@Body() body: ChatroomChangeTypeDto,
+		@Req() request: Request
 	) {
-		//TODO use user auth instead of the body
 		const chatroom = await this.chatroomService.getChatroomById(Number(id));
 		if (body.type === chatroom.type)
 			throw new BadRequestException("The chatroom already has this type.");
 		if (body.type === chatroom.DIRECT)
 			throw new BadRequestException("You are not allowed to change to a DIRECT type.");
 
-		const user = await this.userService.findOne({id: body.user_id}) //TODO use user auth instead of the body
+		const user = await this.userService.findOne({id: request.session.user_id})
 
 		const member = await this.memberService.getMemberByUserAndChatroom(user, chatroom)
 		if (!member)
@@ -117,19 +124,18 @@ export class ChatroomController {
 			body.password = null
 		}
 
-		const {user_id, ...newchatroomData} = body; //TODO this should not be needed
-		this.chatroomService.update(chatroom.id, newchatroomData);
+		this.chatroomService.update(chatroom.id, body);
 	}
 
 	@Post('add/:id')
 	async addUserToChatroom(
 		@Param('id') id: string,
-		@Body() body : AddUserDto
+		@Body() body : AddUserDto,
+		@Req() request: Request
 	) {
-		//TODO use the session id instead of the body
 		const chatroom = await this.chatroomService.getChatroomById(Number(id))
 		const member = await this.memberService.findOne({
-				user_id: body.id,
+				user_id: request.session.user_id,
 				chatroom_id: chatroom.id,
 			});
 		if (member)
@@ -142,16 +148,17 @@ export class ChatroomController {
 			if (body.password !== chatroom.password) //TODO this should be incripted
 				throw new BadRequestException("The password is incorrect");
 		}
-		const user = await this.userService.findOne({id: body.id})
+		const user = await this.userService.findOne({id: request.session.user_id})
 		return await this.memberService.createMember({user: user, chatroom: chatroom, role: MemberRole.USER});
 	}
 
+	//TODO Create chatroom, change Password, join Chatroom HASHING PASSWORDS
+
 	@Post(':id')
 	async createChatroom(
-		@Param('id') owner_id: string,
-		@Body() body: ChatroomCreateDto
+		@Body() body: ChatroomCreateDto,
+		@Req() request: Request
 	) {
-		//TODO use the session id instead of the Praram owner_id
 		if (body.type === ChatroomType.DIRECT) {
 			throw new BadRequestException("You can not create a DIRECT chatroom.");
 		}
@@ -161,7 +168,8 @@ export class ChatroomController {
 		else if (!body.password && body.type === ChatroomType.PROTECTED) {
 			throw new BadRequestException("PROTECTED chatrooms need to have a password.");
 		}
-		body.users.push(Number(owner_id));
+		if (body.password)
+		body.users.push(Number(request.session.user_id));
 		const uniqueUsers : number[] = [... new Set(body.users)];
 		var users : User[]= []
         for (var user_id of uniqueUsers) {
@@ -170,8 +178,7 @@ export class ChatroomController {
 					throw new BadRequestException("One of the users does not exist.");
 				users.push(user)
 		}
-		body.users = users
-		return this.chatroomService.createChatroom(body, Number(owner_id));
+		return this.chatroomService.createChatroom(body, Number(request.session.user_id));
 	}
 
 }

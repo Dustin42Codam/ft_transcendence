@@ -1,7 +1,10 @@
-import { Body, BadRequestException, Controller, Get, Param, Post } from "@nestjs/common";
+import { Body, UseGuards, BadRequestException, Controller, Get, Param, Post, Req } from "@nestjs/common";
 import { FriendService } from "./friend.service";
 import { FriendCreateDto } from "./dto/friend-create.dto";
+import { AuthGuard } from "src/auth/auth.guard";
+import express, { Request } from "express";
 
+@UseGuards(AuthGuard)
 @Controller('friend')
 export class FriendController {
 	constructor(private readonly friendService: FriendService) {}
@@ -15,17 +18,20 @@ export class FriendController {
 
 	@Get('user/:id')
 	async getAllFriendshipsFromUser(
-		@Param('id') id : string
+		@Param('id') id : string,
+		@Req() request: Request,
 	) {
-		return this.friendService.getAllFriendshipsFromUser(Number(id));
+		return this.friendService.getAllFriendshipsFromUser(request.session.user_id);
 	}
 
 	@Post('remove/:id')
 	async removeFriendship(
-		@Param('id') id: string
+		@Param('id') id: string,
+		@Req() request: Request,
 	) {
 		const friendship = await this.friendService.getFriendshipById(Number(id));
-		//TODO check if the auth user is one of the two uses in the friendship
+		if (request.session.user_id !== friendship.user_1_id && request.session.user_id !== friendship.user_2_id)
+			throw new BadRequestException("You can only remove a friendship that you are part of");
 		return await this.friendService.deleteFriendship(friendship);
 	}
 

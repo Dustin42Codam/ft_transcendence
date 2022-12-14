@@ -1,18 +1,19 @@
-import { Body, BadRequestException, Controller, Get, Param, Post } from "@nestjs/common";
+import { Body, UseGuards, BadRequestException, Controller, Get, Param, Post, Req } from "@nestjs/common";
 import { AuthController } from "src/auth/auth.controller";
 import { MemberService } from "src/member/member.service";
 import { UserService } from "src/user/user.service";
 
 import { MessageService } from "./message.service";
-import { MessageCreateDto } from "./dto/messagecreate.dto";
+import { MessageCreateDto } from "./dto/message-create.dto";
 import { Message } from "./entity/message.entity";
 import { Member } from "src/member/entity/member.entity";
 import { BlockService } from "src/blocked/block.service";
 import { Block } from "src/blocked/entity/block.entity";
 import { User } from "src/user/entity/user.entity";
-import { MessageUserDto } from "./dto/message-user.dto";
 import { ChatroomService } from "src/chatroom/chatroom.service";
 import { Chatroom } from "src/chatroom/entity/chatroom.entity";
+import { AuthGuard } from "src/auth/auth.guard";
+import express, { Request } from "express";
 
 @Controller('message')
 export class MessageController {
@@ -23,21 +24,21 @@ export class MessageController {
     private readonly chatroomService: ChatroomService,
   ) {}
 
-  @Get()
-  async getAllMessages(
-  ) {
-    return await this.messageService.all(['member', 'member.user', 'member.chatroom']);
-  }
+//   @Get() //CHECK REMOVE if we not use it before hnding in
+//   async getAllMessages(
+//   ) {
+//     return await this.messageService.all(['member', 'member.user', 'member.chatroom']);
+//   }
 
-
-  	@Get(':id') //TODO: this
+  	@UseGuards(AuthGuard)
+  	@Get(':id')
 	async getMessagesfromChatroom(
   		@Param('id') chatroomId: string,
-		@Body() messageUserDto: MessageUserDto//TODO this should be the session id
-	) {
+		@Req() request: Request,
+		) {
 		const chatroom: Chatroom = await this.chatroomService.getChatroomById(Number(chatroomId));
-		const check_messages = await this.getAllMessages();
-		const user: User = await this.userService.getUserById(messageUserDto.user_id);
+		const check_messages = await this.messageService.all(['member', 'member.user', 'member.chatroom']);
+		const user: User = await this.userService.getUserById(request.session.user_id);
 
 		const blocks: Block[] = await this.blockService.getBlocksFromUser(user);
 		const messages : Message[] = []; 
@@ -46,7 +47,6 @@ export class MessageController {
 				let isBlocked = false;
 				for (const block of blocks) {
 					if (block.receiver.id === message.member.user.id) {
-						console.log("this happens sometimes")
 						isBlocked = true;
 					}
 				}

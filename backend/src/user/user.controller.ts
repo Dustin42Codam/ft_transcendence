@@ -1,10 +1,11 @@
-import { Req, Body, Controller, Get, Param, Post } from "@nestjs/common";
+import { Req, UseGuards, Body, Controller, Get, Param, Post } from "@nestjs/common";
 import { UserCreateDto } from "./dto/user-create.dto";
 import { UserUpdateDto } from "./dto/user-update.dto";
 import { User } from "./entity/user.entity";
 import { UserService } from "./user.service";
 import * as session from 'express-session';
 import express, { Request } from 'express';
+import { AuthGuard } from "src/auth/auth.guard";
 
 @Controller('users')
 export class UserController {
@@ -20,8 +21,6 @@ export class UserController {
         
     @Get()
     async getUsers(@Req() request: Request) {
-        request.session.visits = request.session.visits ? request.session.visits + 1 : 1;
-        console.log(request.session);
         return await this.userService.getUsers();
     }
 
@@ -35,11 +34,14 @@ export class UserController {
 		return this.userService.createUser(body);
 	}
 
-    @Post(':id') //TODO authgaurd should be added, user id should be used then the param can be removed
+    //TODO: change password
+    
+    @UseGuards(AuthGuard)
+    @Post(':id')
     async update(
-        @Param('id') id: string,
         @Body() body: UserUpdateDto,
+        @Req() request: Request
     ) {
-        this.userService.update(Number(id), body);
+        this.userService.update(request.session.user_id, body);
     }
 }
