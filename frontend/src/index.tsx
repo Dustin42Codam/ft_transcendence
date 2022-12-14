@@ -10,6 +10,7 @@ import { fetchUsers } from "./redux/slices/usersSlice";
 import { fetchChats } from "./redux/slices/chatsSlice";
 import { useAppDispatch } from "./redux/hooks";
 import { fetchCurrentUser } from "./redux/slices/currentUserSlice";
+import { fetchMessages } from "./redux/slices/messagesSlice";
 
 axios.defaults.baseURL = "http://localhost:3000/api/";
 axios.defaults.withCredentials = true;
@@ -22,6 +23,7 @@ async function main() {
   store.dispatch(fetchUsers());
   store.dispatch(fetchChats());
   store.dispatch(fetchCurrentUser());
+  store.dispatch(fetchMessages());
 
   root.render(
     <React.StrictMode>
