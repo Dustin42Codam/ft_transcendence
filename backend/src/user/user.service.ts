@@ -21,8 +21,8 @@ export class UserService extends AbstractService {
         this.userRepository.find();
     }
 
-	async getUserById(id: number) {
-		const user = await this.findOne({id}, ["send_blocks", "received_blocks", "game_stats", "achievements"]);
+	async getUserById(id: number, relations?: any[]) {
+		const user = await this.findOne({id}, relations);
 		if (!user)
 			throw new BadRequestException("This user does not exist");
 		return user;

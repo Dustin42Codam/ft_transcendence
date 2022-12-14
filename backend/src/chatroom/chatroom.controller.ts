@@ -21,10 +21,19 @@ export class ChatroomController {
 	) {}
 
 	@Get('join/:id')
-	async getJoinableChatroomsFromUser(
+	async getJoinableChatroomsForUser(
 		@Param('id') id: string, //TODO this should be authguard
 	) {
-		return this.chatroomService.getAllOpenChatrooms();
+		const user = await this.userService.getUserById(Number(id), ["chatrooms"]);
+		return this.chatroomService.getAllJoinableChatroomForUser(user);
+	}
+
+	@Get('group/:id')
+	async getGroupchatsFromUser(
+		@Param('id') id: string, //TODO this should be authguard
+	) {
+		const user = await this.userService.getUserById(Number(id));
+		return this.chatroomService.getGroupchatsFromUser(user);
 	}
 
 	@Get('dm/:id')
