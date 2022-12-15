@@ -49,25 +49,29 @@ const ChatCreate = () => {
       </h1>
       <button
         className="gridItem chatButton"
-    //     onClick={useAppDispatch(addNewGroupChat({
-	// 		chat: {
-	// 			name: name,
-	// 			password: password,
-	// 			users: [],
-	// 			type: chatType,
-	// 		},
-	// 		user_id: currentUser.id
-	// 	}))
-	// }
-        onClick={() => dispatch(addNewGroupChat({
-			chat: {
-				name: name,
-				password: password,
-				users: [],
-				type: chatType,
-			},
-			user_id: currentUser.id
-		  }))}
+        //     onClick={useAppDispatch(addNewGroupChat({
+        // 		chat: {
+        // 			name: name,
+        // 			password: password,
+        // 			users: [],
+        // 			type: chatType,
+        // 		},
+        // 		user_id: currentUser.id
+        // 	}))
+        // }
+        onClick={() =>
+          dispatch(
+            addNewGroupChat({
+              chat: {
+                name: name,
+                password: password,
+                users: [],
+                type: chatType,
+              },
+              user_id: currentUser.id,
+            })
+          )
+        }
         type="button"
       >
         GO!

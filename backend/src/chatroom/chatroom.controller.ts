@@ -168,6 +168,7 @@ export class ChatroomController {
 		@Body() body: ChatroomCreateDto,
 		@Req() request: Request
 	) {
+		console.log("🚀 ~ file: chatroom.controller.ts:171 ~ ChatroomController ~ body", body)
 		if (body.type === ChatroomType.DIRECT) {
 			throw new BadRequestException("You can not create a DIRECT chatroom.");
 		}
@@ -178,9 +179,14 @@ export class ChatroomController {
 			throw new BadRequestException("PROTECTED chatrooms need to have a password.");
 		}
 		if (body.password) body.users.push(Number(request.session.user_id));
+		console.log("🚀 ~ file: chatroom.controller.ts:183 ~ ChatroomController ~ request.session", request.session)
+		console.log("🚀 ~ file: chatroom.controller.ts:182 ~ ChatroomController ~ request.session.user_id", request.session.user_id)
+		console.log("🚀 ~ file: chatroom.controller.ts:182 ~ ChatroomController ~ request.session.user_id", typeof(request.session.user_id))
 		const uniqueUsers : number[] = [... new Set(body.users)]; // TODO: ask Abel
 		var users : User[]= []
+        console.log("🚀 ~ file: chatroom.controller.ts:184 ~ ChatroomController ~ uniqueUsers", uniqueUsers)
         for (var user_id of uniqueUsers) {
+        console.log("🚀 ~ file: chatroom.controller.ts:186 ~ ChatroomController ~ user_id", user_id)
 				const user = await this.userService.findOne({id: user_id});
 				if (!user)
 					throw new BadRequestException("One of the users does not exist.");

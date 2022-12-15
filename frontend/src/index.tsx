@@ -7,7 +7,11 @@ import axios from "axios";
 import { Provider } from "react-redux";
 import store from "./redux/store";
 import { fetchUsers } from "./redux/slices/usersSlice";
-import { fetchDirectChats, fetchGroupChats, fetchJoinableChats } from "./redux/slices/chatsSlice";
+import {
+  fetchDirectChats,
+  fetchGroupChats,
+  fetchJoinableChats,
+} from "./redux/slices/chatsSlice";
 import { useAppDispatch } from "./redux/hooks";
 import { fetchCurrentUser } from "./redux/slices/currentUserSlice";
 import { fetchFriends } from "./redux/slices/friendsSlice";

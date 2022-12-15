@@ -15,23 +15,41 @@ const initialState = {
   error: null,
 };
 
-export const fetchJoinableChats = createAsyncThunk("chats/fetchJoinableChats", async () => {
-  const response = await axios.get("chatroom/join");
-  console.log("🚀 ~ file: chatsSlice.ts:18 ~ fetchJoinableChats ~ response", response);
-  return response.data;
-});
+export const fetchJoinableChats = createAsyncThunk(
+  "chats/fetchJoinableChats",
+  async () => {
+    const response = await axios.get("chatroom/join");
+    console.log(
+      "🚀 ~ file: chatsSlice.ts:18 ~ fetchJoinableChats ~ response",
+      response
+    );
+    return response.data;
+  }
+);
 
-export const fetchGroupChats = createAsyncThunk("chats/fetchGroupChats", async () => {
-  const response = await axios.get("chatroom/group");
-  console.log("🚀 ~ file: chatsSlice.ts:18 ~ fetchGroupChats ~ response", response);
-  return response.data;
-});
+export const fetchGroupChats = createAsyncThunk(
+  "chats/fetchGroupChats",
+  async () => {
+    const response = await axios.get("chatroom/group");
+    console.log(
+      "🚀 ~ file: chatsSlice.ts:18 ~ fetchGroupChats ~ response",
+      response
+    );
+    return response.data;
+  }
+);
 
-export const fetchDirectChats = createAsyncThunk("chats/fetchDirectChats", async () => {
-  const response = await axios.get("chatroom/dm");
-  console.log("🚀 ~ file: chatsSlice.ts:18 ~ fetchDirectChats ~ response", response);
-  return response.data;
-});
+export const fetchDirectChats = createAsyncThunk(
+  "chats/fetchDirectChats",
+  async () => {
+    const response = await axios.get("chatroom/dm");
+    console.log(
+      "🚀 ~ file: chatsSlice.ts:18 ~ fetchDirectChats ~ response",
+      response
+    );
+    return response.data;
+  }
+);
 
 export const addNewGroupChat = createAsyncThunk(
   "chats/addNewGroupChat",
