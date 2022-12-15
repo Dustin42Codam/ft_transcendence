@@ -1,17 +1,43 @@
 import { Avatar } from "@mui/material";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import Paginator from "../../components/Paginator";
 import Wrapper from "../../components/Wrapper";
 import { User } from "../../models/User";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { fetchUsers, selectAllUsers } from "../../redux/slices/usersSlice";
+import { selectCurrentUser } from "../../redux/slices/currentUserSlice";
+import {
+  fetchUsers,
+  selectAllUsers,
+  selectUsersWithoutUser,
+} from "../../redux/slices/usersSlice";
+import "./User.css";
+
+const AddFriendButton = (props: { sender: number; receiver: number }) => {
+  const addFriend = async (sender: number, receiver: number) => {
+    axios.post("friendRequest", { sender, receiver });
+  };
+
+  return (
+    <div className="btn-group">
+      <a
+        href="#"
+        className="btn User_btn_friend User_content"
+        onClick={() => addFriend(props.sender, props.receiver)}
+      >
+        Add friend
+      </a>
+    </div>
+  );
+};
 
 const Users = () => {
+  const dispatch = useAppDispatch();
   const [page, setPage] = useState(1);
   const [lastPage, setLastPage] = useState(0);
-  const dispatch = useAppDispatch();
+  const currentUser = useAppSelector(selectCurrentUser);
 
   const usersStatus = useAppSelector((state) => state.users.status);
   const users = useAppSelector(selectAllUsers);
@@ -36,20 +62,14 @@ const Users = () => {
     }
   };
 
+  const filteredUsers = useAppSelector((state) =>
+    selectUsersWithoutUser(state, currentUser.id)
+  );
+
   return (
     <Wrapper>
-      {/* <div className="pt-3 pb-2 mb-3 border-bottom">
-        <Link to="/users/create" className="btn btn-sm btn-outline-secondary">
-          Add User
-        </Link>
-      </div> */}
-      <div>
-        {/* <Link to="/users/create">Add User</Link> */}
-        Hello
-      </div>
-
       <div className="table-responsive">
-        <table className="table table-striped table-sm">
+        <table className="User_table User_table-striped table-sm">
           <thead>
             <tr>
               <th scope="col">Avatar</th>
@@ -58,33 +78,24 @@ const Users = () => {
             </tr>
           </thead>
           <tbody>
-            {users.map((user: any) => {
+            {filteredUsers.map((user: any) => {
               return (
                 <tr key={user.id}>
                   <td>
-                    <Avatar
-                      src={user.avatar}
-                      sx={{ height: "70px", width: "70px" }}
-                    ></Avatar>
+                    <Link to={`/users/${user.id}`}>
+                      <Avatar
+                        src={user.avatar}
+                        sx={{ height: "70px", width: "70px" }}
+                      ></Avatar>
+                    </Link>
                   </td>
                   <td>{user.display_name}</td>
                   <td>{user.status}</td>
                   <td>
-                    <div className="btn-group">
-                      <Link
-                        to={`/users/${user.id}/edit`}
-                        className="btn btn_edit"
-                      >
-                        Edit
-                      </Link>
-                      <a
-                        href="#"
-                        className="btn btn_delete"
-                        onClick={() => deleteUser(user.id)}
-                      >
-                        Delete
-                      </a>
-                    </div>
+                    <AddFriendButton
+                      sender={Number(currentUser.id)}
+                      receiver={Number(user.id)}
+                    />
                   </td>
                 </tr>
               );
@@ -92,7 +103,7 @@ const Users = () => {
           </tbody>
         </table>
       </div>
-      {/* <Paginator lastPage={lastPage} pageChanged={setPage} page={page} /> */}
+      <Paginator lastPage={lastPage} pageChanged={setPage} page={page} />
     </Wrapper>
   );
 };

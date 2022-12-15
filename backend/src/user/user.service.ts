@@ -5,7 +5,8 @@ import { AbstractService } from "src/common/abstract.service";
 import { GameStatsService } from "src/games_stats/game_stats.service";
 import { Repository } from "typeorm";
 import { UserCreateDto } from "./dto/user-create.dto";
-import { User } from "./entity/user.entity";
+import { User, UserStatus } from "./entity/user.entity";
+
 
 @Injectable()
 export class UserService extends AbstractService {
@@ -17,8 +18,12 @@ export class UserService extends AbstractService {
 		super(userRepository);
 	}
 
-	async getUserById(id: number) {
-		const user = await this.findOne({id}, ["send_blocks", "received_blocks", "game_stats", "achievements"]);
+    async getUsers() {
+        return await this.userRepository.find();
+    }
+
+	async getUserById(id: number, relations?: any[]) {
+		const user = await this.findOne({id}, relations);
 		if (!user)
 			throw new BadRequestException("This user does not exist");
 		return user;
@@ -29,4 +34,14 @@ export class UserService extends AbstractService {
 		await this.achievementService.createAllAchievements(newUser)
 		return await this.getUserById(newUser.id);
 	}
+
+	async changeStatus(id: number, status: UserStatus) {
+		
+		const user = await this.getUserById(id);
+		user.status = status;
+		Object.assign(user, status);
+		await this.userRepository.save(user);
+		return user;
+	}
+	
 }

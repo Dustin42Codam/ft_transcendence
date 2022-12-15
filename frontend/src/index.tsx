@@ -7,7 +7,11 @@ import axios from "axios";
 import { Provider } from "react-redux";
 import store from "./redux/store";
 import { fetchUsers } from "./redux/slices/usersSlice";
-import { fetchChats } from "./redux/slices/chatsSlice";
+import {
+  fetchDirectChats,
+  fetchGroupChats,
+  fetchJoinableChats,
+} from "./redux/slices/chatsSlice";
 import { useAppDispatch } from "./redux/hooks";
 import { fetchCurrentUser } from "./redux/slices/currentUserSlice";
 import { fetchMessages } from "./redux/slices/messagesSlice";
@@ -20,10 +24,12 @@ const root = ReactDOM.createRoot(
 );
 
 async function main() {
-  store.dispatch(fetchUsers());
-  store.dispatch(fetchChats());
   store.dispatch(fetchCurrentUser());
   store.dispatch(fetchMessages());
+  store.dispatch(fetchUsers());
+  store.dispatch(fetchDirectChats());
+  store.dispatch(fetchJoinableChats());
+  store.dispatch(fetchGroupChats());
 
   root.render(
     <React.StrictMode>

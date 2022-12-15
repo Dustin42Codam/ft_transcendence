@@ -1,4 +1,9 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import {
+  createSlice,
+  createAsyncThunk,
+  createSelector,
+  createEntityAdapter,
+} from "@reduxjs/toolkit";
 import axios from "axios";
 import { User } from "../../models/User";
 
@@ -38,5 +43,11 @@ export const selectAllUsers = (state: any) => state.users.users;
 
 export const selectUserById = (state: any, userId: any) =>
   state.users.users.find((user: any) => user.id == userId);
+
+// Memoized selectors
+export const selectUsersWithoutUser = createSelector(
+  [selectAllUsers, (state, userId) => userId],
+  (users, userId) => users.filter((user: any) => user.id !== userId)
+);
 
 export default usersSlice.reducer;

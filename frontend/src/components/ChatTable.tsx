@@ -4,7 +4,11 @@ import CastleIcon from "@mui/icons-material/Castle";
 import PublicIcon from "@mui/icons-material/Public";
 import "./ChatTable.css";
 import { useAppSelector } from "../redux/hooks";
-import { selectAllChats } from "../redux/slices/chatsSlice";
+import {
+  selectDirectChats,
+  selectGroupChats,
+  selectJoinableChats,
+} from "../redux/slices/chatsSlice";
 
 export enum ChatroomType {
   PUBLIC = "public",
@@ -25,7 +29,9 @@ interface IState {
 }
 
 const ChatTable = () => {
-  const chats = useAppSelector(selectAllChats); //get chats from redux store
+  const joinableChats = useAppSelector(selectJoinableChats);
+  const directChats = useAppSelector(selectDirectChats);
+  const groupChats = useAppSelector(selectGroupChats);
 
   let navigate = useNavigate();
 
@@ -36,7 +42,7 @@ const ChatTable = () => {
   /*
   	generate map table using the chats array we got from the redux store
   */
-  const renderedChats = chats.map((chat: Chats) => (
+  const renderedChats = groupChats.map((chat: Chats) => (
     <div
       key={chat.id}
       className="chatRow"

@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import Wrapper from "./Wrapper";
-import axios from "axios";
 import "./ChatCreate.css";
 import TextInput from "./TextInput";
 import SelectInput from "./SelectInput";
 import { ChatroomType } from "../models/Chats";
-//import { useAppSelector } from "../redux/hooks";
-//import { selectCurrentUser } from "../redux/user/currentUserSlice";
+import { useAppDispatch, useAppSelector } from "../redux/hooks";
+import { selectCurrentUser } from "../redux/slices/currentUserSlice";
+import { addNewGroupChat } from "../redux/slices/chatsSlice";
 
 const ChatCreate = () => {
   const [name, setName] = useState("");
@@ -17,19 +17,18 @@ const ChatCreate = () => {
     ChatroomType.PROTECTED
   );
 
-  //console.log(useAppSelector(selectAllUsers));
-  //TODO add chatroom/user.id
-  function createChat() {
-    axios
-      .post("chatroom/1", {
-        name: name,
-        password: password,
-        users: [],
-        type: chatType,
-      })
-      .then((res) => console.log("this is res:", res))
-      .catch((err) => console.log(err));
-  }
+  const dispatch = useAppDispatch();
+  const currentUser = useAppSelector(selectCurrentUser);
+
+  console.log("this is name:", name);
+  console.log("this is password:", password);
+  console.log("this is passwordConfirm:", passwordConfrim);
+  console.log(
+    "this is chat type:",
+    chatType,
+    ChatroomType.PROTECTED,
+    chatType === ChatroomType.PROTECTED
+  );
 
   return (
     <div className="chatGridContainer" id="chatGridContainer">
@@ -38,7 +37,19 @@ const ChatCreate = () => {
       </h1>
       <button
         className="gridItem chatButton"
-        onClick={createChat}
+        onClick={() =>
+          dispatch(
+            addNewGroupChat({
+              chat: {
+                name: name,
+                password: password,
+                users: [],
+                type: chatType,
+              },
+              user_id: currentUser.id,
+            })
+          )
+        }
         type="button"
       >
         GO!

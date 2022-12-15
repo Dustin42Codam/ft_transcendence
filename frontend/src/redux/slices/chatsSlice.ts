@@ -8,24 +8,54 @@ type Chat = {
 };
 
 const initialState = {
-  chats: [],
+  joinable: [],
+  group: [],
+  direct: [],
   status: "idle",
   error: null,
 };
 
-export const fetchChats = createAsyncThunk("chats/fetchChats", async () => {
-  const response = await axios.get("chatroom");
-  return response.data;
-});
-
-export const addNewChat = createAsyncThunk(
-  "chats/addNewChat",
-  // The payload creator receives the partial `{title, content, user}` object
-  async (chat: Chat) => {
-    // We send the initial data to the API
-    const response = await axios.post("chatroom", chat);
-    // The response includes the complete chat object, including unique ID
+export const fetchJoinableChats = createAsyncThunk(
+  "chats/fetchJoinableChats",
+  async () => {
+    const response = await axios.get("chatroom/join");
+    console.log(
+      "🚀 ~ file: chatsSlice.ts:18 ~ fetchJoinableChats ~ response",
+      response
+    );
     return response.data;
+  }
+);
+
+export const fetchGroupChats = createAsyncThunk(
+  "chats/fetchGroupChats",
+  async () => {
+    const response = await axios.get("chatroom/group");
+    console.log(
+      "🚀 ~ file: chatsSlice.ts:18 ~ fetchGroupChats ~ response",
+      response
+    );
+    return response.data;
+  }
+);
+
+export const fetchDirectChats = createAsyncThunk(
+  "chats/fetchDirectChats",
+  async () => {
+    const response = await axios.get("chatroom/dm");
+    console.log(
+      "🚀 ~ file: chatsSlice.ts:18 ~ fetchDirectChats ~ response",
+      response
+    );
+    return response.data;
+  }
+);
+
+export const addNewGroupChat = createAsyncThunk(
+  "chats/addNewGroupChat",
+  // The payload creator receives the partial `{title, content, user}` object
+  async (data: any) => {
+    return await axios.post(`chatroom/${data.user_id}`, data.chat);
   }
 );
 
@@ -34,47 +64,78 @@ const chatsSlice = createSlice({
   initialState,
   reducers: {
     // TODO: make it async
-    chatUpdated(state, action) {
-      const { id, title, content } = action.payload;
-      const existingChat: any = state.chats.find((chat: any) => chat.id === id);
-      if (existingChat) {
-        existingChat.title = title;
-        existingChat.content = content;
-      }
-    },
+    // chatUpdated(state, action) {
+    //   const { id, title, content } = action.payload;
+    //   const existingChat: any = state.chats.find((chat: any) => chat.id === id);
+    //   if (existingChat) {
+    //     existingChat.title = title;
+    //     existingChat.content = content;
+    //   }
+    // },
   },
   // reducers for action creators which are declared outside of createSlice()
   extraReducers(builder) {
     builder
-      .addCase(fetchChats.pending, (state, action) => {
+      .addCase(fetchJoinableChats.pending, (state, action) => {
         state.status = "loading";
       })
-      .addCase(fetchChats.fulfilled, (state: any, action) => {
+      .addCase(fetchJoinableChats.fulfilled, (state: any, action) => {
         state.status = "succeeded";
-        state.chats = state.chats.concat(action.payload);
+        state.joinable = state.joinable.concat(action.payload);
       })
-      .addCase(fetchChats.rejected, (state: any, action) => {
+      .addCase(fetchJoinableChats.rejected, (state: any, action) => {
         state.status = "failed";
         state.error = action.error.message;
       })
+      .addCase(fetchGroupChats.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(fetchGroupChats.fulfilled, (state: any, action) => {
+        state.status = "succeeded";
+        state.group = state.group.concat(action.payload);
+      })
+      .addCase(fetchGroupChats.rejected, (state: any, action) => {
+        state.status = "failed";
+        state.error = action.error.message;
+      })
+      .addCase(fetchDirectChats.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(fetchDirectChats.fulfilled, (state: any, action) => {
+        state.status = "succeeded";
+        state.direct = state.direct.concat(action.payload);
+      })
+      .addCase(fetchDirectChats.rejected, (state: any, action) => {
+        state.status = "failed";
+        state.error = action.error.message;
+      })
+      .addCase(addNewGroupChat.pending, (state, action) => {
+        state.status = "loading";
+      })
       .addCase(
-        addNewChat.fulfilled,
-        (state: any, action: PayloadAction<Chat>) => {
-          // We can directly add the new chat object to our chats array
-          state.chats.chats.push(action.payload);
+        addNewGroupChat.fulfilled,
+        (state: any, action) => {
+          state.status = "succeeded";
+          state.group.push(action.payload);
         }
-      );
+      )
+      .addCase(addNewGroupChat.rejected, (state: any, action) => {
+        state.status = "failed";
+        state.error = action.error.message;
+      });
   },
 });
 
 // action creators
-export const { chatUpdated } = chatsSlice.actions;
+// export const { chatUpdated } = chatsSlice.actions;
 
 // selectors
-export const selectAllChats = (state: any) => state.chats.chats;
+export const selectJoinableChats = (state: any) => state.chats.joinable;
+export const selectGroupChats = (state: any) => state.chats.group;
+export const selectDirectChats = (state: any) => state.chats.direct;
 
-export const selectChatById = (state: any, chatId: any) =>
-  state.chats.chats.find((chat: any) => chat.id == chatId);
+// export const selectChatById = (state: any, chatId: any) =>
+//   state.chats.chats.find((chat: any) => chat.id == chatId);
 
 // reducer
 export default chatsSlice.reducer;

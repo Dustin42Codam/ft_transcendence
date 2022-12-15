@@ -16,8 +16,8 @@ import { GameModule } from './game/game.module';
 import { GameStatsModule } from './games_stats/game_stats.module';
 import { WebSocketModule } from './web-socket/web-socket.module';
 import { PostModule } from './post/post.module';
-import { AchievementModule } from './achievement/achievement.module';
 import { MessageModule } from './message/message.module';
+import { AchievementModule } from './achievement/achievement.module';
 
 dotenv.config();
 

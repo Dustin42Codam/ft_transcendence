@@ -10,6 +10,8 @@ import { ChatroomCreateDto } from "./dto/chatroom-create.dto";
 import { MemberService } from "src/member/member.service";
 import { Member, MemberRole } from "src/member/entity/member.entity";
 import { User } from "src/user/entity/user.entity";
+import * as bcrypt from "bcrypt";
+
 
 @Injectable()
 export class ChatroomService extends AbstractService {
@@ -25,18 +27,46 @@ export class ChatroomService extends AbstractService {
 	}
     
     async getDMsFromUser(user: User) {
-        // membersFromUsers = await this.memberService.ge
-		const allDMs =  await this.ChatroomRepository.find({
-            where: {type: ChatroomType.DIRECT},
-        });
-        var allDmUser = []
-        // var allDms
+        const membersFromUsers = await this.memberService.getAllMembersFromUser(user);
+        var allDMsUser = []
+        for (const member of membersFromUsers) {
+            if (member.chatroom.type == ChatroomType.DIRECT) {
+                allDMsUser.push(member.chatroom);
+            }
+        }
+        return allDMsUser;
+	}
+
+    async getAllJoinableChatroomForUser(user: User) {
+        console.log(user.chatrooms[0])
+        const allOpenChatrooms = await this.getAllOpenChatrooms()
+        const members = await this.memberService.getAllMembersFromUser(user)
+        var allJoinableChats = []
+        for (const chatroom of allOpenChatrooms) {
+            const member = await this.memberService.findOne({user, chatroom}, ["user", "chatroom"]);
+            if (!member) {
+                allJoinableChats.push(chatroom);
+            }
+        }
+        return allJoinableChats;
+    }
+
+    async getGroupchatsFromUser(user: User) {
+        const membersFromUser = await this.memberService.getAllMembersFromUser(user);
+        var allGroupchats = []
+        for(let i = 0; i < membersFromUser.length; i++) {
+            if ([ChatroomType.PRIVATE, ChatroomType.PROTECTED, ChatroomType.PUBLIC].includes(membersFromUser[i].chatroom.type)) {
+                allGroupchats.push(membersFromUser[i].chatroom);
+            }
+        }
+        return allGroupchats;
 	}
 
     async getAllOpenChatrooms() {
 
 		return await this.ChatroomRepository.find({
             where: [{type: ChatroomType.PUBLIC},{type: ChatroomType.PROTECTED}],
+            relations: ["users"]
         });
 	}
 
@@ -54,10 +84,13 @@ export class ChatroomService extends AbstractService {
     }
 
 	async deleteChatroom(chatroom: Chatroom) {
-        // TODO delete direct chatroom, delete members
         for (let i = 0; i < chatroom.users.length; i++) {
             await this.memberService.delete(chatroom.users[i].id);
         }
         return await this.delete(chatroom.id);
+    }
+
+    hashPassword(password: string) {
+        return (bcrypt.hash(password, 12));
     }
 }
