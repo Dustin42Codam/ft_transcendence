@@ -64,32 +64,29 @@ const Dashboard = () => {
 
   useEffect(() => {
     if (socketRef.current == null) {
-      socketRef.current = io('ws://localhost:3000', {
-					withCredentials: true,
-					transports: ["websocket", "polling"],
-			});
-		}
+      socketRef.current = io("http://localhost:3000", {
+        withCredentials: true,
+        transports: ["websocket", "polling"],
+      });
+    }
 
-    const {current: socket} = socketRef;
+    const { current: socket } = socketRef;
 
     try {
       socket.open();
-      socket.emit("msgToServer", 'load settings');
-      socket.on('msgRecivedToClient', (data) => {
+      socket.emit("msgToServer", "load settings");
+      socket.on("msgRecivedToClient", (data) => {
         setSettings(data);
-      })
+      });
     } catch (error) {
       console.log(error);
     }
-    return () => {
-      socket.close();
-    };
   }, []);
 
   return (
     <Wrapper>
       <p>{settings}</p>
     </Wrapper>
-	);
+  );
 };
 export default Dashboard;

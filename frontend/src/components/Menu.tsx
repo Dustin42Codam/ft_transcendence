@@ -81,9 +81,15 @@ const Menu = () => {
                   <div onClick={() => setCreateChatPopUp(!createChatPopUp)}>
                     <AddIcon /> Create chanel
                   </div>
-                  <div onClick={() => setJoinChanel(joinChanel!)}>
+                  <div onClick={() => setJoinChanel(!joinChanel)}>
                     <GroupAdd /> Join chanel
                   </div>
+                  {joinChanel && (
+                    <PopUp
+                      content={<ChatTable />}
+                      handleClose={() => setJoinChanel(!joinChanel)}
+                    />
+                  )}
                   {createChatPopUp && (
                     <PopUp
                       content={<ChatCreate />}
