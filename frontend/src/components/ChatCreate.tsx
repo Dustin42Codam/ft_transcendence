@@ -6,6 +6,9 @@ import "./ChatCreate.css";
 import TextInput from "./TextInput";
 import SelectInput from "./SelectInput";
 import { ChatroomType } from "../models/Chats";
+import { useAppDispatch, useAppSelector } from "../redux/hooks";
+import { selectCurrentUser } from "../redux/slices/currentUserSlice";
+import { addNewGroupChat } from "../redux/slices/chatsSlice";
 
 const ChatCreate = () => {
   const [name, setName] = useState("");
@@ -14,6 +17,10 @@ const ChatCreate = () => {
   const [chatType, setChatType] = useState<ChatroomType>(
     ChatroomType.PROTECTED
   );
+
+  const dispatch = useAppDispatch();
+  const currentUser = useAppSelector(selectCurrentUser);
+
   console.log("this is name:", name);
   console.log("this is password:", password);
   console.log("this is passwordConfirm:", passwordConfrim);
@@ -25,7 +32,7 @@ const ChatCreate = () => {
   );
   function createChat() {
     axios
-      .post("chatroom/1", {
+      .post(`chatroom/${currentUser.id}`, {
         name: name,
         password: password,
         users: [],
@@ -42,7 +49,25 @@ const ChatCreate = () => {
       </h1>
       <button
         className="gridItem chatButton"
-        onClick={createChat}
+    //     onClick={useAppDispatch(addNewGroupChat({
+	// 		chat: {
+	// 			name: name,
+	// 			password: password,
+	// 			users: [],
+	// 			type: chatType,
+	// 		},
+	// 		user_id: currentUser.id
+	// 	}))
+	// }
+        onClick={() => dispatch(addNewGroupChat({
+			chat: {
+				name: name,
+				password: password,
+				users: [],
+				type: chatType,
+			},
+			user_id: currentUser.id
+		  }))}
         type="button"
       >
         GO!

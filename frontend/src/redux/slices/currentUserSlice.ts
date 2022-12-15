@@ -26,6 +26,7 @@ export const fetchCurrentUser = createAsyncThunk(
   "currentUser/fetchCurrentUser",
   async () => {
     const response = await axios.get("me");
+    console.log("🚀 ~ file: currentUserSlice.ts:29 ~ response", response);
 
     return response.data;
   }

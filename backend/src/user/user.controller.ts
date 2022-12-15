@@ -2,11 +2,9 @@ import { AuthService } from "src/auth/auth.service";
 import { Req, Query, UseGuards, Body, Controller, Get, Param, Post } from "@nestjs/common";
 import { UserCreateDto } from "./dto/user-create.dto";
 import { UserUpdateDto } from "./dto/user-update.dto";
-import { User } from "./entity/user.entity";
 import { UserService } from "./user.service";
-import * as session from 'express-session';
-import express, { Request } from 'express';
 import { AuthGuard } from "src/auth/auth.guard";
+import express, {Request} from "express";
 @UseGuards(AuthGuard)
 @Controller('users')
 export class UserController {
@@ -32,17 +30,16 @@ export class UserController {
         return await this.userService.getUsers();
     }
 
+	// TODO: delete before handing in
     @Post()
 	async create(
         @Body() body: UserCreateDto
-    ): Promise<User> {
+    ) {
 		const user = await this.userService.findOne({display_name: body.display_name});
 		if (user)
 			return user;
-		return this.userService.createUser(body);
+		return await this.userService.createUser(body);
 	}
-
-    //TODO: change password
     
     @Post(':id')
     async update(

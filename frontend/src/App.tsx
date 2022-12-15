@@ -29,7 +29,6 @@ import {
 import { useAppDispatch, useAppSelector } from "./redux/hooks";
 import { fetchUsers } from "./redux/slices/usersSlice";
 import store from "./redux/store";
-import { fetchChats } from "./redux/slices/chatsSlice";
 
 function App() {
   const userStatus = useAppSelector((state) => state.currentUser.status);

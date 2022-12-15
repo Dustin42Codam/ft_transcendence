@@ -15,23 +15,23 @@ import {
 } from "../../redux/slices/usersSlice";
 import "./User.css";
 
-const AddFriendButton = (props: {sender: number, receiver: number}) => {
-	const addFriend = async (sender: number, receiver: number) => {
-		axios.post('friendRequest', {sender, receiver});
-	};
+const AddFriendButton = (props: { sender: number; receiver: number }) => {
+  const addFriend = async (sender: number, receiver: number) => {
+    axios.post("friendRequest", { sender, receiver });
+  };
 
-	return (
-		<div className="btn-group">
-		<a
-		  href="#"
-		  className="btn User_btn_friend User_content"
-		  onClick={() => addFriend(props.sender, props.receiver)}
-		>
-		  Add friend
-		</a>
-	  </div>
-	);
-}
+  return (
+    <div className="btn-group">
+      <a
+        href="#"
+        className="btn User_btn_friend User_content"
+        onClick={() => addFriend(props.sender, props.receiver)}
+      >
+        Add friend
+      </a>
+    </div>
+  );
+};
 
 const Users = () => {
   const [page, setPage] = useState(1);
@@ -68,7 +68,10 @@ const Users = () => {
                   <td>{user.display_name}</td>
                   <td>{user.status}</td>
                   <td>
-					<AddFriendButton sender={Number(currentUser.id)} receiver={Number(user.id)} />
+                    <AddFriendButton
+                      sender={Number(currentUser.id)}
+                      receiver={Number(user.id)}
+                    />
                   </td>
                 </tr>
               );

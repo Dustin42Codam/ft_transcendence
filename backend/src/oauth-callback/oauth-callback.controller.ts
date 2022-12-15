@@ -51,9 +51,7 @@ export class OauthCallbackController {
 					'Authorization': 'Bearer ' + request.session.token,
 				}
 			});
-			console.log("🚀 ~ file: oauth-callback.controller.ts:54 ~ OauthCallbackController ~ resp", resp)
 			user = await this.userService.findOne({display_name: resp.display_name})
-			console.log("🚀 ~ file: oauth-callback.controller.ts:55 ~ OauthCallbackController ~ user", user)
 			if (!user) {
 				user = await registerUser(resp.data, this.userService);
 			}
@@ -61,7 +59,6 @@ export class OauthCallbackController {
 			const jwt = await this.jwtService.signAsync({id: user.id});
 		
 			response.cookie('jwt', jwt, {httpOnly: true, sameSite: 'lax'});
-
 			response.redirect(`http://localhost:${process.env.FRONTEND_PORT}`);
 		}
 		catch (e) {
@@ -70,6 +67,7 @@ export class OauthCallbackController {
 		}
 
 		async function registerUser(data, userService) {
+			console.log("🚀 ~ file: oauth-callback.controller.ts:73 ~ OauthCallbackController ~ registerUser ~ data", data)
 			await userService.createUser({
 				display_name: data.login,
 				avatar: data.image.link,

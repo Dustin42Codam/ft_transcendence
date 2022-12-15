@@ -177,9 +177,8 @@ export class ChatroomController {
 		else if (!body.password && body.type === ChatroomType.PROTECTED) {
 			throw new BadRequestException("PROTECTED chatrooms need to have a password.");
 		}
-		if (body.password)
-		body.users.push(Number(request.session.user_id));
-		const uniqueUsers : number[] = [... new Set(body.users)];
+		if (body.password) body.users.push(Number(request.session.user_id));
+		const uniqueUsers : number[] = [... new Set(body.users)]; // TODO: ask Abel
 		var users : User[]= []
         for (var user_id of uniqueUsers) {
 				const user = await this.userService.findOne({id: user_id});
