@@ -112,13 +112,10 @@ const chatsSlice = createSlice({
       .addCase(addNewGroupChat.pending, (state, action) => {
         state.status = "loading";
       })
-      .addCase(
-        addNewGroupChat.fulfilled,
-        (state: any, action) => {
-          state.status = "succeeded";
-          state.group.push(action.payload);
-        }
-      )
+      .addCase(addNewGroupChat.fulfilled, (state: any, action) => {
+        state.status = "succeeded";
+        state.group.push(action.payload);
+      })
       .addCase(addNewGroupChat.rejected, (state: any, action) => {
         state.status = "failed";
         state.error = action.error.message;
@@ -126,16 +123,10 @@ const chatsSlice = createSlice({
   },
 });
 
-// action creators
-// export const { chatUpdated } = chatsSlice.actions;
-
-// selectors
 export const selectJoinableChats = (state: any) => state.chats.joinable;
 export const selectGroupChats = (state: any) => state.chats.group;
 export const selectDirectChats = (state: any) => state.chats.direct;
 
-// export const selectChatById = (state: any, chatId: any) =>
-//   state.chats.chats.find((chat: any) => chat.id == chatId);
 
 // reducer
 export default chatsSlice.reducer;

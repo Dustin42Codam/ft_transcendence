@@ -2,7 +2,9 @@ import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
-import ChatTable from "./ChatTable";
+import GroupChatTable from "./GroupChatTable";
+import DirectChatTable from "./DirectChatTable";
+import JoinableChatTable from "./JoinableChatTable";
 import ChatCreate from "./ChatCreate";
 import AddIcon from "@mui/icons-material/Add";
 import GroupAdd from "@mui/icons-material/GroupAdd";
@@ -55,7 +57,7 @@ const Menu = () => {
                     <ArrowDropDownIcon />
                     DM
                   </div>
-                  <ChatTable />
+                  <DirectChatTable />
                   <div onClick={() => setCreateChatPopUp(!createChatPopUp)}>
                     <PersonSearch /> Message someone
                   </div>
@@ -77,7 +79,7 @@ const Menu = () => {
                   <div onClick={() => setActiveChanels(!activeChanels)}>
                     <ArrowDropDownIcon /> Chats
                   </div>
-                  <ChatTable />
+                  <GroupChatTable />
                   <div onClick={() => setCreateChatPopUp(!createChatPopUp)}>
                     <AddIcon /> Create chanel
                   </div>
@@ -86,7 +88,7 @@ const Menu = () => {
                   </div>
                   {joinChanel && (
                     <PopUp
-                      content={<ChatTable />}
+                      content={<JoinableChatTable />}
                       handleClose={() => setJoinChanel(!joinChanel)}
                     />
                   )}
