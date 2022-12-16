@@ -8,7 +8,7 @@ type Chat = {
   name: string;
   password?: string;
   user_ids: [];
-  type: string;
+  type: ChatroomType;
 };
 
 const initialState = {
@@ -57,7 +57,6 @@ export const fetchDirectChats = createAsyncThunk(
 
 export const addNewGroupChat = createAsyncThunk(
   "chats/addNewGroupChat",
-  // The payload creator receives the partial `{title, content, user}` object
   async (data: any) => {
     console.log("🚀 ~ file: chatsSlice.ts:66 ~ data.chat", data.chat);
     return await axios.post(`chatroom/`, data.chat);

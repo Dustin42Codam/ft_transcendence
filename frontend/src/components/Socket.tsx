@@ -12,6 +12,7 @@ const Snicel = () => {
 
   const dispatch = useAppDispatch();
   const currentUser = useAppSelector(selectCurrentUser);
+  const [message, setMessage] = useState<string | null>(null);
 
   useEffect(() => {
     socket.on("connect", () => {
@@ -29,6 +30,9 @@ const Snicel = () => {
     socket.on("isTyping", (userName: string) => {
       const timer = setTimeout(() => console.log("Hello, World!"), 3000);
       return () => clearTimeout(timer);
+    socket.on("typing", (userName: string) => {
+      console.log(`Uesr ${userName} is typing`);
+      setLastPong(new Date().toISOString());
     });
 
     return () => {
@@ -64,6 +68,7 @@ const Snicel = () => {
       <p>Last pong: {lastPong || "-"}</p>
       <button onClick={sendPing}>Send ping</button>
       <input value="" onChange={(e) => userIsTyping()} type="text"></input>
+      <input value="" />
     </div>
   );
 };
