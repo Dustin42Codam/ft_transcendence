@@ -12,7 +12,6 @@ const Snicel = () => {
 
   const dispatch = useAppDispatch();
   const currentUser = useAppSelector(selectCurrentUser);
-  const [message, setMessage] = useState<string | null>(null);
 
   useEffect(() => {
     socket.on("connect", () => {
@@ -30,6 +29,7 @@ const Snicel = () => {
     socket.on("isTyping", (userName: string) => {
       const timer = setTimeout(() => console.log("Hello, World!"), 3000);
       return () => clearTimeout(timer);
+    });
     socket.on("typing", (userName: string) => {
       console.log(`Uesr ${userName} is typing`);
       setLastPong(new Date().toISOString());
@@ -51,6 +51,7 @@ const Snicel = () => {
     socket.emit("typing", currentUser.id);
   };
 
+	/*
   const renderedChats = message.map((message: string) => (
     <div
       key={chat.id}
@@ -61,6 +62,7 @@ const Snicel = () => {
       {chat.name}
     </div>
   ));
+ */
 
   return (
     <div>

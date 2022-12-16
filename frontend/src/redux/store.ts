@@ -17,9 +17,9 @@ const store = configureStore({
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
-    //   thunk: {
-        // extraArgument: myCustomApiService,
-    //   },
+      //   thunk: {
+      // extraArgument: myCustomApiService,
+      //   },
       serializableCheck: false,
     }),
 });
