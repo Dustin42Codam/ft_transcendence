@@ -29,7 +29,7 @@ export class ChatroomController {
 	async getJoinableChatroomsFromUser(
 		@Req() request : Request,
 	) {
-		const user = await this.userService.getUserById(request.session.user_id, ["chatrooms"]);
+		const user = await this.userService.getUserById(request.session.user_id);
 		return this.chatroomService.getAllJoinableChatroomForUser(user);
 	}
 
@@ -62,7 +62,7 @@ export class ChatroomController {
 		@Param('id') id: string
 	) {
 		const chatroom = await this.chatroomService.getChatroomById(Number(id));
-		const user = await this.userService.getUserById(Number(request.session.user_id));
+		const user = await this.userService.getUserById(Number(request.session.user_id), ["chatrooms"]);
 		const member = await this.memberService.getMemberByUserAndChatroom(user, chatroom);
 		if (member.role != MemberRole.OWNER)
 			throw new BadRequestException("You are not the owner of this chatroom.");

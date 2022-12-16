@@ -22,16 +22,14 @@ export class BlockController {
 		@Body() blockCreateDto: BlockCreateDto,
 		@Req() request: Request
 	) {
-		if (request.session.user_id !== blockCreateDto.sender.id)
-			throw new BadRequestException("You can only send a block from yourself");
-		const blocker = await this.userService.getUserById(blockCreateDto.sender.id);
+		const sender = this.userService.getUserById(request.session.user_id);
 		const block = await this.blockService.findOne({
-			sender: blockCreateDto.sender,
+			sender: sender,
 			receiver: blockCreateDto.receiver,
 		});
 		if (block)
 			return block;
-		return await this.blockService.block(blockCreateDto);
+		return await this.blockService.block(sender, blockCreateDto.receiver);
 	}
 
 	@Post(':id')

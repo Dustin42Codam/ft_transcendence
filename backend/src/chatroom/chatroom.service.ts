@@ -38,7 +38,6 @@ export class ChatroomService extends AbstractService {
 	}
 
     async getAllJoinableChatroomForUser(user: User) {
-        console.log(user.chatrooms[0])
         const allOpenChatrooms = await this.getAllOpenChatrooms()
         const members = await this.memberService.getAllMembersFromUser(user)
         var allJoinableChats = []
