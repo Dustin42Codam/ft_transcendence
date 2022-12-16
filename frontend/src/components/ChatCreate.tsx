@@ -43,7 +43,7 @@ const ChatCreate = () => {
               chat: {
                 name: name,
                 password: password,
-                users: [],
+                user_ids: [],
                 type: chatType,
               },
               user_id: currentUser.id,

@@ -55,6 +55,7 @@ export class OauthCallbackController {
 			if (!user) {
 				user = await registerUser(resp.data, this.userService);
 			}
+			request.session.user_id = user.id;
 
 			const jwt = await this.jwtService.signAsync({id: user.id});
 		
@@ -67,13 +68,12 @@ export class OauthCallbackController {
 		}
 
 		async function registerUser(data, userService) {
-			console.log("🚀 ~ file: oauth-callback.controller.ts:73 ~ OauthCallbackController ~ registerUser ~ data", data)
-			await userService.createUser({
+			const user = await userService.createUser({
 				display_name: data.login,
 				avatar: data.image.link,
 				two_factor_auth: 0,
 				status: 'online'
-			});
+			})
 		}
 	}
 }
