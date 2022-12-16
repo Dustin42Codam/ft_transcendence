@@ -1,6 +1,6 @@
 import { IsNotEmpty } from 'class-validator'
 import { ChatroomType } from '../entity/chatroom.entity';
-export class ChatroomCreateDto {
+export class ChatroomInfoDto {
 
 	@IsNotEmpty()
 	name: string;
@@ -9,7 +9,4 @@ export class ChatroomCreateDto {
 	type: ChatroomType;
 
 	password?: string;
-
-	@IsNotEmpty()
-	user_ids: number[];
 }
