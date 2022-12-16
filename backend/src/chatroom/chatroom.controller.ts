@@ -111,12 +111,13 @@ export class ChatroomController {
 		@Body() body: ChatroomChangeTypeDto,
 		@Req() request: Request
 	) {
+		if (!["protected", "public", "private", "direct"].includes(body.type))
+			throw new BadRequestException("This chatroomtype does not exist.");
 		const chatroom = await this.chatroomService.getChatroomById(Number(id));
 		if (body.type === chatroom.type)
 			throw new BadRequestException("The chatroom already has this type.");
 		if (body.type === chatroom.DIRECT)
 			throw new BadRequestException("You are not allowed to change to a DIRECT type.");
-
 		const user = await this.userService.findOne({id: request.session.user_id})
 
 		const member = await this.memberService.getMemberByUserAndChatroom(user, chatroom)
@@ -163,11 +164,13 @@ export class ChatroomController {
 
 	//TODO Create chatroom, change Password, join Chatroom HASHING PASSWORDS
 
-	@Post(':id')
+	@Post()
 	async createChatroom(
 		@Body() body: ChatroomCreateDto,
 		@Req() request: Request
 	) {
+		if (!["protected", "public", "private", "direct"].includes(body.type))
+			throw new BadRequestException("This chatroomtype does not exist.");
 		if (body.type === ChatroomType.DIRECT) {
 			throw new BadRequestException("You can not create a DIRECT chatroom.");
 		}
@@ -177,7 +180,6 @@ export class ChatroomController {
 		else if (!body.password && body.type === ChatroomType.PROTECTED) {
 			throw new BadRequestException("PROTECTED chatrooms need to have a password.");
 		}
-		if (body.password)
 		body.users.push(Number(request.session.user_id));
 		const uniqueUsers : number[] = [... new Set(body.users)];
 		var users : User[]= []
