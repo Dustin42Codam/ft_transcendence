@@ -37,6 +37,10 @@ export class BlockService extends AbstractService {
 		});
 	}
 
+	async getBlockBySenderAndReceiver(sender: User, receiver: User) {
+		return await this.findOne({sender: sender, receiver: receiver});
+	}
+
 	async block(sender, receiver) {
 		const friendRequestBySender = await this.friendRequestService.findOne({
 			sender: sender,

@@ -15,8 +15,8 @@ import { UserModule } from "src/user/user.module";
 		TypeOrmModule.forFeature([FriendRequest]),
 		CommonModule,
 		forwardRef(() => BlockModule),
-		FriendModule,
-		UserModule
+		forwardRef(() =>FriendModule),
+		forwardRef(() =>UserModule)
 	],
   controllers: [FriendRequestController],
   providers: [FriendRequestService],

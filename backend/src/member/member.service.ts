@@ -63,6 +63,7 @@ export class MemberService extends AbstractService {
 	}
 
 	async createMember(memberCreateDto: MemberCreateDto) {
-		return await this.memberRepository.save({muted_until: new Date(new Date().getTime()), ...memberCreateDto});
+		await this.memberRepository.save({muted_until: new Date(new Date().getTime()), ...memberCreateDto});
+		return this.getMemberByUserAndChatroom(memberCreateDto.user, memberCreateDto.chatroom);
 	}
 }

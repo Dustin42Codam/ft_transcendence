@@ -31,11 +31,9 @@ export class FriendService extends AbstractService {
 	}
 
     async getFriendshipByUserids(user1: number, user2: number) {
-        console.log("getFriendshipByUserids")
         const friendship = await this.findOne([
 			{user_1_id: user1, user_2_id: user2},
 			{user_1_id: user2, user_2_id: user1}]);
-        console.log("getFriendshipByUserids", friendship)
         return friendship;
     }
 

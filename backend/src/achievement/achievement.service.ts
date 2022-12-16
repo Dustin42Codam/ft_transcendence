@@ -44,7 +44,6 @@ export class AchievementService extends AbstractService {
 			if (user.achievements[i].type == AchievementType.FRIENDS)
 				break
 		const achievement = user.achievements[i];
-		console.log(achievement)
 		if (achievement.level === achievement.max_level)
 			return ;
 		const amountOfFriends = (await this.friendService.getAllFriendshipsFromUser(user.id)).length
