@@ -16,8 +16,9 @@ import express, { Request } from 'express';
 import * as bcrypt from "bcrypt";
 import { JoinChatroomDto } from "./dto/chatroom-join.dto";
 import { BlockService } from "src/blocked/block.service";
+import { AuthService } from "src/auth/auth.service";
 
-@UseGuards(AuthGuard)
+// @UseGuards(AuthGuard)
 @Controller('chatroom')
 export class ChatroomController {
 	
@@ -208,15 +209,16 @@ export class ChatroomController {
 		else if (!body.password && body.type === ChatroomType.PROTECTED) {
 			throw new BadRequestException("PROTECTED chatrooms need to have a password.");
 		}
-		body.users.push(Number(request.session.user_id));
-		const uniqueUsers : number[] = [... new Set(body.users)];
+		let {user_ids, ...createChatroom} = body;
+		user_ids.push(Number(request.session.user_id));
+		const uniqueUsers : number[] = [... new Set(user_ids)];
 		var users : User[]= []
-		for (var user_id of uniqueUsers) {
-			const user = await this.userService.findOne({id: user_id});
-			if (!user)
-				throw new BadRequestException("One of the users does not exist.");
-			users.push(user)
+        for (var user_id of uniqueUsers) {
+				const user = await this.userService.findOne({id: user_id});
+				if (!user)
+					throw new BadRequestException("One of the users does not exist.");
+				users.push(user)
 		}
-		return this.chatroomService.createChatroom(body, Number(request.session.user_id));
+		return this.chatroomService.createChatroom(users, createChatroom, Number(request.session.user_id));
 	}
 }
