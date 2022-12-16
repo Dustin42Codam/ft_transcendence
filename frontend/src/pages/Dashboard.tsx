@@ -1,7 +1,6 @@
 import React, { useRef, useEffect, Component, useState } from "react";
-import { io, Socket } from "socket.io-client";
 import Wrapper from "../components/Wrapper";
-import { fetchChats } from "../redux/chat/chatActions";
+import Snicel from "../components/Socket";
 
 /*
 const Dashboard = () => {
@@ -59,33 +58,9 @@ const Dashboard = () => {
 };
 */
 const Dashboard = () => {
-  const socketRef = useRef<Socket | null>(null);
-  const [settings, setSettings] = useState(false);
-
-  useEffect(() => {
-    if (socketRef.current == null) {
-      socketRef.current = io("http://localhost:3000", {
-        withCredentials: true,
-        transports: ["websocket", "polling"],
-      });
-    }
-
-    const { current: socket } = socketRef;
-
-    try {
-      socket.open();
-      socket.emit("msgToServer", "load settings");
-      socket.on("msgRecivedToClient", (data) => {
-        setSettings(data);
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  }, []);
-
   return (
     <Wrapper>
-      <p>{settings}</p>
+			<Snicel></Snicel>
     </Wrapper>
   );
 };

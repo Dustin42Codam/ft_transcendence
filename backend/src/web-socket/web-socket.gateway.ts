@@ -49,6 +49,11 @@ export class WebSocketGateways implements OnGatewayInit, OnGatewayConnection {
 		console.log("payload", payload);
 		return { event: "msgRecivedToClient", data: null};
   }
+  @SubscribeMessage('ping')
+  handlePong(client: Socket, payload: string): WsResponse<string> {
+		console.log("payload", payload);
+		return { event: "pong", data: null};
+  }
 	/*
 	@WebSocketServer ws: Server;
   @SubscribeMessage('chatroom')
