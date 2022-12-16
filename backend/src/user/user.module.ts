@@ -9,10 +9,12 @@ import { UserService } from './user.service';
 
 import { GameStatsModule } from "src/games_stats/game_stats.module";
 import { AchievementModule } from "src/achievement/achievement.module";
+import { FriendModule } from "src/friend/friend.module";
 
 @Module({
 	imports: [
 		TypeOrmModule.forFeature([User]),
+		FriendModule,
 		CommonModule,
 		GameStatsModule,
 		AchievementModule,

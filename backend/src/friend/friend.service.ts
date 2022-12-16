@@ -6,9 +6,10 @@ import { AbstractService } from "src/common/abstract.service";
 import { Friend } from "./entity/friend.entity";
 import { FriendCreateDto } from "./dto/friend-create.dto";
 import { ChatroomService } from "src/chatroom/chatroom.service";
-import { ChatroomCreateDto } from "src/chatroom/dto/chatroom-create.dto";
 import { ChatroomType } from "src/chatroom/entity/chatroom.entity";
 import { AchievementService } from "src/achievement/achievement.service";
+import { UserService } from "src/user/user.service";
+import { ChatroomInfoDto } from "src/chatroom/dto/chatroom-info.dto";
 
 
 
@@ -18,6 +19,8 @@ export class FriendService extends AbstractService {
         private chatroomService : ChatroomService,
         @Inject(forwardRef(() => AchievementService))
         private achievementService : AchievementService,
+        @Inject(forwardRef(() => UserService))
+        private userService : UserService,
 		@InjectRepository(Friend) private readonly friendRepository: Repository<Friend>
 	) {
 		super(friendRepository);
@@ -38,8 +41,10 @@ export class FriendService extends AbstractService {
     }
 
     async createFriendship(friendCreateDto: FriendCreateDto) {
-        const chatroomCreateDto : ChatroomCreateDto = {name: "", type: ChatroomType.DIRECT, password: null, users: [friendCreateDto.user_1_id, friendCreateDto.user_2_id]};
-        const newChatroom = await this.chatroomService.createChatroom(chatroomCreateDto, -1);
+        const user1 = await this.userService.getUserById(friendCreateDto.user_1_id);
+        const user2 = await this.userService.getUserById(friendCreateDto.user_2_id);
+        const chatroomInfoDto : ChatroomInfoDto = {name: "", type: ChatroomType.DIRECT, password: null};
+        const newChatroom = await this.chatroomService.createChatroom([user1, user2], chatroomInfoDto, -1);
         const friendshipInfo = {chatroom_id: newChatroom.id, ...friendCreateDto};
         const friendship = await this.create(friendshipInfo)
         await this.achievementService.checkFriendshipAchievement(friendCreateDto.user_1_id);
