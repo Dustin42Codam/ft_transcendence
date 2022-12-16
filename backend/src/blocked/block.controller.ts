@@ -4,6 +4,8 @@ import { UserService } from "src/user/user.service";
 import { BlockCreateDto } from "./dto/block-create.dto";
 import { AuthGuard } from "src/auth/auth.guard";
 import express, { Request} from "express";
+
+@UseGuards(AuthGuard)
 @Controller('block')
 export class BlockController {
 	constructor(private readonly blockService: BlockService,
@@ -16,22 +18,22 @@ export class BlockController {
 		return this.blockService.getBlockById(Number(id));
 	}
 
-	@UseGuards(AuthGuard)
 	@Post()
 	async block(
 		@Body() blockCreateDto: BlockCreateDto,
 		@Req() request: Request
 	) {
-		if (request.session.user_id !== blockCreateDto.sender.id)
-			throw new BadRequestException("You can only send a block from yourself");
-		const blocker = await this.userService.getUserById(blockCreateDto.sender.id);
+		if (request.session.user_id === blockCreateDto.receiver.id) {
+			throw new BadRequestException("You can not block yourself.")
+		}
+		const sender = await this.userService.getUserById(request.session.user_id);
 		const block = await this.blockService.findOne({
-			sender: blockCreateDto.sender,
+			sender: sender,
 			receiver: blockCreateDto.receiver,
 		});
 		if (block)
 			return block;
-		return await this.blockService.block(blockCreateDto);
+		return await this.blockService.block(sender, blockCreateDto.receiver);
 	}
 
 	@Post(':id')

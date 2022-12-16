@@ -55,7 +55,7 @@ export const addNewGroupChat = createAsyncThunk(
   "chats/addNewGroupChat",
   // The payload creator receives the partial `{title, content, user}` object
   async (data: any) => {
-    return await axios.post(`chatroom/${data.user_id}`, data.chat);
+    return await axios.post(`chatroom`, data.chat);
   }
 );
 

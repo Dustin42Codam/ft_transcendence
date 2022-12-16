@@ -22,9 +22,9 @@ export class UserController {
     @Get(':id')
     async getUserById(
         @Param('id') id : string
-        ) {
-            return this.userService.getUserById(Number(id));
-        }
+    ) {
+        return this.userService.getUserById(Number(id));
+    }
         
     @Get()
     async getUsers(@Req() request: Request) {
