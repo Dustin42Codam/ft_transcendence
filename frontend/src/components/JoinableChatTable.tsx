@@ -4,9 +4,7 @@ import CastleIcon from "@mui/icons-material/Castle";
 import PublicIcon from "@mui/icons-material/Public";
 import "./ChatTable.css";
 import { useAppSelector } from "../redux/hooks";
-import {
-  selectJoinableChats,
-} from "../redux/slices/chatsSlice";
+import { selectJoinableChats } from "../redux/slices/chatsSlice";
 
 export enum ChatroomType {
   PUBLIC = "public",

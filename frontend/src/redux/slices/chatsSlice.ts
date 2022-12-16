@@ -127,6 +127,5 @@ export const selectJoinableChats = (state: any) => state.chats.joinable;
 export const selectGroupChats = (state: any) => state.chats.group;
 export const selectDirectChats = (state: any) => state.chats.direct;
 
-
 // reducer
 export default chatsSlice.reducer;
