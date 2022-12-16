@@ -6,7 +6,7 @@ const socket = io("http://localhost:3000");
 const Snicel = () => {
   const [isConnected, setIsConnected] = useState(socket.connected);
   const [lastPong, setLastPong] = useState<string | null>(null);
-	const [message, setMessage] = useState<string | null>(null);
+  const [message, setMessage] = useState<string | null>(null);
 
   useEffect(() => {
     socket.on("connect", () => {
@@ -22,7 +22,7 @@ const Snicel = () => {
     });
 
     socket.on("typing", (userName: string) => {
-			console.log(`Uesr ${userName} is typing`);
+      console.log(`Uesr ${userName} is typing`);
       setLastPong(new Date().toISOString());
     });
 
@@ -42,7 +42,7 @@ const Snicel = () => {
       <p>Connected: {"" + isConnected}</p>
       <p>Last pong: {lastPong || "-"}</p>
       <button onClick={sendPing}>Send ping</button>
-			<input value="">
+      <input value="" />
     </div>
   );
 };

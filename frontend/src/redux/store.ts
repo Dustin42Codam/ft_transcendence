@@ -15,6 +15,13 @@ const store = configureStore({
     messages: messagesReducer,
     friends: friendsReducer,
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+    //   thunk: {
+        // extraArgument: myCustomApiService,
+    //   },
+      serializableCheck: false,
+    }),
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

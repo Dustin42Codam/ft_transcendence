@@ -1,10 +1,15 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
+import { User } from "../../models/User";
+import { ChatroomType } from "../../models/Chats";
+import { Message } from "../../models/Message";
 
 type Chat = {
   name: string;
-  type: string;
   password?: string;
+  user_ids: [];
+//   type: string;
+  type: ChatroomType;
 };
 
 const initialState = {
@@ -55,6 +60,7 @@ export const addNewGroupChat = createAsyncThunk(
   "chats/addNewGroupChat",
   // The payload creator receives the partial `{title, content, user}` object
   async (data: any) => {
+    console.log("🚀 ~ file: chatsSlice.ts:66 ~ data.chat", data.chat);
     return await axios.post(`chatroom`, data.chat);
   }
 );
@@ -112,9 +118,13 @@ const chatsSlice = createSlice({
       .addCase(addNewGroupChat.pending, (state, action) => {
         state.status = "loading";
       })
-      .addCase(addNewGroupChat.fulfilled, (state: any, action) => {
+      .addCase(addNewGroupChat.fulfilled, (state: any, action: any) => {
         state.status = "succeeded";
-        state.group.push(action.payload);
+        console.log(
+          "🚀 ~ file: chatsSlice.ts:117 ~ .addCase ~ action.payload",
+          action
+        );
+        state.group.push(action.payload.data);
       })
       .addCase(addNewGroupChat.rejected, (state: any, action) => {
         state.status = "failed";

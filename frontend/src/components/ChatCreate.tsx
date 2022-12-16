@@ -37,13 +37,13 @@ const ChatCreate = () => {
       </h1>
       <button
         className="gridItem chatButton"
-        onClick={() =>
+        onClick={async () =>
           dispatch(
-            addNewGroupChat({
+            await addNewGroupChat({
               chat: {
                 name: name,
                 password: password,
-                users: [],
+                user_ids: [],
                 type: chatType,
               },
               user_id: currentUser.id,
