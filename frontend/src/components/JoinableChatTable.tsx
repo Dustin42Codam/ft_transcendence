@@ -24,10 +24,9 @@ interface IState {
   chats: Chats;
 }
 
-const ChatTable = () => {
-  const joinableChats = useAppSelector(selectJoinableChats);
-
+const JoinableChats = () => {
   let navigate = useNavigate();
+  const joinableChats = useAppSelector(selectJoinableChats);
 
   function handleClick(name: string) {
     navigate("../chats/" + name, { replace: true });
@@ -36,6 +35,7 @@ const ChatTable = () => {
   /*
   	generate map table using the chats array we got from the redux store
   */
+  console.log("this is len:");
   const renderedChats = joinableChats.map((chat: Chats) => (
     <div
       key={chat.id}
@@ -50,4 +50,4 @@ const ChatTable = () => {
   return <div className="chatTableContainer">{renderedChats}</div>;
 };
 
-export default ChatTable;
+export default JoinableChats;

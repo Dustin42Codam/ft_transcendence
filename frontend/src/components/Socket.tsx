@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { selectCurrentUser } from "../redux/slices/currentUserSlice";
 import io from "socket.io-client";
@@ -8,12 +8,14 @@ const socket = io("http://localhost:3000");
 const Snicel = () => {
   const [isConnected, setIsConnected] = useState(socket.connected);
   const [lastPong, setLastPong] = useState<string | null>(null);
-  const [message, setMessage] = useState<string[] | null>(null);
+  const [messages, setMessages] = useState<string[]>([]);
+  const inputRef = useRef<HTMLFormElement>(null);
 
   const dispatch = useAppDispatch();
   const currentUser = useAppSelector(selectCurrentUser);
 
   useEffect(() => {
+    console.log(inputRef.current!.focus());
     socket.on("connect", () => {
       setIsConnected(true);
     });
@@ -26,16 +28,18 @@ const Snicel = () => {
       setLastPong(new Date().toISOString());
     });
 
+    socket.on("messageToClient", (newMessage: string) => {
+      console.log("We recived a message", newMessage);
+      messages.push(newMessage);
+    });
+
     socket.on("isTyping", (userName: string) => {
       const timer = setTimeout(() => console.log("Hello, World!"), 3000);
       return () => clearTimeout(timer);
     });
-    socket.on("typing", (userName: string) => {
-      console.log(`Uesr ${userName} is typing`);
-      setLastPong(new Date().toISOString());
-    });
 
     return () => {
+      socket.off("messageToClient");
       socket.off("connect");
       socket.off("isTyping");
       socket.off("disconnect");
@@ -47,30 +51,37 @@ const Snicel = () => {
     socket.emit("ping");
   };
 
-  const userIsTyping = () => {
+  const userIsTyping = (msg: string) => {
     socket.emit("typing", currentUser.id);
   };
 
-	/*
-  const renderedChats = message.map((message: string) => (
-    <div
-      key={chat.id}
-      className="chatRow"
-      onClick={() => handleClick(chat.name)}
-    >
-      {chat.type === ChatroomType.PROTECTED ? <CastleIcon /> : <PublicIcon />}
-      {chat.name}
+  const renderedChats = messages.map((message: string) => (
+    <div key={message} className="chatRow">
+      <p>{message}</p>
     </div>
   ));
- */
+
+  const sendMessage = (e: any) => {
+    e.preventDefault();
+    socket.emit(
+      "messageToServer",
+      `${inputRef.current!["messageInput"].value}`
+    );
+  };
 
   return (
     <div>
       <p>Connected: {"" + isConnected}</p>
       <p>Last pong: {lastPong || "-"}</p>
       <button onClick={sendPing}>Send ping</button>
-      <input value="" onChange={(e) => userIsTyping()} type="text"></input>
-      <input value="" />
+      <form ref={inputRef}>
+        <input
+          name="messageInput"
+          onChange={(e) => userIsTyping(e.target.value)}
+          type="text"
+        ></input>
+        <button onClick={(e) => sendMessage(e)}>Click me</button>
+      </form>
     </div>
   );
 };

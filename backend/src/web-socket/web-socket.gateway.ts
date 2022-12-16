@@ -34,10 +34,6 @@ export class WebSocketGateways implements OnGatewayInit, OnGatewayConnection {
 	//IF IS A MEMBER OF A CHAT THIS ROOM before connection and it AUTH
 	//if payload is undefined it becomes null
 
-	//@UseGuards(AuthGuard)
-  @SubscribeMessage('msgToServer')
-  handleMessage(client: Socket, payload: string): WsResponse<string> {
-
 		/*
     const member: Member = await this.memberService.getMemberById(Number(body.member));
     if (this.memberService.isRestricted(member)) {
@@ -46,9 +42,6 @@ export class WebSocketGateways implements OnGatewayInit, OnGatewayConnection {
     }
     this.messageService.create({timestamp: new Date(), member: member, message: body.message});
 	 */
-		console.log("payload", payload);
-		return { event: "msgRecivedToClient", data: null};
-  }
 
   @SubscribeMessage('ping')
   handlePong(client: Socket, payload: string): WsResponse<string> {
@@ -60,6 +53,12 @@ export class WebSocketGateways implements OnGatewayInit, OnGatewayConnection {
   handleTyping(client: Socket, payload: string): WsResponse<string> {
 		console.log(`USER ${payload} IS TYPING`);
 		return { event: "isTyping", data: payload};
+  }
+
+  @SubscribeMessage('messageToServer')
+  handleMessageToServer(client: Socket, payload: string) {
+		console.log(`Message ${payload} Recived`);
+		//client.brodcast.emit("messageToClient", payload);
   }
 
 	/*

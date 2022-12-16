@@ -28,7 +28,7 @@ interface IState {
   chats: Chats;
 }
 
-const ChatTable = () => {
+const DirectChatTable = () => {
   const directChats = useAppSelector(selectDirectChats);
 
   let navigate = useNavigate();
@@ -54,4 +54,4 @@ const ChatTable = () => {
   return <div className="chatTableContainer">{renderedChats}</div>;
 };
 
-export default ChatTable;
+export default DirectChatTable;

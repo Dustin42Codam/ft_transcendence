@@ -52,6 +52,7 @@ export class AuthController {
 		}
 		const jwt = await this.jwtService.signAsync({id: user.id});
 		request.session.user_id = user.id;
+		console.log(user.id);
 		request.session.logged_in = true;
 
 		await this.userService.changeStatus(user.id, UserStatus.ONLINE);

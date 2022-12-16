@@ -9,14 +9,26 @@ import ChatCreate from "./ChatCreate";
 import AddIcon from "@mui/icons-material/Add";
 import GroupAdd from "@mui/icons-material/GroupAdd";
 import PersonSearch from "@mui/icons-material/PersonSearch";
+import { useAppSelector } from "../redux/hooks";
+import { selectJoinableChats } from "../redux/slices/chatsSlice";
 import PopUp from "./PopUp";
+import toastr from "toastr";
 
 const Menu = () => {
   const [activeDm, setActiveDm] = useState(false);
   const [activeChanels, setActiveChanels] = useState(false);
   const [createChatPopUp, setCreateChatPopUp] = useState(false);
   const [joinChanel, setJoinChanel] = useState(false);
+  const joinableChats = useAppSelector(selectJoinableChats);
 
+  const joinChats = () => {
+    if (joinableChats.length > 0) {
+      setJoinChanel(!joinChanel);
+    } else {
+			//toastr.warning('You do not have any chats to join') Would be nice to use this but it the CSS does not work
+			alert('You do not have any chats to join');
+    }
+  };
   return (
     <nav
       id="sidebarMenu"
@@ -83,13 +95,13 @@ const Menu = () => {
                   <div onClick={() => setCreateChatPopUp(!createChatPopUp)}>
                     <AddIcon /> Create chanel
                   </div>
-                  <div onClick={() => setJoinChanel(!joinChanel)}>
+                  <div onClick={() => joinChats()}>
                     <GroupAdd /> Join chanel
                   </div>
                   {joinChanel && (
                     <PopUp
                       content={<JoinableChatTable />}
-                      handleClose={() => setJoinChanel(!joinChanel)}
+                      handleClose={() => joinChats()}
                     />
                   )}
                   {createChatPopUp && (
