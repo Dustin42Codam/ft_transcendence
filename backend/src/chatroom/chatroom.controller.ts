@@ -14,6 +14,8 @@ import { ChatroomChangePasswordDto } from "./dto/chtroom-change-password.dto";
 import { ChatroomType } from "./entity/chatroom.entity";
 import express, { Request } from 'express';
 import * as bcrypt from "bcrypt";
+import { JoinChatroomDto } from "./dto/chatroom-join.dto";
+import { BlockService } from "src/blocked/block.service";
 
 @UseGuards(AuthGuard)
 @Controller('chatroom')
@@ -22,21 +24,31 @@ export class ChatroomController {
 	constructor(
 		private readonly memberService: MemberService,
 		private readonly chatroomService: ChatroomService,
-		private readonly userService: UserService
+		private readonly userService: UserService,
+		private readonly blockService: BlockService
 	) {}
 
-	@Get('join/:id')
+	@Get('join')
 	async getJoinableChatroomsFromUser(
 		@Req() request : Request,
 	) {
-		return this.chatroomService.getAllOpenChatrooms();
+		const user = await this.userService.getUserById(request.session.user_id);
+		return this.chatroomService.getAllJoinableChatroomForUser(user);
 	}
 
-	@Get('dm/:id')
+	@Get('group')
+	async getGroupchatsFromUser(
+		@Req() request : Request,
+	) {
+		const user = await this.userService.getUserById(request.session.user_id);
+		return this.chatroomService.getGroupchatsFromUser(user);
+	}
+
+	@Get('dm')
 	async getDMsFromUser(
 		@Req() request: Request,
 	) {
-		const user = await this.userService.getUserById(Number(request.session.user_id));
+		const user = await this.userService.getUserById(request.session.user_id);
 		return await this.chatroomService.getDMsFromUser(user);
 	}
 
@@ -53,7 +65,7 @@ export class ChatroomController {
 		@Param('id') id: string
 	) {
 		const chatroom = await this.chatroomService.getChatroomById(Number(id));
-		const user = await this.userService.getUserById(Number(request.session.user_id));
+		const user = await this.userService.getUserById(Number(request.session.user_id), ["chatrooms"]);
 		const member = await this.memberService.getMemberByUserAndChatroom(user, chatroom);
 		if (member.role != MemberRole.OWNER)
 			throw new BadRequestException("You are not the owner of this chatroom.");
@@ -102,12 +114,13 @@ export class ChatroomController {
 		@Body() body: ChatroomChangeTypeDto,
 		@Req() request: Request
 	) {
+		if (![ChatroomType.DIRECT, ChatroomType.PRIVATE, ChatroomType.PUBLIC, ChatroomType.PROTECTED].includes(body.type))
+			throw new BadRequestException("This chatroomtype does not exist.");
 		const chatroom = await this.chatroomService.getChatroomById(Number(id));
 		if (body.type === chatroom.type)
 			throw new BadRequestException("The chatroom already has this type.");
 		if (body.type === chatroom.DIRECT)
 			throw new BadRequestException("You are not allowed to change to a DIRECT type.");
-
 		const user = await this.userService.findOne({id: request.session.user_id})
 
 		const member = await this.memberService.getMemberByUserAndChatroom(user, chatroom)
@@ -127,38 +140,65 @@ export class ChatroomController {
 		this.chatroomService.update(chatroom.id, body);
 	}
 
-	@Post('add/:id')
-	async addUserToChatroom(
+	@Post('join/:id')
+	async joinChatroom(
 		@Param('id') id: string,
-		@Body() body : AddUserDto,
+		@Body() body : JoinChatroomDto,
 		@Req() request: Request
 	) {
 		const chatroom = await this.chatroomService.getChatroomById(Number(id))
+		if ([ChatroomType.DIRECT, ChatroomType.PRIVATE].includes(chatroom.type))
+			throw new BadRequestException("You can not join a PRIVATE or DIRECT chatroom.");
+		const user = await this.userService.getUserById(request.session.user_id);
 		const member = await this.memberService.findOne({
-				user_id: request.session.user_id,
-				chatroom_id: chatroom.id,
+				user: user,
+				chatroom: chatroom,
 			});
 		if (member)
 			return member;
-		if ([ChatroomType.DIRECT, ChatroomType.PRIVATE].includes(chatroom.type))
-			throw new BadRequestException("You can not join a PRIVATE or DIRECT chatroom.");
 		if (chatroom.type === ChatroomType.PROTECTED) {
 			if (!body.password)
 				throw new BadRequestException("You need password to join a PROTECTED chatroom.");
 			if (body.password !== chatroom.password) //TODO this should be incripted
 				throw new BadRequestException("The password is incorrect");
 		}
-		const user = await this.userService.findOne({id: request.session.user_id})
 		return await this.memberService.createMember({user: user, chatroom: chatroom, role: MemberRole.USER});
+	}
+
+	@Post('add/:id')
+	async addUserToChatroom(
+		@Param('id') id: string,
+		@Body() body : AddUserDto,
+		@Req() request: Request
+	) {
+		const chatroom = await this.chatroomService.getChatroomById(Number(id));
+		if (chatroom.type == ChatroomType.DIRECT)
+			throw new BadRequestException("You can not add a User to a DIRECT chatroom.");
+		const sender = await this.userService.getUserById(request.session.user_id);
+		const senderMember = await this.memberService.getMemberByUserAndChatroom(sender, chatroom);
+		if (senderMember.role == MemberRole.USER)
+			throw new BadRequestException("A User of a chatroom is not allowed to add users.");
+		if (this.memberService.isRestricted(senderMember))
+			throw new BadRequestException("You are not allowed to add user while being restricted.");
+		const receiver = await this.userService.getUserById(body.user_id);
+		const block = await this.blockService.getBlockBySenderAndReceiver(receiver, sender);
+		if (block)
+			throw new BadRequestException("You can not add anyone you blocked.");
+		const receiverMember = await this.memberService.findOne({user: receiver, chatroom: chatroom}, ["user", "chatroom"])
+		if (receiverMember)
+			return receiverMember;
+		return await this.memberService.createMember({user: receiver, chatroom: chatroom, role: MemberRole.USER});
 	}
 
 	//TODO Create chatroom, change Password, join Chatroom HASHING PASSWORDS
 
-	@Post(':id')
+	@Post()
 	async createChatroom(
 		@Body() body: ChatroomCreateDto,
 		@Req() request: Request
 	) {
+		if (![ChatroomType.DIRECT, ChatroomType.PRIVATE, ChatroomType.PUBLIC, ChatroomType.PROTECTED].includes(body.type))
+			throw new BadRequestException("This chatroomtype does not exist.");
 		if (body.type === ChatroomType.DIRECT) {
 			throw new BadRequestException("You can not create a DIRECT chatroom.");
 		}
@@ -168,7 +208,6 @@ export class ChatroomController {
 		else if (!body.password && body.type === ChatroomType.PROTECTED) {
 			throw new BadRequestException("PROTECTED chatrooms need to have a password.");
 		}
-		if (body.password)
 		body.users.push(Number(request.session.user_id));
 		const uniqueUsers : number[] = [... new Set(body.users)];
 		var users : User[]= []

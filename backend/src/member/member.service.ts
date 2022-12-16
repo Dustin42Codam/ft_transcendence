@@ -17,6 +17,8 @@ export class MemberService extends AbstractService {
 		super(memberRepository);
 	}
 
+	
+
 	async getMemberByUserAndChatroom(user: User, chatroom: Chatroom) {
 		const member = await this.findOne({user, chatroom}, ["user", "chatroom"]);
 		if (!member)
@@ -44,6 +46,7 @@ export class MemberService extends AbstractService {
 			where: {
 				user : user,
 			},
+			relations: ['chatroom', "user"]
 		});
 		return members;
 	}
@@ -60,6 +63,7 @@ export class MemberService extends AbstractService {
 	}
 
 	async createMember(memberCreateDto: MemberCreateDto) {
-		return await this.memberRepository.save({muted_until: new Date(new Date().getTime()), ...memberCreateDto});
+		await this.memberRepository.save({muted_until: new Date(new Date().getTime()), ...memberCreateDto});
+		return this.getMemberByUserAndChatroom(memberCreateDto.user, memberCreateDto.chatroom);
 	}
 }

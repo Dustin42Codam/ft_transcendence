@@ -12,7 +12,7 @@ import { FriendService } from "./friend.service";
 @Module({
 	imports: [
 		TypeOrmModule.forFeature([Friend]),
-		ChatroomModule,
+		forwardRef(() => ChatroomModule),
 		forwardRef(() => AchievementModule),
 		CommonModule,
 	],

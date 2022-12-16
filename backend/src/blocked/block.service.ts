@@ -37,24 +37,26 @@ export class BlockService extends AbstractService {
 		});
 	}
 
-	async block(blockCreateDto: BlockCreateDto) {
-		console.log(blockCreateDto)
+	async getBlockBySenderAndReceiver(sender: User, receiver: User) {
+		return await this.findOne({sender: sender, receiver: receiver});
+	}
+
+	async block(sender, receiver) {
 		const friendRequestBySender = await this.friendRequestService.findOne({
-			sender: blockCreateDto.sender,
-			receiver: blockCreateDto.receiver
-		}, ["sender", "receiver"]);
-		
-		if (friendRequestBySender)
-		await this.friendRequestService.delete(friendRequestBySender.id);
-		const friendRequestByReceiver = await this.friendRequestService.findOne({
-			sender: blockCreateDto.receiver,
-			receiver: blockCreateDto.sender
+			sender: sender,
+			receiver: receiver
 		});
 		if (friendRequestBySender)
-		await this.friendRequestService.delete(friendRequestBySender.id);
-		const friendship = await this.friendService.getFriendshipByUserids(blockCreateDto.sender.id, blockCreateDto.receiver.id)
+			await this.friendRequestService.delete(friendRequestBySender.id);
+		const friendRequestByReceiver = await this.friendRequestService.findOne({
+			sender: receiver,
+			receiver: sender
+		});
+		if (friendRequestByReceiver)
+			await this.friendRequestService.delete(friendRequestByReceiver.id);
+		const friendship = await this.friendService.getFriendshipByUserids(sender.id, receiver.id)
 		if (friendship)
 			await this.friendService.deleteFriendship(friendship);
-		return await this.create(blockCreateDto);
+		return await this.create({sender: sender, receiver: receiver});
 	}
 }
