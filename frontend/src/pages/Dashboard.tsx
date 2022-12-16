@@ -60,7 +60,7 @@ const Dashboard = () => {
 const Dashboard = () => {
   return (
     <Wrapper>
-			<Snicel></Snicel>
+      <Snicel></Snicel>
     </Wrapper>
   );
 };
