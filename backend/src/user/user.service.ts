@@ -23,6 +23,7 @@ export class UserService extends AbstractService {
     }
 
 	async getUserById(id: number, relations?: any[]) {
+
 		const user = await this.findOne({id}, relations);
 		if (!user)
 			throw new BadRequestException("This user does not exist");
@@ -32,7 +33,7 @@ export class UserService extends AbstractService {
 	async createUser(userCreateDto: UserCreateDto) {
 		const newUser = await this.create(userCreateDto)
 		await this.achievementService.createAllAchievements(newUser)
-		return await this.getUserById(newUser.id);
+		return await this.getUserById(newUser.id, ["achievements, game_stats"]);
 	}
 
 	async changeStatus(id: number, status: UserStatus) {

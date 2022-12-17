@@ -14,7 +14,7 @@ import {
 } from "./redux/slices/chatsSlice";
 import { useAppDispatch } from "./redux/hooks";
 import { fetchCurrentUser } from "./redux/slices/currentUserSlice";
-import { fetchFriends } from "./redux/slices/friendsSlice";
+import { fetchMessages } from "./redux/slices/messagesSlice";
 
 axios.defaults.baseURL = "http://localhost:3000/api/";
 axios.defaults.withCredentials = true;
@@ -25,6 +25,7 @@ const root = ReactDOM.createRoot(
 
 async function main() {
   store.dispatch(fetchCurrentUser());
+  store.dispatch(fetchMessages());
   store.dispatch(fetchUsers());
   store.dispatch(fetchDirectChats());
   store.dispatch(fetchJoinableChats());
@@ -40,8 +41,9 @@ async function main() {
 }
 
 main();
-
+//
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+//
 reportWebVitals();

@@ -52,6 +52,7 @@ export class AuthController {
 		}
 		const jwt = await this.jwtService.signAsync({id: user.id});
 		request.session.user_id = user.id;
+		console.log(user.id);
 		request.session.logged_in = true;
 
 		await this.userService.changeStatus(user.id, UserStatus.ONLINE);
@@ -60,7 +61,7 @@ export class AuthController {
 		return user;
 	}
 
-	// @UseGuards(AuthGuard)
+	@UseGuards(AuthGuard)
 	@Get('me')
 	async user(@Req() request: Request) {
 		const id = await this.authService.userId(request);

@@ -1,10 +1,14 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
+import { User } from "../../models/User";
+import { ChatroomType } from "../../models/Chats";
+import { Message } from "../../models/Message";
 
 type Chat = {
   name: string;
-  type: string;
   password?: string;
+  user_ids: [];
+  type: ChatroomType;
 };
 
 const initialState = {
@@ -53,12 +57,9 @@ export const fetchDirectChats = createAsyncThunk(
 
 export const addNewGroupChat = createAsyncThunk(
   "chats/addNewGroupChat",
-  // The payload creator receives the partial `{title, content, user}` object
   async (data: any) => {
-    // We send the initial data to the API
-    const response = await axios.post(`chatroom/${data.user_id}`, data.chat);
-    // The response includes the complete chat object, including unique ID
-    return response.data;
+    console.log("🚀 ~ file: chatsSlice.ts:66 ~ data.chat", data.chat);
+    return await axios.post(`chatroom/`, data.chat);
   }
 );
 
@@ -112,26 +113,27 @@ const chatsSlice = createSlice({
         state.status = "failed";
         state.error = action.error.message;
       })
-      .addCase(
-        addNewGroupChat.fulfilled,
-        (state: any, action: PayloadAction<Chat>) => {
-          // We can directly add the new chat object to our chats array
-          state.chats.chats.push(action.payload);
-        }
-      );
+      .addCase(addNewGroupChat.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(addNewGroupChat.fulfilled, (state: any, action: any) => {
+        state.status = "succeeded";
+        console.log(
+          "🚀 ~ file: chatsSlice.ts:117 ~ .addCase ~ action.payload",
+          action.payload
+        );
+        state.group.push(action.payload.data);
+      })
+      .addCase(addNewGroupChat.rejected, (state: any, action) => {
+        state.status = "failed";
+        state.error = action.error.message;
+      });
   },
 });
 
-// action creators
-// export const { chatUpdated } = chatsSlice.actions;
-
-// selectors
 export const selectJoinableChats = (state: any) => state.chats.joinable;
 export const selectGroupChats = (state: any) => state.chats.group;
 export const selectDirectChats = (state: any) => state.chats.direct;
-
-// export const selectChatById = (state: any, chatId: any) =>
-//   state.chats.chats.find((chat: any) => chat.id == chatId);
 
 // reducer
 export default chatsSlice.reducer;

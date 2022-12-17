@@ -11,6 +11,7 @@ import { MemberService } from "src/member/member.service";
 import { Member, MemberRole } from "src/member/entity/member.entity";
 import { User } from "src/user/entity/user.entity";
 import * as bcrypt from "bcrypt";
+import { ChatroomInfoDto } from "./dto/chatroom-info.dto";
 
 
 @Injectable()
@@ -23,7 +24,10 @@ export class ChatroomService extends AbstractService {
 	}
 
 	async getChatroomById(id: number) {
-		return await this.findOne({id}, ["users"]);
+        const chatroom = await this.findOne({id}, ["users"]);
+        if (!chatroom)
+            throw new BadRequestException("This chatroom does not exist");
+		return chatroom;
 	}
     
     async getDMsFromUser(user: User) {
@@ -38,7 +42,6 @@ export class ChatroomService extends AbstractService {
 	}
 
     async getAllJoinableChatroomForUser(user: User) {
-        console.log(user.chatrooms[0])
         const allOpenChatrooms = await this.getAllOpenChatrooms()
         const members = await this.memberService.getAllMembersFromUser(user)
         var allJoinableChats = []
@@ -70,14 +73,13 @@ export class ChatroomService extends AbstractService {
         });
 	}
 
-    async createChatroom(chatroomCreatDto: ChatroomCreateDto, owner_id: number) {
-        const {users, ...chatroom} = chatroomCreatDto;
-        const newChatroom = await this.create(chatroom);
-        for (let i = 0; i < users.length; i++) {
-            if (users[i].id === owner_id) {
-			    await this.memberService.createMember({user: users[i], chatroom: newChatroom, role: MemberRole.OWNER});
+    async createChatroom(users: User[], chatroomCreateDto: ChatroomInfoDto, owner_id: number) {
+        const newChatroom = await this.create(chatroomCreateDto);
+        for (const user of users) {
+            if (user.id === owner_id) {
+			    await this.memberService.createMember({user: user, chatroom: newChatroom, role: MemberRole.OWNER});
             } else {
-                await this.memberService.createMember({user: users[i], chatroom: newChatroom, role: MemberRole.USER});
+                await this.memberService.createMember({user: user, chatroom: newChatroom, role: MemberRole.USER});
             }
         }
         return newChatroom;

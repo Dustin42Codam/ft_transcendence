@@ -4,6 +4,7 @@ import { AchievementModule } from "src/achievement/achievement.module";
 import { ChatroomModule } from "src/chatroom/chatroom.module";
 
 import { CommonModule } from "src/common/common.module";
+import { UserModule } from "src/user/user.module";
 
 import { Friend } from "./entity/friend.entity";
 import { FriendController } from "./friend.controller";
@@ -12,8 +13,9 @@ import { FriendService } from "./friend.service";
 @Module({
 	imports: [
 		TypeOrmModule.forFeature([Friend]),
-		ChatroomModule,
+		forwardRef(() => ChatroomModule),
 		forwardRef(() => AchievementModule),
+		forwardRef(() => UserModule),
 		CommonModule,
 	],
   controllers: [FriendController],

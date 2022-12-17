@@ -5,6 +5,7 @@ import { UserUpdateDto } from "./dto/user-update.dto";
 import { UserService } from "./user.service";
 import { AuthGuard } from "src/auth/auth.guard";
 import express, {Request} from "express";
+
 @UseGuards(AuthGuard)
 @Controller('users')
 export class UserController {
@@ -15,19 +16,19 @@ export class UserController {
 
     @Get()
     async all(@Query('page') page = 1) {
-        return this.userService.paginate(page);
+      return this.userService.paginate(page);
     }
 
     @Get(':id')
     async getUserById(
         @Param('id') id : string
-        ) {
-            return this.userService.getUserById(Number(id));
-        }
+    ) {
+        return this.userService.getUserById(Number(id));
+    }
         
     @Get()
     async getUsers(@Req() request: Request) {
-        return await this.userService.getUsers();
+      return await this.userService.getUsers();
     }
 
 	// TODO: delete before handing in

@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import Wrapper from "./Wrapper";
-import axios from "axios";
 import "./ChatCreate.css";
 import TextInput from "./TextInput";
 import SelectInput from "./SelectInput";
@@ -30,17 +29,6 @@ const ChatCreate = () => {
     ChatroomType.PROTECTED,
     chatType === ChatroomType.PROTECTED
   );
-  function createChat() {
-    axios
-      .post(`chatroom/${currentUser.id}`, {
-        name: name,
-        password: password,
-        users: [],
-        type: chatType,
-      })
-      .then((res) => console.log("this is res:", res))
-      .catch((err) => console.log(err));
-  }
 
   return (
     <div className="chatGridContainer" id="chatGridContainer">
@@ -49,23 +37,13 @@ const ChatCreate = () => {
       </h1>
       <button
         className="gridItem chatButton"
-        //     onClick={useAppDispatch(addNewGroupChat({
-        // 		chat: {
-        // 			name: name,
-        // 			password: password,
-        // 			users: [],
-        // 			type: chatType,
-        // 		},
-        // 		user_id: currentUser.id
-        // 	}))
-        // }
-        onClick={() =>
+        onClick={async () =>
           dispatch(
-            addNewGroupChat({
+            await addNewGroupChat({
               chat: {
                 name: name,
                 password: password,
-                users: [],
+                user_ids: [],
                 type: chatType,
               },
               user_id: currentUser.id,

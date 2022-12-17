@@ -7,8 +7,8 @@ export class AuthGuard implements CanActivate {
 	constructor(private jwtService: JwtService) {}
 	canActivate(context: ExecutionContext)	{
 		const request = context.switchToHttp().getRequest();
-		console.log("trying to printout the session");
-		console.log(request.session);
+		//console.log("trying to printout the session");
+		//console.log(request.session);
 		try {
 			// if (request.session.logged_in != true)
 			// 	return false;
