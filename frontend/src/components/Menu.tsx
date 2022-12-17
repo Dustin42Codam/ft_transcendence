@@ -25,8 +25,8 @@ const Menu = () => {
     if (joinableChats.length > 0) {
       setJoinChanel(!joinChanel);
     } else {
-			//toastr.warning('You do not have any chats to join') Would be nice to use this but it the CSS does not work
-			alert('You do not have any chats to join');
+      //toastr.warning('You do not have any chats to join') Would be nice to use this but it the CSS does not work
+      alert("You do not have any chats to join");
     }
   };
   return (
