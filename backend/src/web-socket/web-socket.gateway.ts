@@ -12,7 +12,7 @@ import { AuthGuard } from '../auth/auth.guard';
 //that I can make sure that I can send message to that chat
 
 @WebSocketGateway({
-	namespace: 'chat',
+	amespace: 'chat',
   cors: { credentials: true, methods: ['GET', 'POST'], origin: ['http://localhost:4242', 'http://localhost:3000']},
   transports: ['polling', 'websocket']})
 export class WebSocketGateways implements OnGatewayInit, OnGatewayConnection {
