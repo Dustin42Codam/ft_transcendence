@@ -3,6 +3,7 @@
 
 postgres_vol/
 
+.env.mine
 .env
 */.env
 */*/.env

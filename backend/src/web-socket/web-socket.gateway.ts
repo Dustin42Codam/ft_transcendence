@@ -12,6 +12,7 @@ import { AuthGuard } from '../auth/auth.guard';
 //that I can make sure that I can send message to that chat
 
 @WebSocketGateway({
+	namespace: 'chat',
   cors: { credentials: true, methods: ['GET', 'POST'], origin: ['http://localhost:4242', 'http://localhost:3000']},
   transports: ['polling', 'websocket']})
 export class WebSocketGateways implements OnGatewayInit, OnGatewayConnection {
@@ -19,6 +20,9 @@ export class WebSocketGateways implements OnGatewayInit, OnGatewayConnection {
     private readonly memberService: MemberService) {};
 
 	private logger: Logger = new Logger("AppGateway");
+	@WebSocketServer()
+	//server: Server;
+	//io: Socket = socket(this.server);
 
 	afterInit(server: Server) {
 		this.logger.log("socket.io websocket server is inited!");
@@ -58,7 +62,7 @@ export class WebSocketGateways implements OnGatewayInit, OnGatewayConnection {
   @SubscribeMessage('messageToServer')
   handleMessageToServer(client: Socket, payload: string) {
 		console.log(`Message ${payload} Recived`);
-		//client.brodcast.emit("messageToClient", payload);
+		//this.io.brodcast.emit("messageToClient", payload);
   }
 
 	/*
