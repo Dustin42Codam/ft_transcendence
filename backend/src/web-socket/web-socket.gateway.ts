@@ -25,6 +25,7 @@ export class WebSocketGateways implements OnGatewayInit, OnGatewayConnection, On
 
     console.log(`Client connected: ${client.id}`);
     console.log(`client count: ${sockets.size}`);
+		this.io.emit("clientConnected", `Client connected: ${client.id}`);
   }
 
 	handleDisconnect(client: any): void {

@@ -30,7 +30,7 @@ describe("Testing baisic connections", () => {
 	it("Socket connects to server: ", async () => {
 		app = await createNestApp(WebSocketGateways);
 		await app.listen(3001);
-		socket = io("ws://localhost:3001", { transports: ["websocket", "polling"], autoConnect: true },);
+		socket = io("ws://localhost:3001", { autoConnect: true },);
 	
     await new Promise<void>(resolve =>
 			socket.on('connect', () => {
