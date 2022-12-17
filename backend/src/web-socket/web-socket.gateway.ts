@@ -20,7 +20,7 @@ export class WebSocketGateways implements OnGatewayInit, OnGatewayConnection {
     private readonly memberService: MemberService) {};
 
 	private logger: Logger = new Logger("AppGateway");
-	@WebSocketServer()
+	//@WebSocketServer()
 	//server: Server;
 	//io: Socket = socket(this.server);
 

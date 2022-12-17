@@ -59,6 +59,7 @@ export class OauthCallbackController {
 
 			const jwt = await this.jwtService.signAsync({id: user.id});
 		
+			console.log("WE ARE SETTING A COOKIE WANING");
 			response.cookie('jwt', jwt, {httpOnly: true, sameSite: 'lax'});
 			response.redirect(`http://localhost:${process.env.FRONTEND_PORT}`);
 		}
