@@ -3,7 +3,7 @@ import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { selectCurrentUser } from "../redux/slices/currentUserSlice";
 import io from "socket.io-client";
 
-const socket = io("http://localhost:3000/chat");
+const socket = io("http://localhost:3001/chat");
 
 const Snicel = () => {
   const [isConnected, setIsConnected] = useState(socket.connected);

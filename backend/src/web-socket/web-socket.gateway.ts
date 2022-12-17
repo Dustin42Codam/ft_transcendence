@@ -1,43 +1,37 @@
-import { WebSocketServer, OnGatewayConnection, WsResponse, OnGatewayInit, MessageBody, SubscribeMessage, WebSocketGateway } from '@nestjs/websockets';
+import { WebSocketServer, OnGatewayDisconnect, OnGatewayConnection, WsResponse, OnGatewayInit, MessageBody, SubscribeMessage, WebSocketGateway } from '@nestjs/websockets';
 import { MemberService } from "src/member/member.service";
 import { UserService } from "src/user/user.service";
 import { Member } from "src/member/entity/member.entity";
 import { Logger } from '@nestjs/common';
-import { Server, Socket } from 'socket.io';
+import { Namespace, Server, Socket } from 'socket.io';
 import { AuthGuard } from '../auth/auth.guard';
 
-//user needs cookie
-//user needs to be authorized 
-//if I join a chat I get a cookie for that chat?
-//that I can make sure that I can send message to that chat
-
 @WebSocketGateway({
-	amespace: 'chat',
-  cors: { credentials: true, methods: ['GET', 'POST'], origin: ['http://localhost:4242', 'http://localhost:3000']},
-  transports: ['polling', 'websocket']})
-export class WebSocketGateways implements OnGatewayInit, OnGatewayConnection {
+	namespace: "chat",
+})
+export class WebSocketGateways implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
 	constructor(private readonly userService: UserService,
-    private readonly memberService: MemberService) {};
+	private readonly memberService: MemberService) {};
 
 	private logger: Logger = new Logger("AppGateway");
-	//@WebSocketServer()
-	//server: Server;
-	//io: Socket = socket(this.server);
+	@WebSocketServer() io: Namespace;
 
 	afterInit(server: Server) {
 		this.logger.log("socket.io websocket server is inited!");
 	}
 
 	handleConnection(client) {
+		const sockets = this.io.sockets;
+
     console.log(`Client connected: ${client.id}`);
+    console.log(`client count: ${sockets.size}`);
   }
 
-	handleDisConnect(client) {
+	handleDisconnect(client: any): void {
+		const sockets = this.io.sockets;
     console.log(`Client disconnected: ${client.id}`);
+    console.log(`client count: ${sockets.size}`);
   }
-	//IF IS A MEMBER OF A CHAT THIS ROOM before connection and it AUTH
-	//if payload is undefined it becomes null
-
 		/*
     const member: Member = await this.memberService.getMemberById(Number(body.member));
     if (this.memberService.isRestricted(member)) {
@@ -62,14 +56,6 @@ export class WebSocketGateways implements OnGatewayInit, OnGatewayConnection {
   @SubscribeMessage('messageToServer')
   handleMessageToServer(client: Socket, payload: string) {
 		console.log(`Message ${payload} Recived`);
-		//this.io.brodcast.emit("messageToClient", payload);
+		client.broadcast.emit("messageToClient", payload);
   }
-
-	/*
-	@WebSocketServer ws: Server;
-  @SubscribeMessage('chatroom')
-  handleMessage(client: Socket, payload: string): void {
-		this.ws.emit("msgToClient", payload);
-  }
- */
 }
