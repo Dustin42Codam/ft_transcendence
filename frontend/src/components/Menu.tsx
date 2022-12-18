@@ -14,7 +14,7 @@ import { selectJoinableChats } from "../redux/slices/chatsSlice";
 import PopUp from "./PopUp";
 import toastr from "toastr";
 
-const Menu = () => {
+const Menu = (props: any) => {
   const [activeDm, setActiveDm] = useState(false);
   const [activeChanels, setActiveChanels] = useState(false);
   const [createChatPopUp, setCreateChatPopUp] = useState(false);
@@ -25,44 +25,45 @@ const Menu = () => {
     if (joinableChats.length > 0) {
       setJoinChanel(!joinChanel);
     } else {
-      //toastr.warning('You do not have any chats to join') Would be nice to use this but it the CSS does not work
+      toastr.error('You do not have any chats to join');
+			// Would be nice to use this but it the CSS does not work
       alert("You do not have any chats to join");
     }
   };
   return (
     <nav
-      id="sidebarMenu"
-      className="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse"
-    >
-      <div className="position-sticky pt-3 sidebar-sticky">
-        <ul className="nav flex-column">
-          <li className="nav-item">
-            <NavLink to={"/"} className="nav-link">
+      id=""
+      className={props.className}>
+    
+      <div className="">
+        <ul className="nav">
+          <li className="">
+            <NavLink to={"/"} className="">
               Dashboard
             </NavLink>
           </li>
-          <li className="nav-item">
-            <NavLink to={"/profile"} className="nav-link">
+          <li className="">
+            <NavLink to={"/profile"} className="">
               Profile
             </NavLink>
           </li>
-          <li className="nav-item">
-            <NavLink to={"/posts"} className="nav-link">
+          <li className="">
+            <NavLink to={"/posts"} className="">
               Posts
             </NavLink>
           </li>
-          <li className="nav-item">
-            <NavLink to={"/users"} className="nav-link">
+          <li className="">
+            <NavLink to={"/users"} className="">
               Users
             </NavLink>
           </li>
-          <li className="nav-item">
-            <NavLink to={"/games"} className="nav-link">
+          <li className="">
+            <NavLink to={"/games"} className="">
               Games
             </NavLink>
           </li>
-          <li className="nav-item">
-            <div className="nav-link">
+          <li className="">
+            <div className="">
               {activeDm === true ? (
                 <React.Fragment>
                   <div onClick={() => setActiveDm(!activeDm)}>
@@ -84,8 +85,8 @@ const Menu = () => {
               )}
             </div>
           </li>
-          <li className="nav-item">
-            <div className="nav-link">
+          <li className="">
+            <div className="">
               {activeChanels === true ? (
                 <React.Fragment>
                   <div onClick={() => setActiveChanels(!activeChanels)}>

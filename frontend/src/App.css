@@ -1,10 +1,53 @@
 @import url("https://fonts.cdnfonts.com/css/studio-sans");
+
 body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+	margin: 0;
+  padding: 0;
   font-family: "Studio Sans", sans-serif;
   background-color: rgb(16, 16, 20);
   color: rgb(244, 241, 208);
 }
 
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.header {
+  flex: 0 0 50px;
+}
+
+.contentBody {
+  flex: 1 1 auto;
+  
+  display: flex;
+  flex-direction: row;
+}
+
+.contentBody .content {
+  flex: 1 1 auto;
+  overflow: auto;
+  background-color: rgb(100, 100, 100);
+}
+
+.contentBody .sidenav {
+  order: -1;
+  flex: 0 0 100px;
+  overflow: auto;
+}
+
+.contentBody .ads {
+  flex: 0 0 100px;
+  overflow: auto;
+}
+
+.footer {
+  flex: 0 0 50px;
+}
+/*
 h2 {
   font-weight: bold;
   display: grid;
@@ -12,125 +55,4 @@ h2 {
   background-color: rgb(16, 16, 20);
   grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
 }
-
-/*
-* Sidebar
 */
-
-.sidebar {
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 100; /* Behind the navbar */
-  padding: 48px 0 0; /* Height of navbar */
-  box-shadow: inset -1px 0 0 rgba(0, 0, 0, 0.1);
-}
-
-@media (max-width: 767.98px) {
-  .sidebar {
-    top: 5rem;
-  }
-}
-
-.sidebar-sticky {
-  height: calc(100vh - 48px);
-  overflow-x: hidden;
-  overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
-}
-
-.sidebar .nav-link {
-  font-weight: 500;
-  color: #333;
-}
-
-.sidebar .nav-link .feather {
-  color: #727272;
-}
-
-.sidebar .nav-link.active {
-}
-
-.sidebar .nav-link:hover .feather,
-.sidebar .nav-link.active .feather {
-}
-
-.sidebar-heading {
-  font-size: 0.75rem;
-}
-
-/*
-* Navbar
-*/
-
-.navbar-brand {
-  padding-top: 0.75rem;
-  padding-bottom: 0.75rem;
-  box-shadow: inset -1px 0 0 rgba(0, 0, 0, 0.25);
-}
-
-.navbar .navbar-toggler {
-  top: 0.25rem;
-  right: 1rem;
-}
-
-.navbar .form-control {
-  padding: 0.75rem 1rem;
-}
-
-.form-control-dark {
-}
-
-.form-control-dark:focus {
-  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.25);
-}
-
-.btn_sign_out {
-  background-color: #5c5c5c;
-  border: none;
-  color: white;
-  padding: 7px 16px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 20px;
-}
-
-.btn_sign_out:hover {
-  background: #14b173;
-  transition: 0.7s;
-}
-
-.btn_delete {
-  background-color: #5c5c5c;
-  border: none;
-  color: white;
-  padding: 7px 16px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  color: white;
-}
-
-.btn_delete:hover {
-  background: #ff5353;
-  transition: 0.5s;
-}
-
-.btn_edit {
-  background-color: #929292;
-  border: none;
-  color: white;
-  padding: 7px 16px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  color: white;
-}
-
-.btn_edit:hover {
-  background: #6f91ff;
-  transition: 0.5s;
-}

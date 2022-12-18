@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Wrapper from "../components/Wrapper";
 import Message from "../components/Message";
+import Socket from "../components/Socket";
 import "./Chat.css";
 
 function getWindowDimensions() {
@@ -30,11 +31,12 @@ function useWindowDimensions() {
 const Chat = () => {
   return (
     <Wrapper>
-      <div className="Messages">
+      <div className="contentBody">
         <Message />
         <Message />
         <Message />
         <Message />
+				<Socket />
       </div>
     </Wrapper>
   );

@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { selectCurrentUser } from "../redux/slices/currentUserSlice";
 import io from "socket.io-client";
+import "./Socket.css";
 
 const socket = io("http://localhost:3001/chat");
 
@@ -15,7 +16,6 @@ const Snicel = () => {
   const currentUser = useAppSelector(selectCurrentUser);
 
   useEffect(() => {
-    console.log(inputRef.current!.focus());
     socket.on("connect", () => {
       setIsConnected(true);
     });
@@ -76,6 +76,7 @@ const Snicel = () => {
       <button onClick={sendPing}>Send ping</button>
       <form ref={inputRef}>
         <input
+					id="chatInputBox"
           name="messageInput"
           onChange={(e) => userIsTyping(e.target.value)}
           type="text"
