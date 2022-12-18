@@ -3,3 +3,7 @@
   flex-direction: column;
   align-items: center;
 }
+
+.headerAuth {
+  color: rgb(244, 241, 208);
+}
