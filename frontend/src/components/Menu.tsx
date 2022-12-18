@@ -2,11 +2,11 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import GroupAdd from "@mui/icons-material/GroupAdd";
 import PersonSearch from "@mui/icons-material/PersonSearch";
-import PeopleIcon from '@mui/icons-material/People';
-import SentimentSatisfiedAltIcon from '@mui/icons-material/SentimentSatisfiedAlt';
-import AddIcon from '@mui/icons-material/Add';
-import SportsTennisIcon from '@mui/icons-material/SportsTennis';
-import DashboardIcon from '@mui/icons-material/Dashboard';
+import PeopleIcon from "@mui/icons-material/People";
+import SentimentSatisfiedAltIcon from "@mui/icons-material/SentimentSatisfiedAlt";
+import AddIcon from "@mui/icons-material/Add";
+import SportsTennisIcon from "@mui/icons-material/SportsTennis";
+import DashboardIcon from "@mui/icons-material/Dashboard";
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import GroupChatTable from "./GroupChatTable";
@@ -22,7 +22,7 @@ import "./Menu.css";
 const Menu = (props: any) => {
   const [activeDm, setActiveDm] = useState(false);
   const [activeChanels, setActiveChanels] = useState(false);
-	const [createChatPopUp, setCreateChatPopUp] = useState(false);
+  const [createChatPopUp, setCreateChatPopUp] = useState(false);
   const [joinChanel, setJoinChanel] = useState(false);
   const joinableChats = useAppSelector(selectJoinableChats);
 
@@ -38,37 +38,67 @@ const Menu = (props: any) => {
   return (
     <nav className={props.className}>
       <div className="sideNavContainer">
-        <NavLink to={"/"} className="navItem" style={{ textDecoration: 'none' }}>
-          <p className="navItemHiglight"> 
-					<DashboardIcon />
-					Dashboard</p>
-        </NavLink>
-        <NavLink to={"/profile"} className="navItem" style={{ textDecoration: 'none' }}>
-					<p className="navItemHiglight">
-						<SentimentSatisfiedAltIcon/>
-						Profile
-					</p>
-        </NavLink>
-        <NavLink to={"/users"} className="navItem" style={{ textDecoration: 'none' }}>
+        <NavLink
+          to={"/"}
+          className="navItem"
+          style={{ textDecoration: "none" }}
+        >
           <p className="navItemHiglight">
-					<PeopleIcon />
-					Users
-					</p>
+            <DashboardIcon />
+            Dashboard
+          </p>
         </NavLink>
-        <NavLink to={"/games"} className="navItem" style={{ textDecoration: 'none' }}>
+        <NavLink
+          to={"/profile"}
+          className="navItem"
+          style={{ textDecoration: "none" }}
+        >
           <p className="navItemHiglight">
-					<SportsTennisIcon />
-					Games
-					</p>
+            <SentimentSatisfiedAltIcon />
+            Profile
+          </p>
+        </NavLink>
+        <NavLink
+          to={"/users"}
+          className="navItem"
+          style={{ textDecoration: "none" }}
+        >
+          <p className="navItemHiglight">
+            <PeopleIcon />
+            Users
+          </p>
+        </NavLink>
+        <NavLink
+          to={"/games"}
+          className="navItem"
+          style={{ textDecoration: "none" }}
+        >
+          <p className="navItemHiglight">
+            <SportsTennisIcon />
+            Games
+          </p>
         </NavLink>
         <div className="navItem">
           {activeDm === true ? (
             <React.Fragment>
-							<p>
-                <ArrowDropDownIcon sx={{"&:hover": { backgroundColor: "grey" }, borderRadius: "10%"}}  onClick={() => setActiveDm(!activeDm)}/>
+              <p>
+                <ArrowDropDownIcon
+                  sx={{
+                    "&:hover": { backgroundColor: "grey" },
+                    borderRadius: "10%",
+                  }}
+                  onClick={() => setActiveDm(!activeDm)}
+                />
                 DM
-								<AddIcon sx={{ ml: 19, "&:hover": { backgroundColor: "grey" }, borderRadius: "10%"  }} onClick={() => setCreateChatPopUp(!createChatPopUp)} />
-							</p>
+                <AddIcon
+                  sx={{
+                    ml: 19,
+                    "&:hover": { backgroundColor: "grey" },
+                    borderRadius: "10%",
+                  }}
+                  onClick={() => setCreateChatPopUp(!createChatPopUp)}
+                />
+              </p>
               {createChatPopUp && (
                 <PopUp
                   content={<ChatCreate />}
@@ -80,10 +110,23 @@ const Menu = (props: any) => {
           ) : (
             <React.Fragment>
               <p>
-								<ArrowRightIcon sx={{"&:hover": { backgroundColor: "grey" }, borderRadius: "10%"}} onClick={() => setActiveDm(!activeDm)}/>
-								DM
-								<AddIcon sx={{ ml: 19, "&:hover": { backgroundColor: "grey" }, borderRadius: "10%" }} onClick={() => setCreateChatPopUp(!createChatPopUp)}/>
-							</p>
+                <ArrowRightIcon
+                  sx={{
+                    "&:hover": { backgroundColor: "grey" },
+                    borderRadius: "10%",
+                  }}
+                  onClick={() => setActiveDm(!activeDm)}
+                />
+                DM
+                <AddIcon
+                  sx={{
+                    ml: 19,
+                    "&:hover": { backgroundColor: "grey" },
+                    borderRadius: "10%",
+                  }}
+                  onClick={() => setCreateChatPopUp(!createChatPopUp)}
+                />
+              </p>
               {createChatPopUp && (
                 <PopUp
                   content={<ChatCreate />}
@@ -96,11 +139,24 @@ const Menu = (props: any) => {
         <div className="navItem">
           {activeChanels === true ? (
             <React.Fragment>
-							<p>
-									<ArrowDropDownIcon sx={{"&:hover": { backgroundColor: "grey" }, borderRadius: "10%"}}  onClick={() => setActiveChanels(!activeChanels)}/>
-									Chats
-									<AddIcon sx={{ ml: 17, "&:hover": { backgroundColor: "grey" }, borderRadius: "10%"  }} onClick={() => setCreateChatPopUp(!createChatPopUp)}/>
-								</p>
+              <p>
+                <ArrowDropDownIcon
+                  sx={{
+                    "&:hover": { backgroundColor: "grey" },
+                    borderRadius: "10%",
+                  }}
+                  onClick={() => setActiveChanels(!activeChanels)}
+                />
+                Chats
+                <AddIcon
+                  sx={{
+                    ml: 17,
+                    "&:hover": { backgroundColor: "grey" },
+                    borderRadius: "10%",
+                  }}
+                  onClick={() => setCreateChatPopUp(!createChatPopUp)}
+                />
+              </p>
               {createChatPopUp && (
                 <PopUp
                   content={<ChatCreate />}
@@ -108,9 +164,9 @@ const Menu = (props: any) => {
                 />
               )}
               <GroupChatTable />
-							<p className="navItemHiglight" onClick={() => joinChats()}>
-                <GroupAdd/> Join chanel
-								</p>
+              <p className="navItemHiglight" onClick={() => joinChats()}>
+                <GroupAdd /> Join chanel
+              </p>
               {joinChanel && (
                 <PopUp
                   content={<JoinableChatTable />}
@@ -120,11 +176,24 @@ const Menu = (props: any) => {
             </React.Fragment>
           ) : (
             <React.Fragment>
-								<p>
-									<ArrowRightIcon sx={{"&:hover": { backgroundColor: "grey" }, borderRadius: "10%"}}  onClick={() => setActiveChanels(!activeChanels)}/>
-									Chats
-									<AddIcon sx={{ ml: 17, "&:hover": { backgroundColor: "grey" }, borderRadius: "10%"  }} onClick={() => setCreateChatPopUp(!createChatPopUp)}/>
-								</p>
+              <p>
+                <ArrowRightIcon
+                  sx={{
+                    "&:hover": { backgroundColor: "grey" },
+                    borderRadius: "10%",
+                  }}
+                  onClick={() => setActiveChanels(!activeChanels)}
+                />
+                Chats
+                <AddIcon
+                  sx={{
+                    ml: 17,
+                    "&:hover": { backgroundColor: "grey" },
+                    borderRadius: "10%",
+                  }}
+                  onClick={() => setCreateChatPopUp(!createChatPopUp)}
+                />
+              </p>
             </React.Fragment>
           )}
         </div>

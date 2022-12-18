@@ -32,6 +32,8 @@ p {
 
 .contentBody .content {
   flex: 1 1 auto;
+  display: flex;
+  flex-direction: row;
   overflow: auto;
   background-color: rgb(100, 100, 100);
 }

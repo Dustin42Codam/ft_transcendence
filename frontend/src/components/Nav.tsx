@@ -17,7 +17,12 @@ const Nav = (props: any) => {
       <div className="navBarContainer">
         <p className="nameProject">ft_transcendence</p>
 
-        <Link to="/authenticate" className="logoutButton" onClick={logout} style={{ textDecoration: 'none' }}>
+        <Link
+          to="/authenticate"
+          className="logoutButton"
+          onClick={logout}
+          style={{ textDecoration: "none" }}
+        >
           <div className="logOut">
             <p>Sign out</p>
             <LogoutIcon />

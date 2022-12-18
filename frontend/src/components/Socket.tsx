@@ -69,21 +69,25 @@ const Snicel = () => {
     );
   };
 
-  return (
-    <div>
+	/*
+    <div className="chatBox">
       <p>Connected: {"" + isConnected}</p>
       <p>Last pong: {lastPong || "-"}</p>
       <button onClick={sendPing}>Send ping</button>
-      <form ref={inputRef}>
-        <input
-          id="chatInputBox"
-          name="messageInput"
-          onChange={(e) => userIsTyping(e.target.value)}
-          type="text"
-        ></input>
-        <button onClick={(e) => sendMessage(e)}>Click me</button>
-      </form>
     </div>
+	 */
+  return (
+	<div className="chatBackgroudn">
+    <form onSubmit={(e) => sendMessage(e)} ref={inputRef}>
+      <input
+        className="chatInputBox"
+        name="messageInput"
+        onChange={(e) => userIsTyping(e.target.value)}
+        type="text"
+      ></input>
+			<input type="submit" hidden />
+    </form>
+	</div>
   );
 };
 

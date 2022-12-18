@@ -31,13 +31,7 @@ function useWindowDimensions() {
 const Chat = () => {
   return (
     <Wrapper>
-      <div className="contentBody">
-        <Message />
-        <Message />
-        <Message />
-        <Message />
-        <Socket />
-      </div>
+      <Socket />
     </Wrapper>
   );
 };
