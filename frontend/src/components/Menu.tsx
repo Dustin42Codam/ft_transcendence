@@ -1,19 +1,20 @@
-import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
-import GroupChatTable from "./GroupChatTable";
-import DirectChatTable from "./DirectChatTable";
-import JoinableChatTable from "./JoinableChatTable";
-import ChatCreate from "./ChatCreate";
 import GroupAdd from "@mui/icons-material/GroupAdd";
 import PersonSearch from "@mui/icons-material/PersonSearch";
-import { useAppSelector } from "../redux/hooks";
-import { selectJoinableChats } from "../redux/slices/chatsSlice";
 import PeopleIcon from '@mui/icons-material/People';
 import SentimentSatisfiedAltIcon from '@mui/icons-material/SentimentSatisfiedAlt';
 import AddIcon from '@mui/icons-material/Add';
 import SportsTennisIcon from '@mui/icons-material/SportsTennis';
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import React, { useState } from "react";
+import { NavLink } from "react-router-dom";
+import GroupChatTable from "./GroupChatTable";
+import DirectChatTable from "./DirectChatTable";
+import JoinableChatTable from "./JoinableChatTable";
+import ChatCreate from "./ChatCreate";
+import { useAppSelector } from "../redux/hooks";
+import { selectJoinableChats } from "../redux/slices/chatsSlice";
 import PopUp from "./PopUp";
 import toastr from "toastr";
 import "./Menu.css";
@@ -38,16 +39,15 @@ const Menu = (props: any) => {
     <nav className={props.className}>
       <div className="sideNavContainer">
         <NavLink to={"/"} className="navItem" style={{ textDecoration: 'none' }}>
-          <p className="navItemHiglight"> Dashboard</p>
+          <p className="navItemHiglight"> 
+					<DashboardIcon />
+					Dashboard</p>
         </NavLink>
         <NavLink to={"/profile"} className="navItem" style={{ textDecoration: 'none' }}>
 					<p className="navItemHiglight">
 						<SentimentSatisfiedAltIcon/>
 						Profile
 					</p>
-        </NavLink>
-        <NavLink to={"/posts"} className="navItem" style={{ textDecoration: 'none' }}>
-          <p>Posts</p>
         </NavLink>
         <NavLink to={"/users"} className="navItem" style={{ textDecoration: 'none' }}>
           <p className="navItemHiglight">
@@ -65,9 +65,9 @@ const Menu = (props: any) => {
           {activeDm === true ? (
             <React.Fragment>
 							<p>
-                <ArrowDropDownIcon  onClick={() => setActiveDm(!activeDm)}/>
+                <ArrowDropDownIcon sx={{"&:hover": { backgroundColor: "grey" }, borderRadius: "10%"}}  onClick={() => setActiveDm(!activeDm)}/>
                 DM
-								<AddIcon sx={{ ml: 19 }} onClick={() => setCreateChatPopUp(!createChatPopUp)} />
+								<AddIcon sx={{ ml: 19, "&:hover": { backgroundColor: "grey" }, borderRadius: "10%"  }} onClick={() => setCreateChatPopUp(!createChatPopUp)} />
 							</p>
               {createChatPopUp && (
                 <PopUp
@@ -80,9 +80,9 @@ const Menu = (props: any) => {
           ) : (
             <React.Fragment>
               <p>
-								<ArrowRightIcon onClick={() => setActiveDm(!activeDm)}/>
+								<ArrowRightIcon sx={{"&:hover": { backgroundColor: "grey" }, borderRadius: "10%"}} onClick={() => setActiveDm(!activeDm)}/>
 								DM
-								<AddIcon sx={{ ml: 19 }} onClick={() => setCreateChatPopUp(!createChatPopUp)}/>
+								<AddIcon sx={{ ml: 19, "&:hover": { backgroundColor: "grey" }, borderRadius: "10%" }} onClick={() => setCreateChatPopUp(!createChatPopUp)}/>
 							</p>
               {createChatPopUp && (
                 <PopUp
@@ -97,9 +97,9 @@ const Menu = (props: any) => {
           {activeChanels === true ? (
             <React.Fragment>
 							<p>
-									<ArrowDropDownIcon onClick={() => setActiveChanels(!activeChanels)}/>
+									<ArrowDropDownIcon sx={{"&:hover": { backgroundColor: "grey" }, borderRadius: "10%"}}  onClick={() => setActiveChanels(!activeChanels)}/>
 									Chats
-									<AddIcon sx={{ ml: 17 }} onClick={() => setCreateChatPopUp(!createChatPopUp)}/>
+									<AddIcon sx={{ ml: 17, "&:hover": { backgroundColor: "grey" }, borderRadius: "10%"  }} onClick={() => setCreateChatPopUp(!createChatPopUp)}/>
 								</p>
               {createChatPopUp && (
                 <PopUp
@@ -121,9 +121,9 @@ const Menu = (props: any) => {
           ) : (
             <React.Fragment>
 								<p>
-									<ArrowRightIcon onClick={() => setActiveChanels(!activeChanels)}/>
+									<ArrowRightIcon sx={{"&:hover": { backgroundColor: "grey" }, borderRadius: "10%"}}  onClick={() => setActiveChanels(!activeChanels)}/>
 									Chats
-									<AddIcon sx={{ ml: 17 }} onClick={() => setCreateChatPopUp(!createChatPopUp)}/>
+									<AddIcon sx={{ ml: 17, "&:hover": { backgroundColor: "grey" }, borderRadius: "10%"  }} onClick={() => setCreateChatPopUp(!createChatPopUp)}/>
 								</p>
             </React.Fragment>
           )}
