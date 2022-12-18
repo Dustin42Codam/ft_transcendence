@@ -1,7 +1,6 @@
 import { Member } from "./Member";
 
 export type Message = {
-  member: Member;
-  timestamp: Date;
+  member: number;
   message: string;
 };

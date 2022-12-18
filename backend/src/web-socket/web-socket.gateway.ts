@@ -6,6 +6,12 @@ import { Logger } from '@nestjs/common';
 import { Namespace, Server, Socket } from 'socket.io';
 import { AuthGuard } from '../auth/auth.guard';
 
+export type Message = {
+  member: number;
+  message: string;
+};
+
+
 @WebSocketGateway({
 	namespace: "chat",
 })
@@ -55,7 +61,7 @@ export class WebSocketGateways implements OnGatewayInit, OnGatewayConnection, On
   }
 
   @SubscribeMessage('messageToServer')
-  handleMessageToServer(client: Socket, payload: string) {
+  handleMessageToServer(client: Socket, payload: Message) {
 		console.log(`Message ${payload} Recived`);
 		//client.broadcast
 		this.io.emit("messageToClient", payload);
