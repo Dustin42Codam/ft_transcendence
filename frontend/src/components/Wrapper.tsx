@@ -4,12 +4,10 @@ import Menu from "./Menu";
 const Wrapper = (props: any) => {
   return (
     <div className="wrapper">
-      <Nav className="header"/>
+      <Nav className="header" />
       <div className="contentBody">
-        <Menu className="sidenav"/>
-        <main className="content">
-          {props.children}
-        </main>
+        <Menu className="sidenav" />
+        <main className="content">{props.children}</main>
       </div>
     </div>
   );

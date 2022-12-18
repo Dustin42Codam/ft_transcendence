@@ -1,0 +1,8 @@
+.sideNavContainer {
+	display: flex;
+	flex-direction: column;
+	margin-left: 15px;
+	margin-top: 15px;
+}
+.navItem {
+}

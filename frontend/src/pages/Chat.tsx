@@ -36,7 +36,7 @@ const Chat = () => {
         <Message />
         <Message />
         <Message />
-				<Socket />
+        <Socket />
       </div>
     </Wrapper>
   );

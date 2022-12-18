@@ -76,7 +76,7 @@ const Snicel = () => {
       <button onClick={sendPing}>Send ping</button>
       <form ref={inputRef}>
         <input
-					id="chatInputBox"
+          id="chatInputBox"
           name="messageInput"
           onChange={(e) => userIsTyping(e.target.value)}
           type="text"
