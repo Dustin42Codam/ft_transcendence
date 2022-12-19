@@ -5,6 +5,7 @@ import { Member } from "src/member/entity/member.entity";
 import { Logger } from '@nestjs/common';
 import { Namespace, Server, Socket } from 'socket.io';
 import { AuthGuard } from '../auth/auth.guard';
+import { UseGuards } from "@nestjs/common";
 
 export type Message = {
   member: number;
@@ -47,6 +48,12 @@ export class WebSocketGateways implements OnGatewayInit, OnGatewayConnection, On
     }
     this.messageService.create({timestamp: new Date(), member: member, message: body.message});
 	 */
+
+  @SubscribeMessage('login')
+  handelLogin(client: Socket, payload: any): WsResponse<string> {
+		console.log("payload", payload);
+		return { event: "loginAck", data: payload};
+  }
 
   @SubscribeMessage('ping')
   handlePong(client: Socket, payload: string): WsResponse<string> {

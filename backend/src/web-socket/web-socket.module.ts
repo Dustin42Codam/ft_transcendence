@@ -2,6 +2,7 @@ import { WebSocketGateways } from './web-socket.gateway';
 import { Module } from '@nestjs/common';
 import { UserModule } from '../user/user.module';
 import { MemberModule } from '../member/member.module';
+import { JwtService } from '@nestjs/jwt'
 
 @Module({
   providers: [WebSocketGateways],

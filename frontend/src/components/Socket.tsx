@@ -24,6 +24,16 @@ const Snicel = () => {
       setIsConnected(false);
     });
 
+    return () => {
+			console.log("unmoutngin");
+			socket.disconnect();
+      socket.off("connect");
+      socket.off("disconnect");
+    };
+  }, []);
+
+	useEffect(() => {
+
     socket.on("pong", () => {
       setLastPong(new Date().toISOString());
     });
@@ -37,16 +47,17 @@ const Snicel = () => {
     socket.on("isTyping", (userName: string) => {
       const timer = setTimeout(() => console.log("Hello, World!"), 3000);
       return () => clearTimeout(timer);
-    });
-
-    return () => {
       socket.off("messageToClient");
-      socket.off("connect");
       socket.off("isTyping");
-      socket.off("disconnect");
       socket.off("pong");
-    };
-  }, [messages]);
+		});
+		return (() => {
+			socket.off("messageToClient");
+			socket.off("pong");
+			socket.off("isTyping");
+		});
+	});
+	console.log("this runing more then once");
 
   const sendPing = () => {
     socket.emit("ping");
