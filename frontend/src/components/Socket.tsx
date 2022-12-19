@@ -30,8 +30,8 @@ const Snicel = () => {
 
     socket.on("messageToClient", (newMessage: Message) => {
       console.log("We recived a message", newMessage);
-      setMessages(messages => [...messages, newMessage]);
-			console.log(messages, messages.length);
+      setMessages((messages) => [...messages, newMessage]);
+      console.log(messages, messages.length);
     });
 
     socket.on("isTyping", (userName: string) => {
@@ -64,13 +64,14 @@ const Snicel = () => {
 
   const sendMessage = (e: any) => {
     e.preventDefault();
-    socket.emit(
-      "messageToServer",
-			{number: currentUser.id, message: `${inputRef.current!["messageInput"].value}`}
-    );
+    socket.emit("messageToServer", {
+      number: currentUser.id,
+      message: `${inputRef.current!["messageInput"].value}`,
+    });
+		inputRef.current!["messageInput"].value = "";
   };
 
-	/*
+  /*
     <div className="chatBox">
       <p>Connected: {"" + isConnected}</p>
       <p>Last pong: {lastPong || "-"}</p>
@@ -78,22 +79,20 @@ const Snicel = () => {
     </div>
 	 */
   return (
-	<div>
-		<div>
-		{renderedChats}
-		</div>
-		<div className="chatBackgroudn">
-			<form onSubmit={(e) => sendMessage(e)} ref={inputRef}>
-				<input
-					className="chatInputBox"
-					name="messageInput"
-					onChange={(e) => userIsTyping(e.target.value)}
-					type="text"
-				></input>
-				<input type="submit" hidden />
-			</form>
-		</div>
-	</div>
+    <div>
+      <div>{renderedChats}</div>
+      <div className="chatBackgroudn">
+        <form onSubmit={(e) => sendMessage(e)} ref={inputRef}>
+          <input
+            className="chatInputBox"
+            name="messageInput"
+            onChange={(e) => userIsTyping(e.target.value)}
+            type="text"
+          ></input>
+          <input type="submit" hidden />
+        </form>
+      </div>
+    </div>
   );
 };
 

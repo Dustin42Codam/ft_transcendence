@@ -5,7 +5,6 @@ import MessageComponent from "../components/Message";
 import Socket from "../components/Socket";
 import "./Chat.css";
 
-
 const Chat = () => {
   return (
     <Wrapper>

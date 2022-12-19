@@ -9,8 +9,7 @@ const Wrapper = (props: any) => {
         <Menu className="sidenav" />
         <div className="content">{props.children}</div>
       </div>
-      <div className="footer">
-			</div>
+      <div className="footer"></div>
     </div>
   );
 };
