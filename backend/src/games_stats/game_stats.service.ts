@@ -5,6 +5,7 @@ import { Repository } from "typeorm";
 import { AbstractService } from "src/common/abstract.service";
 
 import { GameStats } from "./entity/game_stats.entity";
+import { User } from "src/user/entity/user.entity";
 
 @Injectable()
 export class GameStatsService extends AbstractService {
@@ -35,5 +36,9 @@ export class GameStatsService extends AbstractService {
 		gameStats.played++;
 		this.update(id, gameStats);
 		return gameStats;
+	}
+
+	async createGameStats(user: User) {
+		await this.create({user: user});
 	}
 }

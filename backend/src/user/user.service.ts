@@ -2,9 +2,12 @@ import { BadRequestException, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { AchievementService } from "src/achievement/achievement.service";
 import { AbstractService } from "src/common/abstract.service";
+import { GameStatsCreateDto } from "src/games_stats/dto/gamestats-create.dto";
+import { GameStats } from "src/games_stats/entity/game_stats.entity";
 import { GameStatsService } from "src/games_stats/game_stats.service";
 import { Repository } from "typeorm";
 import { UserCreateDto } from "./dto/user-create.dto";
+import { UserInfoDto } from "./dto/user-info.dto";
 import { User, UserStatus } from "./entity/user.entity";
 
 
@@ -30,9 +33,13 @@ export class UserService extends AbstractService {
 	}
 
 	async createUser(userCreateDto: UserCreateDto) {
+		const emptyGameStats: GameStatsCreateDto = {win: 0, lose: 0, played: 0}
+		const newUserInfo: UserInfoDto = {status: UserStatus.ONLINE, ...userCreateDto}
+		console.log(newUserInfo)
 		const newUser = await this.create(userCreateDto)
+		const gameStats = await this.gameStatsService.createGameStats(newUser);
 		await this.achievementService.createAllAchievements(newUser)
-		return await this.getUserById(newUser.id, ["achievements, game_stats"]);
+		return await this.getUserById(newUser.id, ["achievements", "game_stats"]);
 	}
 
 	async changeStatus(id: number, status: UserStatus) {

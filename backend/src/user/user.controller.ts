@@ -7,7 +7,7 @@ import * as session from 'express-session';
 import express, { Request } from 'express';
 import { AuthGuard } from "src/auth/auth.guard";
 
-@Controller('users')
+@Controller('user')
 export class UserController {
     constructor(private readonly userService: UserService) {}
 
