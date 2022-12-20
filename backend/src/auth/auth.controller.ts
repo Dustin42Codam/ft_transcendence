@@ -33,7 +33,6 @@ export class AuthController {
 		await this.userService.createUser({
 			display_name: body.display_name,
 			avatar: body.avatar,
-			status: UserStatus.ONLINE //CHECK is this always ONLINE when initialized
 		});
 
 		return user;
