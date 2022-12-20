@@ -32,7 +32,7 @@ export class MessageController {
 
   	@UseGuards(AuthGuard)
   	@Get(':id')
-	async getMessagesfromChatroom(
+	async getMessagesByUser(
   		@Param('id') chatroomId: string,
 		@Req() request: Request,
 		) {

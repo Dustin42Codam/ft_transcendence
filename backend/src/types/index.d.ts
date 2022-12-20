@@ -6,6 +6,8 @@ declare global {
             session: {
                 logged_in: boolean;
                 user_id: number;
+                jwt: any;
+                token: any;
             };
         }
     }

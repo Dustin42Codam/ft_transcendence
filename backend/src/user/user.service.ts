@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from "@nestjs/common";
+import { BadRequestException, Injectable, Req } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { AchievementService } from "src/achievement/achievement.service";
 import { AbstractService } from "src/common/abstract.service";
@@ -6,6 +6,7 @@ import { GameStatsService } from "src/games_stats/game_stats.service";
 import { Repository } from "typeorm";
 import { UserCreateDto } from "./dto/user-create.dto";
 import { User, UserStatus } from "./entity/user.entity";
+import experss, { Request } from "express";
 
 
 @Injectable()

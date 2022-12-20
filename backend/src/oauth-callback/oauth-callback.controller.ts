@@ -1,7 +1,12 @@
 import { Controller, Get, Req, Res, UseInterceptors } from '@nestjs/common';
-import { Request, Response } from 'express-session';
+import { Response } from 'express-session';
 import { UserService } from '../user/user.service';
 import { JwtService } from '@nestjs/jwt';
+import express, { Request } from "express";
+import { AuthGuard } from "src/auth/auth.guard"
+import { UserController } from 'src/user/user.controller';
+import { UserStatus } from 'src/user/entity/user.entity';
+import { UserCreateDto } from 'src/user/dto/user-create.dto';
 
 require("dotenv").config();
 
@@ -19,8 +24,8 @@ const config = {
 export class OauthCallbackController {
 
 	constructor (
-		private userService: UserService,
-		private jwtService: JwtService
+		private readonly userService: UserService,
+		private readonly jwtService: JwtService
 	) {}
 
 	@Get('oauth-callback')
@@ -98,6 +103,7 @@ export class OauthCallbackController {
 						status: 'online'
 					}
 				)
+				.then(ret => request.session.user_id = ret.id)
 				.then(ret => ret.data)
 				.catch(err => {
 					console.log(err);
