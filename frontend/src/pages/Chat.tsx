@@ -5,6 +5,7 @@ import MessageComponent from "../components/Message";
 import Socket from "../components/Socket";
 import "./Chat.css";
 
+//TODO get all messages for chat
 const Chat = () => {
   return (
     <Wrapper>
