@@ -92,6 +92,7 @@ export class ChatGateways implements OnGatewayInit, OnGatewayConnection, OnGatew
 		console.log(`Chat gateway: Message ${payload.message} id: ${payload.chatRoomId} Recived`);
 		//client.broadcast
 		//TODO check if chatRoomId exists
+		//TODO Liz add the message to database
 		this.io.to(payload.chatRoomId).emit("messageToClient", payload);
   }
 }

@@ -9,7 +9,6 @@ import ServerToClientEvents from "socket.io-client";
 import "./Socket.css";
 
 const socketChat = io("http://localhost:3001/chat");
-const socketChat2 = io("http://localhost:3001/chat");
 const socketGame = io("http://localhost:3002/game");
 
 const Snicel = () => {
