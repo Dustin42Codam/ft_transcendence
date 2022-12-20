@@ -8,9 +8,10 @@ import { AuthGuard } from '../auth/auth.guard';
 import { UseGuards } from "@nestjs/common";
 
 export type Message = {
-  member: number;
+  member: Member;
   message: string;
 };
+
 
 @WebSocketGateway({
 	namespace: "chat",
@@ -40,12 +41,6 @@ export class WebSocketGateways implements OnGatewayInit, OnGatewayConnection, On
     console.log(`client count: ${sockets.size}`);
   }
 		/*
-    const member: Member = await this.memberService.getMemberById(Number(body.member));
-    if (this.memberService.isRestricted(member)) {
-      throw new BadRequestException("You are restricted from this chatroom.");
-			return { event: "msgNotRecivedToClient", data: null};
-    }
-    this.messageService.create({timestamp: new Date(), member: member, message: body.message});
 	 */
 
   @SubscribeMessage('login')
@@ -56,7 +51,7 @@ export class WebSocketGateways implements OnGatewayInit, OnGatewayConnection, On
 
   @SubscribeMessage('ping')
   handlePong(client: Socket, payload: string): WsResponse<string> {
-		console.log("payload", payload);
+		console.log("ping to game chat namespace payload", payload);
 		return { event: "pong", data: null};
   }
 
@@ -69,6 +64,15 @@ export class WebSocketGateways implements OnGatewayInit, OnGatewayConnection, On
   @SubscribeMessage('messageToServer')
   handleMessageToServer(client: Socket, payload: Message) {
 		console.log(`Message ${payload} Recived`);
+		/*
+		const member: Member = await this.memberService.getMemberById(Number(body.member));
+		if (this.memberService.isRestricted(member)) {
+			throw new BadRequestException("You are restricted from this chatroom.");
+			return { event: "msgNotRecivedToClient", data: null};
+		}
+		this.messageService.create({timestamp: new Date(), member: member, message: body.message});
+	 */
+		//member
 		//client.broadcast
 		this.io.emit("messageToClient", payload);
   }

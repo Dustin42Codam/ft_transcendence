@@ -26,7 +26,7 @@ async function bootstrap() {
 	app.use(cors({origin: 'http://localhost:4242', allowedHeaders: ['Access-Control-Allow-Origin', 'content-type', 'Location', 'Authorization', 'origin', 'accept'], credentials: true}));
 	app.use(express.json());
 	app.use(cookieParser());
-	app.useWebSocketAdapter(new SocketIOAdapter(app));
+	//app.useWebSocketAdapter(new SocketIOAdapter(app));
 	app.use(session(
 		{
 			secret: process.env.EXPRESS_SECRET,

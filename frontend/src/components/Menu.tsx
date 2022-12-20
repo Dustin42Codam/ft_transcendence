@@ -90,14 +90,6 @@ const Menu = (props: any) => {
                   onClick={() => setActiveDm(!activeDm)}
                 />
                 DM
-                <AddIcon
-                  sx={{
-                    ml: 19,
-                    "&:hover": { backgroundColor: "grey" },
-                    borderRadius: "10%",
-                  }}
-                  onClick={() => setCreateChatPopUp(!createChatPopUp)}
-                />
               </p>
               {createChatPopUp && (
                 <PopUp
@@ -118,14 +110,6 @@ const Menu = (props: any) => {
                   onClick={() => setActiveDm(!activeDm)}
                 />
                 DM
-                <AddIcon
-                  sx={{
-                    ml: 19,
-                    "&:hover": { backgroundColor: "grey" },
-                    borderRadius: "10%",
-                  }}
-                  onClick={() => setCreateChatPopUp(!createChatPopUp)}
-                />
               </p>
               {createChatPopUp && (
                 <PopUp

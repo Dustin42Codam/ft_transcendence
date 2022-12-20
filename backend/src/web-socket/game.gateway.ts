@@ -13,7 +13,7 @@ export type Message = {
 };
 
 @WebSocketGateway({
-	namespace: "chat",
+	namespace: "game",
 })
 export class WebSocketGateways implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
 	constructor(private readonly userService: UserService,
@@ -23,7 +23,7 @@ export class WebSocketGateways implements OnGatewayInit, OnGatewayConnection, On
 	@WebSocketServer() io: Namespace;
 
 	afterInit(server: Server) {
-		this.logger.log("socket.io websocket server is inited!");
+		this.logger.log("game namespace socket server is running");
 	}
 
 	handleConnection(client) {

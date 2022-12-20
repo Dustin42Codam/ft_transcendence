@@ -32,9 +32,9 @@ async function main() {
   store.dispatch(fetchGroupChats());
 
   root.render(
-      <Provider store={store}>
-        <App />
-      </Provider>
+    <Provider store={store}>
+      <App />
+    </Provider>
   );
 }
 

@@ -6,6 +6,7 @@ import io from "socket.io-client";
 import "./Socket.css";
 
 const socket = io("http://localhost:3001/chat");
+const socket2 = io("http://localhost:3002/game");
 const Snicel = () => {
   const [isConnected, setIsConnected] = useState(socket.connected);
   const [lastPong, setLastPong] = useState<string | null>(null);
@@ -25,15 +26,13 @@ const Snicel = () => {
     });
 
     return () => {
-			console.log("unmoutngin");
-			socket.disconnect();
+      socket.disconnect();
       socket.off("connect");
       socket.off("disconnect");
     };
   }, []);
 
-	useEffect(() => {
-
+  useEffect(() => {
     socket.on("pong", () => {
       setLastPong(new Date().toISOString());
     });
@@ -50,14 +49,14 @@ const Snicel = () => {
       socket.off("messageToClient");
       socket.off("isTyping");
       socket.off("pong");
-		});
-		return (() => {
-			socket.off("messageToClient");
-			socket.off("pong");
-			socket.off("isTyping");
-		});
-	});
-	console.log("this runing more then once");
+    });
+    return () => {
+      socket.off("messageToClient");
+      socket.off("pong");
+      socket.off("isTyping");
+    };
+  });
+  console.log("this runing more then once");
 
   const sendPing = () => {
     socket.emit("ping");
@@ -67,6 +66,7 @@ const Snicel = () => {
     socket.emit("typing", currentUser.id);
   };
 
+  //TODO ask Liz to add id to message dto
   const renderedChats = messages.map((message: Message) => (
     <div key={message.message} className="chatRow">
       <p>{message.message}</p>
@@ -79,7 +79,7 @@ const Snicel = () => {
       number: currentUser.id,
       message: `${inputRef.current!["messageInput"].value}`,
     });
-		inputRef.current!["messageInput"].value = "";
+    inputRef.current!["messageInput"].value = "";
   };
 
   /*

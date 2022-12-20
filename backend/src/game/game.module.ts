@@ -8,6 +8,7 @@ import { GameStatsModule } from "src/games_stats/game_stats.module";
 import { Game } from "./entity/game.entity";
 import { GameController } from "./game.controller";
 import { GameService } from "./game.service";
+import { GameGateway } from './game.gateway';
 
 @Module({
 	imports: [
@@ -17,7 +18,7 @@ import { GameService } from "./game.service";
 		CommonModule,
 	],
   controllers: [GameController],
-  providers: [GameService],
+  providers: [GameService, GameGateway],
   exports: [GameService]
 })
 export class GameModule {}

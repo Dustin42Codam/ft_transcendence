@@ -1,13 +1,13 @@
-import { WebSocketGateways } from './web-socket.gateway';
+import { ChatGateways } from './chat.gateway';
 import { Module } from '@nestjs/common';
 import { UserModule } from '../user/user.module';
 import { MemberModule } from '../member/member.module';
 
 @Module({
-  providers: [WebSocketGateways],
+  providers: [ChatGateways],
 	imports: [
 		UserModule,
 		MemberModule,
 	]
 })
-export class WebSocketModule {}
+export class ChatModule {}

@@ -12,10 +12,16 @@ export type Message = {
   message: string;
 };
 
-@WebSocketGateway({
-	namespace: "chat",
-})
-export class WebSocketGateways implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
+@WebSocketGateway(
+	3001, {
+		namespace: "chat",
+		cors: {
+			origin: "http://localhost:4242",
+		  credentials: true
+		}
+	}
+)
+export class ChatGateways implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
 	constructor(private readonly userService: UserService,
 	private readonly memberService: MemberService) {};
 
@@ -23,21 +29,21 @@ export class WebSocketGateways implements OnGatewayInit, OnGatewayConnection, On
 	@WebSocketServer() io: Namespace;
 
 	afterInit(server: Server) {
-		this.logger.log("socket.io websocket server is inited!");
+		this.logger.log("Chat gateway: game namespace socket server is running");
 	}
 
 	handleConnection(client) {
 		const sockets = this.io.sockets;
 
-    console.log(`Client connected: ${client.id}`);
-    console.log(`client count: ${sockets.size}`);
-		this.io.emit("clientConnected", `Client connected: ${client.id}`);
+    console.log(`Chat gateway: Client connected: ${client.id}`);
+    console.log(`Chat gateway: client count: ${sockets.size}`);
+		this.io.emit("Chat gateway: clientConnected", `Client connected: ${client.id}`);
   }
 
 	handleDisconnect(client: any): void {
 		const sockets = this.io.sockets;
-    console.log(`Client disconnected: ${client.id}`);
-    console.log(`client count: ${sockets.size}`);
+    console.log(`Chat gateway: Client disconnected: ${client.id}`);
+    console.log(`Chat gateway: client count: ${sockets.size}`);
   }
 		/*
     const member: Member = await this.memberService.getMemberById(Number(body.member));
@@ -50,25 +56,25 @@ export class WebSocketGateways implements OnGatewayInit, OnGatewayConnection, On
 
   @SubscribeMessage('login')
   handelLogin(client: Socket, payload: any): WsResponse<string> {
-		console.log("payload", payload);
+		console.log("Chat gateway: payload", payload);
 		return { event: "loginAck", data: payload};
   }
 
   @SubscribeMessage('ping')
   handlePong(client: Socket, payload: string): WsResponse<string> {
-		console.log("payload", payload);
+		console.log("Chat gateway: payload", payload);
 		return { event: "pong", data: null};
   }
 
   @SubscribeMessage('typing')
   handleTyping(client: Socket, payload: string): WsResponse<string> {
-		console.log(`USER ${payload} IS TYPING`);
+		console.log(`Chat gateway: USER ${payload} IS TYPING`);
 		return { event: "isTyping", data: payload};
   }
 
   @SubscribeMessage('messageToServer')
   handleMessageToServer(client: Socket, payload: Message) {
-		console.log(`Message ${payload} Recived`);
+		console.log(`Chat gateway: Message ${payload} Recived`);
 		//client.broadcast
 		this.io.emit("messageToClient", payload);
   }
