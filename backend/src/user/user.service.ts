@@ -36,7 +36,25 @@ export class UserService extends AbstractService {
 	async createUser(userCreateDto: UserCreateDto) {
 		const emptyGameStats: GameStatsCreateDto = {win: 0, lose: 0, played: 0}
 		const newUserInfo: UserInfoDto = {status: UserStatus.ONLINE, ...userCreateDto}
-		console.log(newUserInfo)
+		const all_users = await this.getUsers();
+		var unique_name = false
+		var i = 0
+		var name: string
+		while (!unique_name) {
+			if (i === 0) {
+				name = userCreateDto.display_name
+			}
+			else {
+				name = userCreateDto.display_name + "-" + String(i)
+			}
+			unique_name = true
+			for (const user of all_users) {
+				if (user.display_name === name) {
+					unique_name = false
+				}
+			}
+		}
+		userCreateDto.display_name = name;
 		const newUser = await this.create(userCreateDto)
 		const gameStats = await this.gameStatsService.createGameStats(newUser);
 		await this.achievementService.createAllAchievements(newUser)
