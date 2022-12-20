@@ -44,12 +44,31 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 		console.log("payload", payload);
 		return { event: "pong", data: null};
   }
+	//maybe the logic need backend
+	//I am moving up or down
 
-  @SubscribeMessage('typing')
-  handleTyping(client: Socket, payload: string): WsResponse<string> {
-		console.log(`USER ${payload} IS TYPING`);
-		return { event: "isTyping", data: payload};
+	//@SubscribeMessage('game') {
+	//	this.io.to("room")emit("gameToClient", {batonePosition: y, battwoPosition: y, ballPosition: [x, y]);
+	//}
+	//@SubscribeMessage('batMovment') {
+	//	this.io.to("room")emit("gameToClient", {batonePosition: y, battwoPosition: y, ballPosition: [x, y]);
+	//}
+
+  //@SubscribeMessage('sendBallLocation')
+  //@SubscribeMessage('sendBatLocation')
+
+
+	//function win conditions
+	//one player leaves
+	//one player scoers enough golas
+
+	/*
+	//functions wincondition() {
+		//wich client I am?
+		//if win?
+		//this.io.to("room")emit("messageToClient", payload);
   }
+ */
 
   @SubscribeMessage('messageToServer')
   handleMessageToServer(client: Socket, payload: any) {
