@@ -1,20 +1,25 @@
-import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
+import GroupAdd from "@mui/icons-material/GroupAdd";
+import PersonSearch from "@mui/icons-material/PersonSearch";
+import PeopleIcon from "@mui/icons-material/People";
+import SentimentSatisfiedAltIcon from "@mui/icons-material/SentimentSatisfiedAlt";
+import AddIcon from "@mui/icons-material/Add";
+import SportsTennisIcon from "@mui/icons-material/SportsTennis";
+import DashboardIcon from "@mui/icons-material/Dashboard";
+import React, { useState } from "react";
+import { NavLink } from "react-router-dom";
 import GroupChatTable from "./GroupChatTable";
 import DirectChatTable from "./DirectChatTable";
 import JoinableChatTable from "./JoinableChatTable";
 import ChatCreate from "./ChatCreate";
-import AddIcon from "@mui/icons-material/Add";
-import GroupAdd from "@mui/icons-material/GroupAdd";
-import PersonSearch from "@mui/icons-material/PersonSearch";
 import { useAppSelector } from "../redux/hooks";
 import { selectJoinableChats } from "../redux/slices/chatsSlice";
 import PopUp from "./PopUp";
 import toastr from "toastr";
+import "./Menu.css";
 
-const Menu = () => {
+const Menu = (props: any) => {
   const [activeDm, setActiveDm] = useState(false);
   const [activeChanels, setActiveChanels] = useState(false);
   const [createChatPopUp, setCreateChatPopUp] = useState(false);
@@ -25,103 +30,157 @@ const Menu = () => {
     if (joinableChats.length > 0) {
       setJoinChanel(!joinChanel);
     } else {
-      //toastr.warning('You do not have any chats to join') Would be nice to use this but it the CSS does not work
+      toastr.error("You do not have any chats to join");
+      // Would be nice to use this but it the CSS does not work
       alert("You do not have any chats to join");
     }
   };
   return (
-    <nav
-      id="sidebarMenu"
-      className="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse"
-    >
-      <div className="position-sticky pt-3 sidebar-sticky">
-        <ul className="nav flex-column">
-          <li className="nav-item">
-            <NavLink to={"/"} className="nav-link">
-              Dashboard
-            </NavLink>
-          </li>
-          <li className="nav-item">
-            <NavLink to={"/profile"} className="nav-link">
-              Profile
-            </NavLink>
-          </li>
-          <li className="nav-item">
-            <NavLink to={"/posts"} className="nav-link">
-              Posts
-            </NavLink>
-          </li>
-          <li className="nav-item">
-            <NavLink to={"/users"} className="nav-link">
-              Users
-            </NavLink>
-          </li>
-          <li className="nav-item">
-            <NavLink to={"/games"} className="nav-link">
-              Games
-            </NavLink>
-          </li>
-          <li className="nav-item">
-            <div className="nav-link">
-              {activeDm === true ? (
-                <React.Fragment>
-                  <div onClick={() => setActiveDm(!activeDm)}>
-                    <ArrowDropDownIcon />
-                    DM
-                  </div>
-                  <DirectChatTable />
-                  <div onClick={() => setCreateChatPopUp(!createChatPopUp)}>
-                    <PersonSearch /> Message someone
-                  </div>
-                </React.Fragment>
-              ) : (
-                <React.Fragment>
-                  <div onClick={() => setActiveDm(!activeDm)}>
-                    <ArrowRightIcon />
-                    DM
-                  </div>
-                </React.Fragment>
+    <nav className={props.className}>
+      <div className="sideNavContainer">
+        <NavLink
+          to={"/"}
+          className="navItem"
+          style={{ textDecoration: "none" }}
+        >
+          <p className="navItemHiglight">
+            <DashboardIcon />
+            Dashboard
+          </p>
+        </NavLink>
+        <NavLink
+          to={"/profile"}
+          className="navItem"
+          style={{ textDecoration: "none" }}
+        >
+          <p className="navItemHiglight">
+            <SentimentSatisfiedAltIcon />
+            Profile
+          </p>
+        </NavLink>
+        <NavLink
+          to={"/users"}
+          className="navItem"
+          style={{ textDecoration: "none" }}
+        >
+          <p className="navItemHiglight">
+            <PeopleIcon />
+            Users
+          </p>
+        </NavLink>
+        <NavLink
+          to={"/games"}
+          className="navItem"
+          style={{ textDecoration: "none" }}
+        >
+          <p className="navItemHiglight">
+            <SportsTennisIcon />
+            Games
+          </p>
+        </NavLink>
+        <div className="navItem">
+          {activeDm === true ? (
+            <React.Fragment>
+              <p>
+                <ArrowDropDownIcon
+                  sx={{
+                    "&:hover": { backgroundColor: "grey" },
+                    borderRadius: "10%",
+                  }}
+                  onClick={() => setActiveDm(!activeDm)}
+                />
+                DM
+              </p>
+              {createChatPopUp && (
+                <PopUp
+                  content={<ChatCreate />}
+                  handleClose={() => setCreateChatPopUp(!createChatPopUp)}
+                />
               )}
-            </div>
-          </li>
-          <li className="nav-item">
-            <div className="nav-link">
-              {activeChanels === true ? (
-                <React.Fragment>
-                  <div onClick={() => setActiveChanels(!activeChanels)}>
-                    <ArrowDropDownIcon /> Chats
-                  </div>
-                  <GroupChatTable />
-                  <div onClick={() => setCreateChatPopUp(!createChatPopUp)}>
-                    <AddIcon /> Create chanel
-                  </div>
-                  <div onClick={() => joinChats()}>
-                    <GroupAdd /> Join chanel
-                  </div>
-                  {joinChanel && (
-                    <PopUp
-                      content={<JoinableChatTable />}
-                      handleClose={() => joinChats()}
-                    />
-                  )}
-                  {createChatPopUp && (
-                    <PopUp
-                      content={<ChatCreate />}
-                      handleClose={() => setCreateChatPopUp(!createChatPopUp)}
-                    />
-                  )}
-                </React.Fragment>
-              ) : (
-                <React.Fragment>
-                  <div onClick={() => setActiveChanels(!activeChanels)}>
-                    <ArrowRightIcon />
-                    Chats
-                  </div>
-                </React.Fragment>
+              <DirectChatTable />
+            </React.Fragment>
+          ) : (
+            <React.Fragment>
+              <p>
+                <ArrowRightIcon
+                  sx={{
+                    "&:hover": { backgroundColor: "grey" },
+                    borderRadius: "10%",
+                  }}
+                  onClick={() => setActiveDm(!activeDm)}
+                />
+                DM
+              </p>
+              {createChatPopUp && (
+                <PopUp
+                  content={<ChatCreate />}
+                  handleClose={() => setCreateChatPopUp(!createChatPopUp)}
+                />
               )}
-            </div>
-          </li>
-        </ul>
+            </React.Fragment>
+          )}
+        </div>
+        <div className="navItem">
+          {activeChanels === true ? (
+            <React.Fragment>
+              <p>
+                <ArrowDropDownIcon
+                  sx={{
+                    "&:hover": { backgroundColor: "grey" },
+                    borderRadius: "10%",
+                  }}
+                  onClick={() => setActiveChanels(!activeChanels)}
+                />
+                Chats
+                <AddIcon
+                  sx={{
+                    ml: 17,
+                    "&:hover": { backgroundColor: "grey" },
+                    borderRadius: "10%",
+                  }}
+                  onClick={() => setCreateChatPopUp(!createChatPopUp)}
+                />
+              </p>
+              {createChatPopUp && (
+                <PopUp
+                  content={<ChatCreate />}
+                  handleClose={() => setCreateChatPopUp(!createChatPopUp)}
+                />
+              )}
+              <GroupChatTable />
+              <p className="navItemHiglight" onClick={() => joinChats()}>
+                <GroupAdd /> Join chanel
+              </p>
+              {joinChanel && (
+                <PopUp
+                  content={<JoinableChatTable />}
+                  handleClose={() => joinChats()}
+                />
+              )}
+            </React.Fragment>
+          ) : (
+            <React.Fragment>
+              <p>
+                <ArrowRightIcon
+                  sx={{
+                    "&:hover": { backgroundColor: "grey" },
+                    borderRadius: "10%",
+                  }}
+                  onClick={() => setActiveChanels(!activeChanels)}
+                />
+                Chats
+                <AddIcon
+                  sx={{
+                    ml: 17,
+                    "&:hover": { backgroundColor: "grey" },
+                    borderRadius: "10%",
+                  }}
+                  onClick={() => setCreateChatPopUp(!createChatPopUp)}
+                />
+              </p>
+            </React.Fragment>
+          )}
+        </div>
       </div>
     </nav>
   );

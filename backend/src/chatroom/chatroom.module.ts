@@ -9,6 +9,7 @@ import { ChatroomService } from "./chatroom.service";
 import { MemberModule } from "src/member/member.module";
 import { UserModule } from "src/user/user.module";
 import { BlockModule } from "src/blocked/block.module";
+import { AuthModule } from '../auth/auth.module';
 
 @Module({
 	imports: [
@@ -16,6 +17,7 @@ import { BlockModule } from "src/blocked/block.module";
 		MemberModule,
 		forwardRef(() => UserModule),
 		forwardRef(() =>BlockModule),
+		AuthModule,
 		CommonModule,
 	],
   controllers: [ChatroomController],

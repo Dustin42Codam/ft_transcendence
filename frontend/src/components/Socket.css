@@ -1,0 +1,14 @@
+.chatInputBox {
+  position: absolute;
+  bottom: 70px;
+  min-width: 200px;
+  left: 350px;
+  right: 100px;
+  width: auto;
+  font-size: 26px;
+  width: calc(100vw - 450px);
+}
+
+.chatBackgroudn {
+  background: rgb(200, 200, 200);
+}

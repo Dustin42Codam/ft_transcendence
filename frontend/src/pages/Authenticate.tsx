@@ -26,7 +26,7 @@ const Authenticate = () => {
         height="150"
       />
 
-      <h2>ft_transcendence</h2>
+      <h2 className="headerAuth">ft_transcendence</h2>
       <ChatButton
         func={login}
         name="Sign In"

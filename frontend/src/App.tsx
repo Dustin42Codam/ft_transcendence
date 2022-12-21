@@ -3,36 +3,36 @@ import Users from "./pages/users/Users";
 import NotFound from "./pages/NotFound";
 import Dashboard from "./pages/Dashboard";
 import Authenticate from "./pages/Authenticate";
-import { Navigate, BrowserRouter, Routes, Route } from "react-router-dom";
 import Game from "./pages/Game";
 import UserEdit from "./pages/users/UserEdit";
 import { UserPage } from "./pages/users/UserPage";
 import { UserProfile } from "./pages/users/UserProfile";
 import Chat from "./pages/Chat";
-import ChatLobby from "./pages/ChatLobby";
-import { UserList } from "./pages/users/UserList";
-import axios from "axios";
-import React, { useEffect, useState } from "react";
 import UserCreate from "./pages/users/UserCreate";
 import Achievements from "./pages/achievements/Achievements";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { User } from "./models/User";
-
-import { AddPostForm } from "./pages/posts/AddPostForm";
-import { EditPostForm } from "./pages/posts/EditPostForm";
-import { SinglePostPage } from "./pages/posts/SinglePostPage";
-import { PostList } from "./pages/posts/PostList";
-import {
-  fetchCurrentUser,
-  selectCurrentUser,
-} from "./redux/slices/currentUserSlice";
+import { Navigate, BrowserRouter, Routes, Route } from "react-router-dom";
+import React, { useRef, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "./redux/hooks";
-import { fetchUsers } from "./redux/slices/usersSlice";
-import store from "./redux/store";
+import { io, Socket } from "socket.io-client";
+
+/*
+import {
+	connectUserToChat,
+} from "./redux/slices/socketSlice";
+*/
 
 function App() {
+	const dispatch = useAppDispatch();
+  //const socketSlice = useAppSelector(connectUserToChat);
   const userStatus = useAppSelector((state) => state.currentUser.status);
+	//const socketStatus = useAppSelector((state) => state.sockets.status);
+
+	/*
+	useEffect(() => {
+		if (socketStatus == "idle") dispatch(connectUserToChat());
+	}, [socketStatus])
+ */
+
 
   if (userStatus === "failed") {
     return (
@@ -66,12 +66,6 @@ function App() {
             <Route path={"/games"} element={<Game />} />
 
             <Route path={"*"} element={<NotFound />} />
-
-            {/* to delete */}
-            <Route path={"/posts"} element={<PostList />} />
-            <Route path={"/add/post"} element={<AddPostForm />} />
-            <Route path={"/posts/:postId"} element={<SinglePostPage />} />
-            <Route path={"/editPost/:postId"} element={<EditPostForm />} />
 
             {/* maybe to delete */}
             {/*

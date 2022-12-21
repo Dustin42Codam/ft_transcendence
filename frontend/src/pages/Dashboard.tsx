@@ -1,66 +1,17 @@
-import React, { useRef, useEffect, Component, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Wrapper from "../components/Wrapper";
-import Snicel from "../components/Socket";
 
-/*
 const Dashboard = () => {
-	const client = useRef<Socket | null>(null);
-  const [newMsg, setNewMsg] = useState<string>("");
-
   useEffect(() => {
-		if (client.current == null) {
-		}
-			/*
-    const connectToServer = async () => {
-      await new Promise<void>((resolve) => {
-        client.on("connect", () => {
-          setIsConnected(true), resolve();
-        });
-      });
-    };
-			client.current.on('connect', () => console.log(`Client connected: ${client.current!.id}`));
-
-			client.current.on('disconnect', (reason) =>
-				console.log(`Client disconnected: ${reason}`)
-			);
-
-			client.current.on('connect_error', (reason) =>
-				console.log(`Client connect_error: ${reason}`)
-			);
-
-			function reciveMessage(msg: string) {
-				client.current!.on('msgRecivedToClient', (data) => console.log("DATA", data));
-			}
-
+    console.log("mounting");
+    return () => console.log("unmouting");
   });
-	/*
-	useEffect( () => {
-		return  () => {
-			console.log("unmount");
-			client.current!.close();
-		}
-	}
-	, []);
 
-
-  function sendMessage(msg: string) {
-    console.log(msg);
-    client.current!.emit("msgToServer", msg);
-	}
-  //const ws = new WebSocket("ws://localhost:3000");
   return (
     <Wrapper>
-      <input type="msg" onChange={(e) => setNewMsg(e.target.value)}></input>
-      <button onClick={() => sendMessage(newMsg)}>Submit</button>
-      <div>Dashboard</div>
-    </Wrapper>
-  );
-};
-*/
-const Dashboard = () => {
-  return (
-    <Wrapper>
-      <Snicel></Snicel>
+      connect the clinet to the socket server on login or is it more of a check
+      if a user is connected continure else try to connect to the server do not
+      login if you can not connect to socket io
     </Wrapper>
   );
 };

@@ -1,87 +1,86 @@
 import React, { useRef, useState, useEffect } from "react";
+import { Message } from "/frontend/src/models/Message";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { selectCurrentUser } from "../redux/slices/currentUserSlice";
-import io from "socket.io-client";
+/*
+import { selectChatSocket,
+				sendMessageToServer,
+} from "../redux/slices/socketSlice";
+*/
+import { io, Socket } from "socket.io-client";
 
-const socket = io("http://localhost:3000/chat");
+import "./Socket.css";
 
 const Snicel = () => {
-  const [isConnected, setIsConnected] = useState(socket.connected);
-  const [lastPong, setLastPong] = useState<string | null>(null);
-  const [messages, setMessages] = useState<string[]>([]);
-  const inputRef = useRef<HTMLFormElement>(null);
-
   const dispatch = useAppDispatch();
+//	const socketStatus = useAppSelector((state) => state.sockets.status);
+
   const currentUser = useAppSelector(selectCurrentUser);
+  const inputRef = useRef<HTMLFormElement>(null);
+  //const chatSocket = useAppSelector(selectChatSocket);
+  //const [messages, setMessages] = useState<Message[]>([]);
+  const [messages, setMessages] = useState<string>("");
 
-  useEffect(() => {
-    console.log(inputRef.current!.focus());
-    socket.on("connect", () => {
-      setIsConnected(true);
-    });
-
-    socket.on("disconnect", () => {
-      setIsConnected(false);
-    });
-
-    socket.on("pong", () => {
-      setLastPong(new Date().toISOString());
-    });
-
-    socket.on("messageToClient", (newMessage: string) => {
-      console.log("We recived a message", newMessage);
-      messages.push(newMessage);
-    });
-
-    socket.on("isTyping", (userName: string) => {
-      const timer = setTimeout(() => console.log("Hello, World!"), 3000);
-      return () => clearTimeout(timer);
-    });
-
-    return () => {
-      socket.off("messageToClient");
-      socket.off("connect");
-      socket.off("isTyping");
-      socket.off("disconnect");
-      socket.off("pong");
-    };
-  }, []);
+	/*
+	useEffect(() => {
+		dispatch(sendMessageToServer(chatSocket));
+	}, [messages]);
+  //const [lastPong, setLastPong] = useState<string | null>(null);
 
   const sendPing = () => {
-    socket.emit("ping");
+    chatSocket.emit("ping");
   };
 
-  const userIsTyping = (msg: string) => {
-    socket.emit("typing", currentUser.id);
-  };
 
-  const renderedChats = messages.map((message: string) => (
-    <div key={message} className="chatRow">
-      <p>{message}</p>
+  //TODO ask Liz to add id to message dto
+	/*
+  const renderedChats = messages.map((message: Message) => (
+    <div key={message.message} className="chatRow">
+      <p>{message.message}</p>
     </div>
   ));
 
+ */
+
+  /*
+    <div className="chatBox">
+      <p>Connected: {"" + isConnected}</p>
+      <p>Last pong: {lastPong || "-"}</p>
+      <button onClick={sendPing}>Send ping</button>
+    </div>
+	 */
+  const userIsTyping = (msg: string) => {
+    //chatSocket.emit("typing", currentUser.id);
+  };
   const sendMessage = (e: any) => {
     e.preventDefault();
-    socket.emit(
-      "messageToServer",
-      `${inputRef.current!["messageInput"].value}`
-    );
+		/*
+		dispatch(sendMessageToServer( { 
+			socket: chatSocket, payload: {
+				number: currentUser.id,
+				chatRoomId: 1,//get this from redux chat store
+				event: "messageToServe",
+				message: `${inputRef.current!["messageInput"].value}`,
+			}
+		}));
+		 */
+    inputRef.current!["messageInput"].value = "";
   };
 
   return (
     <div>
-      <p>Connected: {"" + isConnected}</p>
-      <p>Last pong: {lastPong || "-"}</p>
-      <button onClick={sendPing}>Send ping</button>
-      <form ref={inputRef}>
-        <input
-          name="messageInput"
-          onChange={(e) => userIsTyping(e.target.value)}
-          type="text"
-        ></input>
-        <button onClick={(e) => sendMessage(e)}>Click me</button>
-      </form>
+      <div></div>
+      <div className="chatBackgroudn">
+        <form onSubmit={(e) => sendMessage(e)} ref={inputRef}>
+          <input
+            className="chatInputBox"
+            name="messageInput"
+            onChange={(e) => userIsTyping(e.target.value)}
+            type="text"
+          ></input>
+          <input type="submit" hidden />
+        </form>
+      </div>
     </div>
   );
 };

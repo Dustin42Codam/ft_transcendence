@@ -1,6 +1,5 @@
 import { Body, UseGuards, BadRequestException, Controller, Get, Param, Post, Req } from "@nestjs/common";
 import { AuthGuard } from "src/auth/auth.guard";
-// import { AuthGuard } from "@nestjs/passport";
 import { MemberRole } from "src/member/entity/member.entity";
 import { MemberService } from "src/member/member.service";
 import { User } from "src/user/entity/user.entity";
@@ -18,7 +17,7 @@ import { JoinChatroomDto } from "./dto/chatroom-join.dto";
 import { BlockService } from "src/blocked/block.service";
 import { AuthService } from "src/auth/auth.service";
 
-// @UseGuards(AuthGuard)
+@UseGuards(AuthGuard)
 @Controller('chatroom')
 export class ChatroomController {
 	
@@ -26,14 +25,15 @@ export class ChatroomController {
 		private readonly memberService: MemberService,
 		private readonly chatroomService: ChatroomService,
 		private readonly userService: UserService,
-		private readonly blockService: BlockService
+		private readonly blockService: BlockService,
+		private readonly authService: AuthService
 	) {}
 
 	@Get('join')
 	async getJoinableChatroomsFromUser(
 		@Req() request : Request,
 	) {
-		const user = await this.userService.getUserById(request.session.user_id);
+		const user = await this.userService.getUserById(await this.authService.userId(request));
 		return this.chatroomService.getAllJoinableChatroomForUser(user);
 	}
 

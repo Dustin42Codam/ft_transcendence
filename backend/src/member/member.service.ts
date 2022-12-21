@@ -2,12 +2,12 @@ import { Injectable, BadRequestException } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 
-import { AbstractService } from 'src/common/abstract.service';
+import { AbstractService } from '../common/abstract.service';
 
 import { Member } from './entity/member.entity';
 import { MemberCreateDto } from './dto/member-create.dto';
-import { Chatroom, ChatroomType } from 'src/chatroom/entity/chatroom.entity';
-import { User } from 'src/user/entity/user.entity';
+import { Chatroom, ChatroomType } from '../chatroom/entity/chatroom.entity';
+import { User } from '../user/entity/user.entity';
 
 @Injectable()
 export class MemberService extends AbstractService {

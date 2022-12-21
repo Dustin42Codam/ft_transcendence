@@ -14,10 +14,10 @@ import { MemberModule } from './member/member.module';
 import { ChatroomModule } from './chatroom/chatroom.module';
 import { GameModule } from './game/game.module';
 import { GameStatsModule } from './games_stats/game_stats.module';
-import { WebSocketModule } from './web-socket/web-socket.module';
 import { PostModule } from './post/post.module';
 import { MessageModule } from './message/message.module';
 import { AchievementModule } from './achievement/achievement.module';
+import { ChatModule } from './chat/chat.module';
 
 dotenv.config();
 
@@ -33,11 +33,11 @@ dotenv.config();
 			autoLoadEntities: true,
 			synchronize: true,
 		}),
-		WebSocketModule,
 		AuthModule,
 		AchievementModule,
 		BlockModule,
 		ChatroomModule,
+		ChatModule,
 		CommonModule,
 		FriendModule,
 		FriendRequestModule,
@@ -50,6 +50,7 @@ dotenv.config();
 		UserModule,
 		PostModule,
 	],
+	providers: [],
 })
 
 export class AppModule {}

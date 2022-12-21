@@ -1,8 +1,10 @@
 import axios from "axios";
 import React from "react";
 import { Link } from "react-router-dom";
+import LogoutIcon from "@mui/icons-material/Logout";
+import "./Nav.css";
 
-const Nav = () => {
+const Nav = (props: any) => {
   const logout = async () => {
     await axios
       .post("logout", {})
@@ -11,20 +13,22 @@ const Nav = () => {
   };
 
   return (
-    <nav className="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
-      <a className="navbar-brand col-md-3 col-lg-2 mr-0 px-3" href="#">
-        ft_transcendence
-      </a>
+    <nav className={props.className}>
+      <div className="navBarContainer">
+        <p className="nameProject">ft_transcendence</p>
 
-      <ul className="my-2 my-md-0 mr-md-3">
         <Link
           to="/authenticate"
-          className="p-2 text-white text-decoration-none"
+          className="logoutButton"
           onClick={logout}
+          style={{ textDecoration: "none" }}
         >
-          Sign out
+          <div className="logOut">
+            <p>Sign out</p>
+            <LogoutIcon />
+          </div>
         </Link>
-      </ul>
+      </div>
     </nav>
   );
 };
