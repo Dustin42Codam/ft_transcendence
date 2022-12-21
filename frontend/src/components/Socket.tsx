@@ -8,66 +8,65 @@ import ServerToClientEvents from "socket.io-client";
 
 import "./Socket.css";
 
-const socketChat = io("http://localhost:3001/chat");
-const socketGame = io("http://localhost:3002/game");
-
 const Snicel = () => {
-  const [isConnected, setIsConnected] = useState(socketChat.connected);
+	/*
+  const dispatch = useAppDispatch();
+  const currentUser = useAppSelector(selectCurrentUser);
+  const [isConnected, setIsConnected] = useState(
+    currentUser.chatSocket.connected
+  );
   const [lastPong, setLastPong] = useState<string | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
   const inputRef = useRef<HTMLFormElement>(null);
 
-  const dispatch = useAppDispatch();
-  const currentUser = useAppSelector(selectCurrentUser);
-
   useEffect(() => {
-    socketChat.on("connect", () => {
+    currentUser.chatSocket("connect", () => {
       setIsConnected(true);
     });
 
-    socketChat.on("disconnect", () => {
+    currentUser.chatSocket("disconnect", () => {
       setIsConnected(false);
     });
 
     return () => {
-      socketChat.disconnect();
-      socketChat.off("connect");
-      socketChat.off("disconnect");
+      currentUser.chatSocket.disconnect();
+      currentUser.chatSocket.off("connect");
+      currentUser.chatSocket.off("disconnect");
     };
   }, []);
 
   useEffect(() => {
-    socketChat.on("pong", () => {
+    currentUser.chatSocket("pong", () => {
       setLastPong(new Date().toISOString());
     });
 
-    socketChat.on("messageToClient", (newMessage: Message) => {
+    currentUser.chatSocket("messageToClient", (newMessage: Message) => {
       console.log("We recived a message", newMessage);
       setMessages((messages) => [...messages, newMessage]);
       console.log(messages, messages.length);
     });
 
-    socketChat.on("isTyping", (userName: string) => {
+    currentUser.chatSocket("isTyping", (userName: string) => {
       const timer = setTimeout(() => console.log("Hello, World!"), 3000);
       return () => clearTimeout(timer);
-      socketChat.off("messageToClient");
-      socketChat.off("isTyping");
-      socketChat.off("pong");
+      currentUser.chatSocket.off("messageToClient");
+      currentUser.chatSocket.off("isTyping");
+      currentUser.chatSocket.off("pong");
     });
     return () => {
-      socketChat.off("messageToClient");
-      socketChat.off("pong");
-      socketChat.off("isTyping");
+      currentUser.chatSocket.off("messageToClient");
+      currentUser.chatSocket.off("pong");
+      currentUser.chatSocket.off("isTyping");
     };
   });
   console.log("this runing more then once");
 
   const sendPing = () => {
-    socketChat.emit("ping");
+    currentUser.chatSocket.emit("ping");
   };
 
   const userIsTyping = (msg: string) => {
-    socketChat.emit("typing", currentUser.id);
+    currentUser.chatSocket.emit("typing", currentUser.id);
   };
 
   //TODO ask Liz to add id to message dto
@@ -79,7 +78,7 @@ const Snicel = () => {
 
   const sendMessage = (e: any) => {
     e.preventDefault();
-    socketChat.emit("messageToServer", {
+    currentUser.chatSocket.emit("messageToServer", {
       number: currentUser.id,
       message: `${inputRef.current!["messageInput"].value}`,
     });
@@ -92,7 +91,6 @@ const Snicel = () => {
       <p>Last pong: {lastPong || "-"}</p>
       <button onClick={sendPing}>Send ping</button>
     </div>
-	 */
   return (
     <div>
       <div>{renderedChats}</div>
@@ -109,6 +107,10 @@ const Snicel = () => {
       </div>
     </div>
   );
+	 */
+	return (
+		<div>Hello</div>
+	)
 };
 
 export default Snicel;

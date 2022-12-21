@@ -5,6 +5,7 @@ import { FriendRequest } from "src/friend_request/entity/friend_request.entity";
 import { GameStats } from "src/games_stats/entity/game_stats.entity";
 import { Member } from "src/member/entity/member.entity";
 import { Column, Entity, OneToMany, JoinTable, PrimaryGeneratedColumn, OneToOne,  JoinColumn, } from "typeorm";
+import { Socket } from "socket.io-client";
 
 export enum UserStatus {
 	ONLINE = 'online',
@@ -25,7 +26,13 @@ export class User {
 	
 	@Column('boolean', {default: false})
 	two_factor_auth: boolean;
+
+	@Column({nullable: true})
+	game_socket_id: string;
 	
+	@Column({nullable: true})
+	chat_socket_id: string;
+
 	@Column({
 		type: 'enum',
 		enum: UserStatus,
