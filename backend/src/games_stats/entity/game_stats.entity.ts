@@ -14,4 +14,7 @@ export class GameStats {
 
     @Column({default: 0})
 	lose: number;
+
+    @OneToOne(() => User, (user: User) => user.game_stats)
+    public user: User;
 }

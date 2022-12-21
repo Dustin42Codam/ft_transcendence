@@ -16,8 +16,9 @@ export class FriendController {
 		return this.friendService.getFriendshipById(Number(id));
 	}
 
-	@Get()
-	async getAllFriendshipsFromUser(
+	@Get('user/:id') //Maybe should be closed
+	async getAllFriendsFromUser(
+		@Param('id') id : string,
 		@Req() request: Request,
 	) {
 		return this.friendService.getAllFriendshipsFromUser(request.session.user_id);

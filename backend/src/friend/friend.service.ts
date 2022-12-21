@@ -10,6 +10,7 @@ import { ChatroomType } from "src/chatroom/entity/chatroom.entity";
 import { AchievementService } from "src/achievement/achievement.service";
 import { UserService } from "src/user/user.service";
 import { ChatroomInfoDto } from "src/chatroom/dto/chatroom-info.dto";
+import { User } from "src/user/entity/user.entity";
 
 
 
@@ -53,9 +54,19 @@ export class FriendService extends AbstractService {
     }
 
     async getAllFriendshipsFromUser(user_id: number) {
-        return await this.friendRepository.find({
-            where: [{user_1_id: user_id},{user_2_id: user_id}],
-        });
+        const friendship_ids = await this.friendRepository.find({ where: [{user_1_id: user_id},{user_2_id: user_id}],});
+        console.log(friendship_ids)
+        const users: User[] = [];
+        for (const friend of friendship_ids) {
+            if (friend.user_1_id === user_id) {
+                const user = await this.userService.getUserById(friend.user_2_id);
+                users.push(user);
+            } else {
+                const user = await this.userService.getUserById(friend.user_1_id);
+                users.push(user);
+            }
+        }
+        return users;
     }
 
 	async deleteFriendship(friendship: Friend) {

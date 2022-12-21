@@ -1,12 +1,12 @@
-import { AuthService } from "src/auth/auth.service";
-import { Req, Query, UseGuards, Body, Controller, Get, Param, Post } from "@nestjs/common";
+import { Req, Query, UseGuards, BadRequestException, Body, Controller, Get, Param, Post } from "@nestjs/common";
 import { UserCreateDto } from "./dto/user-create.dto";
 import { UserUpdateDto } from "./dto/user-update.dto";
 import { UserService } from "./user.service";
 import { AuthGuard } from "src/auth/auth.guard";
-import express, {Request} from "express";
+import { UserUpdateNameDto } from "./dto/user-update-name.dto";
+import { AuthService } from "src/auth/auth.service";
+import { Request } from "express-session";
 
-@UseGuards(AuthGuard)
 @Controller('users')
 export class UserController {
     constructor(
@@ -40,6 +40,19 @@ export class UserController {
 		if (user)
 			return user;
 		return await this.userService.createUser(body);
+	}
+
+    @Post('name')
+	async changeUsername(
+        @Body() body: UserUpdateNameDto,
+        @Req() request: Request
+    ) {
+		const user = await this.userService.getUserById(request.session.user_id);
+		if (user)
+			return user;
+        if (user.display_name === body.display_name)
+            throw new BadRequestException("You already have this displayname");
+		return await this.userService.updateUserName(user, body);
 	}
     
     @Post(':id')
