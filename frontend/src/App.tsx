@@ -24,26 +24,11 @@ function App() {
   const socketSlice = useAppSelector(connectUserToChat);
   const userStatus = useAppSelector((state) => state.currentUser.status);
 	const socketStatus = useAppSelector((state) => state.sockets.status);
-  //try connect sockets
-  //and mybe socket slice
+
 	useEffect(() => {
 		if (socketStatus == "idle") dispatch(connectUserToChat());
 	}, [socketStatus])
 
-  //connect game socket
-  //connect chat socket
-  /*
-  console.log("this is user status: ", currentUser);
-  dispatch(
-    updateCurrentUser({
-      id: currentUser.id,
-      status: "online",
-    })
-  );
-  console.log("this is user status: ", currentUser);
- */
-  //const socketChatClient = useRef<Socket | null>(null);
-  //const socketGameClient = useRef<Socket | null>(null);
 
   if (userStatus === "failed") {
     return (

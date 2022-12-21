@@ -1,8 +1,4 @@
-import {
-  createSlice,
-  createAsyncThunk,
-  createSelector,
-} from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import { Socket, io } from "socket.io-client";
 
@@ -33,6 +29,18 @@ export const connectUserToChat = createAsyncThunk("users/connectToChat", async (
 	return socket;
 });
 
+export const sendMessageToServer = createAsyncThunk(
+	"users/sendMessageToServer",
+	async (data: any) => {
+		await new Promise<void>(resolve => {
+			console.log("test", data);
+			data.socket.emit('messageToServer', data.payload);
+			console.log("done");
+			resolve();
+		});
+	}
+);
+
 const socketSlice = createSlice({
   name: "sockets",
   initialState,
@@ -60,20 +68,13 @@ const socketSlice = createSlice({
       .addCase(connectUserToChat.rejected, (state: any, action) => {
         state.status = "failed";
         state.error = action.error.message;
+      })
+      .addCase(sendMessageToServer.fulfilled, (state: any, action: PayloadAction<any>) => {
       });
   },
 });
 
 // selectors
-export const selectAllUsers = (state: any) => state.users.users;
-
-export const selectUserById = (state: any, userId: any) =>
-  state.users.users.find((user: any) => user.id == userId);
-
-// Memoized selectors
-export const selectUsersWithoutUser = createSelector(
-  [selectAllUsers, (state, userId) => userId],
-  (users, userId) => users.filter((user: any) => user.id !== userId)
-);
+export const selectChatSocket = (state: any) => state.sockets.chatSocket;
 
 export default socketSlice.reducer;

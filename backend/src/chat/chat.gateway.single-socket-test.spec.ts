@@ -75,7 +75,7 @@ describe("Testing baisic connections", () => {
     await new Promise<void>(resolve => {
 			socket.on('joinChatRoomSuccess', (payload: any) => {
 				expect(payload.chatRoomId == 1);
-				socket.emit("messageToServer", randMsg);
+				socket.emit("messageToServer", { member: , message: randMsg, chatRoomId: "1" });
 				resolve();
 			});
 		});

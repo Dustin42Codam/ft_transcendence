@@ -61,6 +61,7 @@ export class ChatGateways implements OnGatewayInit, OnGatewayConnection, OnGatew
 		//TODO Liz check if chatroom exists
 		//TODO Liz check if user can join
 		//TODO Liz add member data type to payload
+		//
 		console.log(`Client joined: ${client.id}`);
 		client.join(payload.chatRoomId);
 		this.io.to(payload.chatRoomId).emit("joinChatRoomSuccess", payload);
