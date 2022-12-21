@@ -7,6 +7,7 @@ import { Navigate, BrowserRouter, Routes, Route } from "react-router-dom";
 import Game from "./pages/Game";
 import UserEdit from "./pages/users/UserEdit";
 import { UserPage } from "./pages/users/UserPage";
+import { UserProfile } from "./pages/users/UserProfile";
 import Chat from "./pages/Chat";
 import ChatLobby from "./pages/ChatLobby";
 import { UserList } from "./pages/users/UserList";
@@ -57,7 +58,7 @@ function App() {
 
             <Route path={"/chats/:name"} element={<Chat />} />
 
-            {/* <Route path={"/profile"} element={<UserProfile />} /> */}
+            <Route path={"/profile"} element={<UserProfile />} />
 
             <Route path={"/users"} element={<Users />} />
             <Route path={"/users/:userId"} element={<UserPage />} />

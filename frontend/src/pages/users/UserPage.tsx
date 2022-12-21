@@ -22,15 +22,6 @@ export const UserPage = () => {
   useEffect(() => {
     if (friendsStatus === "idle") dispatch(fetchFriends());
   }, [friendsStatus, dispatch]);
-  console.log("🚀 ~ file: UserPage.tsx:18 ~ UserPage ~ friends", friends);
-  //   const friendsForUser = useSelector((state) => {
-  //   const allFriends = selectAllFriends(state); // change later to friends
-  //   return allFriends.filter((friend: any) => friend.id !== userId);
-  // });
-  console.log(
-    "🚀 ~ file: UserPage.tsx:15 ~ friendsForUser ~ friendsForUser",
-    friends
-  );
 
   const renderedFriends = friends.map((friend: any) => (
     <li key={friend.id}>
