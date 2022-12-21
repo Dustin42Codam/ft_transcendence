@@ -1,0 +1,26 @@
+/* Popup style */
+
+/*Shadow*/
+.popup-box {
+  position: fixed;
+  background: #00000090;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.box {
+  max-width: 50%;
+  max-height: 50%;
+  position: relative;
+  margin: 0 auto;
+  margin-top: calc(100vh - 85vh);
+  padding: 10px;
+}
+
+.close-icon {
+  color: red;
+}

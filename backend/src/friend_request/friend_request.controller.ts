@@ -29,10 +29,12 @@ export class FriendRequestController {
 		@Req() request: Request,
 	) {
 		const sender = await this.userService.getUserById(request.session.user_id);
-		const friendRequest = await this.friendRequestService.findOne({
-			sender: sender,
-			receiver: friendRequestCreateDto.receiver,
-		});
+		const friendRequest = await this.friendRequestService.find({
+			where: [
+				{sender: sender.id},
+                {receiver: friendRequestCreateDto.receiver}
+            ]}
+			);
 		if (friendRequest)
 			return friendRequest;
 		const blockBySender = await this.blockService.findOne({

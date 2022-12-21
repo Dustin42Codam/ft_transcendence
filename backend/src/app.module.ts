@@ -4,7 +4,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import { CommonModule } from './common/common.module';
 // import { APP_GUARD } from '@nestjs/core';
-import { LoginModule } from './login/login.module';
 import { LogoutModule } from './logout/logout.module';
 import { OauthCallbackModule } from './oauth-callback/oauth-callback.module';
 import { BlockModule } from './blocked/block.module';
@@ -15,8 +14,11 @@ import { MemberModule } from './member/member.module';
 import { ChatroomModule } from './chatroom/chatroom.module';
 import { GameModule } from './game/game.module';
 import { GameStatsModule } from './games_stats/game_stats.module';
-import { AchievementModule } from './achievement/achievement.module';
+import { WebSocketModule } from './web-socket/web-socket.module';
+import { PostModule } from './post/post.module';
 import { MessageModule } from './message/message.module';
+import { AchievementModule } from './achievement/achievement.module';
+import { ChatModule } from './chat/chat.module';
 
 dotenv.config();
 
@@ -32,14 +34,15 @@ dotenv.config();
 			autoLoadEntities: true,
 			synchronize: true,
 		}),
+		//WebSocketModule,
 		AuthModule,
 		AchievementModule,
 		BlockModule,
 		ChatroomModule,
+		ChatModule,
 		CommonModule,
 		FriendModule,
 		FriendRequestModule,
-		LoginModule,
 		LogoutModule,
 		GameModule,
 		GameStatsModule,
@@ -47,7 +50,9 @@ dotenv.config();
 		MessageModule,
 		OauthCallbackModule,
 		UserModule,
-	]
+		PostModule,
+	],
+	providers: [],
 })
 
 export class AppModule {}

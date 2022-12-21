@@ -5,9 +5,9 @@ all:
 
 dep:
 	@if [ $(shell node -v) = "v18.12.1" ]; then \
-		echo "\e[32mnode version good\e[0m"; \
+		echo "\033[32mnode version good\033[0m"; \
 	else \
-		echo "\e[31mnode version not good\e[0m Have:" $(shell node -v) "wanted $(LTS)\n\e[33;5mTO FIX use:\e[0m nvm install --lts; nvm use --lts; nvm alias default 18.12.1"; \
+		echo "\033[31mnode version not good\033[0m Have:" $(shell node -v) "wanted $(LTS)\n\033[33;5mTO FIX use:\033[0m nvm install --lts; nvm use --lts; nvm alias default 18.12.1"; \
 		:%; \
 	fi;
 

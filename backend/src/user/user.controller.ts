@@ -1,17 +1,24 @@
-import { Req, UseGuards, Body, Controller, Get, Param, Post } from "@nestjs/common";
+import { AuthService } from "src/auth/auth.service";
+import { Req, Query, UseGuards, Body, Controller, Get, Param, Post } from "@nestjs/common";
 import { UserCreateDto } from "./dto/user-create.dto";
 import { UserUpdateDto } from "./dto/user-update.dto";
-import { User } from "./entity/user.entity";
 import { UserService } from "./user.service";
-import * as session from 'express-session';
-import express, { Request } from 'express';
 import { AuthGuard } from "src/auth/auth.guard";
+import express, {Request} from "express";
 
-@Controller('user')
+@UseGuards(AuthGuard)
+@Controller('users')
 export class UserController {
-    constructor(private readonly userService: UserService) {}
+    constructor(
+		private readonly userService: UserService,
+		private readonly authService: AuthService,
+	) {}
 
-    
+    @Get()
+    async all(@Query('page') page = 1) {
+      return this.userService.paginate(page);
+    }
+
     @Get(':id')
     async getUserById(
         @Param('id') id : string
@@ -21,20 +28,20 @@ export class UserController {
         
     @Get()
     async getUsers(@Req() request: Request) {
-        return await this.userService.getUsers();
+      return await this.userService.getUsers();
     }
 
+	// TODO: delete before handing in
     @Post()
 	async create(
         @Body() body: UserCreateDto
-    ): Promise<User> {
+    ) {
 		const user = await this.userService.findOne({display_name: body.display_name});
 		if (user)
 			return user;
-		return this.userService.createUser(body);
+		return await this.userService.createUser(body);
 	}
     
-    @UseGuards(AuthGuard)
     @Post(':id')
     async update(
         @Body() body: UserUpdateDto,

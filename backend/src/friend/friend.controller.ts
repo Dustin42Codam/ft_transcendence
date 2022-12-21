@@ -8,7 +8,7 @@ import express, { Request } from "express";
 @Controller('friend')
 export class FriendController {
 	constructor(private readonly friendService: FriendService) {}
-	
+
 	@Get(':id')
 	async getFriendshipById(
 		@Param('id') id : string
@@ -16,9 +16,8 @@ export class FriendController {
 		return this.friendService.getFriendshipById(Number(id));
 	}
 
-	@Get('user/:id') //Maybe should be closed
+	@Get()
 	async getAllFriendshipsFromUser(
-		@Param('id') id : string,
 		@Req() request: Request,
 	) {
 		return this.friendService.getAllFriendshipsFromUser(request.session.user_id);
@@ -34,6 +33,4 @@ export class FriendController {
 			throw new BadRequestException("You can only remove a friendship that you are part of");
 		return await this.friendService.deleteFriendship(friendship);
 	}
-
-
 }

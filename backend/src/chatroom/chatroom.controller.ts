@@ -1,6 +1,5 @@
 import { Body, UseGuards, BadRequestException, Controller, Get, Param, Post, Req } from "@nestjs/common";
 import { AuthGuard } from "src/auth/auth.guard";
-// import { AuthGuard } from "@nestjs/passport";
 import { MemberRole } from "src/member/entity/member.entity";
 import { MemberService } from "src/member/member.service";
 import { User } from "src/user/entity/user.entity";
@@ -16,8 +15,9 @@ import express, { Request } from 'express';
 import * as bcrypt from "bcrypt";
 import { JoinChatroomDto } from "./dto/chatroom-join.dto";
 import { BlockService } from "src/blocked/block.service";
+import { AuthService } from "src/auth/auth.service";
 
-// @UseGuards(AuthGuard)
+@UseGuards(AuthGuard)
 @Controller('chatroom')
 export class ChatroomController {
 	
@@ -220,5 +220,4 @@ export class ChatroomController {
 		}
 		return this.chatroomService.createChatroom(users, createChatroom, Number(request.session.user_id));
 	}
-
 }

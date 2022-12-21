@@ -1,86 +1,109 @@
+import { Avatar } from "@mui/material";
 import axios from "axios";
-import { UserInfo } from "os";
-import React, { Component, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import Paginator from "../../components/Paginator";
 import Wrapper from "../../components/Wrapper";
 import { User } from "../../models/User";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { selectCurrentUser } from "../../redux/slices/currentUserSlice";
+import {
+  fetchUsers,
+  selectAllUsers,
+  selectUsersWithoutUser,
+} from "../../redux/slices/usersSlice";
+import "./User.css";
 
-const fetchDataCall = async (page: any) => {
-  let data = await axios
-    .get(`users?page=${page}`)
-    .then(async function (response) {
-      return response;
-    })
-    .catch(function (error) {
-      console.log(
-        "🚀 ~ file: Users.tsx ~ line 14 ~ fetchDataCall ~ error",
-        error
-      );
-    });
-  return data;
+const AddFriendButton = (props: { sender: number; receiver: number }) => {
+  const addFriend = async (sender: number, receiver: number) => {
+    axios.post("friendRequest", { sender, receiver });
+  };
+
+  return (
+    <div className="btn-group">
+      <a
+        href="#"
+        className="btn User_btn_friend User_content"
+        onClick={() => addFriend(props.sender, props.receiver)}
+      >
+        Add friend
+      </a>
+    </div>
+  );
 };
 
 const Users = () => {
-  const [users, setUsers] = useState([]);
+  const dispatch = useAppDispatch();
   const [page, setPage] = useState(1);
   const [lastPage, setLastPage] = useState(0);
+  const currentUser = useAppSelector(selectCurrentUser);
+
+  const usersStatus = useAppSelector((state) => state.users.status);
+  const users = useAppSelector(selectAllUsers);
 
   useEffect(() => {
-    const fetchData = async () => {
-      let response: any = await fetchDataCall(page);
+    console.log(
+      "🚀 ~ file: Users.tsx:21 ~ useEffect ~ usersStatus",
+      usersStatus
+    );
+    if (usersStatus === "idle") {
+      dispatch(fetchUsers);
+      console.log("🚀 ~ file: Users.tsx:18 ~ Users ~ users", users);
+    }
+  }, [usersStatus, dispatch]);
 
-      setUsers(response.data.data);
-      setLastPage(response.data.meta.last_page);
-    };
+  const deleteUser = async (id: number) => {
+    if (window.confirm("Are you sure to delete this record?")) {
+      await axios.delete(`users/${id}`);
 
-    fetchData();
-  }, [page]);
-
-  const next = () => {
-    console.log("🚀 ~ file: Users.tsx ~ line 37 ~ next ~ lastPage", lastPage);
-    if (page < lastPage) setPage(page + 1);
+      //   setUsers(users.filter((u: User) => u.id !== id));
+      users.filter((u: User) => u.id !== id);
+    }
   };
 
-  const prev = () => {
-    if (page > 1) setPage(page - 1);
-  };
+  const filteredUsers = useAppSelector((state) =>
+    selectUsersWithoutUser(state, currentUser.id)
+  );
 
   return (
     <Wrapper>
       <div className="table-responsive">
-        <table className="table table-striped table-sm">
+        <table className="User_table User_table-striped table-sm">
           <thead>
             <tr>
+              <th scope="col">Avatar</th>
               <th scope="col">Name</th>
               <th scope="col">Status</th>
             </tr>
           </thead>
           <tbody>
-            {users.map((user: User) => {
+            {filteredUsers.map((user: any) => {
               return (
                 <tr key={user.id}>
+                  <td>
+                    <Link to={`/users/${user.id}`}>
+                      <Avatar
+                        src={user.avatar}
+                        sx={{ height: "70px", width: "70px" }}
+                      ></Avatar>
+                    </Link>
+                  </td>
                   <td>{user.display_name}</td>
                   <td>{user.status}</td>
+                  <td>
+                    <AddFriendButton
+                      sender={Number(currentUser.id)}
+                      receiver={Number(user.id)}
+                    />
+                  </td>
                 </tr>
               );
             })}
           </tbody>
         </table>
       </div>
-
-      <nav>
-        <ul className="pagination">
-          <li className="page-item">
-            <a href="#" className="page-link" onClick={prev}>
-              Previous
-            </a>
-          </li>
-          <li className="page-item">
-            <a href="#" className="page-link" onClick={next}>
-              Next
-            </a>
-          </li>
-        </ul>
-      </nav>
+      <Paginator lastPage={lastPage} pageChanged={setPage} page={page} />
     </Wrapper>
   );
 };
