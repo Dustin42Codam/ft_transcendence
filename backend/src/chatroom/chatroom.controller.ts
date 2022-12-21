@@ -25,14 +25,15 @@ export class ChatroomController {
 		private readonly memberService: MemberService,
 		private readonly chatroomService: ChatroomService,
 		private readonly userService: UserService,
-		private readonly blockService: BlockService
+		private readonly blockService: BlockService,
+		private readonly authService: AuthService
 	) {}
 
 	@Get('join')
 	async getJoinableChatroomsFromUser(
 		@Req() request : Request,
 	) {
-		const user = await this.userService.getUserById(request.session.user_id);
+		const user = await this.userService.getUserById(await this.authService.userId(request));
 		return this.chatroomService.getAllJoinableChatroomForUser(user);
 	}
 
