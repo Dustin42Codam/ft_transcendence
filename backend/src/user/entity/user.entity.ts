@@ -17,7 +17,7 @@ export class User {
 	@PrimaryGeneratedColumn()
 	id: number;
 
-	@Column({unique: true}) //TODO check the approuch with unique. If unique people can take each others intra. If not unique everyone can have te same name
+	@Column({unique: true})
 	display_name: string;
 
 	@Column()

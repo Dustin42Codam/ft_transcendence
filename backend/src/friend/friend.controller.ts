@@ -17,7 +17,7 @@ export class FriendController {
 	}
 
 	@Get('user/:id') //Maybe should be closed
-	async getAllFriendshipsFromUser(
+	async getAllFriendsFromUser(
 		@Param('id') id : string,
 		@Req() request: Request,
 	) {
