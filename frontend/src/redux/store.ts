@@ -4,6 +4,7 @@ import postsReducer from "./slices/postsSlice";
 import chatsReducer from "./slices/chatsSlice";
 import currentUserReducer from "./slices/currentUserSlice";
 import messagesReducer from "./slices/messagesSlice";
+import socketReducer from "./slices/socketSlice";
 import friendsReducer from "./slices/friendsSlice";
 
 const store = configureStore({
@@ -14,6 +15,7 @@ const store = configureStore({
     currentUser: currentUserReducer,
     messages: messagesReducer,
     friends: friendsReducer,
+    sockets: socketReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

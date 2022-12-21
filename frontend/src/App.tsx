@@ -6,26 +6,44 @@ import Authenticate from "./pages/Authenticate";
 import Game from "./pages/Game";
 import UserEdit from "./pages/users/UserEdit";
 import Chat from "./pages/Chat";
-//maybe delete
 import UserCreate from "./pages/users/UserCreate";
 import Achievements from "./pages/achievements/Achievements";
 
 import { UserPage } from "./pages/users/UserPage";
 import { Navigate, BrowserRouter, Routes, Route } from "react-router-dom";
 import React, { useRef, useEffect } from "react";
+import { useAppDispatch, useAppSelector } from "./redux/hooks";
+import { io, Socket } from "socket.io-client";
 
 import {
-  fetchCurrentUser,
-  selectCurrentUser,
-} from "./redux/slices/currentUserSlice";
-import { useAppSelector } from "./redux/hooks";
-
-import io, { Socket } from "socket.io-client";
+	connectUserToChat,
+} from "./redux/slices/socketSlice";
 
 function App() {
+	const dispatch = useAppDispatch();
+  const socketSlice = useAppSelector(connectUserToChat);
   const userStatus = useAppSelector((state) => state.currentUser.status);
-  const socketChatClient = useRef<Socket | null>(null);
-  const socketGameClient = useRef<Socket | null>(null);
+	const socketStatus = useAppSelector((state) => state.sockets.status);
+  //try connect sockets
+  //and mybe socket slice
+	useEffect(() => {
+		if (socketStatus == "idle") dispatch(connectUserToChat());
+	}, [socketStatus])
+
+  //connect game socket
+  //connect chat socket
+  /*
+  console.log("this is user status: ", currentUser);
+  dispatch(
+    updateCurrentUser({
+      id: currentUser.id,
+      status: "online",
+    })
+  );
+  console.log("this is user status: ", currentUser);
+ */
+  //const socketChatClient = useRef<Socket | null>(null);
+  //const socketGameClient = useRef<Socket | null>(null);
 
   if (userStatus === "failed") {
     return (

@@ -1,7 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
-import { SocketIOAdapter } from './web-socket/socket-io-adapter';
 import * as session from 'express-session';
 import * as cookieParser from 'cookie-parser'
 import * as dotenv from "dotenv";
@@ -26,7 +25,6 @@ async function bootstrap() {
 	app.use(cors({origin: 'http://localhost:4242', allowedHeaders: ['Access-Control-Allow-Origin', 'content-type', 'Location', 'Authorization', 'origin', 'accept'], credentials: true}));
 	app.use(express.json());
 	app.use(cookieParser());
-	//app.useWebSocketAdapter(new SocketIOAdapter(app));
 	app.use(session(
 		{
 			secret: process.env.EXPRESS_SECRET,

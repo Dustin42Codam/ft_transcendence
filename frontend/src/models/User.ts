@@ -1,5 +1,8 @@
+import { io, Socket } from "socket.io-client";
 export class User {
   constructor(
+    public chatSocketId: string,
+    public gameSocketId: string,
     public id: number = -1,
     public display_name: string = "",
     public status: string = "",
