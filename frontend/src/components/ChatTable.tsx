@@ -48,9 +48,7 @@ const ChatTable = () => {
   let navigate = useNavigate();
 
   function handleClick(name: string, chatId: number) {
-    //TODO make api call to give cookie if password is correct for the chat
-    //TODO joinRoom socket connection
-		console.log(loginToChat(chatId));
+		console.log("test: ", loginToChat(chatId));
 		navigate("../chats/" + name, { replace: true });
   }
 
