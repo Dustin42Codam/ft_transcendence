@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import CastleIcon from "@mui/icons-material/Castle";
 import PublicIcon from "@mui/icons-material/Public";
 import "./ChatTable.css";
@@ -27,40 +28,30 @@ interface IState {
 }
 
 
-
 const JoinableChats = () => {
+  let navigate = useNavigate();
   const joinableChats = useAppSelector(selectJoinableChats);
   const [joinChanel, setJoinChanel] = useState(false);
-  const [chat, setChat] = useState<Chats | null>(null);
 	const [password, setPassword] = useState<string | null>(null);
+	const [chatToLogInToRef, setChatToLogInToRef] = useState<any>(null);
+	const [joinChat, setJoinChat] = useState<Chats>(joinableChats);
 
-	function handelClick(chat: Chats) {
-		if (chat.type == "protected") {
-			setJoinChanel(!joinChanel); 
-		}	
-		setChat(chat);
-	}
-
-  /*
-  	generate map table using the chats array we got from the redux store
-		let canLogin: boolean;
-
-		canLogin = await loginToChat(props.chatToJoin.id, inputRef.current!["passwordInputPrompt"].value);
-		if (canLogin) {
-			navigate("../chats/" + props.chatToJoin.name, { replace: true });
+	useEffect(() => {
+		const loginToChat = async (chat: Chats, chatPassword: string) => {
+			return await axios.post(
+				"chatroom/join/" + chat.id, {
+					password: chatPassword
+				}
+			)
 		}
-  */
-  const renderedChats = joinableChats.map((chat: Chats) => (
-    <div
-      key={chat.id}
-      className="chatRow"
-      onClick={() => handelClick(chat) }
-    >
-      {chat.type === ChatroomType.PROTECTED ? <CastleIcon /> : <PublicIcon />}
-      {chat.name}
-    </div>
-  ));
-
+		if (password != null) {
+			loginToChat(joinChat, password).then(() =>
+				navigate("../chats/" + joinChat.name, { replace: true })
+			).catch( err => { 
+				alert(`Failed to log in to ${joinChat.name} ` + err.response.data.message);
+			});
+		}
+	},[password]);
   return (
 		<div className="chatTableContainer">
 			<React.Fragment>
@@ -69,7 +60,16 @@ const JoinableChats = () => {
 						content={<PasswordPrompt setPassword={setPassword}/>}
 						handleClose={() => setJoinChanel(!joinChanel)}
 					/>)}
-				{renderedChats}
+						{joinableChats.map((chat: Chats, index: number) => (
+							<div
+								key={chat.id}
+								className="chatRow"
+								onClick={ (e) => { setJoinChat(joinableChats[index]); setJoinChanel(!joinChanel) } }
+							>
+								{chat.type === ChatroomType.PROTECTED ? <CastleIcon /> : <PublicIcon />}
+								{chat.name}
+							</div>
+						))}
 			</React.Fragment>
 		</div>
 	);
