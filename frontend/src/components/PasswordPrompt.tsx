@@ -1,24 +1,10 @@
 import TextInput from "./TextInput";
-import { useNavigate } from "react-router-dom";
 import React, { useRef, useState, useEffect } from "react";
 import axios from "axios";
 import "./PasswordPrompt.css";
 
-async function loginToChat(chatId: number, chatPassword: string) {
-	return await axios.post(
-		"chatroom/join/" + chatId, {
-			password: chatPassword
-		}
-	).then(res => { 
-		return true;
-	}).catch( err => { 
-		alert(err.response.data.message);
-		return false;
-	});
-}
 
 const PasswordPrompt = (props: any) => {
-  let navigate = useNavigate();
   const inputRef = useRef<HTMLFormElement>(null);
 
   const enterPassword = async (e: any) => {
