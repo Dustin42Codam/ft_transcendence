@@ -15,6 +15,7 @@ import {
 import { useAppDispatch } from "./redux/hooks";
 import { fetchCurrentUser } from "./redux/slices/currentUserSlice";
 import { fetchMessages } from "./redux/slices/messagesSlice";
+import { socketHandler } from "./redux/slices/socketSlice";
 
 axios.defaults.baseURL = "http://localhost:3000/api/";
 axios.defaults.withCredentials = true;
@@ -30,6 +31,8 @@ async function main() {
   store.dispatch(fetchDirectChats());
   store.dispatch(fetchJoinableChats());
   store.dispatch(fetchGroupChats());
+	//TODO add authgurad
+	store.dispatch(socketHandler.startConnecting());
 
   root.render(
     <Provider store={store}>

@@ -3,42 +3,34 @@ import { Message } from "/frontend/src/models/Message";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { selectCurrentUser } from "../redux/slices/currentUserSlice";
 import { socketHandler } from "../redux/slices/socketSlice";
-/*
-import { selectChatSocket,
-				sendMessageToServer,
-} from "../redux/slices/socketSlice";
-*/
 import { io, Socket } from "socket.io-client";
-
 import "./Socket.css";
 
 const Snicel = () => {
   const dispatch = useAppDispatch();
- 	const socketStatus = useAppSelector((state) => state.socket.isConnected);
 
-  //chatActions.startConnecting();
   const currentUser = useAppSelector(selectCurrentUser);
   const inputRef = useRef<HTMLFormElement>(null);
   //const chatSocket = useAppSelector(chatActions);
   //const [messages, setMessages] = useState<Message[]>([]);
   const [messages, setMessages] = useState<string>("");
 
-	useEffect(() => {
-		dispatch(socketHandler.startConnecting());
-	}, [socketStatus]);
+	/*
+  useEffect(() => {
+    dispatch(socketHandler.startConnecting());
+  }, [socketStatus]);
 
-
+ */
   //const [lastPong, setLastPong] = useState<string | null>(null);
 
-	/*
+  /*
   const sendPing = () => {
     chatSocket.emit("ping");
   };
  */
 
-
   //TODO ask Liz to add id to message dto
-	/*
+  /*
   const renderedChats = messages.map((message: Message) => (
     <div key={message.message} className="chatRow">
       <p>{message.message}</p>
@@ -59,7 +51,7 @@ const Snicel = () => {
   };
   const sendMessage = (e: any) => {
     e.preventDefault();
-/*
+    /*
 			socket: chatSocket, payload: {
 				number: currentUser.id,
 				chatRoomId: 1,//get this from redux chat store
@@ -67,7 +59,11 @@ const Snicel = () => {
 				message: `${inputRef.current!["messageInput"].value}`,
 			}
  */
-		dispatch(socketHandler.submitMessage({content: inputRef.current!["messageInput"].value}));
+    dispatch(
+      socketHandler.submitMessage({
+        content: inputRef.current!["messageInput"].value,
+      })
+    );
     inputRef.current!["messageInput"].value = "";
   };
 

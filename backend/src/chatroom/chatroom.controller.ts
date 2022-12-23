@@ -210,7 +210,9 @@ export class ChatroomController {
 			throw new BadRequestException("PROTECTED chatrooms need to have a password.");
 		}
 		const {user_ids, ...createChatroom} = body;
-		user_ids.push(Number(request.session.user_id));
+		//TODO BE team check if this is ok
+		const user = await this.userService.getUserById(await this.authService.userId(request));
+		user_ids.push(Number(user.id));
 		const uniqueUsers : number[] = [... new Set(user_ids)];
 		var users : User[]= []
         for (var user_id of uniqueUsers) {

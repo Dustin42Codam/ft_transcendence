@@ -19,7 +19,7 @@ const store = configureStore({
     socket: socketReducer,
   },
   middleware: (getDefaultMiddleware) => {
-    return getDefaultMiddleware().concat([socketMiddleware])
+    return getDefaultMiddleware().concat([socketMiddleware]);
   },
 });
 
