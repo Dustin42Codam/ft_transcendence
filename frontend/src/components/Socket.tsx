@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect } from "react";
 import { Message } from "/frontend/src/models/Message";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { selectCurrentUser } from "../redux/slices/currentUserSlice";
+import { socketHandler } from "../redux/slices/socketSlice";
 /*
 import { selectChatSocket,
 				sendMessageToServer,
@@ -13,23 +14,27 @@ import "./Socket.css";
 
 const Snicel = () => {
   const dispatch = useAppDispatch();
-//	const socketStatus = useAppSelector((state) => state.sockets.status);
+ 	const socketStatus = useAppSelector((state) => state.socket.isConnected);
 
+  //chatActions.startConnecting();
   const currentUser = useAppSelector(selectCurrentUser);
   const inputRef = useRef<HTMLFormElement>(null);
-  //const chatSocket = useAppSelector(selectChatSocket);
+  //const chatSocket = useAppSelector(chatActions);
   //const [messages, setMessages] = useState<Message[]>([]);
   const [messages, setMessages] = useState<string>("");
 
-	/*
 	useEffect(() => {
-		dispatch(sendMessageToServer(chatSocket));
-	}, [messages]);
+		dispatch(socketHandler.startConnecting());
+	}, [socketStatus]);
+
+
   //const [lastPong, setLastPong] = useState<string | null>(null);
 
+	/*
   const sendPing = () => {
     chatSocket.emit("ping");
   };
+ */
 
 
   //TODO ask Liz to add id to message dto
@@ -54,16 +59,15 @@ const Snicel = () => {
   };
   const sendMessage = (e: any) => {
     e.preventDefault();
-		/*
-		dispatch(sendMessageToServer( { 
+/*
 			socket: chatSocket, payload: {
 				number: currentUser.id,
 				chatRoomId: 1,//get this from redux chat store
 				event: "messageToServe",
 				message: `${inputRef.current!["messageInput"].value}`,
 			}
-		}));
-		 */
+ */
+		dispatch(socketHandler.submitMessage({content: inputRef.current!["messageInput"].value}));
     inputRef.current!["messageInput"].value = "";
   };
 

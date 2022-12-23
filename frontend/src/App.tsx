@@ -22,17 +22,16 @@ import {
 */
 
 function App() {
-	const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch();
   //const socketSlice = useAppSelector(connectUserToChat);
   const userStatus = useAppSelector((state) => state.currentUser.status);
-	//const socketStatus = useAppSelector((state) => state.sockets.status);
+  //const socketStatus = useAppSelector((state) => state.sockets.status);
 
-	/*
+  /*
 	useEffect(() => {
 		if (socketStatus == "idle") dispatch(connectUserToChat());
 	}, [socketStatus])
  */
-
 
   if (userStatus === "failed") {
     return (
