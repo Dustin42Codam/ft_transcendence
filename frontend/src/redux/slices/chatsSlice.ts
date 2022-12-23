@@ -68,10 +68,13 @@ export const chatsSlice = createSlice({
   initialState,
   reducers: {
 		removeChatFromJoinable(state, action) {
-			console.log("ahahahah",state.joinable,"action payloa:",	action.payload);
       state.joinable.splice(action.payload, 1);
-			console.log("ahahahah",state.joinable);
+		},
+		/*
+		addChatFromGroup(state, action) {
+      state.group.push(action.payload);
 		}
+	 */
     // chatUpdated(state, action) {
     //   const { id, title, content } = action.payload;
     //   const existingChat: any = state.chats.find((chat: any) => chat.id === id);

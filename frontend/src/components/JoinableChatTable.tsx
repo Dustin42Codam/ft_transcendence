@@ -24,26 +24,21 @@ type Chats = {
   type: ChatroomType;
 };
 
-interface IState {
-  chats: Chats;
-}
-
 const JoinableChats = (props: any) => {
   const dispatch = useAppDispatch();
   let navigate = useNavigate();
 	const joinableChats = useAppSelector(selectJoinableChats);
-  const [joinChanel, setJoinChanel] = useState(false);
+  const [isPopUp, setIsPopUp] = useState(false);
 	const [password, setPassword] = useState<string>("");
-	const [chatToLogInToRef, setChatToLogInToRef] = useState<any>(null);
 	const [joinChatIndex, setJoinChatIndex] = useState<number>(0);
+
 
 	function handelClick(index: number) {
 		setJoinChatIndex(index);
 		if (joinableChats[index].type == ChatroomType.PROTECTED) {
-			setJoinChanel(!joinChanel);
+			setIsPopUp(!isPopUp);
 		} else {
 			axios.post("chatroom/join/" + joinableChats[index].id).then(() => {
-				console.log("to be remove", index);
 				dispatch(removeChatFromJoinable(index));
 				props.setJoinableChats(false);
 				navigate("../chats/" + joinableChats[index].name, { replace: true })
@@ -54,6 +49,7 @@ const JoinableChats = (props: any) => {
 		}
 	}
 
+	//if a password is entered this will fire
 	useEffect(() => {
 		const loginToChat = async (chat: Chats, chatPassword: string) => {
 			return await axios.post(
@@ -70,13 +66,14 @@ const JoinableChats = (props: any) => {
 			});
 		}
 	},[password]);
+
   return (
 		<div className="chatTableContainer">
 			<React.Fragment>
-				{joinChanel && (
+				{isPopUp && (
 					<PopUp
 						content={<PasswordPrompt setPassword={setPassword}/>}
-						handleClose={() => setJoinChanel(!joinChanel)}
+						handleClose={() => setIsPopUp(!isPopUp)}
 					/>)}
 						{joinableChats.map((chat: Chats, index: number) => (
 							<div
