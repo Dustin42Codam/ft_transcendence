@@ -26,6 +26,7 @@ const Chat = (props: any) => {
       console.log("component unmounted");
     };
   });
+
   return (
     <Wrapper>
       <Socket />
