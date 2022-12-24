@@ -37,13 +37,13 @@ const socketSlice = createSlice({
 		joinARoom: (state, action: PayloadAction<{chatRoom: ChatRoom;}>) => {
 			return ;
 		},
-		joinARoomSuccess: (state) => {
-			return ;
+		joinARoomSuccess: (state, action: PayloadAction<{chatRoom: ChatRoom;}>) => {
+			state.currentChatRoom = action.payload.chatRoom;
 		},
 		leaveARoom: (state, action: PayloadAction<{chatRoom: ChatRoom;}>) => {
-			return ;
 		},
 		leaveARoomSuccess: (state) => {
+			state.currentChatRoom = initialState.currentChatRoom;
 			return ;
 		},
     receiveAllMessages: (

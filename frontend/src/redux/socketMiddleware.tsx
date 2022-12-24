@@ -29,8 +29,12 @@ const socketMiddleware: Middleware = (store) => {
     socket.on(SocketEvent.SendAllMessages, (messages: ChatMessage[]) => {
       store.dispatch(socketHandler.receiveAllMessages({ messages }));
     });
-    socket.on(SocketEvent.JoinRoom, (chatRoom: ChatRoom) => {
-			console.log("hi there");
+    socket.on(SocketEvent.JoinRoomSuccess, (chatRoom: ChatRoom) => {
+			console.log("join a room hi there");
+      //store.dispatch(socketHandler.receiveAllMessages({ chatRoom }));
+    });
+    socket.on(SocketEvent.LeaveRoomSuccess, (chatRoom: ChatRoom) => {
+			console.log("left a room hi there");
       //store.dispatch(socketHandler.receiveAllMessages({ chatRoom }));
     });
     socket.on(SocketEvent.ReceiveMessage, (message: ChatMessage) => {
