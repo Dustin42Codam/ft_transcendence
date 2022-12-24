@@ -17,9 +17,8 @@ function App() {
   const dispatch = useAppDispatch();
   const socketStatus = useAppSelector((state) => state.socket.isConnected);
   const userStatus = useAppSelector((state) => state.currentUser.status);
-  //const socketStatus = useAppSelector((state) => state.sockets.status);
 
-	//TODO do not load the server if socket is not socketStatus is not true
+  //TODO do not load the server if socket is not socketStatus is not true
   if (userStatus === "failed") {
     return (
       <div className="App">

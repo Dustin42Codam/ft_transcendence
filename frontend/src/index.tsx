@@ -31,8 +31,8 @@ async function main() {
   store.dispatch(fetchDirectChats());
   store.dispatch(fetchJoinableChats());
   store.dispatch(fetchGroupChats());
-	//TODO add authgurad
-	store.dispatch(socketHandler.startConnecting());
+  //TODO add authgurad
+  store.dispatch(socketHandler.startConnecting());
 
   root.render(
     <Provider store={store}>

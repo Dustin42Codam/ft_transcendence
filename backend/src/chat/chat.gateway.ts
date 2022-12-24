@@ -56,7 +56,7 @@ export class ChatGateways implements OnGatewayInit, OnGatewayConnection, OnGatew
 		return { event: "loginAck", data: payload};
   }
 
-  @SubscribeMessage('joinChatRoom')
+  @SubscribeMessage('join_room')
 	handelJoinRoom(client: Socket, payload: any): void {
 		//TODO Liz check if chatroom exists
 		//TODO Liz check if user can join

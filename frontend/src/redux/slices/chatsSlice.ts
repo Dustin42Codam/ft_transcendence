@@ -67,10 +67,10 @@ export const chatsSlice = createSlice({
   name: "chats",
   initialState,
   reducers: {
-		removeChatFromJoinable(state, action) {
+    removeChatFromJoinable(state, action) {
       state.joinable.splice(action.payload, 1);
-		},
-		/*
+    },
+    /*
 		addChatFromGroup(state, action) {
       state.group.push(action.payload);
 		}

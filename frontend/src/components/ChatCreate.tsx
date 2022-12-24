@@ -39,7 +39,7 @@ const ChatCreate = () => {
       <button
         className="gridItem chatButton"
         onClick={async () =>
-					//how does this work you dispatching a cutom action dont you need to add then
+          //how does this work you dispatching a cutom action dont you need to add then
           dispatch(
             await addNewGroupChat({
               chat: {
@@ -49,7 +49,7 @@ const ChatCreate = () => {
                 type: chatType,
               },
               user_id: currentUser.id,
-            })/*.then(() =>
+            }) /*.then(() =>
 								dispatch(addChatFromGroup(
 									{
 										name: name,
@@ -61,7 +61,7 @@ const ChatCreate = () => {
 								)
 							)
 						 */
-					)
+          )
         }
         type="button"
       >

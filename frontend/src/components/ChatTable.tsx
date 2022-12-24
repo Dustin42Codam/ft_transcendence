@@ -30,15 +30,15 @@ interface IState {
 }
 
 const loginToChat = async (chatId: number) => {
-	return await axios.post(
-		"chatroom/join/" + chatId, {
-			password: "password"
-		}
-	).then(res => { 
-	}).catch( err => { 
-		alert(err);
-	});
-}
+  return await axios
+    .post("chatroom/join/" + chatId, {
+      password: "password",
+    })
+    .then((res) => {})
+    .catch((err) => {
+      alert(err);
+    });
+};
 
 const ChatTable = () => {
   const joinableChats = useAppSelector(selectJoinableChats);
@@ -48,8 +48,8 @@ const ChatTable = () => {
   let navigate = useNavigate();
 
   function handleClick(name: string, chatId: number) {
-		console.log("test: ", loginToChat(chatId));
-		navigate("../chats/" + name, { replace: true });
+    console.log("test: ", loginToChat(chatId));
+    navigate("../chats/" + name, { replace: true });
   }
 
   /*

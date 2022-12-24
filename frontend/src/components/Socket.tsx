@@ -15,7 +15,7 @@ const Snicel = () => {
   //const [messages, setMessages] = useState<Message[]>([]);
   const [messages, setMessages] = useState<string>("");
 
-	/*
+  /*
   useEffect(() => {
     dispatch(socketHandler.startConnecting());
   }, [socketStatus]);

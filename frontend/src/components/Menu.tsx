@@ -153,7 +153,9 @@ const Menu = (props: any) => {
               </p>
               {joinChanel && (
                 <PopUp
-                  content={<JoinableChatTable setJoinableChats={setJoinChanel}/>}
+                  content={
+                    <JoinableChatTable setJoinableChats={setJoinChanel} />
+                  }
                   handleClose={() => joinChats()}
                 />
               )}

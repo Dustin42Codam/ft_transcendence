@@ -29,6 +29,9 @@ const socketMiddleware: Middleware = (store) => {
     socket.on(ChatEvent.SendAllMessages, (messages: ChatMessage[]) => {
       store.dispatch(socketHandler.receiveAllMessages({ messages }));
     });
+    socket.on(ChatEvent.JoinRoom, (messages: ChatMessage[]) => {
+      store.dispatch(socketHandler.receiveAllMessages({ messages }));
+    });
     socket.on(ChatEvent.ReceiveMessage, (message: ChatMessage) => {
       store.dispatch(socketHandler.receiveMessage({ message }));
     });
