@@ -30,11 +30,11 @@ const socketMiddleware: Middleware = (store) => {
       store.dispatch(socketHandler.receiveAllMessages({ messages }));
     });
     socket.on(SocketEvent.JoinRoomSuccess, (chatRoom: ChatRoom) => {
-			console.log("join a room hi there");
+      console.log("join a room hi there");
       //store.dispatch(socketHandler.receiveAllMessages({ chatRoom }));
     });
     socket.on(SocketEvent.LeaveRoomSuccess, (chatRoom: ChatRoom) => {
-			console.log("left a room hi there");
+      console.log("left a room hi there");
       //store.dispatch(socketHandler.receiveAllMessages({ chatRoom }));
     });
     socket.on(SocketEvent.ReceiveMessage, (message: ChatMessage) => {

@@ -44,7 +44,10 @@ const JoinableChats = (props: any) => {
         .then(() => {
           dispatch(removeChatFromJoinable(index));
           props.setJoinableChats(false);
-          navigate("../chats/" + joinableChats[index].name, { replace: true, state: joinableChats[index] });
+          navigate("../chats/" + joinableChats[index].name, {
+            replace: true,
+            state: joinableChats[index],
+          });
         })
         .catch((err) => {
           alert(

@@ -34,7 +34,10 @@ const GroupChatTable = () => {
   let navigate = useNavigate();
 
   function handleClick(name: string, chatToJoinIndex: number) {
-    navigate("../chats/" + name, { replace: true, state: groupChats[chatToJoinIndex]});
+    navigate("../chats/" + name, {
+      replace: true,
+      state: groupChats[chatToJoinIndex],
+    });
   }
 
   /*
