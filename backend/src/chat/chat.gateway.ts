@@ -12,6 +12,11 @@ export type Message = {
   chatRoomId: string;
 };
 
+export type ChatRoom = {
+	id: number;
+	name: string;
+}
+
 //TODO add authguard
 @WebSocketGateway(
 	3001, {
@@ -57,14 +62,15 @@ export class ChatGateways implements OnGatewayInit, OnGatewayConnection, OnGatew
   }
 
   @SubscribeMessage('join_room')
-	handelJoinRoom(client: Socket, payload: any): void {
+	handelJoinRoom(client: Socket, payload: ChatRoom): void {
 		//TODO Liz check if chatroom exists
 		//TODO Liz check if user can join
 		//TODO Liz add member data type to payload
 		//
-		console.log(`Client joined: ${client.id}`);
-		client.join(payload.chatRoomId);
-		this.io.to(payload.chatRoomId).emit("joinChatRoomSuccess", payload);
+		console.log(payload);
+		console.log(`Client joined: ${client.id} roomname: ${payload.name} id: ${payload.id}`);
+		client.join(`${payload.id}`);
+		this.io.to(`${payload.id}`).emit("joinChatRoomSuccess", payload);
 	}
 
   @SubscribeMessage('leaveChatRoom')

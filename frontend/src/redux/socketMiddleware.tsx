@@ -1,7 +1,7 @@
 import { Middleware } from "redux";
 import { io, Socket } from "socket.io-client";
-import { socketHandler } from "./slices/socketSlice";
-import ChatEvent from "./socketEvent";
+import { ChatRoom, socketHandler } from "./slices/socketSlice";
+import SocketEvent from "./socketEvent";
 import ChatMessage from "./socketMessage";
 
 const socketMiddleware: Middleware = (store) => {
@@ -23,20 +23,24 @@ const socketMiddleware: Middleware = (store) => {
       });
       socket.on("connect", () => {
         store.dispatch(socketHandler.connectionEstablished());
-        socket.emit(ChatEvent.RequestAllMessages);
+        socket.emit(SocketEvent.RequestAllMessages);
       });
     }
-    socket.on(ChatEvent.SendAllMessages, (messages: ChatMessage[]) => {
+    socket.on(SocketEvent.SendAllMessages, (messages: ChatMessage[]) => {
       store.dispatch(socketHandler.receiveAllMessages({ messages }));
     });
-    socket.on(ChatEvent.JoinRoom, (messages: ChatMessage[]) => {
-      store.dispatch(socketHandler.receiveAllMessages({ messages }));
+    socket.on(SocketEvent.JoinRoom, (chatRoom: ChatRoom) => {
+			console.log("hi there");
+      //store.dispatch(socketHandler.receiveAllMessages({ chatRoom }));
     });
-    socket.on(ChatEvent.ReceiveMessage, (message: ChatMessage) => {
+    socket.on(SocketEvent.ReceiveMessage, (message: ChatMessage) => {
       store.dispatch(socketHandler.receiveMessage({ message }));
     });
     if (socketHandler.submitMessage.match(action) && isConnectionEstablished) {
       socket.emit("ping", action.payload.content);
+    }
+    if (socketHandler.joinARoom.match(action) && isConnectionEstablished) {
+      socket.emit(SocketEvent.JoinRoom, action.payload.chatRoom);
     }
     next(action);
   };

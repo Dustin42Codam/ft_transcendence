@@ -5,7 +5,7 @@ import Wrapper from "../components/Wrapper";
 import MessageComponent from "../components/Message";
 import Socket from "../components/Socket";
 import "./Chat.css";
-import { socketHandler } from "../redux/slices/socketSlice";
+import joinARoom, { ChatRoom, socketHandler } from "../redux/slices/socketSlice";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 
 //TODO get all messages for chat
@@ -16,8 +16,8 @@ const Chat = (props: any) => {
   //const joinableChats = useAppSelector(selectJoinableChats);
 
   useEffect(() => {
-		console.log("component Mounted", location.state);
-		dispatch(socketHandler.startConnecting());
+		const roomToJoin = { id: location.state.id, name: location.state.name };
+		dispatch(socketHandler.joinARoom({ chatRoom: roomToJoin }));
 		
 		return function cleanup() {
 			console.log("component unmounted");

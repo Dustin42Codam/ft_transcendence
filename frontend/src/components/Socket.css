@@ -1,6 +1,6 @@
 .chatInputBox {
   position: absolute;
-  bottom: 10%;
+  bottom: calc(10%);
   min-width: 200px;
   left: 350px;
   right: 100px;

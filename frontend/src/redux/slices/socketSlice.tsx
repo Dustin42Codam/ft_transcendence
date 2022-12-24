@@ -1,16 +1,25 @@
 import { createAction, PayloadAction, createSlice } from "@reduxjs/toolkit";
 import ChatMessage from "../socketMessage";
 
+
+
+export interface ChatRoom {
+	id: number;
+	name: string;
+}
+
 export interface ChatState {
   messages: ChatMessage[];
   isEstablishingConnection: boolean;
   isConnected: boolean;
+	currentChatRoom: ChatRoom;
 }
 
 const initialState: ChatState = {
   messages: [],
   isEstablishingConnection: false,
   isConnected: false,
+	currentChatRoom: {id: -1, name: ""},
 };
 
 //const startConnecting = createAction<void>('socket/connecting');
@@ -27,6 +36,9 @@ const socketSlice = createSlice({
       state.isConnected = true;
       state.isEstablishingConnection = true;
     },
+		joinARoom: (state, action: PayloadAction<{chatRoom: ChatRoom;}>) => {
+		
+		},
     receiveAllMessages: (
       state,
       action: PayloadAction<{
