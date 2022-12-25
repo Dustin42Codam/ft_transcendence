@@ -10,6 +10,8 @@ import joinARoom, {
   socketHandler,
 } from "../redux/slices/socketSlice";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 //TODO get all messages for chat
 
@@ -20,6 +22,16 @@ const Chat = (props: any) => {
 
   useEffect(() => {
     const roomToJoin = { id: location.state.id, name: location.state.name };
+		toast.info(`🦄 joining room: ${location.state.name}!`, {
+			position: "top-right",
+			autoClose: 5000,
+			hideProgressBar: false,
+			closeOnClick: true,
+			pauseOnHover: true,
+			draggable: true,
+			progress: undefined,
+			theme: "light",
+		});
     dispatch(socketHandler.joinARoom({ chatRoom: roomToJoin }));
 
     return function cleanup() {
@@ -29,6 +41,7 @@ const Chat = (props: any) => {
 
   return (
     <Wrapper>
+			<ToastContainer />
       <Socket />
     </Wrapper>
   );

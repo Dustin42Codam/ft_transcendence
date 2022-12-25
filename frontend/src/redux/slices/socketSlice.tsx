@@ -1,5 +1,4 @@
 import { createAction, PayloadAction, createSlice } from "@reduxjs/toolkit";
-import ChatMessage from "../socketMessage";
 
 export interface ChatRoom {
   id: number;
@@ -19,6 +18,12 @@ const initialState: ChatState = {
   isConnected: false,
   currentChatRoom: { id: -1, name: "" },
 };
+
+interface ChatMessage {
+  chatRoomId: number;
+  content: string;
+  authorId: number;
+}
 
 //const startConnecting = createAction<void>('socket/connecting');
 //const connected = createAction<void>('socket/connected');

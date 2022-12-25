@@ -2,7 +2,7 @@ enum SocketEvent {
   SendMessage = "send_message",
   RequestAllMessages = "request_all_messages",
   SendAllMessages = "send_all_messages",
-  ReceiveMessage = "receive_message",
+  ReceiveMessage = "message_to_client",
   JoinRoom = "join_room",
   JoinRoomSuccess = "join_room_success",
   LeaveRoom = "leave_room",

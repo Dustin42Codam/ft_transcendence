@@ -94,7 +94,7 @@ export class ChatGateways implements OnGatewayInit, OnGatewayConnection, OnGatew
 
 	//TODO for me add socket id to DB
 	//here we check if any socket id belongs to a chat room the the message if for
-  @SubscribeMessage('messageToServer')
+  @SubscribeMessage('message_to_server')
   handleMessageToServer(client: Socket, payload: Message): void {
 		console.log(`Chat gateway: Message ${payload.message} id: ${payload.chatRoomId} Recived`);
 		//client.broadcast
