@@ -31,6 +31,8 @@ const socketMiddleware: Middleware = (store) => {
         socket.emit(SocketEvent.RequestAllMessages);
       });
     }
+		//if (socketHandler.SendMessage.match(action) && isConnectionEstablished) {
+		/*
     socket.on(SocketEvent.SendAllMessages, (messages: ChatMessage[]) => {
       store.dispatch(socketHandler.receiveAllMessages({ messages }));
     });
@@ -42,15 +44,22 @@ const socketMiddleware: Middleware = (store) => {
       console.log("left a room hi there");
       //store.dispatch(socketHandler.receiveAllMessages({ chatRoom }));
     });
-    socket.on(SocketEvent.ReceiveMessage, (message: ChatMessage) => {
-      store.dispatch(socketHandler.receiveMessage({ message }));
-    });
-    if (socketHandler.submitMessage.match(action) && isConnectionEstablished) {
-      socket.emit("ping", action.payload.content);
-    }
-    if (socketHandler.joinARoom.match(action) && isConnectionEstablished) {
-      socket.emit(SocketEvent.JoinRoom, action.payload.chatRoom);
-    }
+	 */
+		if (isConnectionEstablished) {
+			socket.on(SocketEvent.ReceiveMessage, (message: ChatMessage) => {
+				store.dispatch(socketHandler.receiveMessage({ message }));
+			});
+			if (socketHandler.sendMessage.match(action)) {
+				socket.emit("ping", action.payload.content);//TODO toServer
+			}
+			if (socketHandler.joinARoom.match(action)) {
+				socket.emit(SocketEvent.JoinRoom, action.payload.chatRoom);
+			}
+			if (socketHandler.leaveARoom.match(action)) {
+				console.log("works");
+				socket.emit(SocketEvent.LeaveRoom, action.payload.chatRoom);
+			}
+		}
     next(action);
   };
 };

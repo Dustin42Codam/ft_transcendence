@@ -48,7 +48,9 @@ const socketSlice = createSlice({
     ) => {
       state.currentChatRoom = action.payload.chatRoom;
     },
-    leaveARoom: (state, action: PayloadAction<{ chatRoom: ChatRoom }>) => {},
+    leaveARoom: (state, action: PayloadAction<{ chatRoom: ChatRoom }>) => {
+			return ;
+		},
     leaveARoomSuccess: (state) => {
       state.currentChatRoom = initialState.currentChatRoom;
       return;
@@ -69,7 +71,7 @@ const socketSlice = createSlice({
     ) => {
       state.messages.push(action.payload.message);
     },
-    submitMessage: (
+    sendMessage: (
       state,
       action: PayloadAction<{
         content: string;

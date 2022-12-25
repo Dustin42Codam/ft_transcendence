@@ -61,7 +61,7 @@ export class ChatGateways implements OnGatewayInit, OnGatewayConnection, OnGatew
 		return { event: "loginAck", data: payload};
   }
 
-  @SubscribeMessage('join_room')
+  @SubscribeMessage('join_chat_room')
 	handelJoinRoom(client: Socket, payload: ChatRoom): void {
 		//TODO Liz check if chatroom exists
 		//TODO Liz check if user can join
@@ -73,7 +73,7 @@ export class ChatGateways implements OnGatewayInit, OnGatewayConnection, OnGatew
 		this.io.to(`${payload.id}`).emit("joinChatRoomSuccess", payload);
 	}
 
-  @SubscribeMessage('leaveChatRoom')
+  @SubscribeMessage('leave_chat_room')
 	leaveJoinRoom(client: Socket, payload: any): void {
 		console.log(`Client left: ${client.id}`);
 		this.io.to(payload.chatRoomId).emit("leaveChatRoomSuccess", payload);

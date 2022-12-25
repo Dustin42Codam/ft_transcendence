@@ -60,7 +60,7 @@ const Snicel = () => {
 			}
  */
     dispatch(
-      socketHandler.submitMessage({
+      socketHandler.sendMessage({
         content: inputRef.current!["messageInput"].value,
       })
     );

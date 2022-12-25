@@ -3,9 +3,9 @@ enum SocketEvent {
   RequestAllMessages = "request_all_messages",
   SendAllMessages = "send_all_messages",
   ReceiveMessage = "message_to_client",
-  JoinRoom = "join_room",
+  JoinRoom = "join_chat_room",
   JoinRoomSuccess = "join_room_success",
-  LeaveRoom = "leave_room",
+  LeaveRoom = "leave_chat_room",
   LeaveRoomSuccess = "leave_room_success",
 }
 export default SocketEvent;
