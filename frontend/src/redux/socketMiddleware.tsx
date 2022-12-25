@@ -31,8 +31,8 @@ const socketMiddleware: Middleware = (store) => {
         socket.emit(SocketEvent.RequestAllMessages);
       });
     }
-		//if (socketHandler.SendMessage.match(action) && isConnectionEstablished) {
-		/*
+    //if (socketHandler.SendMessage.match(action) && isConnectionEstablished) {
+    /*
     socket.on(SocketEvent.SendAllMessages, (messages: ChatMessage[]) => {
       store.dispatch(socketHandler.receiveAllMessages({ messages }));
     });
@@ -45,20 +45,20 @@ const socketMiddleware: Middleware = (store) => {
       //store.dispatch(socketHandler.receiveAllMessages({ chatRoom }));
     });
 	 */
-		if (isConnectionEstablished) {
-			socket.on(SocketEvent.ReceiveMessage, (message: ChatMessage) => {
-				store.dispatch(socketHandler.receiveMessage({ message }));
-			});
-			if (socketHandler.sendMessage.match(action)) {
-				socket.emit(SocketEvent.SendMessage, action.payload.chatMessage);//TODO toServer
-			}
-			if (socketHandler.joinARoom.match(action)) {
-				socket.emit(SocketEvent.JoinRoom, action.payload.chatRoom);
-			}
-			if (socketHandler.leaveARoom.match(action)) {
-				socket.emit(SocketEvent.LeaveRoom, action.payload.chatRoom);
-			}
-		}
+    if (isConnectionEstablished) {
+      socket.on(SocketEvent.ReceiveMessage, (message: ChatMessage) => {
+        store.dispatch(socketHandler.receiveMessage({ message }));
+      });
+      if (socketHandler.sendMessage.match(action)) {
+        socket.emit(SocketEvent.SendMessage, action.payload.chatMessage); //TODO toServer
+      }
+      if (socketHandler.joinARoom.match(action)) {
+        socket.emit(SocketEvent.JoinRoom, action.payload.chatRoom);
+      }
+      if (socketHandler.leaveARoom.match(action)) {
+        socket.emit(SocketEvent.LeaveRoom, action.payload.chatRoom);
+      }
+    }
     next(action);
   };
 };

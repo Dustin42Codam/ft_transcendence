@@ -30,21 +30,21 @@ const Menu = (props: any) => {
     if (joinableChats.length > 0) {
       setJoinChanel(!joinChanel);
     } else {
-			toast('🦄 You do not have any chats to join', {
-				position: "top-right",
-				autoClose: 5000,
-				hideProgressBar: false,
-				closeOnClick: true,
-				pauseOnHover: true,
-				draggable: true,
-				progress: undefined,
-				theme: "light",
-			});
+      toast("🦄 You do not have any chats to join", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     }
   };
   return (
     <nav className={props.className}>
-			<ToastContainer />
+      <ToastContainer />
       <div className="sideNavContainer">
         <NavLink
           to={"/"}

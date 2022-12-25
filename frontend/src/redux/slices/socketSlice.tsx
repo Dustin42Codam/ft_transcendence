@@ -12,7 +12,7 @@ export interface ChatState {
   currentChatRoom: ChatRoom;
 }
 
-const initialState: ChatState = {
+export const initialState: ChatState = {
   messages: [],
   isEstablishingConnection: false,
   isConnected: false,
@@ -49,8 +49,8 @@ const socketSlice = createSlice({
       state.currentChatRoom = action.payload.chatRoom;
     },
     leaveARoom: (state, action: PayloadAction<{ chatRoom: ChatRoom }>) => {
-			return ;
-		},
+      return;
+    },
     leaveARoomSuccess: (state) => {
       state.currentChatRoom = initialState.currentChatRoom;
       return;

@@ -17,16 +17,8 @@ const Snicel = () => {
 
   const currentUser = useAppSelector(selectCurrentUser);
   const inputRef = useRef<HTMLFormElement>(null);
-  //const chatSocket = useAppSelector(chatActions);
-  //const [messages, setMessages] = useState<Message[]>([]);
   const [messages, setMessages] = useState<string>("");
 
-  /*
-  useEffect(() => {
-    dispatch(socketHandler.startConnecting());
-  }, [socketStatus]);
-
- */
   //const [lastPong, setLastPong] = useState<string | null>(null);
 
   /*
@@ -66,11 +58,12 @@ const Snicel = () => {
 			}
  */
     dispatch(
-      socketHandler.sendMessage({ chatMessage: {
-					chatRoomId: 1,
-					content: inputRef.current!["messageInput"].value,
-					authorId: 1,
-				}
+      socketHandler.sendMessage({
+        chatMessage: {
+          chatRoomId: 1,
+          content: inputRef.current!["messageInput"].value,
+          authorId: 1,
+        },
       })
     );
     inputRef.current!["messageInput"].value = "";

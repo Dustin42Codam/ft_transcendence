@@ -5,15 +5,13 @@ import Wrapper from "../components/Wrapper";
 import MessageComponent from "../components/Message";
 import Socket from "../components/Socket";
 import "./Chat.css";
-import {
-  socketHandler,
-} from "../redux/slices/socketSlice";
+import { socketHandler } from "../redux/slices/socketSlice";
 import joinARoom from "../redux/slices/socketSlice";
 import leaveARoom from "../redux/slices/socketSlice";
 import sendMessage from "../redux/slices/socketSlice";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 interface ChatMessage {
   chatRoomId: number;
@@ -24,38 +22,46 @@ interface ChatMessage {
 const Chat = (props: any) => {
   const dispatch = useAppDispatch();
   const location = useLocation();
-	const [messages, setMessages] = useState<ChatMessage[]>([]);//TODO get all messages for chat
+  const [messages, setMessages] = useState<ChatMessage[]>([]); //TODO get all messages for chat
 
   useEffect(() => {
-		toast.info(`🦄 joining room: ${location.state.name}!`, {
-			position: "top-right",
-			autoClose: 5000,
-			hideProgressBar: false,
-			closeOnClick: true,
-			pauseOnHover: true,
-			draggable: true,
-			progress: undefined,
-			theme: "light",
-		});
+    toast.info(`🦄 joining room: ${location.state.name}!`, {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
 
-    dispatch(socketHandler.joinARoom({ chatRoom: {id: location.state.id, name: location.state.name } }));
+    dispatch(
+      socketHandler.joinARoom({
+        chatRoom: { id: location.state.id, name: location.state.name },
+      })
+    );
 
     return function cleanup() {
-			toast.info(`🦄 left room: ${location.state.name}!`, {
-				position: "top-right",
-				autoClose: 5000,
-				hideProgressBar: false,
-				closeOnClick: true,
-				pauseOnHover: true,
-				draggable: true,
-				progress: undefined,
-				theme: "light",
-			});
-			dispatch(socketHandler.leaveARoom({ chatRoom: {id: location.state.id, name: location.state.name } }));
+      toast.info(`🦄 left room: ${location.state.name}!`, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      dispatch(
+        socketHandler.leaveARoom({
+          chatRoom: { id: location.state.id, name: location.state.name },
+        })
+      );
     };
   });
 
-	/*
+  /*
   useEffect(() => {
 
     dispatch(socketHandler.sendMessage({content: ""}));
@@ -67,7 +73,7 @@ const Chat = (props: any) => {
 
   return (
     <Wrapper>
-			<ToastContainer />
+      <ToastContainer />
       <Socket />
     </Wrapper>
   );
