@@ -70,13 +70,13 @@ export class ChatGateways implements OnGatewayInit, OnGatewayConnection, OnGatew
 		console.log(payload);
 		console.log(`Client joined: ${client.id} roomname: ${payload.name} id: ${payload.id}`);
 		client.join(`${payload.id}`);
-		this.io.to(`${payload.id}`).emit("joinChatRoomSuccess", payload);
+		this.io.to(`${payload.id}`).emit("join_chat_room_success", payload);
 	}
 
   @SubscribeMessage('leave_chat_room')
 	leaveJoinRoom(client: Socket, payload: any): void {
 		console.log(`Client left: ${client.id}`);
-		this.io.to(payload.chatRoomId).emit("leaveChatRoomSuccess", payload);
+		this.io.to(payload.chatRoomId).emit("leave_chat_room_success", payload);
 		client.leave(payload.chatRoomId);
 	}
 

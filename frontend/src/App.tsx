@@ -9,7 +9,6 @@ import UserEdit from "./pages/users/UserEdit";
 import UserCreate from "./pages/users/UserCreate";
 import { UserPage } from "./pages/users/UserPage";
 import Achievements from "./pages/achievements/Achievements";
-import { socketHandler } from "./redux/slices/socketSlice";
 import { useAppDispatch, useAppSelector } from "./redux/hooks";
 import { Navigate, BrowserRouter, Routes, Route } from "react-router-dom";
 

@@ -5,7 +5,7 @@ import Wrapper from "../components/Wrapper";
 import MessageComponent from "../components/Message";
 import Socket from "../components/Socket";
 import "./Chat.css";
-import { socketHandler } from "../redux/slices/socketSlice";
+import { socketActions } from "../redux/slices/socketSlice";
 import joinARoom from "../redux/slices/socketSlice";
 import leaveARoom from "../redux/slices/socketSlice";
 import sendMessage from "../redux/slices/socketSlice";
@@ -37,7 +37,7 @@ const Chat = (props: any) => {
     });
 
     dispatch(
-      socketHandler.joinARoom({
+      socketActions.joinARoom({
         chatRoom: { id: location.state.id, name: location.state.name },
       })
     );
@@ -54,7 +54,7 @@ const Chat = (props: any) => {
         theme: "light",
       });
       dispatch(
-        socketHandler.leaveARoom({
+        socketActions.leaveARoom({
           chatRoom: { id: location.state.id, name: location.state.name },
         })
       );
@@ -64,7 +64,7 @@ const Chat = (props: any) => {
   /*
   useEffect(() => {
 
-    dispatch(socketHandler.sendMessage({content: ""}));
+    dispatch(socketActions.sendMessage({content: ""}));
     return function cleanup() {
       console.log("component unmounted");
     };

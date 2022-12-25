@@ -1,6 +1,6 @@
 import { Middleware } from "redux";
 import { io, Socket } from "socket.io-client";
-import { ChatRoom, socketHandler } from "./slices/socketSlice";
+import { ChatRoom, socketActions } from "./slices/socketSlice";
 import SocketEvent from "./socketEvent";
 
 interface ChatMessage {
@@ -14,9 +14,9 @@ const socketMiddleware: Middleware = (store) => {
 
   return (next) => (action) => {
     const isConnectionEstablished =
-      socket && store.getState().socket.isConnected;
+      socket && store.getState().isConnected;
 
-    if (socketHandler.startConnecting.match(action)) {
+    if (socketActions.startConnecting.match(action)) {
       socket = io("ws://localhost:3001/chat", {
         //				reconnectionAttempts: 1,
         //        timeout: 5000,
@@ -24,38 +24,42 @@ const socketMiddleware: Middleware = (store) => {
       });
       socket.on("connect_failed", () => {
         //this needs some work if fails to upgrade it does not get hanedeled
-        console.log("FAILED");
       });
       socket.on("connect", () => {
-        store.dispatch(socketHandler.connectionEstablished());
+        store.dispatch(socketActions.connectionEstablished());
         socket.emit(SocketEvent.RequestAllMessages);
       });
     }
-    //if (socketHandler.SendMessage.match(action) && isConnectionEstablished) {
+    //if (socketActions.SendMessage.match(action) && isConnectionEstablished) {
     /*
     socket.on(SocketEvent.SendAllMessages, (messages: ChatMessage[]) => {
-      store.dispatch(socketHandler.receiveAllMessages({ messages }));
+      store.dispatch(socketActions.receiveAllMessages({ messages }));
     });
     socket.on(SocketEvent.JoinRoomSuccess, (chatRoom: ChatRoom) => {
-      console.log("join a room hi there");
-      //store.dispatch(socketHandler.receiveAllMessages({ chatRoom }));
+      //store.dispatch(socketActions.receiveAllMessages({ chatRoom }));
     });
     socket.on(SocketEvent.LeaveRoomSuccess, (chatRoom: ChatRoom) => {
-      console.log("left a room hi there");
-      //store.dispatch(socketHandler.receiveAllMessages({ chatRoom }));
+      //store.dispatch(socketActions.receiveAllMessages({ chatRoom }));
     });
+		}
 	 */
     if (isConnectionEstablished) {
-      socket.on(SocketEvent.ReceiveMessage, (message: ChatMessage) => {
-        store.dispatch(socketHandler.receiveMessage({ message }));
+      socket.on(SocketEvent.JoinRoomSuccess, ({ chatRoom: ChatRoom }) => {
+        store.dispatch(socketActions.joinARoomSuccess({chatRoom: ChatRoom }));
       });
-      if (socketHandler.sendMessage.match(action)) {
-        socket.emit(SocketEvent.SendMessage, action.payload.chatMessage); //TODO toServer
-      }
-      if (socketHandler.joinARoom.match(action)) {
+      socket.on(SocketEvent.LeaveRoomSuccess, () => {
+        store.dispatch(socketActions.leaveARoomSuccess());
+      });
+      if (socketActions.joinARoom.match(action)) {
         socket.emit(SocketEvent.JoinRoom, action.payload.chatRoom);
       }
-      if (socketHandler.leaveARoom.match(action)) {
+      socket.on(SocketEvent.ReceiveMessage, (chatMessage: ChatMessage) => {
+        store.dispatch(socketActions.receiveMessage({ chatMessage }));
+      });
+      if (socketActions.sendMessage.match(action)) {
+        socket.emit(SocketEvent.SendMessage, action.payload.chatMessage); //TODO toServer
+      }
+      if (socketActions.leaveARoom.match(action)) {
         socket.emit(SocketEvent.LeaveRoom, action.payload.chatRoom);
       }
     }

@@ -4,7 +4,7 @@ enum SocketEvent {
   SendAllMessages = "send_all_messages",
   ReceiveMessage = "message_to_client",
   JoinRoom = "join_chat_room",
-  JoinRoomSuccess = "join_room_success",
+  JoinRoomSuccess = "join_chat_room_success",
   LeaveRoom = "leave_chat_room",
   LeaveRoomSuccess = "leave_room_success",
 }

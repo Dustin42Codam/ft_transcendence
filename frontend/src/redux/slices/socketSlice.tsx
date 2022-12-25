@@ -19,7 +19,7 @@ export const initialState: ChatState = {
   currentChatRoom: { id: -1, name: "" },
 };
 
-interface ChatMessage {
+export interface ChatMessage {
   chatRoomId: number;
   content: string;
   authorId: number;
@@ -37,7 +37,6 @@ const socketSlice = createSlice({
     },
     connectionEstablished: (state) => {
       state.isConnected = true;
-      state.isEstablishingConnection = true;
     },
     joinARoom: (state, action: PayloadAction<{ chatRoom: ChatRoom }>) => {
       return;
@@ -61,15 +60,16 @@ const socketSlice = createSlice({
         messages: ChatMessage[];
       }>
     ) => {
+			//TODO import user message service and get all messages
       state.messages = action.payload.messages;
     },
     receiveMessage: (
       state,
       action: PayloadAction<{
-        message: ChatMessage;
+        chatMessage: ChatMessage;
       }>
     ) => {
-      state.messages.push(action.payload.message);
+      state.messages.push(action.payload.chatMessage);
     },
     sendMessage: (
       state,
@@ -82,6 +82,6 @@ const socketSlice = createSlice({
   },
 });
 
-export const socketHandler = socketSlice.actions;
+export const socketActions = socketSlice.actions;
 
 export default socketSlice.reducer;

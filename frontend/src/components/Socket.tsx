@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from "react";
 import { Message } from "/frontend/src/models/Message";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { selectCurrentUser } from "../redux/slices/currentUserSlice";
-import { socketHandler } from "../redux/slices/socketSlice";
+import { socketActions } from "../redux/slices/socketSlice";
 import { io, Socket } from "socket.io-client";
 import "./Socket.css";
 
@@ -58,7 +58,7 @@ const Snicel = () => {
 			}
  */
     dispatch(
-      socketHandler.sendMessage({
+      socketActions.sendMessage({
         chatMessage: {
           chatRoomId: 1,
           content: inputRef.current!["messageInput"].value,
