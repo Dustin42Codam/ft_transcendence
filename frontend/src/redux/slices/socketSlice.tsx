@@ -74,7 +74,7 @@ const socketSlice = createSlice({
     sendMessage: (
       state,
       action: PayloadAction<{
-        content: string;
+        chatMessage: ChatMessage;
       }>
     ) => {
       return;

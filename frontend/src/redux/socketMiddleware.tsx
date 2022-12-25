@@ -50,13 +50,12 @@ const socketMiddleware: Middleware = (store) => {
 				store.dispatch(socketHandler.receiveMessage({ message }));
 			});
 			if (socketHandler.sendMessage.match(action)) {
-				socket.emit("ping", action.payload.content);//TODO toServer
+				socket.emit(SocketEvent.SendMessage, action.payload.chatMessage);//TODO toServer
 			}
 			if (socketHandler.joinARoom.match(action)) {
 				socket.emit(SocketEvent.JoinRoom, action.payload.chatRoom);
 			}
 			if (socketHandler.leaveARoom.match(action)) {
-				console.log("works");
 				socket.emit(SocketEvent.LeaveRoom, action.payload.chatRoom);
 			}
 		}

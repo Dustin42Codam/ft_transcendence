@@ -6,6 +6,12 @@ import { socketHandler } from "../redux/slices/socketSlice";
 import { io, Socket } from "socket.io-client";
 import "./Socket.css";
 
+interface ChatMessage {
+  chatRoomId: number;
+  content: string;
+  authorId: number;
+}
+
 const Snicel = () => {
   const dispatch = useAppDispatch();
 
@@ -60,8 +66,11 @@ const Snicel = () => {
 			}
  */
     dispatch(
-      socketHandler.sendMessage({
-        content: inputRef.current!["messageInput"].value,
+      socketHandler.sendMessage({ chatMessage: {
+					chatRoomId: 1,
+					content: inputRef.current!["messageInput"].value,
+					authorId: 1,
+				}
       })
     );
     inputRef.current!["messageInput"].value = "";
