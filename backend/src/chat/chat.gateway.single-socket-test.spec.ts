@@ -4,6 +4,7 @@ import { INestApplication } from '@nestjs/common';
 import { WsAdapter } from '@nestjs/platform-ws';
 import { io, Socket } from "socket.io-client";
 import { jest, expect } from '@jest/globals';
+import ChatEvent from "./chatEvent";
 
 function randomString(length:number): string {
     let result: string           = "";
@@ -47,10 +48,10 @@ describe("Testing baisic connections", () => {
 	//TODO client should not be able to send date if not in a room
 	it("Socket send and recives data: ", async () => {
 		//TODO these will faill till we fix the room check
-		socket.emit("messageToServer", randMsg);
+		socket.emit(ChatEvent.SendMessageToServer, randMsg);
 
 		await new Promise<void>(resolve =>
-			socket.on("messageToClient", msg => {
+			socket.on(ChatEvent.SendMessageToClient, msg => {
 				expect(msg).toBe(randMsg);
 				resolve();
 			}),
@@ -59,10 +60,10 @@ describe("Testing baisic connections", () => {
 
 	it("Client joins a publick room: ", async () => {
 
-		socket.emit("joinChatRoom", { chatRoomId: 1 });
+		socket.emit(ChatEvent.JoinChatRoom, { chatRoomId: 1 });
 	
     await new Promise<void>(resolve => {
-			socket.on('joinChatRoomSuccess', (payload: any) => {
+			socket.on(ChatEvent.JoinChatRoomSuccess, (payload: any) => {
 				expect(payload.chatRoomId == 1);
 				resolve();
 			});
@@ -71,17 +72,17 @@ describe("Testing baisic connections", () => {
 
 	it("Client send a message room: ", async () => {
 
-		socket.emit("joinChatRoom", { chatRoomId: 1 });
+		socket.emit(ChatEvent.JoinChatRoom, { chatRoomId: 1 });
     await new Promise<void>(resolve => {
-			socket.on('joinChatRoomSuccess', (payload: any) => {
+			socket.on(ChatEvent.JoinChatRoomSuccess, (payload: any) => {
 				expect(payload.chatRoomId == 1);
-				socket.emit("messageToServer", { member: , message: randMsg, chatRoomId: "1" });
+				socket.emit(ChatEvent.SendMessageToServer, {message: randMsg, chatRoomId: "1" });
 				resolve();
 			});
 		});
 	
 		await new Promise<void>(resolve => {
-			socket.on('messageToClient', (payload: any) => {
+			socket.on(ChatEvent.SendMessageToClient, (payload: any) => {
 				expect(payload).toBe(randMsg);
 				resolve();
 			});
@@ -92,18 +93,18 @@ describe("Testing baisic connections", () => {
 		let socket: Socket;
 		socket = io("ws://localhost:3001/chat");
 
-		socket.emit("joinChatRoom", { chatRoomId: 1 });
+		socket.emit(ChatEvent.JoinChatRoom, { chatRoomId: 1 });
 
     await new Promise<void>(resolve => {
-			socket.on('joinChatRoomSuccess', (payload: any) => {
+			socket.on(ChatEvent.JoinChatRoomSuccess, (payload: any) => {
 				expect(payload.chatRoomId == 1);
-				socket.emit("leaveChatRoom", { chatRoomId: 1 });
+				socket.emit(ChatEvent.LeaveChatRoom, { chatRoomId: 1 });
 				resolve();
 			});
 		});
 	
     await new Promise<void>(resolve => {
-			socket.on('leaveChatRoomSuccess', (payload: any) => {
+			socket.on(ChatEvent.LeaveChatRoomSuccess, (payload: any) => {
 				expect(payload.chatRoomId == 1);
 				resolve();
 			});
