@@ -38,58 +38,58 @@ export class ChatroomGateway implements OnGatewayInit, OnGatewayConnection, OnGa
   }
 
   //this is fine I suppose like a general socket to connect to?
-	@UseGuards(AuthGuard)
+	//@UseGuards(AuthGuard)
   handleConnection(client): void {
     const sockets = this.io.sockets;
     //TODO backend team set user status to online
   }
 
-	@UseGuards(AuthGuard)
+	//@UseGuards(AuthGuard)
   handleDisconnect(client: any): void {
     const sockets = this.io.sockets;
     //TODO backend team set user status to offline
   }
 
-	@UseGuards(AuthGuard)
+	//@UseGuards(AuthGuard)
   @SubscribeMessage(ChatroomEvents.JoinChatRoom)
   handelJoinRoom(client: Socket, payload: ChatRoom): void {
 		//console.log(client);
     //TODO Liz check if chatroom exists
     //TODO Liz check if user can join
     //TODO Liz add member data type to payload
-		console.log("Hallo", payload);
+		console.log("clienat jointed:" ,client.id, payload);
     client.join(`${payload.id}`);
     this.io.to(`${payload.id}`).emit(ChatroomEvents.JoinChatRoomSuccess, payload);
   }
 
-	@UseGuards(AuthGuard)
+	//@UseGuards(AuthGuard)
   @SubscribeMessage(ChatroomEvents.LeaveChatRoom)
   leaveJoinRoom(client: Socket, payload: any): void {
     this.io.to(payload.chatRoomId).emit(ChatroomEvents.LeaveChatRoomSuccess, payload);
     client.leave(payload.chatRoomId);
   }
 
-	@UseGuards(AuthGuard)
+	//@UseGuards(AuthGuard)
   @SubscribeMessage("ping")
   handlePong(client: Socket, payload: string): WsResponse<string> {
     return { event: "pong", data: null };
   }
 
-	@UseGuards(AuthGuard)
+	//@UseGuards(AuthGuard)
   @SubscribeMessage("typing")
   handleTyping(client: Socket, payload: string): WsResponse<string> {
     return { event: "isTyping", data: payload };
   }
 
   //TODO for me add socket id to DB
-	@UseGuards(AuthGuard)
+	//@UseGuards(AuthGuard)
   @SubscribeMessage(ChatroomEvents.SendMessageToServer)
   handleMessageToServer(client: Socket, payload: Message): void {
     //client.broadcast
     //TODO check if chatRoomId exists
     //TODO Liz add the message to database
 		console.log("this is a message", payload);
-    this.io.to(payload.chatRoomId).emit(ChatroomEvents.SendMessageToClient, payload);
+    this.io.to(`${payload.chatRoomId}`).emit(ChatroomEvents.SendMessageToClient, payload);
   }
 }
 /*

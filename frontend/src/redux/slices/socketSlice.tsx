@@ -80,4 +80,7 @@ const socketSlice = createSlice({
 
 export const socketActions = socketSlice.actions;
 
+export const selectCurrentChatroom = (state: any) => state.socket.currentChatRoom;
+export const selectCurrentChatroomMessages = (state: any) => state.socket.messages;
+
 export default socketSlice.reducer;

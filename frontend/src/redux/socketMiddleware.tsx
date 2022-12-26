@@ -40,9 +40,11 @@ const socketMiddleware: Middleware = (store) => {
         socket.emit(SocketEvent.JoinChatRoom, action.payload.chatRoom);
       }
       socket.on(SocketEvent.ReceiveMessage, (chatMessage: ChatMessage) => {
+				console.log("We recived a message:", chatMessage);
         store.dispatch(socketActions.receiveMessage({ chatMessage }));
       });
       if (socketActions.sendMessage.match(action)) {
+				console.log(action.payload.chatMessage);
         socket.emit(SocketEvent.SendMessage, action.payload.chatMessage);
       }
       if (socketActions.leaveARoom.match(action)) {

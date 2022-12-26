@@ -12,6 +12,7 @@ import sendMessage from "../redux/slices/socketSlice";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { selectCurrentChatroomMessages } from "../redux/slices/socketSlice";
 
 interface ChatMessage {
   chatRoomId: number;
@@ -61,10 +62,9 @@ const Chat = (props: any) => {
     };
   });
 
-  /*
+	/*
   useEffect(() => {
-
-    dispatch(socketActions.sendMessage({content: ""}));
+		console.log(messages);
     return function cleanup() {
       console.log("component unmounted");
     };
@@ -74,7 +74,7 @@ const Chat = (props: any) => {
   return (
     <Wrapper>
       <ToastContainer />
-      <Socket />
+      <Socket/>
     </Wrapper>
   );
 };

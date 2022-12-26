@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect } from "react";
 import { Message } from "/frontend/src/models/Message";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { selectCurrentUser } from "../redux/slices/currentUserSlice";
+import { selectCurrentChatroom } from "../redux/slices/socketSlice";
 import { socketActions } from "../redux/slices/socketSlice";
 import { io, Socket } from "socket.io-client";
 import "./Socket.css";
@@ -16,6 +17,7 @@ const Snicel = () => {
   const dispatch = useAppDispatch();
 
   const currentUser = useAppSelector(selectCurrentUser);
+  const currentChatroom = useAppSelector(selectCurrentChatroom);
   const inputRef = useRef<HTMLFormElement>(null);
   const [messages, setMessages] = useState<string>("");
 
@@ -47,9 +49,9 @@ const Snicel = () => {
     dispatch(
       socketActions.sendMessage({
         chatMessage: {
-          chatRoomId: 1,
+          chatRoomId: currentChatroom.id,
           content: inputRef.current!["messageInput"].value,
-          authorId: 1,
+          authorId: currentUser.id,
         },
       })
     );
