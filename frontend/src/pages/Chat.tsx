@@ -11,6 +11,7 @@ import leaveARoom from "../redux/slices/socketSlice";
 import sendMessage from "../redux/slices/socketSlice";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { selectCurrentChatroomMessages } from "../redux/slices/socketSlice";
+import "./Message.css";
 
 interface ChatMessage {
   chatRoomId: number;
@@ -27,19 +28,15 @@ const Chat = (props: any) => {
   return (
     <Wrapper>
 			<h1>Bugg some times does not work joining a room when refresh happesn</h1>
-      <React.Fragment>
+			<div className="messageContainers">
+				<React.Fragment>
 			{
 				currentChatRoomMessages.map((chatMessges: ChatMessage, index: number) => (
-			 		<div
-						key={index}
-					>
-						<p>{chatMessges.content}</p>
-						<br />
-						
-					</div>
+						<p className="message" key={index} >{chatMessges.content} : {chatMessges.authorId}</p>
 				))
 			}
-      </React.Fragment>
+				</React.Fragment>
+			</div>
       <Socket location={location}/>
     </Wrapper>
   );
