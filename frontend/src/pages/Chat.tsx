@@ -61,6 +61,7 @@ const Chat = (props: any) => {
       );
     };
   });
+	console.log("What?");
 
 	/*
   useEffect(() => {

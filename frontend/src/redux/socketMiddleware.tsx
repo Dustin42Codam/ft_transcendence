@@ -28,23 +28,21 @@ const socketMiddleware: Middleware = (store) => {
         store.dispatch(socketActions.connectionEstablished());
         socket.emit(SocketEvent.RequestAllMessages);
       });
-    }
-    if (isConnectionEstablished) {
+      socket.on(SocketEvent.ReceiveMessage, (chatMessage: ChatMessage) => {
+        store.dispatch(socketActions.receiveMessage({ chatMessage }));
+      });
       socket.on(SocketEvent.JoinChatRoomSuccess, (chatRoom: ChatRoom) => {
         store.dispatch(socketActions.joinARoomSuccess({ chatRoom: chatRoom}));
       });
       socket.on(SocketEvent.LeaveChatRoomSuccess, () => {
         store.dispatch(socketActions.leaveARoomSuccess());
       });
+    }
+    if (isConnectionEstablished) {
       if (socketActions.joinARoom.match(action)) {
         socket.emit(SocketEvent.JoinChatRoom, action.payload.chatRoom);
       }
-      socket.on(SocketEvent.ReceiveMessage, (chatMessage: ChatMessage) => {
-				console.log("We recived a message:", chatMessage);
-        store.dispatch(socketActions.receiveMessage({ chatMessage }));
-      });
       if (socketActions.sendMessage.match(action)) {
-				console.log(action.payload.chatMessage);
         socket.emit(SocketEvent.SendMessage, action.payload.chatMessage);
       }
       if (socketActions.leaveARoom.match(action)) {

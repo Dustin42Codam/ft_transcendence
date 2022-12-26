@@ -20,10 +20,8 @@ const Snicel = () => {
   const currentChatroom = useAppSelector(selectCurrentChatroom);
   const inputRef = useRef<HTMLFormElement>(null);
   const [messages, setMessages] = useState<string>("");
+	console.log("Who?");
 
-  useEffect(() => {
-    return () => {};
-  });
   //const [lastPong, setLastPong] = useState<string | null>(null);
 
   /*
@@ -34,18 +32,9 @@ const Snicel = () => {
     </div>
 	 */
   const userIsTyping = (msg: string) => {
-    //chatSocket.emit("typing", currentUser.id);
   };
   const sendMessage = (e: any) => {
     e.preventDefault();
-    /*
-			socket: chatSocket, payload: {
-				number: currentUser.id,
-				chatRoomId: 1,//get this from redux chat store
-				event: "messageToServe",
-				message: `${inputRef.current!["messageInput"].value}`,
-			}
- */
     dispatch(
       socketActions.sendMessage({
         chatMessage: {
