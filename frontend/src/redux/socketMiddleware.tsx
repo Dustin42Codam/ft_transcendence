@@ -35,18 +35,18 @@ const socketMiddleware: Middleware = (store) => {
       });
     }
     if (isConnectionEstablished) {
-      socket.on(SocketEvent.JoinChatRoomSuccess, ({ chatRoom: ChatRoom }) => {
-        store.dispatch(socketActions.joinARoomSuccess({ chatRoom: ChatRoom }));
+      socket.on(SocketEvent.JoinChatRoomSuccess, (chatRoom: ChatRoom) => {
+        console.log(
+          "HI we are here",
+          SocketEvent.JoinChatRoomSuccess,
+          chatRoom
+        );
+        store.dispatch(socketActions.joinARoomSuccess({ chatRoom: chatRoom}));
       });
       socket.on(SocketEvent.LeaveChatRoomSuccess, () => {
         store.dispatch(socketActions.leaveARoomSuccess());
       });
       if (socketActions.joinARoom.match(action)) {
-        console.log(
-          "HI we are here",
-          SocketEvent.JoinChatRoom,
-          action.payload.chatRoom
-        );
         socket.emit(SocketEvent.JoinChatRoom, action.payload.chatRoom);
       }
       socket.on(SocketEvent.ReceiveMessage, (chatMessage: ChatMessage) => {
