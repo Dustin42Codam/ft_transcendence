@@ -10,8 +10,6 @@ import joinARoom from "../redux/slices/socketSlice";
 import leaveARoom from "../redux/slices/socketSlice";
 import sendMessage from "../redux/slices/socketSlice";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import { selectCurrentChatroomMessages } from "../redux/slices/socketSlice";
 
 interface ChatMessage {
@@ -23,59 +21,26 @@ interface ChatMessage {
 const Chat = (props: any) => {
   const dispatch = useAppDispatch();
   const location = useLocation();
-  const [messages, setMessages] = useState<ChatMessage[]>([]); //TODO get all messages for chat
+  const currentChatRoomMessages = useAppSelector(selectCurrentChatroomMessages);
 
-  useEffect(() => {
-    toast.info(`🦄 joining room: ${location.state.name}!`, {
-      position: "top-right",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
-
-    dispatch(
-      socketActions.joinARoom({
-        chatRoom: { id: location.state.id, name: location.state.name },
-      })
-    );
-
-    return function cleanup() {
-      toast.info(`🦄 left room: ${location.state.name}!`, {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-      dispatch(
-        socketActions.leaveARoom({
-          chatRoom: { id: location.state.id, name: location.state.name },
-        })
-      );
-    };
-  });
-	console.log("What?");
-
-	/*
-  useEffect(() => {
-		console.log(messages);
-    return function cleanup() {
-      console.log("component unmounted");
-    };
-  }, [messages]);
- */
 
   return (
     <Wrapper>
-      <ToastContainer />
-      <Socket/>
+			<h1>Bugg some times does not work joining a room when refresh happesn</h1>
+      <React.Fragment>
+			{
+				currentChatRoomMessages.map((chatMessges: ChatMessage, index: number) => (
+			 		<div
+						key={index}
+					>
+						<p>{chatMessges.content}</p>
+						<br />
+						
+					</div>
+				))
+			}
+      </React.Fragment>
+      <Socket location={location}/>
     </Wrapper>
   );
 };
