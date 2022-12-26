@@ -88,6 +88,7 @@ export class ChatroomGateway implements OnGatewayInit, OnGatewayConnection, OnGa
     //client.broadcast
     //TODO check if chatRoomId exists
     //TODO Liz add the message to database
+		console.log("this is a message", payload);
     this.io.to(payload.chatRoomId).emit(ChatroomEvents.SendMessageToClient, payload);
   }
 }

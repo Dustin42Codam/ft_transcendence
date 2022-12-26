@@ -19,15 +19,10 @@ const socketMiddleware: Middleware = (store) => {
     const isConnectionEstablished =
       socket && store.getState().socket.isConnected;
 
-    console.log(
-      isConnectionEstablished,
-      socket,
-      store.getState().socket.isConnected
-    );
     if (socketActions.startConnecting.match(action)) {
       socket.connect();
       socket.on("connect_failed", () => {
-        //this needs some work if fails to upgrade it does not get hanedeled
+				//TODO how would you handel socket errors?
       });
       socket.on("connect", () => {
         store.dispatch(socketActions.connectionEstablished());
@@ -36,11 +31,6 @@ const socketMiddleware: Middleware = (store) => {
     }
     if (isConnectionEstablished) {
       socket.on(SocketEvent.JoinChatRoomSuccess, (chatRoom: ChatRoom) => {
-        console.log(
-          "HI we are here",
-          SocketEvent.JoinChatRoomSuccess,
-          chatRoom
-        );
         store.dispatch(socketActions.joinARoomSuccess({ chatRoom: chatRoom}));
       });
       socket.on(SocketEvent.LeaveChatRoomSuccess, () => {
@@ -50,11 +40,10 @@ const socketMiddleware: Middleware = (store) => {
         socket.emit(SocketEvent.JoinChatRoom, action.payload.chatRoom);
       }
       socket.on(SocketEvent.ReceiveMessage, (chatMessage: ChatMessage) => {
-        //TODO save message to DB
         store.dispatch(socketActions.receiveMessage({ chatMessage }));
       });
       if (socketActions.sendMessage.match(action)) {
-        socket.emit(SocketEvent.SendMessage, action.payload.chatMessage); //TODO toServer
+        socket.emit(SocketEvent.SendMessage, action.payload.chatMessage);
       }
       if (socketActions.leaveARoom.match(action)) {
         socket.emit(SocketEvent.LeaveChatRoom, action.payload.chatRoom);

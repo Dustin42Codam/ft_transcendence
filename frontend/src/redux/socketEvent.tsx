@@ -1,5 +1,5 @@
 enum SocketEvent {
-  SendMessage = "send_message",
+  SendMessage = "send_message_to_server",
   RequestAllMessages = "request_all_messages",
   SendAllMessages = "send_all_messages",
   ReceiveMessage = "message_to_client",

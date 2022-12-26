@@ -25,9 +25,6 @@ export interface ChatMessage {
   authorId: number;
 }
 
-//const startConnecting = createAction<void>('socket/connecting');
-//const connected = createAction<void>('socket/connected');
-
 const socketSlice = createSlice({
   name: "socket",
   initialState,
