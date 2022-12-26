@@ -19,23 +19,10 @@ const Snicel = () => {
   const inputRef = useRef<HTMLFormElement>(null);
   const [messages, setMessages] = useState<string>("");
 
+  useEffect(() => {
+    return () => {};
+  });
   //const [lastPong, setLastPong] = useState<string | null>(null);
-
-  /*
-  const sendPing = () => {
-    chatSocket.emit("ping");
-  };
- */
-
-  //TODO ask Liz to add id to message dto
-  /*
-  const renderedChats = messages.map((message: Message) => (
-    <div key={message.message} className="chatRow">
-      <p>{message.message}</p>
-    </div>
-  ));
-
- */
 
   /*
     <div className="chatBox">

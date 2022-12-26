@@ -12,11 +12,18 @@ export class AuthGuard implements CanActivate {
     try {
       // if (request.session.logged_in != true)
       // 	return false;
+			//console.log(request.handshake.headers.cookie);
       const jwt = request.cookies["jwt"];
       return this.jwtService.verify(jwt);
     } catch (e) {
-      return false;
     }
+		try {
+      const req = request.handshake.headers.cookie;
+			const jwt = req.substring(4, req.indexOf(";"));
+      return this.jwtService.verify(jwt);
+		} catch (e) {
+			return false;
+		}
     // console.log("checking the authguard");
     // const request = context.switchToHttp().getRequest();
     // console.log("🚀 ~ file: auth.guard.ts:24 ~ AuthGuard ~ request", request.session)

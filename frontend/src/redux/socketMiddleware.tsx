@@ -10,17 +10,22 @@ interface ChatMessage {
 }
 
 const socketMiddleware: Middleware = (store) => {
-  let socket: Socket = io();
+  let socket: Socket = io("ws://localhost:3001/chat", {
+    autoConnect: false,
+    withCredentials: true,
+  });
 
   return (next) => (action) => {
-    const isConnectionEstablished = socket && store.getState().isConnected;
+    const isConnectionEstablished =
+      socket && store.getState().socket.isConnected;
 
+    console.log(
+      isConnectionEstablished,
+      socket,
+      store.getState().socket.isConnected
+    );
     if (socketActions.startConnecting.match(action)) {
-      socket = io("ws://localhost:3001/chat", {
-        //				reconnectionAttempts: 1,
-        //        timeout: 5000,
-        withCredentials: true,
-      });
+      socket.connect();
       socket.on("connect_failed", () => {
         //this needs some work if fails to upgrade it does not get hanedeled
       });
@@ -29,28 +34,20 @@ const socketMiddleware: Middleware = (store) => {
         socket.emit(SocketEvent.RequestAllMessages);
       });
     }
-    //if (socketActions.SendMessage.match(action) && isConnectionEstablished) {
-    /*
-    socket.on(SocketEvent.SendAllMessages, (messages: ChatMessage[]) => {
-      store.dispatch(socketActions.receiveAllMessages({ messages }));
-    });
-    socket.on(SocketEvent.JoinRoomSuccess, (chatRoom: ChatRoom) => {
-      //store.dispatch(socketActions.receiveAllMessages({ chatRoom }));
-    });
-    socket.on(SocketEvent.LeaveRoomSuccess, (chatRoom: ChatRoom) => {
-      //store.dispatch(socketActions.receiveAllMessages({ chatRoom }));
-    });
-		}
-	 */
     if (isConnectionEstablished) {
-      socket.on(SocketEvent.JoinRoomSuccess, ({ chatRoom: ChatRoom }) => {
+      socket.on(SocketEvent.JoinChatRoomSuccess, ({ chatRoom: ChatRoom }) => {
         store.dispatch(socketActions.joinARoomSuccess({ chatRoom: ChatRoom }));
       });
-      socket.on(SocketEvent.LeaveRoomSuccess, () => {
+      socket.on(SocketEvent.LeaveChatRoomSuccess, () => {
         store.dispatch(socketActions.leaveARoomSuccess());
       });
       if (socketActions.joinARoom.match(action)) {
-        socket.emit(SocketEvent.JoinRoom, action.payload.chatRoom);
+        console.log(
+          "HI we are here",
+          SocketEvent.JoinChatRoom,
+          action.payload.chatRoom
+        );
+        socket.emit(SocketEvent.JoinChatRoom, action.payload.chatRoom);
       }
       socket.on(SocketEvent.ReceiveMessage, (chatMessage: ChatMessage) => {
         //TODO save message to DB
@@ -60,7 +57,7 @@ const socketMiddleware: Middleware = (store) => {
         socket.emit(SocketEvent.SendMessage, action.payload.chatMessage); //TODO toServer
       }
       if (socketActions.leaveARoom.match(action)) {
-        socket.emit(SocketEvent.LeaveRoom, action.payload.chatRoom);
+        socket.emit(SocketEvent.LeaveChatRoom, action.payload.chatRoom);
       }
     }
     next(action);
