@@ -60,7 +60,6 @@ const socketSlice = createSlice({
         messages: ChatMessage[];
       }>
     ) => {
-			//TODO import user message service and get all messages
       state.messages = action.payload.messages;
     },
     receiveMessage: (

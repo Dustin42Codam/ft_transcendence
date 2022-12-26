@@ -11,15 +11,9 @@ import { FriendModule } from "src/friend/friend.module";
 import { UserModule } from "src/user/user.module";
 
 @Module({
-	imports: [
-		TypeOrmModule.forFeature([FriendRequest]),
-		CommonModule,
-		forwardRef(() => BlockModule),
-		forwardRef(() =>FriendModule),
-		forwardRef(() =>UserModule)
-	],
+  imports: [TypeOrmModule.forFeature([FriendRequest]), CommonModule, forwardRef(() => BlockModule), forwardRef(() => FriendModule), forwardRef(() => UserModule)],
   controllers: [FriendRequestController],
   providers: [FriendRequestService],
-  exports: [FriendRequestService]
+  exports: [FriendRequestService],
 })
 export class FriendRequestModule {}

@@ -10,14 +10,9 @@ import { FriendModule } from "src/friend/friend.module";
 import { UserModule } from "src/user/user.module";
 
 @Module({
-	imports: [
-		TypeOrmModule.forFeature([Achievement]),
-		forwardRef(() => UserModule),
-		FriendModule,
-		CommonModule
-	],
-    controllers: [AchievementController], // TODO this is here for testing and should maybe be removed
-	providers: [AchievementService],
-	exports: [AchievementService]
+  imports: [TypeOrmModule.forFeature([Achievement]), forwardRef(() => UserModule), FriendModule, CommonModule],
+  controllers: [AchievementController], // TODO this is here for testing and should maybe be removed
+  providers: [AchievementService],
+  exports: [AchievementService],
 })
 export class AchievementModule {}

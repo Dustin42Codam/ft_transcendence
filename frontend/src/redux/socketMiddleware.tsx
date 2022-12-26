@@ -13,8 +13,7 @@ const socketMiddleware: Middleware = (store) => {
   let socket: Socket = io();
 
   return (next) => (action) => {
-    const isConnectionEstablished =
-      socket && store.getState().isConnected;
+    const isConnectionEstablished = socket && store.getState().isConnected;
 
     if (socketActions.startConnecting.match(action)) {
       socket = io("ws://localhost:3001/chat", {
@@ -45,7 +44,7 @@ const socketMiddleware: Middleware = (store) => {
 	 */
     if (isConnectionEstablished) {
       socket.on(SocketEvent.JoinRoomSuccess, ({ chatRoom: ChatRoom }) => {
-        store.dispatch(socketActions.joinARoomSuccess({chatRoom: ChatRoom }));
+        store.dispatch(socketActions.joinARoomSuccess({ chatRoom: ChatRoom }));
       });
       socket.on(SocketEvent.LeaveRoomSuccess, () => {
         store.dispatch(socketActions.leaveARoomSuccess());
@@ -54,6 +53,7 @@ const socketMiddleware: Middleware = (store) => {
         socket.emit(SocketEvent.JoinRoom, action.payload.chatRoom);
       }
       socket.on(SocketEvent.ReceiveMessage, (chatMessage: ChatMessage) => {
+        //TODO save message to DB
         store.dispatch(socketActions.receiveMessage({ chatMessage }));
       });
       if (socketActions.sendMessage.match(action)) {
