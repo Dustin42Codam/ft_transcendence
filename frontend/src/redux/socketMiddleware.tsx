@@ -22,7 +22,7 @@ const socketMiddleware: Middleware = (store) => {
     if (socketActions.startConnecting.match(action)) {
       socket.connect();
       socket.on("connect_failed", () => {
-				//TODO how would you handel socket errors?
+        //TODO how would you handel socket errors?
       });
       socket.on("connect", () => {
         store.dispatch(socketActions.connectionEstablished());
@@ -32,7 +32,7 @@ const socketMiddleware: Middleware = (store) => {
         store.dispatch(socketActions.receiveMessage({ chatMessage }));
       });
       socket.on(SocketEvent.JoinChatRoomSuccess, (chatRoom: ChatRoom) => {
-        store.dispatch(socketActions.joinARoomSuccess({ chatRoom: chatRoom}));
+        store.dispatch(socketActions.joinARoomSuccess({ chatRoom: chatRoom }));
       });
       socket.on(SocketEvent.LeaveChatRoomSuccess, () => {
         store.dispatch(socketActions.leaveARoomSuccess());

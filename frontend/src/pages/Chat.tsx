@@ -24,20 +24,18 @@ const Chat = (props: any) => {
   const location = useLocation();
   const currentChatRoomMessages = useAppSelector(selectCurrentChatroomMessages);
 
-
   return (
     <Wrapper>
-			<h1>Bugg some times does not work joining a room when refresh happesn</h1>
-			<div className="messageContainers">
-				<React.Fragment>
-			{
-				currentChatRoomMessages.map((chatMessges: ChatMessage, index: number) => (
-						<p className="message" key={index} >{chatMessges.content} : {chatMessges.authorId}</p>
-				))
-			}
-				</React.Fragment>
-			</div>
-      <Socket location={location}/>
+      <div className="messageContainers">
+          {currentChatRoomMessages.map(
+            (chatMessges: ChatMessage, index: number) => (
+              <p className="message" key={index}>
+                {chatMessges.content} : {chatMessges.authorId}
+              </p>
+            )
+          )}
+      </div>
+      <Socket location={location} />
     </Wrapper>
   );
 };

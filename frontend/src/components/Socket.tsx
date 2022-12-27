@@ -36,7 +36,10 @@ const Snicel = (props: any) => {
 
     dispatch(
       socketActions.joinARoom({
-        chatRoom: { id: props.location.state.id, name: props.location.state.name },
+        chatRoom: {
+          id: props.location.state.id,
+          name: props.location.state.name,
+        },
       })
     );
 
@@ -53,7 +56,10 @@ const Snicel = (props: any) => {
       });
       dispatch(
         socketActions.leaveARoom({
-          chatRoom: { id: props.location.state.id, name: props.location.state.name },
+          chatRoom: {
+            id: props.location.state.id,
+            name: props.location.state.name,
+          },
         })
       );
     };
@@ -67,8 +73,7 @@ const Snicel = (props: any) => {
       <button onClick={sendPing}>Send ping</button>
     </div>
 	 */
-  const userIsTyping = (msg: string) => {
-  };
+  const userIsTyping = (msg: string) => {};
   const sendMessage = (e: any) => {
     e.preventDefault();
     dispatch(
