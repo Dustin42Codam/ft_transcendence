@@ -14,6 +14,7 @@ import { ChatroomService } from "src/chatroom/chatroom.service";
 import { Chatroom } from "src/chatroom/entity/chatroom.entity";
 import { AuthGuard } from "src/auth/auth.guard";
 import express, { Request } from "express";
+import { AuthService } from "src/auth/auth.service";
 
 @Controller("message")
 export class MessageController {
@@ -23,6 +24,7 @@ export class MessageController {
     private readonly blockService: BlockService,
     private readonly userService: UserService,
     private readonly chatroomService: ChatroomService,
+    private readonly authService: AuthService,
   ) {}
 
   //   @Get() //CHECK REMOVE if we not use it before hnding in
@@ -36,7 +38,7 @@ export class MessageController {
   async getMessagesfromChatroom(@Param("id") chatroomId: string, @Req() request: Request) {
     const chatroom: Chatroom = await this.chatroomService.getChatroomById(Number(chatroomId));
     const check_messages = await this.messageService.all(["member", "member.user", "member.chatroom"]);
-    const user: User = await this.userService.getUserById(request.session.user_id);
+    const user: User = await this.userService.getUserById(await this.authService.userId(request));
 
     const blocks: Block[] = await this.blockService.getBlocksFromUser(user);
     const messages: Message[] = [];

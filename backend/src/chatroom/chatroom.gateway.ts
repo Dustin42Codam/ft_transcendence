@@ -7,6 +7,7 @@ import { Namespace, Server, Socket } from "socket.io";
 import { AuthGuard } from "../auth/auth.guard";
 import { UseGuards } from "@nestjs/common";
 import ChatroomEvents from "./chatroomEvents";
+import { Chatroom } from "src/chatroom/entity/chatroom.entity";
 
 export type Message = {
   message: string;
@@ -38,19 +39,19 @@ export class ChatroomGateway implements OnGatewayInit, OnGatewayConnection, OnGa
   }
 
   //this is fine I suppose like a general socket to connect to?
-	//@UseGuards(AuthGuard)
+	@UseGuards(AuthGuard)
   handleConnection(client): void {
     const sockets = this.io.sockets;
     //TODO backend team set user status to online
   }
 
-	//@UseGuards(AuthGuard)
+	@UseGuards(AuthGuard)
   handleDisconnect(client: any): void {
     const sockets = this.io.sockets;
     //TODO backend team set user status to offline
   }
 
-	//@UseGuards(AuthGuard)
+	@UseGuards(AuthGuard)
   @SubscribeMessage(ChatroomEvents.JoinChatRoom)
   handelJoinRoom(client: Socket, payload: ChatRoom): void {
 		//console.log(client);
@@ -62,27 +63,27 @@ export class ChatroomGateway implements OnGatewayInit, OnGatewayConnection, OnGa
     this.io.to(`${payload.id}`).emit(ChatroomEvents.JoinChatRoomSuccess, payload);
   }
 
-	//@UseGuards(AuthGuard)
+	@UseGuards(AuthGuard)
   @SubscribeMessage(ChatroomEvents.LeaveChatRoom)
   leaveJoinRoom(client: Socket, payload: any): void {
     this.io.to(payload.chatRoomId).emit(ChatroomEvents.LeaveChatRoomSuccess, payload);
     client.leave(payload.chatRoomId);
   }
 
-	//@UseGuards(AuthGuard)
+	@UseGuards(AuthGuard)
   @SubscribeMessage("ping")
   handlePong(client: Socket, payload: string): WsResponse<string> {
     return { event: "pong", data: null };
   }
 
-	//@UseGuards(AuthGuard)
+	@UseGuards(AuthGuard)
   @SubscribeMessage("typing")
   handleTyping(client: Socket, payload: string): WsResponse<string> {
     return { event: "isTyping", data: payload };
   }
 
   //TODO for me add socket id to DB
-	//@UseGuards(AuthGuard)
+	@UseGuards(AuthGuard)
   @SubscribeMessage(ChatroomEvents.SendMessageToServer)
   handleMessageToServer(client: Socket, payload: Message): void {
     //client.broadcast
@@ -92,6 +93,7 @@ export class ChatroomGateway implements OnGatewayInit, OnGatewayConnection, OnGa
     this.io.to(`${payload.chatRoomId}`).emit(ChatroomEvents.SendMessageToClient, payload);
   }
 }
+
 /*
 		//this we can aslo get by cookie
     const member: Member = await this.memberService.getMemberById(Number(body.member));

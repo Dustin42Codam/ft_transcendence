@@ -1,4 +1,5 @@
 import { Module } from "@nestjs/common";
+import { AuthModule } from "../auth/auth.module";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { CommonModule } from "src/common/common.module";
 
@@ -12,7 +13,7 @@ import { MessageService } from "./message.service";
 import { UserModule } from "src/user/user.module";
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Message]), CommonModule, ChatroomModule, MemberModule, BlockModule, UserModule],
+  imports: [TypeOrmModule.forFeature([Message]), CommonModule, ChatroomModule, MemberModule, BlockModule, AuthModule, UserModule],
   controllers: [MessageController],
   providers: [MessageService],
   exports: [MessageService],
