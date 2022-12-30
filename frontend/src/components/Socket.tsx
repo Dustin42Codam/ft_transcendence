@@ -13,7 +13,7 @@ import "./Socket.css";
 
 const Snicel = () => {
   const dispatch = useAppDispatch();
-//	const socketStatus = useAppSelector((state) => state.sockets.status);
+  //	const socketStatus = useAppSelector((state) => state.sockets.status);
 
   const currentUser = useAppSelector(selectCurrentUser);
   const inputRef = useRef<HTMLFormElement>(null);
@@ -21,7 +21,7 @@ const Snicel = () => {
   //const [messages, setMessages] = useState<Message[]>([]);
   const [messages, setMessages] = useState<string>("");
 
-	/*
+  /*
 	useEffect(() => {
 		dispatch(sendMessageToServer(chatSocket));
 	}, [messages]);
@@ -54,7 +54,7 @@ const Snicel = () => {
   };
   const sendMessage = (e: any) => {
     e.preventDefault();
-		/*
+    /*
 		dispatch(sendMessageToServer( { 
 			socket: chatSocket, payload: {
 				number: currentUser.id,

@@ -16,11 +16,11 @@ const store = configureStore({
     currentUser: currentUserReducer,
     messages: messagesReducer,
     friends: friendsReducer,
- //   sockets: socketReducer,
+    //   sockets: socketReducer,
   },
   middleware: (getDefaultMiddleware) => {
-    return getDefaultMiddleware().concat([loggerMiddleware])
-	},
+    return getDefaultMiddleware().concat([loggerMiddleware]);
+  },
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
