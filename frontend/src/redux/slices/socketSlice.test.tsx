@@ -2,11 +2,15 @@ import reducers, { ChatMessage, initialState } from "./socketSlice";
 import socketMiddleware from "../socketMiddleware";
 import socketSlice from "./socketSlice";
 import { socketActions } from "./socketSlice";
+import { fetchCurrentChatRoomMessages } from "./socketSlice";
 import { configureStore } from "@reduxjs/toolkit";
 import { combineReducers } from "redux";
+import axios from "axios";
+
+jest.mock("axios");
 
 const rootReducer = combineReducers({
-  socketSlice: socketSlice,
+  socket: socketSlice,
 });
 
 const store = configureStore({
@@ -18,13 +22,13 @@ const store = configureStore({
 
 describe("Testing if the god damn store works", () => {
   beforeAll(() => {
-    expect(store.getState().socketSlice.isEstablishingConnection).toBe(false);
+    expect(store.getState().socket.isEstablishingConnection).toBe(false);
     store.dispatch(socketActions.startConnecting());
     store.dispatch(socketActions.connectionEstablished());
-    expect(store.getState().socketSlice.isEstablishingConnection).toBe(true);
+    expect(store.getState().socket.isEstablishingConnection).toBe(true);
   });
   test("should be able to join a room", () => {
-    expect(store.getState().socketSlice.currentChatRoom).toEqual({
+    expect(store.getState().socket.currentChatRoom).toEqual({
       id: -1,
       name: "",
     });
@@ -36,7 +40,7 @@ describe("Testing if the god damn store works", () => {
         chatRoom: { id: 1, name: "I am a chat jow" },
       })
     );
-    expect(store.getState().socketSlice.currentChatRoom).toEqual({
+    expect(store.getState().socket.currentChatRoom).toEqual({
       id: 1,
       name: "I am a chat jow",
     });
@@ -44,7 +48,7 @@ describe("Testing if the god damn store works", () => {
       socketActions.leaveARoom({ chatRoom: { id: 1, name: "I am a chat jow" } })
     );
     store.dispatch(socketActions.leaveARoomSuccess());
-    expect(store.getState().socketSlice.currentChatRoom).toEqual({
+    expect(store.getState().socket.currentChatRoom).toEqual({
       id: -1,
       name: "",
     });
@@ -63,20 +67,49 @@ describe("Testing if the god damn store works", () => {
         chatMessage: { chatRoomId: 1, content: "Lol", authorId: 23 },
       })
     );
-    expect(store.getState().socketSlice.messages[0]).toEqual({
+    expect(store.getState().socket.messages[0]).toEqual({
       chatRoomId: 1,
       content: "Hi there",
       authorId: 23,
     });
-    expect(store.getState().socketSlice.messages[1]).toEqual({
+    expect(store.getState().socket.messages[1]).toEqual({
       chatRoomId: 1,
       content: "Bye",
       authorId: 23,
     });
-    expect(store.getState().socketSlice.messages[2]).toEqual({
+    expect(store.getState().socket.messages[2]).toEqual({
       chatRoomId: 1,
       content: "Lol",
       authorId: 23,
     });
+  });
+  test("should get all messages for room", async () => {
+    (axios.get as jest.Mock).mockResolvedValue([
+      {
+        chatroomId: 1,
+        content: "hi there",
+        authorId: 1,
+      },
+      {
+        chatroomId: 1,
+        content: "hi there",
+        authorId: 2,
+      },
+      {
+        chatroomId: 1,
+        content: "hi there",
+        authorId: 3,
+      },
+      {
+        chatroomId: 1,
+        content: "hi there",
+        authorId: 3,
+      },
+    ]);
+    const dispatch = jest.fn();
+    //await fetchCurrentChatRoomMessages(1)(dispatch);
+    //expect(dispatch).toHaveBeenCalledWith(loginRequest());
+    //it('dispatches success');
+    //it('dispatches failure');
   });
 });

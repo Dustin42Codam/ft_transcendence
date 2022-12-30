@@ -27,13 +27,13 @@ const Chat = (props: any) => {
   return (
     <Wrapper>
       <div className="messageContainers">
-          {currentChatRoomMessages.map(
-            (chatMessges: ChatMessage, index: number) => (
-              <p className="message" key={index}>
-                {chatMessges.content} : {chatMessges.authorId}
-              </p>
-            )
-          )}
+        {currentChatRoomMessages.map(
+          (chatMessges: ChatMessage, index: number) => (
+            <p className="message" key={index}>
+              {chatMessges.content} : {chatMessges.authorId}
+            </p>
+          )
+        )}
       </div>
       <Socket location={location} />
     </Wrapper>

@@ -5,17 +5,17 @@
   color: rgb(244, 241, 208);
   border-radius: 5px;
   background-color: rgb(31, 33, 40);
-	min-width:100%;
+  min-width: 100%;
 }
 
 .message:nth-child(even) {
   align-self: flex-end;
   color: rgb(244, 241, 208);
-	text-align: right;
+  text-align: right;
 }
 
 .message:nth-child(odd) {
   align-self: flex-start;
   color: rgb(244, 241, 208);
-	text-align: left;
+  text-align: left;
 }

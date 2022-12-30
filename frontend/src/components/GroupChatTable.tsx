@@ -31,7 +31,7 @@ interface IState {
 const GroupChatTable = () => {
   const groupChats = useAppSelector(selectGroupChats);
 
-  let navigate = useNavigate();
+  const navigate = useNavigate();
 
   function handleClick(name: string, chatToJoinIndex: number) {
     navigate("../chats/" + name, {

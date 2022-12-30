@@ -1,4 +1,5 @@
-import { createAction, PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, PayloadAction, createSlice } from "@reduxjs/toolkit";
+import axios from "axios";
 
 export interface ChatRoom {
   id: number;
@@ -10,6 +11,7 @@ export interface ChatState {
   isEstablishingConnection: boolean;
   isConnected: boolean;
   currentChatRoom: ChatRoom;
+  status: any;
 }
 
 export const initialState: ChatState = {
@@ -17,6 +19,7 @@ export const initialState: ChatState = {
   isEstablishingConnection: false,
   isConnected: false,
   currentChatRoom: { id: -1, name: "" },
+  status: "",
 };
 
 export interface ChatMessage {
@@ -24,6 +27,15 @@ export interface ChatMessage {
   content: string;
   authorId: number;
 }
+
+export const fetchCurrentChatRoomMessages = createAsyncThunk(
+  "socket/fetchCurrentChatRoomMessages",
+  async (chatroomId: number) => {
+    const response = await axios.get(`message/${chatroomId}`);
+
+    return response.data;
+  }
+);
 
 const socketSlice = createSlice({
   name: "socket",
@@ -75,6 +87,23 @@ const socketSlice = createSlice({
     ) => {
       return;
     },
+  },
+  extraReducers(builder) {
+    builder
+      .addCase(fetchCurrentChatRoomMessages.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(
+        fetchCurrentChatRoomMessages.fulfilled,
+        (state: any, action: PayloadAction<number>) => {
+          state.status = "succeeded";
+          state.messages = action.payload;
+        }
+      )
+      .addCase(fetchCurrentChatRoomMessages.rejected, (state: any, action) => {
+        state.status = "loading";
+        state.error = action.error.message;
+      });
   },
 });
 

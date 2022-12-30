@@ -1,4 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Message } from "/frontend/src/models/Message";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { selectCurrentUser } from "../redux/slices/currentUserSlice";
@@ -17,12 +18,34 @@ interface ChatMessage {
 
 const Snicel = (props: any) => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const currentUser = useAppSelector(selectCurrentUser);
   const currentChatroom = useAppSelector(selectCurrentChatroom);
   const inputRef = useRef<HTMLFormElement>(null);
 
+	/*	BUG LIFE
+	 *
+	 *	1.
+		 *	If we go to /chat/name straig away. With straigth away I mean
+		 *	I am accessing the page page with out going to it from the chat dropdown
+		 *	locatio.state is null that causes the page to error and crash
+		 *
+	 *	2.
+		 *	If we refresh the chat the messages do not get put to the screen for some reason.
+	 */
+
   useEffect(() => {
+		//TO prevent bug one
+		console.log(currentChatroom, props.location.state)
+		if (currentChatroom.id == -1 || currentChatroom.name == "") {
+			if (!props.location.state) {
+				navigate("/", {
+					replace: true,
+				});
+				return ;
+			}
+		}
     toast.info(`🦄 joining room: ${props.location.state.name}!`, {
       position: "top-right",
       autoClose: 5000,
