@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Message } from "/frontend/src/models/Message";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { selectCurrentUser } from "../redux/slices/currentUserSlice";
-import { selectCurrentChatroom } from "../redux/slices/socketSlice";
+import { selectCurrentChatroom, } from "../redux/slices/socketSlice";
 import { socketActions } from "../redux/slices/socketSlice";
 import { io, Socket } from "socket.io-client";
 import { ToastContainer, toast } from "react-toastify";
@@ -45,6 +45,14 @@ const Snicel = (props: any) => {
 				});
 				return ;
 			}
+      dispatch(
+        socketActions.joinARoomSuccess({
+          chatRoom: {
+            id: props.location.state.id,
+            name: props.location.state.name,
+          },
+        })
+      );
 		}
     toast.info(`🦄 joining room: ${props.location.state.name}!`, {
       position: "top-right",
@@ -57,16 +65,8 @@ const Snicel = (props: any) => {
       theme: "light",
     });
 
-    dispatch(
-      socketActions.joinARoom({
-        chatRoom: {
-          id: props.location.state.id,
-          name: props.location.state.name,
-        },
-      })
-    );
-
     return function cleanup() {
+			console.log("from [props] unmounting");
       toast.info(`🦄 left room: ${props.location.state.name}!`, {
         position: "top-right",
         autoClose: 5000,

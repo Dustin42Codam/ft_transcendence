@@ -1,4 +1,6 @@
 import React from "react";
+import { useAppDispatch } from "../redux/hooks";
+import { socketActions } from "../redux/slices/socketSlice";
 import { useNavigate } from "react-router-dom";
 import CastleIcon from "@mui/icons-material/Castle";
 import PublicIcon from "@mui/icons-material/Public";
@@ -30,10 +32,19 @@ interface IState {
 
 const GroupChatTable = () => {
   const groupChats = useAppSelector(selectGroupChats);
+  const dispatch = useAppDispatch();
 
   const navigate = useNavigate();
 
   function handleClick(name: string, chatToJoinIndex: number) {
+    dispatch(
+      socketActions.joinARoom({
+        chatRoom: {
+          id: groupChats[chatToJoinIndex].id,
+          name: groupChats[chatToJoinIndex].name,
+        },
+      })
+    );
     navigate("../chats/" + name, {
       replace: true,
       state: groupChats[chatToJoinIndex],

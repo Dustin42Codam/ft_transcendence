@@ -6,6 +6,6 @@ enum SocketEvent {
   JoinChatRoom = "join_chat_room",
   JoinChatRoomSuccess = "join_chat_room_success",
   LeaveChatRoom = "leave_chat_room",
-  LeaveChatRoomSuccess = "leave_room_success",
+  LeaveChatRoomSuccess = "leave_chat_room_success",
 }
 export default SocketEvent;

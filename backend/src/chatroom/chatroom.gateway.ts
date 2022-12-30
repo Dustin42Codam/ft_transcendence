@@ -65,9 +65,10 @@ export class ChatroomGateway implements OnGatewayInit, OnGatewayConnection, OnGa
 
 	@UseGuards(AuthGuard)
   @SubscribeMessage(ChatroomEvents.LeaveChatRoom)
-  leaveJoinRoom(client: Socket, payload: any): void {
-    this.io.to(payload.chatRoomId).emit(ChatroomEvents.LeaveChatRoomSuccess, payload);
-    client.leave(payload.chatRoomId);
+  leaveJoinRoom(client: Socket, payload: ChatRoom): void {
+		console.log("client leaving: ", payload);
+    this.io.to(`${payload.id}`).emit(ChatroomEvents.LeaveChatRoomSuccess, payload);
+    client.leave(`${payload.id}`);
   }
 
 	@UseGuards(AuthGuard)
