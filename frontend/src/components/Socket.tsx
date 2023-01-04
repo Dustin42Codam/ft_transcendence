@@ -1,89 +1,93 @@
 import React, { useRef, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Message } from "/frontend/src/models/Message";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { selectCurrentUser } from "../redux/slices/currentUserSlice";
+import { selectCurrentChatroom } from "../redux/slices/socketSlice";
+import { socketActions } from "../redux/slices/socketSlice";
 import { io, Socket } from "socket.io-client";
-import ClientToServerEvents from "socket.io-client";
-import ServerToClientEvents from "socket.io-client";
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "./Socket.css";
 
-const Snicel = () => {
-	/*
+interface ChatMessage {
+  chatRoomId: number;
+  content: string;
+  authorId: number;
+}
+
+const Snicel = (props: any) => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
   const currentUser = useAppSelector(selectCurrentUser);
-  const [isConnected, setIsConnected] = useState(
-    currentUser.chatSocket.connected
-  );
-  const [lastPong, setLastPong] = useState<string | null>(null);
-  const [messages, setMessages] = useState<Message[]>([]);
+  const currentChatroom = useAppSelector(selectCurrentChatroom);
   const inputRef = useRef<HTMLFormElement>(null);
 
-  useEffect(() => {
-    currentUser.chatSocket("connect", () => {
-      setIsConnected(true);
-    });
-
-    currentUser.chatSocket("disconnect", () => {
-      setIsConnected(false);
-    });
-
-    return () => {
-      currentUser.chatSocket.disconnect();
-      currentUser.chatSocket.off("connect");
-      currentUser.chatSocket.off("disconnect");
-    };
-  }, []);
+  /*	BUG LIFE
+   *
+   *	1.
+   *	If we go to /chat/name straig away. With straigth away I mean
+   *	I am accessing the page page with out going to it from the chat dropdown
+   *	locatio.state is null that causes the page to error and crash
+   *
+   *	2.
+   *	If we refresh the chat the messages do not get put to the screen for some reason.
+   */
 
   useEffect(() => {
-    currentUser.chatSocket("pong", () => {
-      setLastPong(new Date().toISOString());
+    //TO prevent bug one
+    console.log(currentChatroom, props.location.state);
+    if (currentChatroom.id == -1 || currentChatroom.name == "") {
+      if (!props.location.state) {
+        navigate("/", {
+          replace: true,
+        });
+        return;
+      }
+      dispatch(
+        socketActions.joinARoomSuccess({
+          chatRoom: {
+            id: props.location.state.id,
+            name: props.location.state.name,
+          },
+        })
+      );
+    }
+    toast.info(`🦄 joining room: ${props.location.state.name}!`, {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
     });
 
-    currentUser.chatSocket("messageToClient", (newMessage: Message) => {
-      console.log("We recived a message", newMessage);
-      setMessages((messages) => [...messages, newMessage]);
-      console.log(messages, messages.length);
-    });
-
-    currentUser.chatSocket("isTyping", (userName: string) => {
-      const timer = setTimeout(() => console.log("Hello, World!"), 3000);
-      return () => clearTimeout(timer);
-      currentUser.chatSocket.off("messageToClient");
-      currentUser.chatSocket.off("isTyping");
-      currentUser.chatSocket.off("pong");
-    });
-    return () => {
-      currentUser.chatSocket.off("messageToClient");
-      currentUser.chatSocket.off("pong");
-      currentUser.chatSocket.off("isTyping");
+    return function cleanup() {
+      console.log("from [props] unmounting");
+      toast.info(`🦄 left room: ${props.location.state.name}!`, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      dispatch(
+        socketActions.leaveARoom({
+          chatRoom: {
+            id: props.location.state.id,
+            name: props.location.state.name,
+          },
+        })
+      );
     };
-  });
-  console.log("this runing more then once");
-
-  const sendPing = () => {
-    currentUser.chatSocket.emit("ping");
-  };
-
-  const userIsTyping = (msg: string) => {
-    currentUser.chatSocket.emit("typing", currentUser.id);
-  };
-
-  //TODO ask Liz to add id to message dto
-  const renderedChats = messages.map((message: Message) => (
-    <div key={message.message} className="chatRow">
-      <p>{message.message}</p>
-    </div>
-  ));
-
-  const sendMessage = (e: any) => {
-    e.preventDefault();
-    currentUser.chatSocket.emit("messageToServer", {
-      number: currentUser.id,
-      message: `${inputRef.current!["messageInput"].value}`,
-    });
-    inputRef.current!["messageInput"].value = "";
-  };
+  }, [props.location]);
+  //const [lastPong, setLastPong] = useState<string | null>(null);
 
   /*
     <div className="chatBox">
@@ -91,9 +95,25 @@ const Snicel = () => {
       <p>Last pong: {lastPong || "-"}</p>
       <button onClick={sendPing}>Send ping</button>
     </div>
+	 */
+  const userIsTyping = (msg: string) => {};
+  const sendMessage = (e: any) => {
+    e.preventDefault();
+    dispatch(
+      socketActions.sendMessage({
+        chatMessage: {
+          chatRoomId: currentChatroom.id,
+          content: inputRef.current!["messageInput"].value,
+          authorId: currentUser.id,
+        },
+      })
+    );
+    inputRef.current!["messageInput"].value = "";
+  };
+
   return (
     <div>
-      <div>{renderedChats}</div>
+      <ToastContainer />
       <div className="chatBackgroudn">
         <form onSubmit={(e) => sendMessage(e)} ref={inputRef}>
           <input
@@ -107,10 +127,6 @@ const Snicel = () => {
       </div>
     </div>
   );
-	 */
-	return (
-		<div>Hello</div>
-	)
 };
 
 export default Snicel;

@@ -4,8 +4,9 @@ import postsReducer from "./slices/postsSlice";
 import chatsReducer from "./slices/chatsSlice";
 import currentUserReducer from "./slices/currentUserSlice";
 import messagesReducer from "./slices/messagesSlice";
-import socketReducer from "./slices/socketSlice";
 import friendsReducer from "./slices/friendsSlice";
+import socketMiddleware from "./socketMiddleware";
+import socketReducer from "./slices/socketSlice";
 
 const store = configureStore({
   reducer: {
@@ -15,15 +16,11 @@ const store = configureStore({
     currentUser: currentUserReducer,
     messages: messagesReducer,
     friends: friendsReducer,
-    sockets: socketReducer,
+    socket: socketReducer,
   },
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({
-      //   thunk: {
-      // extraArgument: myCustomApiService,
-      //   },
-      serializableCheck: false,
-    }),
+  middleware: (getDefaultMiddleware) => {
+    return getDefaultMiddleware().concat([socketMiddleware]);
+  },
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

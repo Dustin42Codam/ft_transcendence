@@ -5,32 +5,25 @@ import { AuthGuard } from "src/auth/auth.guard";
 import express, { Request } from "express";
 
 @UseGuards(AuthGuard)
-@Controller('friend')
+@Controller("friend")
 export class FriendController {
-	constructor(private readonly friendService: FriendService) {}
+  constructor(private readonly friendService: FriendService) {}
 
-	@Get(':id')
-	async getFriendshipById(
-		@Param('id') id : string
-	) {
-		return this.friendService.getFriendshipById(Number(id));
-	}
+  @Get(":id")
+  async getFriendshipById(@Param("id") id: string) {
+    return this.friendService.getFriendshipById(Number(id));
+  }
 
-	@Get()
-	async getAllFriendshipsFromUser(
-		@Req() request: Request,
-	) {
-		return this.friendService.getAllFriendshipsFromUser(request.session.user_id);
-	}
+  @Get()
+  async getAllFriendshipsFromUser(@Req() request: Request) {
+    return this.friendService.getAllFriendshipsFromUser(request.session.user_id);
+  }
 
-	@Post('remove/:id')
-	async removeFriendship(
-		@Param('id') id: string,
-		@Req() request: Request,
-	) {
-		const friendship = await this.friendService.getFriendshipById(Number(id));
-		if (request.session.user_id !== friendship.user_1_id && request.session.user_id !== friendship.user_2_id)
-			throw new BadRequestException("You can only remove a friendship that you are part of");
-		return await this.friendService.deleteFriendship(friendship);
-	}
+  @Post("remove/:id")
+  async removeFriendship(@Param("id") id: string, @Req() request: Request) {
+    const friendship = await this.friendService.getFriendshipById(Number(id));
+    if (request.session.user_id !== friendship.user_1_id && request.session.user_id !== friendship.user_2_id)
+      throw new BadRequestException("You can only remove a friendship that you are part of");
+    return await this.friendService.deleteFriendship(friendship);
+  }
 }

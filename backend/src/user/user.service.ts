@@ -11,46 +11,40 @@ import { UserInfoDto } from "./dto/user-info.dto";
 import { User, UserStatus } from "./entity/user.entity";
 import experss, { Request } from "express";
 
-
 @Injectable()
 export class UserService extends AbstractService {
-	constructor(
-		private gameStatsService: GameStatsService,
-		private achievementService: AchievementService,
-		@InjectRepository(User) private readonly userRepository: Repository<User>
-	) {
-		super(userRepository);
-	}
+  constructor(
+    private gameStatsService: GameStatsService,
+    private achievementService: AchievementService,
+    @InjectRepository(User) private readonly userRepository: Repository<User>,
+  ) {
+    super(userRepository);
+  }
 
-    async getUsers() {
-        return await this.userRepository.find();
-    }
+  async getUsers() {
+    return await this.userRepository.find();
+  }
 
-	async getUserById(id: number, relations?: any[]) {
-
-		const user = await this.findOne({id}, relations);
-		if (!user)
-			throw new BadRequestException("This user does not exist");
-		return user;
-	}
+  async getUserById(id: number, relations?: any[]) {
+    const user = await this.findOne({ id }, relations);
+    if (!user) throw new BadRequestException("This user does not exist");
+    return user;
+  }
 
 	async createUser(userCreateDto: UserCreateDto) {
 		const emptyGameStats: GameStatsCreateDto = {win: 0, lose: 0, played: 0}
 		const newUserInfo: UserInfoDto = {status: UserStatus.ONLINE, ...userCreateDto}
-		console.log(newUserInfo)
 		const newUser = await this.create(userCreateDto)
 		const gameStats = await this.gameStatsService.createGameStats(newUser);
 		await this.achievementService.createAllAchievements(newUser)
 		return await this.getUserById(newUser.id, ["achievements", "game_stats"]);
 	}
 
-	async changeStatus(id: number, status: UserStatus) {
-		
-		const user = await this.getUserById(id);
-		user.status = status;
-		Object.assign(user, status);
-		await this.userRepository.save(user);
-		return user;
-	}
-	
+  async changeStatus(id: number, status: UserStatus) {
+    const user = await this.getUserById(id);
+    user.status = status;
+    Object.assign(user, status);
+    await this.userRepository.save(user);
+    return user;
+  }
 }

@@ -1,14 +1,14 @@
 import { User } from "src/user/entity/user.entity";
 import { Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
-@Entity('block')
+@Entity("block")
 export class Block {
-    @PrimaryGeneratedColumn()
-	id: number;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @ManyToOne(() => User)
-	sender: User;
+  @ManyToOne(() => User)
+  sender: User;
 
-    @ManyToOne(() => User)
-	receiver: User;
+  @ManyToOne(() => User)
+  receiver: User;
 }

@@ -63,11 +63,18 @@ export const addNewGroupChat = createAsyncThunk(
   }
 );
 
-const chatsSlice = createSlice({
+export const chatsSlice = createSlice({
   name: "chats",
   initialState,
   reducers: {
-    // TODO: make it async
+    removeChatFromJoinable(state, action) {
+      state.joinable.splice(action.payload, 1);
+    },
+    /*
+		addChatFromGroup(state, action) {
+      state.group.push(action.payload);
+		}
+	 */
     // chatUpdated(state, action) {
     //   const { id, title, content } = action.payload;
     //   const existingChat: any = state.chats.find((chat: any) => chat.id === id);
@@ -137,3 +144,4 @@ export const selectDirectChats = (state: any) => state.chats.direct;
 
 // reducer
 export default chatsSlice.reducer;
+export const { removeChatFromJoinable } = chatsSlice.actions;

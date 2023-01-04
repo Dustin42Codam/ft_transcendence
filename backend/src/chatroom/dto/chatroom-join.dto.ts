@@ -1,3 +1,3 @@
 export class JoinChatroomDto {
-    password?: string;
+  password?: string;
 }

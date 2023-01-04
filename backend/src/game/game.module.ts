@@ -8,17 +8,12 @@ import { GameStatsModule } from "src/games_stats/game_stats.module";
 import { Game } from "./entity/game.entity";
 import { GameController } from "./game.controller";
 import { GameService } from "./game.service";
-import { GameGateway } from './game.gateway';
+import { GameGateway } from "./game.gateway";
 
 @Module({
-	imports: [
-		TypeOrmModule.forFeature([Game]),
-		AchievementModule,
-		GameStatsModule,
-		CommonModule,
-	],
+  imports: [TypeOrmModule.forFeature([Game]), AchievementModule, GameStatsModule, CommonModule],
   controllers: [GameController],
   providers: [GameService, GameGateway],
-  exports: [GameService]
+  exports: [GameService],
 })
 export class GameModule {}
