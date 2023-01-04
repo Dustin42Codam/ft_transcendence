@@ -14,6 +14,7 @@ import { Navigate, BrowserRouter, Routes, Route } from "react-router-dom";
 import React, { useRef, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "./redux/hooks";
 import { io, Socket } from "socket.io-client";
+import { UserList } from "./pages/users/UserList";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -44,8 +45,9 @@ function App() {
             <Route path={"/chats/:name"} element={<Chat />} />
 
             <Route path={"/profile"} element={<UserProfile />} />
+            <Route path={"/profile/edit"} element={<UserEdit />} />
 
-            <Route path={"/users"} element={<Users />} />
+            <Route path={"/users"} element={<UserList />} />
             <Route path={"/users/:userId"} element={<UserPage />} />
 
             <Route path={"/games"} element={<Game />} />
@@ -54,7 +56,6 @@ function App() {
 
             {/* maybe to delete */}
             {/*
-            <Route path={"/users/:id/edit"} element={<UserEdit />} />
             <Route path={"/users/create"} element={<UserCreate />} />
 
             <Route path={"/authenticate"} element={<Authenticate />} />

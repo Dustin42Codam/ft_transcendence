@@ -9,6 +9,7 @@ header {
 
 .col-md-4 {
   margin-bottom: 30px;
+  width: auto;
 }
 
 .card {
@@ -62,7 +63,7 @@ footer p a:hover {
 
 .UserBody {
   margin-top: 20px;
-  background: #eee;
+  background: rgb(100, 100, 100);
 }
 .fs35 {
   font-size: 35px !important;
@@ -90,6 +91,15 @@ footer p a:hover {
 
 .p30 {
   padding: 30px !important;
+}
+
+.page-heading-users {
+  position: relative;
+  margin: -25px -20px 25px;
+  border-bottom: 1px solid #d9d9d9;
+  background-color: #f2f2f2;
+  padding-top: 20px;
+  padding-left: 20px;
 }
 
 .page-heading {

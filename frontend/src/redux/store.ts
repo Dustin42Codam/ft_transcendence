@@ -1,23 +1,45 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import usersReducer from "./slices/usersSlice";
 import postsReducer from "./slices/postsSlice";
 import chatsReducer from "./slices/chatsSlice";
 import currentUserReducer from "./slices/currentUserSlice";
 import messagesReducer from "./slices/messagesSlice";
+import friendRequestsReducer from "./slices/friendRequestsSlice";
+// import friendsReducer from "./slices/friendsSlice";
 //import socketReducer from "./slices/socketSlice";
-import friendsReducer from "./slices/friendsSlice";
 import loggerMiddleware from "./loggerMiddleware";
+import { persistReducer } from "redux-persist";
+import storage from "redux-persist/lib/storage";
+
+const appReducer = combineReducers({
+  chats: chatsReducer,
+  users: usersReducer,
+  posts: postsReducer,
+  currentUser: currentUserReducer,
+  messages: messagesReducer,
+  friendRequests: friendRequestsReducer,
+  // friends: friendsReducer,
+});
+
+const rootReducer = (state: any, action: any) => {
+  if (action.type === "SIGNOUT_REQUEST") {
+    storage.removeItem("persist:root");
+
+    return appReducer(undefined, action);
+  }
+  return appReducer(state, action);
+};
+
+const persistConfig = {
+  key: "root",
+  storage,
+};
+
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 const store = configureStore({
-  reducer: {
-    chats: chatsReducer,
-    users: usersReducer,
-    posts: postsReducer,
-    currentUser: currentUserReducer,
-    messages: messagesReducer,
-    friends: friendsReducer,
-    //   sockets: socketReducer,
-  },
+  reducer: persistedReducer,
+  devTools: process.env.NODE_ENV !== "production",
   middleware: (getDefaultMiddleware) => {
     return getDefaultMiddleware().concat([loggerMiddleware]);
   },

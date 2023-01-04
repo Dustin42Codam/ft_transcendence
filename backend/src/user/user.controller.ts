@@ -58,8 +58,9 @@ export class UserController {
     @Post(':id')
     async update(
         @Body() body: UserUpdateDto,
-        @Req() request: Request
+        @Param('id') id : number
     ) {
-        this.userService.update(request.session.user_id, body);
+        await this.userService.update(id, body);
+        return this.userService.getUserById(id);
     }
 }

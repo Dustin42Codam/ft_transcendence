@@ -23,10 +23,6 @@ export const fetchJoinableChats = createAsyncThunk(
   "chats/fetchJoinableChats",
   async () => {
     const response = await axios.get("chatroom/join");
-    console.log(
-      "🚀 ~ file: chatsSlice.ts:18 ~ fetchJoinableChats ~ response",
-      response
-    );
     return response.data;
   }
 );
@@ -35,10 +31,6 @@ export const fetchGroupChats = createAsyncThunk(
   "chats/fetchGroupChats",
   async () => {
     const response = await axios.get("chatroom/group");
-    console.log(
-      "🚀 ~ file: chatsSlice.ts:18 ~ fetchGroupChats ~ response",
-      response
-    );
     return response.data;
   }
 );
@@ -47,10 +39,6 @@ export const fetchDirectChats = createAsyncThunk(
   "chats/fetchDirectChats",
   async () => {
     const response = await axios.get("chatroom/dm");
-    console.log(
-      "🚀 ~ file: chatsSlice.ts:18 ~ fetchDirectChats ~ response",
-      response
-    );
     return response.data;
   }
 );
@@ -58,25 +46,21 @@ export const fetchDirectChats = createAsyncThunk(
 export const addNewGroupChat = createAsyncThunk(
   "chats/addNewGroupChat",
   async (data: any) => {
-    console.log("🚀 ~ file: chatsSlice.ts:66 ~ data.chat", data.chat);
     return await axios.post(`chatroom/`, data.chat);
+  }
+);
+
+export const deleteChat = createAsyncThunk(
+  "chats/deleteChat",
+  async (id: number) => {
+    return await axios.post(`chatroom/remove/${id}`);
   }
 );
 
 const chatsSlice = createSlice({
   name: "chats",
   initialState,
-  reducers: {
-    // TODO: make it async
-    // chatUpdated(state, action) {
-    //   const { id, title, content } = action.payload;
-    //   const existingChat: any = state.chats.find((chat: any) => chat.id === id);
-    //   if (existingChat) {
-    //     existingChat.title = title;
-    //     existingChat.content = content;
-    //   }
-    // },
-  },
+  reducers: {},
   // reducers for action creators which are declared outside of createSlice()
   extraReducers(builder) {
     builder
@@ -118,13 +102,21 @@ const chatsSlice = createSlice({
       })
       .addCase(addNewGroupChat.fulfilled, (state: any, action: any) => {
         state.status = "succeeded";
-        console.log(
-          "🚀 ~ file: chatsSlice.ts:117 ~ .addCase ~ action.payload",
-          action.payload
-        );
         state.group.push(action.payload.data);
       })
       .addCase(addNewGroupChat.rejected, (state: any, action) => {
+        state.status = "failed";
+        state.error = action.error.message;
+      })
+      .addCase(deleteChat.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(deleteChat.fulfilled, (state: any, action: any) => {
+        state.status = "succeeded";
+        console.log("🚀 ~ file: chatsSlice.ts:115 ~ .addCase ~ action", action);
+        // state.group.push(action.payload.data);
+      })
+      .addCase(deleteChat.rejected, (state: any, action) => {
         state.status = "failed";
         state.error = action.error.message;
       });

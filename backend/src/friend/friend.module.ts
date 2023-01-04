@@ -1,6 +1,7 @@
 import { Module, forwardRef } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { AchievementModule } from "src/achievement/achievement.module";
+import { AuthModule } from "src/auth/auth.module";
 import { ChatroomModule } from "src/chatroom/chatroom.module";
 
 import { CommonModule } from "src/common/common.module";
@@ -17,6 +18,7 @@ import { FriendService } from "./friend.service";
 		forwardRef(() => AchievementModule),
 		forwardRef(() => UserModule),
 		CommonModule,
+		AuthModule,
 	],
   controllers: [FriendController],
   providers: [FriendService],

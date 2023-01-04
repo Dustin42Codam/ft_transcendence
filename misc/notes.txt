@@ -1,0 +1,3 @@
+-	avatar upload strategy
+	-	how to store images in backend?
+
