@@ -55,7 +55,6 @@ export class FriendService extends AbstractService {
 
     async getAllFriendshipsFromUser(user_id: number) {
         const friendship_ids = await this.friendRepository.find({ where: [{user_1_id: user_id},{user_2_id: user_id}],});
-        console.log(friendship_ids)
         const users: User[] = [];
         for (const friend of friendship_ids) {
             if (friend.user_1_id === user_id) {
