@@ -30,7 +30,7 @@ const Menu = (props: any) => {
     if (joinableChats.length > 0) {
       setJoinChanel(!joinChanel);
     } else {
-      toast("🦄 You do not have any chats to join", {
+      toast("🦄 You do not have any chats to join MENU thingiy", {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,

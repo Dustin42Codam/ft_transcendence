@@ -44,6 +44,9 @@ const socketSlice = createSlice({
     startConnecting: (state) => {
       state.isEstablishingConnection = true;
     },
+    refreshPage: (state) => {
+      return;
+    },
     connectionEstablished: (state) => {
       state.isConnected = true;
     },

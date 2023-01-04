@@ -1,9 +1,10 @@
 import React, { useRef, useState, useEffect } from "react";
+import store from "../redux/store";
 import { useNavigate } from "react-router-dom";
 import { Message } from "/frontend/src/models/Message";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { selectCurrentUser } from "../redux/slices/currentUserSlice";
-import { selectCurrentChatroom, } from "../redux/slices/socketSlice";
+import { selectCurrentChatroom } from "../redux/slices/socketSlice";
 import { socketActions } from "../redux/slices/socketSlice";
 import { io, Socket } from "socket.io-client";
 import { ToastContainer, toast } from "react-toastify";
@@ -20,63 +21,60 @@ const Snicel = (props: any) => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
+  let currentChatroom: any = store.getState().socket.currentChatRoom;
   const currentUser = useAppSelector(selectCurrentUser);
-  const currentChatroom = useAppSelector(selectCurrentChatroom);
   const inputRef = useRef<HTMLFormElement>(null);
 
-	/*	BUG LIFE
-	 *
-	 *	1.
-		 *	If we go to /chat/name straig away. With straigth away I mean
-		 *	I am accessing the page page with out going to it from the chat dropdown
-		 *	locatio.state is null that causes the page to error and crash
-		 *
-	 *	2.
-		 *	If we refresh the chat the messages do not get put to the screen for some reason.
-	 */
+  /*	BUG LIFE
+   *
+   *	1.
+   *	If we go to /chat/name straig away. With straigth away I mean
+   *	I am accessing the page page with out going to it from the chat dropdown
+   *	locatio.state is null that causes the page to error and crash
+   *
+   *	2.
+   *	If we refresh the chat the messages do not get put to the screen for some reason.
+   */
 
   useEffect(() => {
-		//TO prevent bug one
-		console.log(currentChatroom, props.location.state)
-		if (currentChatroom.id == -1 || currentChatroom.name == "") {
-			if (!props.location.state) {
-				navigate("/", {
-					replace: true,
-				});
-				return ;
-			}
-      dispatch(
-        socketActions.joinARoomSuccess({
-          chatRoom: {
-            id: props.location.state.id,
-            name: props.location.state.name,
-          },
-        })
-      );
-		}
-    toast.info(`🦄 joining room: ${props.location.state.name}!`, {
-      position: "top-right",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
+    //TO prevent bug one
+    async function waitForIt() {
+      await new Promise((resolve, reject) => {
+        //will check evert seccond if the chat room is set
+        const interval = setInterval(function () {
+          currentChatroom = store.getState().socket.currentChatRoom;
+          if (currentChatroom.id == -1 && currentChatroom.name == "") {
+            resolve(null);
+            clearInterval(interval);
+          }
+        }, 100);
+      });
+    }
+    console.log(currentChatroom, props.location.state);
+    if (currentChatroom.id == -1 || currentChatroom.name == "") {
+      navigate("/", {
+        replace: true,
+      });
+      return;
+      if (window.performance) {
+        if (performance.navigation.type == 1) {
+          dispatch(
+            socketActions.leaveARoom({
+              chatRoom: {
+                id: currentChatroom.id,
+                name: currentChatroom.name,
+              },
+            })
+          );
+          waitForIt();
+        } else {
+          alert("This page is not reloaded");
+        }
+      }
+    }
 
     return function cleanup() {
-			console.log("from [props] unmounting");
-      toast.info(`🦄 left room: ${props.location.state.name}!`, {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+      console.log("from [props] unmounting");
       dispatch(
         socketActions.leaveARoom({
           chatRoom: {
@@ -99,6 +97,7 @@ const Snicel = (props: any) => {
   const userIsTyping = (msg: string) => {};
   const sendMessage = (e: any) => {
     e.preventDefault();
+    console.log(currentChatroom);
     dispatch(
       socketActions.sendMessage({
         chatMessage: {

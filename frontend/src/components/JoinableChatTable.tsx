@@ -45,14 +45,14 @@ const JoinableChats = (props: any) => {
         .then(() => {
           dispatch(removeChatFromJoinable(index));
           props.setJoinableChats(false);
-					dispatch(
-						socketActions.joinARoom({
-							chatRoom: {
-								id: joinableChats[index].id,
-								name: joinableChats[index].name,
-							},
-						})
-					);
+          dispatch(
+            socketActions.joinARoom({
+              chatRoom: {
+                id: joinableChats[index].id,
+                name: joinableChats[index].name,
+              },
+            })
+          );
           navigate("../chats/" + joinableChats[index].name, {
             replace: true,
             state: joinableChats[index],

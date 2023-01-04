@@ -41,6 +41,7 @@ export class ChatroomGateway implements OnGatewayInit, OnGatewayConnection, OnGa
   //this is fine I suppose like a general socket to connect to?
 	@UseGuards(AuthGuard)
   handleConnection(client): void {
+		console.log(`client ${client.id} conected`);
     const sockets = this.io.sockets;
     //TODO backend team set user status to online
   }
@@ -48,6 +49,7 @@ export class ChatroomGateway implements OnGatewayInit, OnGatewayConnection, OnGa
 	@UseGuards(AuthGuard)
   handleDisconnect(client: any): void {
     const sockets = this.io.sockets;
+		console.log(`client ${client.id} disconected`);
     //TODO backend team set user status to offline
   }
 
