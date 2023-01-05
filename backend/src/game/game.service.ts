@@ -8,15 +8,23 @@ import { Game } from "./entity/game.entity";
 import { GameCreateDto } from "./dto/game-create.dto";
 import { AchievementService } from "src/achievement/achievement.service";
 import { GameStatsService } from "src/games_stats/game_stats.service";
+import { UserService } from "src/user/user.service";
 
 @Injectable()
 export class GameService extends AbstractService {
   constructor(
         private achievementService : AchievementService,
         private gameStatsService : GameStatsService,
+		private userService : UserService,
 		@InjectRepository(Game) private readonly gameRepository: Repository<Game>
 	) {
 		super(gameRepository);
+	}
+
+	async getGamesLadder() {
+		const users = await this.userService.getUsers(["game_stats"]);
+		const sorted = users.sort((u1,u2) => u1.game_stats.win/u1.game_stats.win - u2.game_stats.win/u2.game_stats.win);
+		return sorted;
 	}
 
     async getGameById(id: number) {
