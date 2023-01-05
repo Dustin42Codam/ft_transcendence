@@ -23,7 +23,7 @@ export class UserService extends AbstractService {
 	}
 
     async getUsers(relations?: any[]) {
-        return await this.userRepository.find(relations);
+        return await this.find(relations);
     }
 
 	async getUserById(id: number, relations?: any[]) {

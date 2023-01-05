@@ -10,7 +10,7 @@ export class GameController {
 
     @Get(':id')
     async getGameById(
-        @Param('id') id : string
+        @Param('id') id : Number
     ) {
         return await this.gameService.getGameById(Number(id));
     }
@@ -22,9 +22,9 @@ export class GameController {
         return await this.gameService.createGame(body);
     }
 
-	@UseGuards(AuthGuard)
-    @Get('ladder')
-    async getGamesLadeer(
+	// @UseGuards(AuthGuard)
+    @Get('get/ladder')
+    async getGamesLadder(
         ) {
         return await this.gameService.getGamesLadder();
     }
@@ -33,9 +33,7 @@ export class GameController {
     @Get('games/:id')
     async getAllGamesFromUser(
         @Param('games/id') id: string,
-        @Req() request: Request
         ) {
-        
-        return await this.gameService.getAllGamesFromUser(request.session.user_id);
+        return await this.gameService.getAllGamesFromUser(Number(id));
     }
 }

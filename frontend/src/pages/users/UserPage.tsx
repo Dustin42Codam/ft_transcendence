@@ -58,9 +58,29 @@ export const UserPage = () => {
     fetchFriends();
   }
 
+  async function blockUser() {
+    await axios.post(`block`,
+      {
+        receiver: {
+          id: userId
+        }
+      })
+      .catch((error: any) => {
+      console.log("🚀 ~ file: UserPage.tsx ~ blockUser ~ error", error);
+    });
+    fetchFriends();
+  }
+
   async function removeFriend() {
     await axios.post(`friend/remove/${userId}`).catch((error: any) => {
       console.log("🚀 ~ file: UserPage.tsx ~ removeFriend ~ error", error);
+    });
+    fetchFriends();
+  }
+
+  async function unblockUser() {
+    await axios.post(`block/${userId}`).catch((error: any) => {
+      console.log("🚀 ~ file: UserPage.tsx ~ unblockFriend ~ error", error);
     });
     fetchFriends();
   }
@@ -125,8 +145,17 @@ export const UserPage = () => {
                           Add Friend{" "}
                         </button>
                       )}{" "}
-                      <button className="btn btn-outline-primary px-4">
+                      <button 
+                        className="btn btn-outline-primary px-4"
+                        onClick={blockUser}
+                      >
                         Block
+                      </button>{" "}
+                      <button 
+                        className="btn btn-outline-primary px-4"
+                        onClick={unblockUser}
+                      >
+                        Unblock
                       </button>{" "}
                       <button className="btn btn-outline-primary px-4">
                         Send Game Invite

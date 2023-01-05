@@ -9,6 +9,7 @@ import { Game } from "./entity/game.entity";
 import { GameController } from "./game.controller";
 import { GameService } from "./game.service";
 import { GameGateway } from './game.gateway';
+import { UserModule } from "src/user/user.module";
 
 @Module({
 	imports: [
@@ -16,6 +17,7 @@ import { GameGateway } from './game.gateway';
 		AchievementModule,
 		GameStatsModule,
 		CommonModule,
+		UserModule,
 	],
   controllers: [GameController],
   providers: [GameService, GameGateway],

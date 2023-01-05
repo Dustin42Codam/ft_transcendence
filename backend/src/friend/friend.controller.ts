@@ -4,6 +4,8 @@ import { FriendCreateDto } from "./dto/friend-create.dto";
 import { AuthGuard } from "src/auth/auth.guard";
 import express, { Request } from "express";
 import { AuthService } from "src/auth/auth.service";
+import { BlockService } from "src/blocked/block.service";
+import { UserService } from "src/user/user.service";
 
 @UseGuards(AuthGuard)
 @Controller('friend')
@@ -11,6 +13,8 @@ export class FriendController {
 	constructor(
 		private readonly friendService: FriendService,
 		private readonly authService: AuthService,
+		private readonly blockService: BlockService,
+		private readonly userService: UserService,
 	) {}
 
 	@Get(':id')
@@ -58,22 +62,40 @@ export class FriendController {
 
 	@Post(':id')
 	async addFriendship(
-		@Param('id') newFriendId: number,
+		@Param('id') receiverId: string,
 		@Req() request: Request,
 	) {
-		const userId =
+		const senderId =
 			await this.authService.userId(request);
+		const sender = await this.userService.getUserById(senderId);
+		
+		const receiver = await this.userService.getUserById(Number(receiverId));
 		const friendship = 
 			await this.friendService
-				.getFriendshipByUserids(userId, newFriendId);
+				.getFriendshipByUserids(senderId, receiver.id);
 		
 		if (friendship){
 			return friendship;
 		}
 
+		const blockBySender = await this.blockService.findOne({
+			sender: sender,
+			receiver: receiver
+		});
+		if (blockBySender)
+			throw new BadRequestException
+				("You can not be a friend with a User that you blocked.");
+		const blockByReceiver = await this.blockService.findOne({
+			sender: receiver,
+			receiver: sender
+		});
+		if (blockByReceiver)
+			throw new BadRequestException
+				("You can not be a friend with a User that blocked you.");
+
 		return await this.friendService.createFriendship({
-			user_1_id: userId,
-			user_2_id: newFriendId
+			user_1_id: senderId,
+			user_2_id: receiver.id
 		});
 	}
 }

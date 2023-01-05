@@ -30,6 +30,12 @@ export class BlockService extends AbstractService {
 		return block
 	}
 
+    async getBlockByUserids(user1: number, user2: number) {
+        const block = await this.findOne(
+			{sender: user1, receiver: user2});
+        return block;
+    }
+
 	async getBlocksFromUser(user: User) {
 		return await this.blockRepository.find({
 			where: {sender: user},
@@ -42,18 +48,6 @@ export class BlockService extends AbstractService {
 	}
 
 	async block(sender, receiver) {
-		const friendRequestBySender = await this.friendRequestService.findOne({
-			sender: sender,
-			receiver: receiver
-		});
-		if (friendRequestBySender)
-			await this.friendRequestService.delete(friendRequestBySender.id);
-		const friendRequestByReceiver = await this.friendRequestService.findOne({
-			sender: receiver,
-			receiver: sender
-		});
-		if (friendRequestByReceiver)
-			await this.friendRequestService.delete(friendRequestByReceiver.id);
 		const friendship = await this.friendService.getFriendshipByUserids(sender.id, receiver.id)
 		if (friendship)
 			await this.friendService.deleteFriendship(friendship);
