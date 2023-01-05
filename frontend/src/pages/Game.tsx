@@ -1,20 +1,16 @@
 import React, { useEffect } from "react";
 import Wrapper from "../components/Wrapper";
 import loadGame from "../modules/Game";
+import "./Game.css";
 
 const Game = (props: any) => {
-
-	useEffect(() => {
-		loadGame();
-	}, []);
+  useEffect(() => {
+    loadGame();
+  }, []);
 
   return (
     <Wrapper>
-      <div>
-				<canvas id="canvas" width="500" height="300">
-				
-				</canvas>
-			</div>
+        <canvas id="canvas" width="1300" height="700"></canvas>
     </Wrapper>
   );
 };
