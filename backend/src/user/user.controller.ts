@@ -7,29 +7,20 @@ import { UserUpdateNameDto } from "./dto/user-update-name.dto";
 import { AuthService } from "src/auth/auth.service";
 import { Request } from "express-session";
 
+@UseGuards(AuthGuard)
 @Controller('users')
 export class UserController {
-    constructor(
-		private readonly userService: UserService,
-		private readonly authService: AuthService,
-	) {}
+  constructor(private readonly userService: UserService, private readonly authService: AuthService) {}
 
-    @Get()
-    async all(@Query('page') page = 1) {
-      return this.userService.paginate(page);
-    }
+  @Get()
+  async all(@Query("page") page = 1) {
+    return this.userService.paginate(page);
+  }
 
-    @Get(':id')
-    async getUserById(
-        @Param('id') id : string
-    ) {
-        return this.userService.getUserById(Number(id));
-    }
-        
-    @Get()
-    async getUsers(@Req() request: Request) {
-      return await this.userService.getUsers();
-    }
+  @Get(":id")
+  async getUserById(@Param("id") id: string) {
+    return this.userService.getUserById(Number(id));
+  }
 
 	// TODO: delete before handing in
     @Post()

@@ -5,17 +5,17 @@ import { MessageService } from "../message.service";
 import { Member } from "src/member/entity/member.entity";
 import { User } from "src/user/entity/user.entity";
 
-@Entity('message')
+@Entity("message")
 export class Message {
-    @PrimaryGeneratedColumn()
-    id: number;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @ManyToOne(() => Member)
-    member: Member;
+  @ManyToOne(() => Member)
+  member: Member;
 
-    @Column()
-    timestamp: Date;
+  @Column()
+  timestamp: Date;
 
-    @Column()
-    message: string;
+  @Column()
+  message: string;
 }

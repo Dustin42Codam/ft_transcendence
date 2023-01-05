@@ -5,11 +5,12 @@ import chatsReducer from "./slices/chatsSlice";
 import currentUserReducer from "./slices/currentUserSlice";
 import messagesReducer from "./slices/messagesSlice";
 import friendRequestsReducer from "./slices/friendRequestsSlice";
-// import friendsReducer from "./slices/friendsSlice";
-//import socketReducer from "./slices/socketSlice";
+import friendsReducer from "./slices/friendsSlice";
+import socketReducer from "./slices/socketSlice";
 import loggerMiddleware from "./loggerMiddleware";
 import { persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
+import socketMiddleware from "./socketMiddleware";
 
 const appReducer = combineReducers({
   chats: chatsReducer,
@@ -18,7 +19,8 @@ const appReducer = combineReducers({
   currentUser: currentUserReducer,
   messages: messagesReducer,
   friendRequests: friendRequestsReducer,
-  // friends: friendsReducer,
+  friends: friendsReducer,
+  socket: socketReducer,
 });
 
 const rootReducer = (state: any, action: any) => {
@@ -42,7 +44,7 @@ const store = configureStore({
   devTools: process.env.NODE_ENV !== "production",
   middleware: (getDefaultMiddleware) => {
     return getDefaultMiddleware().concat([loggerMiddleware]);
-  },
+  }
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

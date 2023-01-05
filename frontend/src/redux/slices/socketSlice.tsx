@@ -1,26 +1,70 @@
-import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import ChatMessage from "../socketMessage";
+import { createAsyncThunk, PayloadAction, createSlice } from "@reduxjs/toolkit";
+import axios from "axios";
+
+export interface ChatRoom {
+  id: number;
+  name: string;
+}
+
 export interface ChatState {
   messages: ChatMessage[];
   isEstablishingConnection: boolean;
   isConnected: boolean;
+  currentChatRoom: ChatRoom;
+  status: any;
 }
-const initialState: ChatState = {
+
+export const initialState: ChatState = {
   messages: [],
   isEstablishingConnection: false,
   isConnected: false,
+  currentChatRoom: { id: -1, name: "" },
+  status: "",
 };
 
-const chatSlice = createSlice({
-  name: "chat",
+export interface ChatMessage {
+  chatRoomId: number;
+  content: string;
+  authorId: number;
+}
+
+export const fetchCurrentChatRoomMessages = createAsyncThunk(
+  "socket/fetchCurrentChatRoomMessages",
+  async (chatroomId: number) => {
+    const response = await axios.get(`message/${chatroomId}`);
+
+    return response.data;
+  }
+);
+
+const socketSlice = createSlice({
+  name: "socket",
   initialState,
   reducers: {
     startConnecting: (state) => {
       state.isEstablishingConnection = true;
     },
+    refreshPage: (state) => {
+      return;
+    },
     connectionEstablished: (state) => {
       state.isConnected = true;
-      state.isEstablishingConnection = true;
+    },
+    joinARoom: (state, action: PayloadAction<{ chatRoom: ChatRoom }>) => {
+      return;
+    },
+    joinARoomSuccess: (
+      state,
+      action: PayloadAction<{ chatRoom: ChatRoom }>
+    ) => {
+      state.currentChatRoom = action.payload.chatRoom;
+    },
+    leaveARoom: (state, action: PayloadAction<{ chatRoom: ChatRoom }>) => {
+      return;
+    },
+    leaveARoomSuccess: (state) => {
+      state.currentChatRoom = initialState.currentChatRoom;
+      return;
     },
     receiveAllMessages: (
       state,
@@ -33,20 +77,44 @@ const chatSlice = createSlice({
     receiveMessage: (
       state,
       action: PayloadAction<{
-        message: ChatMessage;
+        chatMessage: ChatMessage;
       }>
     ) => {
-      state.messages.push(action.payload.message);
+      state.messages.push(action.payload.chatMessage);
     },
-    submitMessage: (
+    sendMessage: (
       state,
       action: PayloadAction<{
-        content: string;
+        chatMessage: ChatMessage;
       }>
     ) => {
       return;
     },
   },
+  extraReducers(builder) {
+    builder
+      .addCase(fetchCurrentChatRoomMessages.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(
+        fetchCurrentChatRoomMessages.fulfilled,
+        (state: any, action: PayloadAction<number>) => {
+          state.status = "succeeded";
+          state.messages = action.payload;
+        }
+      )
+      .addCase(fetchCurrentChatRoomMessages.rejected, (state: any, action) => {
+        state.status = "loading";
+        state.error = action.error.message;
+      });
+  },
 });
-export const chatActions = chatSlice.actions;
-export default chatSlice;
+
+export const socketActions = socketSlice.actions;
+
+export const selectCurrentChatroom = (state: any) =>
+  state.socket.currentChatRoom;
+export const selectCurrentChatroomMessages = (state: any) =>
+  state.socket.messages;
+
+export default socketSlice.reducer;

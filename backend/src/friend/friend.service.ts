@@ -1,4 +1,4 @@
-import { Injectable, BadRequestException, forwardRef, Inject} from "@nestjs/common";
+import { Injectable, BadRequestException, forwardRef, Inject } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 
@@ -12,34 +12,32 @@ import { UserService } from "src/user/user.service";
 import { ChatroomInfoDto } from "src/chatroom/dto/chatroom-info.dto";
 import { User } from "src/user/entity/user.entity";
 
-
-
 @Injectable()
 export class FriendService extends AbstractService {
   constructor(
-        private chatroomService : ChatroomService,
-        @Inject(forwardRef(() => AchievementService))
-        private achievementService : AchievementService,
-        @Inject(forwardRef(() => UserService))
-        private userService : UserService,
-		@InjectRepository(Friend) private readonly friendRepository: Repository<Friend>
-	) {
-		super(friendRepository);
-	}
+    private chatroomService: ChatroomService,
+    @Inject(forwardRef(() => AchievementService))
+    private achievementService: AchievementService,
+    @Inject(forwardRef(() => UserService))
+    private userService: UserService,
+    @InjectRepository(Friend) private readonly friendRepository: Repository<Friend>,
+  ) {
+    super(friendRepository);
+  }
 
-	async getFriendshipById(id: number) {
-        const friendship = this.findOne({id});
-        if (!friendship)
-            throw new BadRequestException("This friendship does not exist");
-		return friendship;
-	}
+  async getFriendshipById(id: number) {
+    const friendship = this.findOne({ id });
+    if (!friendship) throw new BadRequestException("This friendship does not exist");
+    return friendship;
+  }
 
-    async getFriendshipByUserids(user1: number, user2: number) {
-        const friendship = await this.findOne([
-			{user_1_id: user1, user_2_id: user2},
-			{user_1_id: user2, user_2_id: user1}]);
-        return friendship;
-    }
+  async getFriendshipByUserids(user1: number, user2: number) {
+    const friendship = await this.findOne([
+      { user_1_id: user1, user_2_id: user2 },
+      { user_1_id: user2, user_2_id: user1 },
+    ]);
+    return friendship;
+  }
 
     async createFriendship(friendCreateDto: FriendCreateDto) {
         const user1 = await this.userService.getUserById(friendCreateDto.user_1_id);
@@ -68,9 +66,9 @@ export class FriendService extends AbstractService {
         return users;
     }
 
-	async deleteFriendship(friendship: Friend) {
-        const chatroom = await this.chatroomService.findOne({id: friendship.chatroom_id}, ["users"]);
-        await this.chatroomService.deleteChatroom(chatroom);
-        return await this.delete(friendship.id);
-    }
+  async deleteFriendship(friendship: Friend) {
+    const chatroom = await this.chatroomService.findOne({ id: friendship.chatroom_id }, ["users"]);
+    await this.chatroomService.deleteChatroom(chatroom);
+    return await this.delete(friendship.id);
+  }
 }

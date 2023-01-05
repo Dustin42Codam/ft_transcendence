@@ -1,3 +1,3 @@
 export class ChatroomChangePasswordDto {
-    password: string;
+  password: string;
 }

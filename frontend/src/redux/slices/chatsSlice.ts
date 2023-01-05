@@ -50,17 +50,27 @@ export const addNewGroupChat = createAsyncThunk(
   }
 );
 
-export const deleteChat = createAsyncThunk(
-  "chats/deleteChat",
-  async (id: number) => {
-    return await axios.post(`chatroom/remove/${id}`);
-  }
-);
-
-const chatsSlice = createSlice({
+export const chatsSlice = createSlice({
   name: "chats",
   initialState,
-  reducers: {},
+  reducers: {
+    removeChatFromJoinable(state, action) {
+      state.joinable.splice(action.payload, 1);
+    },
+    /*
+		addChatFromGroup(state, action) {
+      state.group.push(action.payload);
+		}
+	 */
+    // chatUpdated(state, action) {
+    //   const { id, title, content } = action.payload;
+    //   const existingChat: any = state.chats.find((chat: any) => chat.id === id);
+    //   if (existingChat) {
+    //     existingChat.title = title;
+    //     existingChat.content = content;
+    //   }
+    // },
+  },
   // reducers for action creators which are declared outside of createSlice()
   extraReducers(builder) {
     builder
@@ -107,18 +117,6 @@ const chatsSlice = createSlice({
       .addCase(addNewGroupChat.rejected, (state: any, action) => {
         state.status = "failed";
         state.error = action.error.message;
-      })
-      .addCase(deleteChat.pending, (state, action) => {
-        state.status = "loading";
-      })
-      .addCase(deleteChat.fulfilled, (state: any, action: any) => {
-        state.status = "succeeded";
-        console.log("🚀 ~ file: chatsSlice.ts:115 ~ .addCase ~ action", action);
-        // state.group.push(action.payload.data);
-      })
-      .addCase(deleteChat.rejected, (state: any, action) => {
-        state.status = "failed";
-        state.error = action.error.message;
       });
   },
 });
@@ -129,3 +127,4 @@ export const selectDirectChats = (state: any) => state.chats.direct;
 
 // reducer
 export default chatsSlice.reducer;
+export const { removeChatFromJoinable } = chatsSlice.actions;

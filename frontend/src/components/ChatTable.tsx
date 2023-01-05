@@ -9,6 +9,7 @@ import {
   selectGroupChats,
   selectJoinableChats,
 } from "../redux/slices/chatsSlice";
+import axios from "axios";
 
 export enum ChatroomType {
   PUBLIC = "public",
@@ -28,6 +29,17 @@ interface IState {
   chats: Chats;
 }
 
+const loginToChat = async (chatId: number) => {
+  return await axios
+    .post("chatroom/join/" + chatId, {
+      password: "password",
+    })
+    .then((res) => {})
+    .catch((err) => {
+      alert(err);
+    });
+};
+
 const ChatTable = () => {
   const joinableChats = useAppSelector(selectJoinableChats);
   const directChats = useAppSelector(selectDirectChats);
@@ -35,9 +47,8 @@ const ChatTable = () => {
 
   let navigate = useNavigate();
 
-  function handleClick(name: string) {
-    //TODO make api call to give cookie if password is correct for the chat
-    //TODO joinRoom socket connection
+  function handleClick(name: string, chatId: number) {
+    console.log("test: ", loginToChat(chatId));
     navigate("../chats/" + name, { replace: true });
   }
 
@@ -48,7 +59,7 @@ const ChatTable = () => {
     <div
       key={chat.id}
       className="chatRow"
-      onClick={() => handleClick(chat.name)}
+      onClick={() => handleClick(chat.name, chat.id)}
     >
       {chat.type === ChatroomType.PROTECTED ? <CastleIcon /> : <PublicIcon />}
       {chat.name}

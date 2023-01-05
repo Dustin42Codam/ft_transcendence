@@ -8,7 +8,7 @@ import { BlockService } from "src/blocked/block.service";
 import { UserService } from "src/user/user.service";
 
 @UseGuards(AuthGuard)
-@Controller('friend')
+@Controller("friend")
 export class FriendController {
 	constructor(
 		private readonly friendService: FriendService,
@@ -17,12 +17,10 @@ export class FriendController {
 		private readonly userService: UserService,
 	) {}
 
-	@Get(':id')
-	async getFriendshipById(
-		@Param('id') id : string
-	) {
-		return this.friendService.getFriendshipById(Number(id));
-	}
+  @Get(":id")
+  async getFriendshipById(@Param("id") id: string) {
+    return this.friendService.getFriendshipById(Number(id));
+  }
 
 	@Get('my')
 	async getAllFriendsFromCurrentUser(

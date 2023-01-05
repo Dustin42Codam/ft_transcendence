@@ -22,6 +22,6 @@ import { AuthModule } from "src/auth/auth.module";
 	],
   controllers: [BlockController],
   providers: [BlockService],
-  exports: [BlockService]
+  exports: [BlockService],
 })
 export class BlockModule {}

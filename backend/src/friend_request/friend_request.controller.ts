@@ -4,11 +4,11 @@ import { FriendRequestCreateDto } from "./dto/friend-request-create.dto";
 import { BlockService } from "src/blocked/block.service";
 import { FriendService } from "src/friend/friend.service";
 import { AuthGuard } from "src/auth/auth.guard";
-import express, {Request} from "express";
+import express, { Request } from "express";
 import { UserService } from "src/user/user.service";
 import { AuthService } from "src/auth/auth.service";
 @UseGuards(AuthGuard)
-@Controller('friendRequest')
+@Controller("friendRequest")
 export class FriendRequestController {
 	constructor(
 		private readonly friendRequestService: FriendRequestService,

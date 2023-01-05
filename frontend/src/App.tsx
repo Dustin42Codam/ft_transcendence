@@ -1,25 +1,24 @@
 import "./App.css";
-import Users from "./pages/users/Users";
+import Game from "./pages/Game";
 import NotFound from "./pages/NotFound";
 import Dashboard from "./pages/Dashboard";
 import Authenticate from "./pages/Authenticate";
-import Game from "./pages/Game";
 import UserEdit from "./pages/users/UserEdit";
-import { UserPage } from "./pages/users/UserPage";
 import { UserProfile } from "./pages/users/UserProfile";
 import Chat from "./pages/Chat";
-import UserCreate from "./pages/users/UserCreate";
-import Achievements from "./pages/achievements/Achievements";
-import { Navigate, BrowserRouter, Routes, Route } from "react-router-dom";
 import React, { useRef, useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "./redux/hooks";
 import { io, Socket } from "socket.io-client";
 import { UserList } from "./pages/users/UserList";
+import { UserPage } from "./pages/users/UserPage";
+import { useAppDispatch, useAppSelector } from "./redux/hooks";
+import { Navigate, BrowserRouter, Routes, Route } from "react-router-dom";
 
 function App() {
   const dispatch = useAppDispatch();
+  const socketStatus = useAppSelector((state) => state.socket.isConnected);
   const userStatus = useAppSelector((state) => state.currentUser.status);
 
+  //TODO do not load the server if socket is not socketStatus is not true
   if (userStatus === "failed") {
     return (
       <div className="App">

@@ -7,7 +7,7 @@ import express, { Request} from "express";
 import { AuthService } from "src/auth/auth.service";
 
 @UseGuards(AuthGuard)
-@Controller('block')
+@Controller("block")
 export class BlockController {
 	constructor(private readonly blockService: BlockService,
 				private readonly userService: UserService,

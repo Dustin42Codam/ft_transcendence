@@ -21,6 +21,6 @@ import { UserModule } from "src/user/user.module";
 	],
   controllers: [GameController],
   providers: [GameService, GameGateway],
-  exports: [GameService]
+  exports: [GameService],
 })
 export class GameModule {}

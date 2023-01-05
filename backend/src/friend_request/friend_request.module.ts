@@ -22,6 +22,6 @@ import { AuthModule } from "src/auth/auth.module";
 	],
   controllers: [FriendRequestController],
   providers: [FriendRequestService],
-  exports: [FriendRequestService]
+  exports: [FriendRequestService],
 })
 export class FriendRequestModule {}

@@ -1,7 +1,6 @@
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import GroupAdd from "@mui/icons-material/GroupAdd";
-import PersonSearch from "@mui/icons-material/PersonSearch";
 import PeopleIcon from "@mui/icons-material/People";
 import SentimentSatisfiedAltIcon from "@mui/icons-material/SentimentSatisfiedAlt";
 import AddIcon from "@mui/icons-material/Add";
@@ -16,8 +15,9 @@ import ChatCreate from "./ChatCreate";
 import { useAppSelector } from "../redux/hooks";
 import { selectJoinableChats } from "../redux/slices/chatsSlice";
 import PopUp from "./PopUp";
-import toastr from "toastr";
 import "./Menu.css";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Menu = (props: any) => {
   const [activeDm, setActiveDm] = useState(false);
@@ -30,13 +30,21 @@ const Menu = (props: any) => {
     if (joinableChats.length > 0) {
       setJoinChanel(!joinChanel);
     } else {
-      toastr.error("You do not have any chats to join");
-      // Would be nice to use this but it the CSS does not work
-      alert("You do not have any chats to join");
+      toast("🦄 You do not have any chats to join MENU thingiy", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     }
   };
   return (
     <nav className={props.className}>
+      <ToastContainer />
       <div className="sideNavContainer">
         <NavLink
           to={"/"}
@@ -153,7 +161,9 @@ const Menu = (props: any) => {
               </p>
               {joinChanel && (
                 <PopUp
-                  content={<JoinableChatTable />}
+                  content={
+                    <JoinableChatTable setJoinableChats={setJoinChanel} />
+                  }
                   handleClose={() => joinChats()}
                 />
               )}

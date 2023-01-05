@@ -1,31 +1,69 @@
 import { Middleware } from "redux";
 import { io, Socket } from "socket.io-client";
-import { chatActions } from "./slices/socketSlice";
-import ChatEvent from "./socketEvent";
-import ChatMessage from "./socketMessage";
-const chatMiddleware: Middleware = (store) => {
-  let socket: Socket;
+import { ChatRoom, socketActions } from "./slices/socketSlice";
+import SocketEvent from "./socketEvent";
+
+interface ChatMessage {
+  chatRoomId: number;
+  content: string;
+  authorId: number;
+}
+
+const socketMiddleware: Middleware = (store) => {
+  let socket: Socket = io("ws://localhost:3001/chat", {
+    autoConnect: false,
+    withCredentials: true,
+  });
+
   return (next) => (action) => {
-    const isConnectionEstablished = socket && store.getState().chat.isConnected;
-    if (chatActions.startConnecting.match(action)) {
-      socket = io("http://localhost:4242/chat", {
-        withCredentials: true,
+    const isConnectionEstablished =
+      socket && store.getState().socket.isConnected;
+
+    if (socketActions.startConnecting.match(action)) {
+      socket.connect();
+      socket.on("connect_failed", () => {
+        //TODO how would you handel socket errors?
+      });
+
+      socket.on("disconnect", () => {
+        //TODO how would you handel socket errors?
       });
       socket.on("connect", () => {
-        store.dispatch(chatActions.connectionEstablished());
-        socket.emit(ChatEvent.RequestAllMessages);
+        store.dispatch(socketActions.connectionEstablished());
+        //socket.emit(SocketEvent.RequestAllMessages);
       });
-      socket.on(ChatEvent.SendAllMessages, (messages: ChatMessage[]) => {
-        store.dispatch(chatActions.receiveAllMessages({ messages }));
+      socket.on(SocketEvent.ReceiveMessage, (chatMessage: ChatMessage) => {
+        store.dispatch(socketActions.receiveMessage({ chatMessage }));
       });
-      socket.on(ChatEvent.ReceiveMessage, (message: ChatMessage) => {
-        store.dispatch(chatActions.receiveMessage({ message }));
+      socket.on(SocketEvent.JoinChatRoomSuccess, (chatRoom: ChatRoom) => {
+        store.dispatch(socketActions.joinARoomSuccess({ chatRoom: chatRoom }));
+      });
+      socket.on(SocketEvent.LeaveChatRoomSuccess, () => {
+        store.dispatch(socketActions.leaveARoomSuccess());
       });
     }
-    if (chatActions.submitMessage.match(action) && isConnectionEstablished) {
-      socket.emit(ChatEvent.SendMessage, action.payload.content);
+    if (isConnectionEstablished) {
+      if (socketActions.joinARoom.match(action)) {
+        socket.emit(SocketEvent.JoinChatRoom, action.payload.chatRoom);
+      }
+      if (socketActions.sendMessage.match(action)) {
+        socket.emit(SocketEvent.SendMessage, action.payload.chatMessage);
+      }
+      if (socketActions.leaveARoom.match(action)) {
+        socket.emit(SocketEvent.LeaveChatRoom, action.payload.chatRoom);
+      }
+      if (socketActions.refreshPage.match(action)) {
+        socket.off("connect_failed");
+        socket.off("connect");
+        socket.off("disconnect");
+        socket.off(SocketEvent.ReceiveMessage);
+        socket.off(SocketEvent.JoinChatRoomSuccess);
+        socket.off(SocketEvent.LeaveChatRoomSuccess);
+        socket.disconnect();
+        store.dispatch(socketActions.startConnecting());
+      }
     }
     next(action);
   };
 };
-export default chatMiddleware;
+export default socketMiddleware;

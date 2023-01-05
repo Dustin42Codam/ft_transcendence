@@ -8,6 +8,7 @@ import { ChatroomType } from "../models/Chats";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { selectCurrentUser } from "../redux/slices/currentUserSlice";
 import { addNewGroupChat } from "../redux/slices/chatsSlice";
+//import { addChatFromGroup } from "../redux/slices/chatsSlice";
 
 const ChatCreate = () => {
   const [name, setName] = useState("");
@@ -38,6 +39,7 @@ const ChatCreate = () => {
       <button
         className="gridItem chatButton"
         onClick={async () =>
+          //how does this work you dispatching a cutom action dont you need to add then
           dispatch(
             await addNewGroupChat({
               chat: {
@@ -47,7 +49,18 @@ const ChatCreate = () => {
                 type: chatType,
               },
               user_id: currentUser.id,
-            })
+            }) /*.then(() =>
+								dispatch(addChatFromGroup(
+									{
+										name: name,
+										password: password,
+										user_ids: [],
+										type: chatType,
+									}
+									)
+								)
+							)
+						 */
           )
         }
         type="button"

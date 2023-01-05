@@ -2,18 +2,18 @@ import { IsNotEmpty, IsOptional } from "class-validator";
 import { Reactions } from "../entities/post.entity";
 
 export class CreatePostDto {
-	@IsNotEmpty()
-	title: string;
-	
-	@IsNotEmpty()
-	content: string;
+  @IsNotEmpty()
+  title: string;
 
-	@IsNotEmpty()
-	user: string;
+  @IsNotEmpty()
+  content: string;
 
-	@IsOptional()
-	date: Date;
-	
-	@IsOptional()
-	reactions: Reactions;
+  @IsNotEmpty()
+  user: string;
+
+  @IsOptional()
+  date: Date;
+
+  @IsOptional()
+  reactions: Reactions;
 }

@@ -11,28 +11,25 @@ import { UserInfoDto } from "./dto/user-info.dto";
 import { UserUpdateNameDto } from "./dto/user-update-name.dto";
 import { User, UserStatus } from "./entity/user.entity";
 
-
 @Injectable()
 export class UserService extends AbstractService {
-	constructor(
-		private gameStatsService: GameStatsService,
-		private achievementService: AchievementService,
-		@InjectRepository(User) private readonly userRepository: Repository<User>
-	) {
-		super(userRepository);
-	}
+  constructor(
+    private gameStatsService: GameStatsService,
+    private achievementService: AchievementService,
+    @InjectRepository(User) private readonly userRepository: Repository<User>,
+  ) {
+    super(userRepository);
+  }
 
     async getUsers(relations?: any[]) {
         return await this.find(relations);
     }
 
-	async getUserById(id: number, relations?: any[]) {
-
-		const user = await this.findOne({id}, relations);
-		if (!user)
-			throw new BadRequestException("This user does not exist");
-		return user;
-	}
+  async getUserById(id: number, relations?: any[]) {
+    const user = await this.findOne({ id }, relations);
+    if (!user) throw new BadRequestException("This user does not exist");
+    return user;
+  }
 
 	async createUser(userCreateDto: UserCreateDto) {
 		const emptyGameStats: GameStatsCreateDto = {win: 0, lose: 0, played: 0}
