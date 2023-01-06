@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { selectUserById } from "../../redux/slices/usersSlice";
 import Wrapper from "../../components/Wrapper";
-import { useAppSelector } from "../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { Button, Tab, Tabs } from "react-bootstrap";
 import UserFriends from "../../components/UserFriends";
 import { Avatar } from "@mui/material";
@@ -12,6 +12,11 @@ import { selectCurrentUser } from "../../redux/slices/currentUserSlice";
 import { FriendButton } from "../../components/FriendButton";
 import UserStats from "../../components/UserStats";
 import UserMatchHistory from "../../components/UserMatchHistory";
+import { socketActions } from "../../redux/slices/socketSlice";
+import { selectDirectChats } from "../../redux/slices/chatsSlice";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import store from "../../redux/store";
 
 export const UserPage = () => {
   const { userId } = useParams();
@@ -19,7 +24,12 @@ export const UserPage = () => {
 
   const [friends, setFriends] = useState<any>([]);
   const [friendRequests, setFriendRequests] = useState<any>([]);
+  const [blocked, setBlocked] = useState<any>([]);
   const currentUser: any = useAppSelector(selectCurrentUser);
+  const dispatch = useAppDispatch();
+  const dm_id = useAppSelector(selectDirectChats);
+  const navigate = useNavigate();
+  let currentChatroom: any = store.getState().socket.currentChatRoom;
 
   async function fetchFriendRequests() {
     const response: any = await axios
@@ -59,15 +69,15 @@ export const UserPage = () => {
   }
 
   async function blockUser() {
-    await axios.post(`block`,
-      {
+    await axios
+      .post(`block`, {
         receiver: {
-          id: userId
-        }
+          id: userId,
+        },
       })
       .catch((error: any) => {
-      console.log("🚀 ~ file: UserPage.tsx ~ blockUser ~ error", error);
-    });
+        console.log("🚀 ~ file: UserPage.tsx ~ blockUser ~ error", error);
+      });
     fetchFriends();
   }
 
@@ -91,6 +101,63 @@ export const UserPage = () => {
       "🚀 ~ file: UserPage.tsx:21 ~ UserPage ~ friendRequests",
       friendRequests
     );
+  }
+
+  async function joinDM() {
+    const friendship = await axios
+      .get(`friend/this/${userId}`)
+      .then((response) => {
+        console.log(
+          "🚀 ~ file: UserPage.tsx:151 ~ joinDM ~ response",
+          response
+        );
+        return response.data;
+      })
+      .catch((error) => {
+        console.log("🚀 ~ file: UserPage.tsx:141 ~ joinDM ~ error", error);
+        return;
+      });
+    console.log(
+      "🚀 ~ file: UserPage.tsx:104 ~ joinDM ~ friendship",
+      friendship
+    );
+
+    console.log(
+      "🚀 ~ file: UserPage.tsx:109 ~ joinDM ~ friendship",
+      friendship
+    );
+
+    dispatch(
+      socketActions.joinARoom({
+        chatRoom: {
+          id: friendship.chatroom_id,
+          name: "dm",
+        },
+      })
+    );
+    const id = toast.loading(`joining room: ${friendship.chatroom_id}!`);
+    await new Promise((resolve, reject) => {
+      //will check evert seccond if the chat room is set
+      const interval = setInterval(function () {
+        currentChatroom = store.getState().socket.currentChatRoom;
+        if (currentChatroom.id != -1) {
+          console.log("All goooed:", currentChatroom);
+          resolve(null);
+          clearInterval(interval);
+        }
+      }, 100);
+    });
+    toast.update(id, {
+      render: `joined room: ${friendship.chatroom_id}!`,
+      autoClose: 1500,
+      type: "success",
+      isLoading: false,
+    });
+
+    navigate("../chats/" + friendship.chatroom_id, {
+      replace: true,
+      state: friendship.chatroom_id,
+    });
   }
 
   return (
@@ -145,13 +212,13 @@ export const UserPage = () => {
                           Add Friend{" "}
                         </button>
                       )}{" "}
-                      <button 
+                      <button
                         className="btn btn-outline-primary px-4"
                         onClick={blockUser}
                       >
                         Block
                       </button>{" "}
-                      <button 
+                      <button
                         className="btn btn-outline-primary px-4"
                         onClick={unblockUser}
                       >
@@ -160,7 +227,10 @@ export const UserPage = () => {
                       <button className="btn btn-outline-primary px-4">
                         Send Game Invite
                       </button>{" "}
-                      <button className="btn btn-outline-primary px-4">
+                      <button
+                        className="btn btn-outline-primary px-4"
+                        onClick={joinDM}
+                      >
                         Message
                       </button>{" "}
                       <button

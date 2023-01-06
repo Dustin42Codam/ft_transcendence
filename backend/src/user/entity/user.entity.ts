@@ -49,6 +49,9 @@ export class User {
   @OneToMany(() => FriendRequest, (friendRequest: FriendRequest) => friendRequest.sender)
   send_friend_requests: FriendRequest[];
 
+  @OneToMany(() => FriendRequest, (friendRequest: FriendRequest) => friendRequest.receiver)
+  received_friend_requests: FriendRequest[];
+
 	@OneToOne(() => GameStats, {eager: true, cascade: true})
     @JoinColumn()
     game_stats: GameStats

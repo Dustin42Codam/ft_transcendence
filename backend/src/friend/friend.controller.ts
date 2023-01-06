@@ -8,7 +8,7 @@ import { BlockService } from "src/blocked/block.service";
 import { UserService } from "src/user/user.service";
 
 @UseGuards(AuthGuard)
-@Controller("friend")
+@Controller('friend')
 export class FriendController {
 	constructor(
 		private readonly friendService: FriendService,
@@ -17,10 +17,12 @@ export class FriendController {
 		private readonly userService: UserService,
 	) {}
 
-  @Get(":id")
-  async getFriendshipById(@Param("id") id: string) {
-    return this.friendService.getFriendshipById(Number(id));
-  }
+	@Get(':id')
+	async getFriendshipById(
+		@Param('id') id : string
+	) {
+		return this.friendService.getFriendshipById(Number(id));
+	}
 
 	@Get('my')
 	async getAllFriendsFromCurrentUser(
@@ -29,6 +31,15 @@ export class FriendController {
 		const currentUserId = await this.authService.userId(request);
 		console.log("🚀 ~ file: friend.controller.ts:28 ~ FriendController ~ currentUserId", currentUserId)
 		return this.friendService.getAllFriendshipsFromUser(currentUserId);
+	}
+
+	@Get('this/:id')
+	async getFriendshipByUserids(
+		@Param('id') user2 : string,
+		@Req() request: Request,
+	) {
+		const user1 = await this.authService.userId(request);
+		return this.friendService.getFriendshipByUserids(user1, Number(user2));
 	}
 
 	@Get('user/:id') //Maybe should be closed
@@ -49,11 +60,6 @@ export class FriendController {
 		const friendship = 
 			await this.friendService
 				.getFriendshipByUserids(userId, friendId);
-
-		if (userId !== friendship.user_1_id &&
-			userId !== friendship.user_2_id)
-			throw new BadRequestException
-				("You can only remove a friendship that you are part of");
 
 		return await this.friendService.deleteFriendship(friendship);
 	}

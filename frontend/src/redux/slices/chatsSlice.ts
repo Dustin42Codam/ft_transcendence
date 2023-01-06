@@ -79,7 +79,7 @@ export const chatsSlice = createSlice({
       })
       .addCase(fetchJoinableChats.fulfilled, (state: any, action) => {
         state.status = "succeeded";
-        state.joinable = state.joinable.concat(action.payload);
+        state.joinable = action.payload;
       })
       .addCase(fetchJoinableChats.rejected, (state: any, action) => {
         state.status = "failed";
@@ -90,7 +90,7 @@ export const chatsSlice = createSlice({
       })
       .addCase(fetchGroupChats.fulfilled, (state: any, action) => {
         state.status = "succeeded";
-        state.group = state.group.concat(action.payload);
+        state.group = action.payload;
       })
       .addCase(fetchGroupChats.rejected, (state: any, action) => {
         state.status = "failed";
@@ -101,7 +101,7 @@ export const chatsSlice = createSlice({
       })
       .addCase(fetchDirectChats.fulfilled, (state: any, action) => {
         state.status = "succeeded";
-        state.direct = state.direct.concat(action.payload);
+        state.direct = action.payload;
       })
       .addCase(fetchDirectChats.rejected, (state: any, action) => {
         state.status = "failed";
