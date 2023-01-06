@@ -23,14 +23,10 @@ export class GameService extends AbstractService {
 
 	async getGamesLadder() {
 		const users = await this.userService.getUsers(["game_stats"]);
-		console.log("🚀 ~ file: game.service.ts:26 ~ GameService ~ getGamesLadder ~ users", users)
+    // const sorted = users.sort((u1,u2) => u2.game_stats.win/u2.game_stats.played - u1.game_stats.win/u1.game_stats.played);
+    // const sorted = users.sort((u1,u2) => u1.game_stats.win - u2.game_stats.win);
+    const sorted = users.sort((u1,u2) => u2.game_stats.win - u1.game_stats.win);
 		
-
-        // const sorted = users.sort((u1,u2) => u2.game_stats.win/u2.game_stats.played - u1.game_stats.win/u1.game_stats.played);
-        // const sorted = users.sort((u1,u2) => u1.game_stats.win - u2.game_stats.win);
-        const sorted = users.sort((u1,u2) => u2.game_stats.win - u1.game_stats.win);
-		
-        console.log("🚀 ~ file: game.service.ts:27 ~ GameService ~ getGamesLadder ~ sorted", sorted)
 		return sorted;
 	}
 

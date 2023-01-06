@@ -25,7 +25,9 @@ export class GameController {
     @Get('get/ladder')
     async getGamesLadder(
         ) {
-        return await this.gameService.getGamesLadder();
+        const ladder = await this.gameService.getGamesLadder();
+        console.log("🚀 ~ file: game.controller.ts:29 ~ GameController ~ ladder", ladder)
+        return ladder;
     }
 
     @UseGuards(AuthGuard)

@@ -17,6 +17,7 @@ import { selectDirectChats } from "../../redux/slices/chatsSlice";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import store from "../../redux/store";
+import GameLadder from "../../components/GameLadder";
 
 export const UserPage = () => {
   const { userId } = useParams();
@@ -72,7 +73,7 @@ export const UserPage = () => {
     fetchFriends();
     fetchFriendRequests();
     fetchBlocked();
-  }, [userId, isBlocked]);
+  }, [userId]);
 
   async function addFriend() {
     await axios.post(`friend/${userId}`).catch((error: any) => {
@@ -111,14 +112,6 @@ export const UserPage = () => {
     setBlocked(false);
   }
 
-  function printState() {
-    console.log("🚀 ~ file: UserPage.tsx:19 ~ UserPage ~ friends", friends);
-    console.log(
-      "🚀 ~ file: UserPage.tsx:21 ~ UserPage ~ friendRequests",
-      friendRequests
-    );
-  }
-
   async function joinDM() {
     const friendship = await axios
       .get(`friend/this/${userId}`)
@@ -133,15 +126,6 @@ export const UserPage = () => {
         console.log("🚀 ~ file: UserPage.tsx:141 ~ joinDM ~ error", error);
         return;
       });
-    console.log(
-      "🚀 ~ file: UserPage.tsx:104 ~ joinDM ~ friendship",
-      friendship
-    );
-
-    console.log(
-      "🚀 ~ file: UserPage.tsx:109 ~ joinDM ~ friendship",
-      friendship
-    );
 
     dispatch(
       socketActions.joinARoom({
@@ -260,12 +244,6 @@ export const UserPage = () => {
                       >
                         Message
                       </button>{" "}
-                      <button
-                        className="btn btn-outline-primary px-4"
-                        onClick={printState}
-                      >
-                        Print State
-                      </button>{" "}
                     </div>
                   </div>
                 </div>
@@ -283,7 +261,7 @@ export const UserPage = () => {
               <Tab eventKey="friends" title="Friends">
                 <UserFriends userId={Number(userId)} userFriends={friends} />
               </Tab>
-              <Tab eventKey="match-history" title="Match History">
+              <Tab eventKey="match-history" title="Match History" disabled>
                 <UserMatchHistory
                   matchHistory={user.matches}
                 ></UserMatchHistory>
@@ -291,7 +269,9 @@ export const UserPage = () => {
               <Tab eventKey="stats" title="Stats">
                 <UserStats userStats={user.game_stats}></UserStats>
               </Tab>
-              <Tab eventKey="achievements" title="Achievements" disabled></Tab>
+              <Tab eventKey="ladder" title="Ladder">
+                <GameLadder displayedUser={user}></GameLadder>
+              </Tab>
             </Tabs>
           </div>
         </div>

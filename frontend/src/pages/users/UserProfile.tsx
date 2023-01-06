@@ -19,6 +19,7 @@ import "./UserProfile.module.css";
 import MatchHistory from "../../components/UserMatchHistory";
 import UserMatchHistory from "../../components/UserMatchHistory";
 import UserStats from "../../components/UserStats";
+import GameLadder from "../../components/GameLadder";
 
 export const UserProfile = () => {
   const currentUser = useAppSelector(selectCurrentUser);
@@ -81,7 +82,9 @@ export const UserProfile = () => {
               <Tab eventKey="stats" title="Stats">
                 <UserStats userStats={currentUser.game_stats}></UserStats>
               </Tab>
-              <Tab eventKey="achievements" title="Achievements" disabled></Tab>
+              <Tab eventKey="ladder" title="Ladder">
+                <GameLadder displayedUser={currentUser}></GameLadder>
+              </Tab>
             </Tabs>
           </div>
         </div>

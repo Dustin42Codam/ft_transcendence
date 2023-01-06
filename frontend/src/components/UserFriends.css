@@ -38,7 +38,17 @@ header {
   border: solid 6px transparent;
   border-radius: 50%;
 }
-.card:hover .avatar img {
+.avatar-small {
+  width: 75px;
+  vertical-align: middle;
+}
+.avatar-small img {
+  border: solid 6px transparent;
+  border-radius: 50%;
+  vertical-align: middle;
+}
+
+.card:hover .avatar .avatar-small img {
   border-color: rgb(99, 204, 131);
 }
 
