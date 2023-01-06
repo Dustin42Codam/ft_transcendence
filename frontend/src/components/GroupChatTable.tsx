@@ -1,4 +1,5 @@
 import React from "react";
+import store from "../redux/store";
 import { useAppDispatch } from "../redux/hooks";
 import { socketActions } from "../redux/slices/socketSlice";
 import { useNavigate } from "react-router-dom";
@@ -19,6 +20,9 @@ export enum ChatroomType {
   DIRECT = "direct",
   DEFAULT = "",
 }
+import { selectCurrentChatroom } from "../redux/slices/socketSlice";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 type Chats = {
   id: number;
@@ -32,11 +36,12 @@ interface IState {
 
 const GroupChatTable = () => {
   const groupChats = useAppSelector(selectGroupChats);
+  let currentChatroom: any = store.getState().socket.currentChatRoom;
   const dispatch = useAppDispatch();
 
   const navigate = useNavigate();
 
-  function handleClick(name: string, chatToJoinIndex: number) {
+  async function handleClick(name: string, chatToJoinIndex: number) {
     dispatch(
       socketActions.joinARoom({
         chatRoom: {
@@ -45,6 +50,27 @@ const GroupChatTable = () => {
         },
       })
     );
+    const id = toast.loading(
+      `joining room: ${groupChats[chatToJoinIndex].name}!`
+    );
+    await new Promise((resolve, reject) => {
+      //will check evert seccond if the chat room is set
+      const interval = setInterval(function () {
+        currentChatroom = store.getState().socket.currentChatRoom;
+        if (currentChatroom.id != -1 && currentChatroom.name != "") {
+          console.log("All goooed:", currentChatroom);
+          resolve(null);
+          clearInterval(interval);
+        }
+      }, 100);
+    });
+    toast.update(id, {
+      render: `joined room: ${groupChats[chatToJoinIndex].name}!`,
+      autoClose: 1500,
+      type: "success",
+      isLoading: false,
+    });
+
     navigate("../chats/" + name, {
       replace: true,
       state: groupChats[chatToJoinIndex],

@@ -24,9 +24,13 @@ const socketMiddleware: Middleware = (store) => {
       socket.on("connect_failed", () => {
         //TODO how would you handel socket errors?
       });
+
+      socket.on("disconnect", () => {
+        //TODO how would you handel socket errors?
+      });
       socket.on("connect", () => {
         store.dispatch(socketActions.connectionEstablished());
-        socket.emit(SocketEvent.RequestAllMessages);
+        //socket.emit(SocketEvent.RequestAllMessages);
       });
       socket.on(SocketEvent.ReceiveMessage, (chatMessage: ChatMessage) => {
         store.dispatch(socketActions.receiveMessage({ chatMessage }));
@@ -47,6 +51,16 @@ const socketMiddleware: Middleware = (store) => {
       }
       if (socketActions.leaveARoom.match(action)) {
         socket.emit(SocketEvent.LeaveChatRoom, action.payload.chatRoom);
+      }
+      if (socketActions.refreshPage.match(action)) {
+        socket.off("connect_failed");
+        socket.off("connect");
+        socket.off("disconnect");
+        socket.off(SocketEvent.ReceiveMessage);
+        socket.off(SocketEvent.JoinChatRoomSuccess);
+        socket.off(SocketEvent.LeaveChatRoomSuccess);
+        socket.disconnect();
+        store.dispatch(socketActions.startConnecting());
       }
     }
     next(action);

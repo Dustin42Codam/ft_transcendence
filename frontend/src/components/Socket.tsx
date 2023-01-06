@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from "react";
+import store from "../redux/store";
 import { useNavigate } from "react-router-dom";
-import { Message } from "/frontend/src/models/Message";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { selectCurrentUser } from "../redux/slices/currentUserSlice";
 import { selectCurrentChatroom } from "../redux/slices/socketSlice";
@@ -20,8 +20,8 @@ const Snicel = (props: any) => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
+  let currentChatroom: any = store.getState().socket.currentChatRoom;
   const currentUser = useAppSelector(selectCurrentUser);
-  const currentChatroom = useAppSelector(selectCurrentChatroom);
   const inputRef = useRef<HTMLFormElement>(null);
 
   /*	BUG LIFE
@@ -37,46 +37,43 @@ const Snicel = (props: any) => {
 
   useEffect(() => {
     //TO prevent bug one
+    async function waitForIt() {
+      await new Promise((resolve, reject) => {
+        //will check evert seccond if the chat room is set
+        const interval = setInterval(function () {
+          currentChatroom = store.getState().socket.currentChatRoom;
+          if (currentChatroom.id == -1 && currentChatroom.name == "") {
+            resolve(null);
+            clearInterval(interval);
+          }
+        }, 100);
+      });
+    }
     console.log(currentChatroom, props.location.state);
     if (currentChatroom.id == -1 || currentChatroom.name == "") {
-      if (!props.location.state) {
-        navigate("/", {
-          replace: true,
-        });
-        return;
+      navigate("/", {
+        replace: true,
+      });
+      return;
+      if (window.performance) {
+        if (performance.navigation.type == 1) {
+          dispatch(
+            socketActions.leaveARoom({
+              chatRoom: {
+                id: currentChatroom.id,
+                name: currentChatroom.name,
+              },
+            })
+          );
+          waitForIt();
+        } else {
+          alert("This page is not reloaded");
+        }
       }
-      dispatch(
-        socketActions.joinARoomSuccess({
-          chatRoom: {
-            id: props.location.state.id,
-            name: props.location.state.name,
-          },
-        })
-      );
     }
-    toast.info(`🦄 joining room: ${props.location.state.name}!`, {
-      position: "top-right",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
 
     return function cleanup() {
       console.log("from [props] unmounting");
-      toast.info(`🦄 left room: ${props.location.state.name}!`, {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
       dispatch(
         socketActions.leaveARoom({
           chatRoom: {
@@ -99,6 +96,7 @@ const Snicel = (props: any) => {
   const userIsTyping = (msg: string) => {};
   const sendMessage = (e: any) => {
     e.preventDefault();
+    console.log(currentChatroom);
     dispatch(
       socketActions.sendMessage({
         chatMessage: {
