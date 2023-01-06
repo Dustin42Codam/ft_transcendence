@@ -24,7 +24,7 @@ export const UserPage = () => {
 
   const [friends, setFriends] = useState<any>([]);
   const [friendRequests, setFriendRequests] = useState<any>([]);
-  const [blocked, setBlocked] = useState<any>([]);
+  const [isBlocked, setBlocked] = useState(false);
   const currentUser: any = useAppSelector(selectCurrentUser);
   const dispatch = useAppDispatch();
   const dm_id = useAppSelector(selectDirectChats);
@@ -47,6 +47,18 @@ export const UserPage = () => {
     setFriendRequests(response.data);
   }
 
+  async function fetchBlocked() {
+    const response: any = await axios
+      .get(`block/${userId}`)
+      .then((res: any) => res.data ? setBlocked(true) : setBlocked(false))
+      .catch((err: any) => {
+        console.log(
+          "🚀 ~ file: UserPage.tsx:29 ~ fetchBlocked ~ err",
+          err
+        );
+      });
+  }
+
   async function fetchFriends() {
     const response: any = await axios
       .get(`friend/user/${userId}`)
@@ -59,11 +71,19 @@ export const UserPage = () => {
   useEffect(() => {
     fetchFriends();
     fetchFriendRequests();
-  }, [userId]);
+    fetchBlocked();
+  }, [userId, isBlocked]);
 
   async function addFriend() {
     await axios.post(`friend/${userId}`).catch((error: any) => {
       console.log("🚀 ~ file: UserPage.tsx ~ addFriend ~ error", error);
+    });
+    fetchFriends();
+  }
+
+  async function removeFriend() {
+    await axios.post(`friend/remove/${userId}`).catch((error: any) => {
+      console.log("🚀 ~ file: UserPage.tsx ~ removeFriend ~ error", error);
     });
     fetchFriends();
   }
@@ -79,20 +99,16 @@ export const UserPage = () => {
         console.log("🚀 ~ file: UserPage.tsx ~ blockUser ~ error", error);
       });
     fetchFriends();
-  }
-
-  async function removeFriend() {
-    await axios.post(`friend/remove/${userId}`).catch((error: any) => {
-      console.log("🚀 ~ file: UserPage.tsx ~ removeFriend ~ error", error);
-    });
-    fetchFriends();
+    setBlocked(true);
   }
 
   async function unblockUser() {
-    await axios.post(`block/${userId}`).catch((error: any) => {
+    await axios
+      .post(`block/${userId}`).catch((error: any) => {
       console.log("🚀 ~ file: UserPage.tsx ~ unblockFriend ~ error", error);
     });
     fetchFriends();
+    setBlocked(false);
   }
 
   function printState() {
@@ -207,29 +223,40 @@ export const UserPage = () => {
                         <button
                           className="btn btn-outline-primary px-4"
                           onClick={addFriend}
+                          disabled={isBlocked}
                         >
                           {" "}
                           Add Friend{" "}
                         </button>
-                      )}{" "}
+                      )} {" "}
+                      {
+                        isBlocked === false ? (
+                          <button
+                            className="btn btn-outline-primary px-4"
+                            onClick={blockUser}
+                          >
+                            Block
+                          </button>
+                        ) : (
+                          <button
+                            className="btn btn-outline-primary px-4"
+                            onClick={unblockUser}
+                          >
+                            Unblock
+                          </button>
+                        )
+                      } {" "}
+                      
                       <button
                         className="btn btn-outline-primary px-4"
-                        onClick={blockUser}
+                        disabled={isBlocked}
                       >
-                        Block
-                      </button>{" "}
-                      <button
-                        className="btn btn-outline-primary px-4"
-                        onClick={unblockUser}
-                      >
-                        Unblock
-                      </button>{" "}
-                      <button className="btn btn-outline-primary px-4">
                         Send Game Invite
                       </button>{" "}
                       <button
                         className="btn btn-outline-primary px-4"
                         onClick={joinDM}
+                        disabled={isBlocked}
                       >
                         Message
                       </button>{" "}

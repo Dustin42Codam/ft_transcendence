@@ -14,11 +14,14 @@ export class BlockController {
 				private readonly authService: AuthService,
 				) {}
 	
-	@Get(':id')
-	async getBlockById(
-		@Param('id') id : string
+	@Get(':userId')
+	async getBlockByUserId(
+		@Param('userId') userId : string,
+		@Req() request: Request
 	) {
-		return this.blockService.getBlockById(Number(id));
+		const senderId = await this.authService.userId(request);
+		
+		return await this.blockService.getBlockByUserids(senderId, Number(userId));
 	}
 
 	@Post()

@@ -11,6 +11,7 @@ import { FriendRequestService } from "../friend_request/friend_request.service";
 import { FriendService } from "src/friend/friend.service";
 import { User } from "src/user/entity/user.entity";
 import { Friend } from "src/friend/entity/friend.entity";
+import { UserService } from "src/user/user.service";
 
 @Injectable()
 export class BlockService extends AbstractService {
@@ -18,6 +19,7 @@ export class BlockService extends AbstractService {
     @Inject(forwardRef(() => FriendRequestService))
     private friendRequestService: FriendRequestService,
     private friendService: FriendService,
+    private userService: UserService,
     @InjectRepository(Block) private readonly blockRepository: Repository<Block>,
   ) {
     super(blockRepository);
@@ -29,10 +31,16 @@ export class BlockService extends AbstractService {
     return block;
   }
 
-    async getBlockByUserids(user1: number, user2: number) {
-        const block = await this.findOne(
-			{sender: user1, receiver: user2});
-        return block;
+    async getBlockByUserids(user1_id: number, user2_id: number) {
+      const user1 = await this.userService.findOne({id: user1_id}); 
+      const user2 = await this.userService.findOne({id: user2_id}); 
+      const block = await this.findOne(
+        {
+          sender: user1,
+          receiver: user2
+        });
+      
+      return block;
     }
 
 	async getBlocksFromUser(user: User) {
