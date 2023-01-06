@@ -11,9 +11,10 @@ import { UserModule } from "src/user/user.module";
 import { BlockModule } from "src/blocked/block.module";
 import { AuthModule } from "../auth/auth.module";
 import { ChatroomGateway } from "./chatroom.gateway";
+import { MessageModule } from "src/message/message.module";
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Chatroom]), MemberModule, forwardRef(() => UserModule), forwardRef(() => BlockModule), AuthModule, CommonModule],
+  imports: [TypeOrmModule.forFeature([Chatroom]), MemberModule, forwardRef(() => UserModule), forwardRef(() => BlockModule), AuthModule, CommonModule, forwardRef(() => MessageModule)],
   controllers: [ChatroomController],
   providers: [ChatroomService, ChatroomGateway],
   exports: [ChatroomService],

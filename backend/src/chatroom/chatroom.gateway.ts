@@ -2,7 +2,7 @@ import { WebSocketServer, OnGatewayDisconnect, OnGatewayConnection, WsResponse, 
 //import { MemberService } from "../member/member.service";
 //import { UserService } from "../user/user.service";
 //import { Member } from "../member/entity/member.entity";
-import { Logger, Req } from "@nestjs/common";
+import { BadRequestException, Logger, Req } from "@nestjs/common";
 import { Request, Response } from "express";
 
 import { Namespace, Server, Socket } from "socket.io";
@@ -17,6 +17,8 @@ import { AuthService } from "src/auth/auth.service";
 import { Chatroom } from "src/chatroom/entity/chatroom.entity";
 import { UserService } from "src/user/user.service";
 import { MemberService } from "src/member/member.service";
+import { ChatroomService } from "./chatroom.service";
+import { MessageService } from "src/message/message.service";
 
 export type Message = {
   message: string;
@@ -39,7 +41,9 @@ export type ChatRoom = {
 export class ChatroomGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
   constructor(private readonly userService: UserService,
   private readonly memberService: MemberService,
-  private readonly authService: AuthService) {};
+  private readonly authService: AuthService,
+  private readonly chatroomService: ChatroomService,
+  private readonly messageService: MessageService) {};
 
   private logger: Logger = new Logger("AppGateway");
   @WebSocketServer() io: Namespace;
@@ -99,10 +103,19 @@ export class ChatroomGateway implements OnGatewayInit, OnGatewayConnection, OnGa
   //TODO for me add socket id to DB
 	@UseGuards(AuthGuard)
   @SubscribeMessage(ChatroomEvents.SendMessageToServer)
-  handleMessageToServer(client: Socket, payload: Message): void {
+  async handleMessageToServer(client: Socket, payload: Message, @Req() request: Request): Promise<void> {
     //client.broadcast
     //TODO check if chatRoomId exists
     //TODO Liz add the message to database
+    console.log("getting here");
+    const userId = await this.authService.userId(request);
+    console.log(userId);
+    const user = await this.userService.getUserById(userId);
+    const chatroom = await this.chatroomService.getChatroomById(Number(payload.chatRoomId));
+    if (!chatroom)
+      throw new BadRequestException(`Chatroom with id ${payload.chatRoomId} does not exist.`);
+    const member = await this.memberService.getMemberByUserAndChatroom(user, chatroom);
+    await this.messageService.create({timestamp: new Date(), member: member, message: payload.message});
 		console.log("this is a message", payload, `${payload.chatRoomId}`);
     this.io.to(`${payload.chatRoomId}`).emit(ChatroomEvents.SendMessageToClient, payload);
   }
