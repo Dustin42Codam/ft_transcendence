@@ -15,7 +15,6 @@ const Game = (props: any) => {
 
     console.log(String.fromCharCode(keynum));
   }
-
   useEffect(() => {
     loadGame();
   }, []);

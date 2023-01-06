@@ -11,6 +11,7 @@ import { FriendRequestService } from "../friend_request/friend_request.service";
 import { FriendService } from "src/friend/friend.service";
 import { User } from "src/user/entity/user.entity";
 import { Friend } from "src/friend/entity/friend.entity";
+import { UserService } from "src/user/user.service";
 
 @Injectable()
 export class BlockService extends AbstractService {
@@ -18,6 +19,7 @@ export class BlockService extends AbstractService {
     @Inject(forwardRef(() => FriendRequestService))
     private friendRequestService: FriendRequestService,
     private friendService: FriendService,
+    private userService: UserService,
     @InjectRepository(Block) private readonly blockRepository: Repository<Block>,
   ) {
     super(blockRepository);
@@ -29,30 +31,33 @@ export class BlockService extends AbstractService {
     return block;
   }
 
-  async getBlocksFromUser(user: User) {
-    return await this.blockRepository.find({
-      where: { sender: user },
-      relations: ["receiver"],
-    });
-  }
+    async getBlockByUserids(user1_id: number, user2_id: number) {
+      const user1 = await this.userService.findOne({id: user1_id}); 
+      const user2 = await this.userService.findOne({id: user2_id}); 
+      const block = await this.findOne(
+        {
+          sender: user1,
+          receiver: user2
+        });
+      
+      return block;
+    }
+
+	async getBlocksFromUser(user: User) {
+		return await this.blockRepository.find({
+			where: {sender: user},
+			relations: ["receiver"]
+		});
+	}
 
   async getBlockBySenderAndReceiver(sender: User, receiver: User) {
     return await this.findOne({ sender: sender, receiver: receiver });
   }
 
-  async block(sender, receiver) {
-    const friendRequestBySender = await this.friendRequestService.findOne({
-      sender: sender,
-      receiver: receiver,
-    });
-    if (friendRequestBySender) await this.friendRequestService.delete(friendRequestBySender.id);
-    const friendRequestByReceiver = await this.friendRequestService.findOne({
-      sender: receiver,
-      receiver: sender,
-    });
-    if (friendRequestByReceiver) await this.friendRequestService.delete(friendRequestByReceiver.id);
-    const friendship = await this.friendService.getFriendshipByUserids(sender.id, receiver.id);
-    if (friendship) await this.friendService.deleteFriendship(friendship);
-    return await this.create({ sender: sender, receiver: receiver });
-  }
+	async block(sender, receiver) {
+		const friendship = await this.friendService.getFriendshipByUserids(sender.id, receiver.id)
+		if (friendship)
+			await this.friendService.deleteFriendship(friendship);
+		return await this.create({sender: sender, receiver: receiver});
+	}
 }

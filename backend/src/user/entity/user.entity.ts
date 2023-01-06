@@ -18,8 +18,8 @@ export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ unique: true }) //TODO check the approuch with unique. If unique people can take each others intra. If not unique everyone can have te same name
-  display_name: string;
+	@Column({unique: true})
+	display_name: string;
 
   @Column()
   avatar: string;
@@ -52,12 +52,12 @@ export class User {
   @OneToMany(() => FriendRequest, (friendRequest: FriendRequest) => friendRequest.receiver)
   received_friend_requests: FriendRequest[];
 
+	@OneToOne(() => GameStats, {eager: true, cascade: true})
+    @JoinColumn()
+    game_stats: GameStats
+
   @OneToMany(() => Member, (member: Member) => member.user)
   chatrooms: FriendRequest[];
-
-  @OneToOne(() => GameStats, { cascade: true })
-  @JoinColumn()
-  game_stats: GameStats;
 
   @OneToMany(() => Achievement, (achievement: Achievement) => achievement.user)
   public achievements: Achievement[];

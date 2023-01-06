@@ -1,13 +1,5 @@
-import { accordionSummaryClasses, Avatar } from "@mui/material";
-import axios from "axios";
-import React, {
-  Component,
-  SyntheticEvent,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Avatar } from "@mui/material";
+import React, { SyntheticEvent, useRef, useState } from "react";
 import ImageUpload from "../../components/ImageUpload";
 import Wrapper from "../../components/Wrapper";
 import { useAppSelector, useAppDispatch } from "../../redux/hooks";
@@ -16,6 +8,10 @@ import {
   updateCurrentUser,
 } from "../../redux/slices/currentUserSlice";
 import { UserStatus } from "../../models/Channel";
+import { Button, Form } from "react-bootstrap";
+import "./UserProfile.module.css";
+import "../../components/UserFriends.css";
+import { useNavigate } from "react-router-dom";
 
 const UserEdit = () => {
   const user = useAppSelector(selectCurrentUser);
@@ -26,12 +22,14 @@ const UserEdit = () => {
   const [twoFA, setTwoFA] = useState(user.two_factor_auth);
 
   const ref = useRef<HTMLInputElement>(null);
-  const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
-  const infoSubmit = () => {
+  const infoSubmit = async (e: SyntheticEvent) => {
+    e.preventDefault();
+
     if (name || avatar || status || twoFA) {
-      dispatch(
+      await dispatch(
         updateCurrentUser({
           id: user.id,
           display_name: name,
@@ -40,7 +38,6 @@ const UserEdit = () => {
           two_factor_auth: twoFA,
         })
       );
-      navigate("/profile");
     }
   };
 
@@ -51,71 +48,78 @@ const UserEdit = () => {
     setAvatar(url);
   };
 
+  const navigateBack = () => {
+    navigate("/profile");
+  };
+
   return (
     <Wrapper>
-      <h3>User Profile</h3>
-      <div className="mb-3">
-        <Avatar
-          src={user.avatar}
-          sx={{ height: "70px", width: "70px" }}
-        ></Avatar>
-      </div>
-      <form onSubmit={infoSubmit}>
-        <div className="mb-3">
-          <label> Name </label>
-          <input
-            className="form-control"
-            defaultValue={user.display_name}
-            onChange={(e) => setName(e.target.value)}
-          />
-        </div>
-        <div className="mb-3">
-          <label>Avatar</label>
-          <div>
-            <input
-              ref={ref}
-              className="form-control"
-              value={user.avatar}
-              onChange={(e) => setAvatar(e.target.value)}
-            />
-            <ImageUpload uploaded={updateImage} />
-          </div>
-        </div>
-
-        <div className="mb-3">
-          <label>Status</label>
-          <select
-            className="form-control"
-            value={status}
-            onChange={(e) => setStatus(e.target.value)}
+      <section id="content" className="container UserBody">
+        <div className="page-heading">
+          <form
+            onSubmit={(e: SyntheticEvent) => {
+              infoSubmit(e);
+            }}
           >
-            <option key={UserStatus.OFFLINE} defaultValue={UserStatus.OFFLINE}>
-              offline
-            </option>
-            <option key={UserStatus.ONLINE} value={UserStatus.ONLINE}>
-              online
-            </option>
-          </select>
-        </div>
+            <h3>Edit User Data</h3>
+            <div className="mb-3">
+              <Avatar
+                src={user.avatar}
+                sx={{ height: "150px", width: "150px" }}
+              ></Avatar>
 
-        <div className="mb-3">
-          <label>Two Factor Authentication</label>
-          <select
-            className="form-control"
-            value={user.twoFA}
-            onChange={(e) => setTwoFA(e.target.value)}
-          >
-            <option key="false" defaultValue="false">
-              false
-            </option>
-            <option key="true" value="true">
-              true
-            </option>
-          </select>
-        </div>
+              <label>Avatar</label>
 
-        <button className="btn btn-outline-secondary">Save</button>
-      </form>
+              <div>
+                <input
+                  ref={ref}
+                  className="form-control"
+                  value={user.avatar}
+                  onChange={(e) => setAvatar(e.target.value)}
+                />
+                <ImageUpload uploaded={updateImage} />
+              </div>
+            </div>
+            <div className="mb-3">
+              <label> Name </label>
+              <input
+                className="form-control"
+                defaultValue={user.display_name}
+                onChange={(e) => setName(e.target.value)}
+              />
+            </div>
+            <div className="mb-3">
+              <label>Status</label>
+              <Form.Select
+                defaultValue={status}
+                onChange={(e) => setStatus(e.target.value)}
+              >
+                <option
+                  key={UserStatus.OFFLINE}
+                  defaultValue={UserStatus.OFFLINE}
+                >
+                  offline
+                </option>
+                <option key={UserStatus.ONLINE} value={UserStatus.ONLINE}>
+                  online
+                </option>
+              </Form.Select>
+            </div>
+            <div className="mb-3">
+              <label>Two Factor Authentication</label>
+              <Form.Select
+                onChange={(e) => setTwoFA(e.target.value)}
+                defaultValue={twoFA}
+              >
+                <option value="false">off</option>
+                <option value="true">on</option>
+              </Form.Select>
+            </div>
+            <Button type="submit">Save</Button>{" "}
+            <Button onClick={navigateBack}>Back</Button>
+          </form>
+        </div>
+      </section>
     </Wrapper>
   );
 };

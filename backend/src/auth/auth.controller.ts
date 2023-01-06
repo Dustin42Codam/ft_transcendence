@@ -28,7 +28,7 @@ export class AuthController {
     await this.userService.createUser({
       display_name: body.display_name,
       avatar: body.avatar,
-      status: UserStatus.ONLINE, //CHECK is this always ONLINE when initialized
+      status: UserStatus.ONLINE,
     });
 
     return user;
@@ -60,7 +60,7 @@ export class AuthController {
     return this.userService.findOne({ id });
   }
 
-  // @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard)
   //@Redirect(`http://localhost:4242/authenticate`, 301)
   @Post("logout")
   async logout(@Res({ passthrough: true }) response: Response, @Req() request: Request) {

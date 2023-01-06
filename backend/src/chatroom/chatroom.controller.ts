@@ -139,7 +139,7 @@ export class ChatroomController {
     if (receiverMember) return receiverMember;
     return await this.memberService.createMember({ user: receiver, chatroom: chatroom, role: MemberRole.USER });
   }
-
+  //TODO Create chatroom, change Password, join Chatroom HASHING PASSWORDS
 	@Post()
 	async createChatroom(
 		@Body() body: ChatroomCreateDto,

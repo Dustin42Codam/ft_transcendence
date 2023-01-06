@@ -41,8 +41,8 @@ const usersSlice = createSlice({
 // selectors
 export const selectAllUsers = (state: any) => state.users.users;
 
-export const selectUserById = (state: any, userId: any) =>
-  state.users.users.find((user: any) => user.id == userId);
+export const selectUserById = (state: any, userId: number) =>
+  state.users.users.find((user: any) => user.id === userId);
 
 // Memoized selectors
 export const selectUsersWithoutUser = createSelector(

@@ -12,9 +12,11 @@ import {
   fetchGroupChats,
   fetchJoinableChats,
 } from "./redux/slices/chatsSlice";
-import { useAppDispatch } from "./redux/hooks";
 import { fetchCurrentUser } from "./redux/slices/currentUserSlice";
 import { fetchMessages } from "./redux/slices/messagesSlice";
+import { PersistGate } from "redux-persist/integration/react";
+import { persistStore } from "redux-persist";
+import { fetchFriendRequests, fetchFriends } from "./redux/slices/friendsSlice";
 import { socketActions } from "./redux/slices/socketSlice";
 
 axios.defaults.baseURL = "http://localhost:3000/api/";
@@ -23,6 +25,8 @@ axios.defaults.withCredentials = true;
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
+
+let persistor = persistStore(store);
 
 async function main() {
   store.dispatch(fetchCurrentUser());
@@ -36,7 +40,9 @@ async function main() {
 
   root.render(
     <Provider store={store}>
-      <App />
+      <PersistGate loading={null} persistor={persistor}>
+        <App />
+      </PersistGate>
     </Provider>
   );
 }
