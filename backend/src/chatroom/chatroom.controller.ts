@@ -140,31 +140,35 @@ export class ChatroomController {
     return await this.memberService.createMember({ user: receiver, chatroom: chatroom, role: MemberRole.USER });
   }
 
-  //TODO Create chatroom, change Password, join Chatroom HASHING PASSWORDS
-
-  @Post()
-  async createChatroom(@Body() body: ChatroomCreateDto, @Req() request: Request) {
-    if (![ChatroomType.DIRECT, ChatroomType.PRIVATE, ChatroomType.PUBLIC, ChatroomType.PROTECTED].includes(body.type))
-      throw new BadRequestException("This chatroomtype does not exist.");
-    if (body.type === ChatroomType.DIRECT) {
-      throw new BadRequestException("You can not create a DIRECT chatroom.");
-    }
-    if (body.password && (body.type === ChatroomType.PRIVATE || body.type === ChatroomType.PUBLIC)) {
-      throw new BadRequestException("PUBLIC or PRIVATE CHATROOMS can not have a password.");
-    } else if (!body.password && body.type === ChatroomType.PROTECTED) {
-      throw new BadRequestException("PROTECTED chatrooms need to have a password.");
-    }
-    const { user_ids, ...createChatroom } = body;
-    //TODO BE team check if this is ok
+	@Post()
+	async createChatroom(
+		@Body() body: ChatroomCreateDto,
+		@Req() request: Request
+	) {
+		if (![ChatroomType.DIRECT, ChatroomType.PRIVATE, ChatroomType.PUBLIC, ChatroomType.PROTECTED].includes(body.type))
+			throw new BadRequestException("This chatroomtype does not exist.");
+		if (body.type === ChatroomType.DIRECT) {
+			throw new BadRequestException("You can not create a DIRECT chatroom.");
+		}
+		if (body.password && (body.type === ChatroomType.PRIVATE || body.type === ChatroomType.PUBLIC)) {
+			throw new BadRequestException("PUBLIC or PRIVATE CHATROOMS can not have a password.");
+		}
+		else if (!body.password && body.type === ChatroomType.PROTECTED) {
+			throw new BadRequestException("PROTECTED chatrooms need to have a password.");
+		}
+		const {user_ids, ...createChatroom} = body;
     const user = await this.userService.getUserById(await this.authService.userId(request));
     user_ids.push(Number(user.id));
-    const uniqueUsers: number[] = [...new Set(user_ids)];
-    var users: User[] = [];
-    for (var user_id of uniqueUsers) {
-      const user = await this.userService.findOne({ id: user_id });
-      if (!user) throw new BadRequestException("One of the users does not exist.");
-      users.push(user);
-    }
-    return this.chatroomService.createChatroom(users, createChatroom, Number(request.session.user_id));
-  }
+		const uniqueUsers : number[] = [... new Set(user_ids)];
+		var users : User[]= []
+        console.log("🚀 ~ file: chatroom.controller.ts:184 ~ ChatroomController ~ uniqueUsers", uniqueUsers)
+        for (var user_id of uniqueUsers) {
+        console.log("🚀 ~ file: chatroom.controller.ts:186 ~ ChatroomController ~ user_id", user_id)
+				const user = await this.userService.findOne({id: user_id});
+				if (!user)
+					throw new BadRequestException("One of the users does not exist.");
+				users.push(user)
+		}
+		return this.chatroomService.createChatroom(users, createChatroom, Number(request.session.user_id));
+	}
 }

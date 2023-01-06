@@ -34,33 +34,9 @@ const AddFriendButton = (props: { sender: number; receiver: number }) => {
 };
 
 const Users = () => {
-  const dispatch = useAppDispatch();
   const [page, setPage] = useState(1);
   const [lastPage, setLastPage] = useState(0);
   const currentUser = useAppSelector(selectCurrentUser);
-
-  const usersStatus = useAppSelector((state) => state.users.status);
-  const users = useAppSelector(selectAllUsers);
-
-  useEffect(() => {
-    console.log(
-      "🚀 ~ file: Users.tsx:21 ~ useEffect ~ usersStatus",
-      usersStatus
-    );
-    if (usersStatus === "idle") {
-      dispatch(fetchUsers);
-      console.log("🚀 ~ file: Users.tsx:18 ~ Users ~ users", users);
-    }
-  }, [usersStatus, dispatch]);
-
-  const deleteUser = async (id: number) => {
-    if (window.confirm("Are you sure to delete this record?")) {
-      await axios.delete(`users/${id}`);
-
-      //   setUsers(users.filter((u: User) => u.id !== id));
-      users.filter((u: User) => u.id !== id);
-    }
-  };
 
   const filteredUsers = useAppSelector((state) =>
     selectUsersWithoutUser(state, currentUser.id)
