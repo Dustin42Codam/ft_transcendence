@@ -1,7 +1,6 @@
 import React, { useRef, useState, useEffect } from "react";
 import store from "../redux/store";
 import { useNavigate } from "react-router-dom";
-import { Message } from "/frontend/src/models/Message";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { selectCurrentUser } from "../redux/slices/currentUserSlice";
 import { selectCurrentChatroom } from "../redux/slices/socketSlice";
