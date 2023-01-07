@@ -21,8 +21,9 @@ import { ChatroomService } from "./chatroom.service";
 import { MessageService } from "src/message/message.service";
 
 export type Message = {
-  message: string;
+  content: string;
   chatRoomId: string;
+  authorId: string;
 };
 
 export type ChatRoom = {
@@ -58,7 +59,7 @@ export class ChatroomGateway implements OnGatewayInit, OnGatewayConnection, OnGa
 		console.log(`client ${client.id} conected`);
     const sockets = this.io.sockets;
     // this.userService.changeStatus(await this.authService.userId(request), UserStatus.ONLINE);
-    console.log("client connected testing what is in client", client);
+    // console.log("client connected testing what is in client", client);
     //TODO backend team set user status to online
   }
 
@@ -68,6 +69,7 @@ export class ChatroomGateway implements OnGatewayInit, OnGatewayConnection, OnGa
     // this.userService.changeStatus(request.session.user_id, UserStatus.OFFLINE);
 		console.log(`client ${client.id} disconected`);
     //TODO backend team set user status to offline
+    //
   }
 
 	@UseGuards(AuthGuard)
@@ -105,23 +107,37 @@ export class ChatroomGateway implements OnGatewayInit, OnGatewayConnection, OnGa
   //TODO for me add socket id to DB
 	@UseGuards(AuthGuard)
   @SubscribeMessage(ChatroomEvents.SendMessageToServer)
-  async handleMessageToServer(client: Socket, payload: Message, @Req() request: Request): Promise<void> {
+  async handleMessageToServer(client: Socket, payload: Message): Promise<void> {
     //client.broadcast
     //TODO check if chatRoomId exists
     //TODO Liz add the message to database
     console.log("getting here");
-    const userId = await this.authService.userId(request);
-    console.log(userId);
-    const user = await this.userService.getUserById(userId);
+    const user = await this.userService.getUserById(Number(payload.authorId));
     const chatroom = await this.chatroomService.getChatroomById(Number(payload.chatRoomId));
     if (!chatroom)
-      throw new BadRequestException(`Chatroom with id ${payload.chatRoomId} does not exist.`);
+    throw new BadRequestException(`Chatroom with id ${payload.chatRoomId} does not exist.`);
     const member = await this.memberService.getMemberByUserAndChatroom(user, chatroom);
-    await this.messageService.create({timestamp: new Date(), member: member, message: payload.message});
+    if (await this.memberService.isRestricted(member))
+      client.to('${payload.chatRoomId}').emit(ChatroomEvents.SendMessageToClient, 'You are restricted from sending messages.');
+    console.log(payload);
+    await this.messageService.create({timestamp: new Date(), member: member, message: payload.content});
 		console.log("this is a message", payload, `${payload.chatRoomId}`);
+    console.log(payload);
     this.io.to(`${payload.chatRoomId}`).emit(ChatroomEvents.SendMessageToClient, payload);
+    //TODO: emit the message
   }
 }
+
+// @UseGuards(AuthGuard)
+//   @SubscribeMessage(ChatroomEvents.SendMessageToServer)
+//   handleMessageToServer(client: Socket, payload: Message): void {
+//     //client.broadcast
+//     //TODO check if chatRoomId exists
+//     //TODO Liz add the message to database
+//         console.log("this is a message", payload, `${payload.chatRoomId}`);
+//     this.io.to(`${payload.chatRoomId}`).emit(ChatroomEvents.SendMessageToClient, payload);
+//   }
+// }
 
 /*
 		//this we can aslo get by cookie

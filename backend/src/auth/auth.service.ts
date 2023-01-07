@@ -13,4 +13,6 @@ export class AuthService {
 
     return data["id"];
   }
+
+  //TODO: userID function for websockets
 }
