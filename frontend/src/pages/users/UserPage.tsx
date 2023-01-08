@@ -62,6 +62,9 @@ export const UserPage = () => {
   }
 
   useEffect(() => {
+    if (currentUser.id === user.id) {
+      navigate('/profile');
+    }
     fetchFriends();
     fetchFriendRequests();
     fetchBlocked();
