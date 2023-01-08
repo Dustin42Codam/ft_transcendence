@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { selectUserById } from "../../redux/slices/usersSlice";
 import Wrapper from "../../components/Wrapper";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { Button, Tab, Tabs } from "react-bootstrap";
+import { Tab, Tabs } from "react-bootstrap";
 import UserFriends from "../../components/UserFriends";
 import axios from "axios";
 import "./UserPage.css";
@@ -40,10 +40,6 @@ export const UserPage = () => {
           err
         );
       });
-    console.log(
-      "🚀 ~ file: UserPage.tsx:28 ~ fetchFriendRequests ~ response",
-      response
-    );
     setFriendRequests(response.data);
   }
 
@@ -132,7 +128,6 @@ export const UserPage = () => {
     );
     const id = toast.loading(`joining room: ${friendship.chatroom_id}!`);
     await new Promise((resolve, reject) => {
-      //will check evert seccond if the chat room is set
       const interval = setInterval(function () {
         currentChatroom = store.getState().socket.currentChatRoom;
         if (currentChatroom.id != -1) {
@@ -236,11 +231,6 @@ export const UserPage = () => {
                       >
                         Message
                       </button>{" "}
-                      <button
-                        onClick={() => window.location.reload()}  
-                      >
-                        Reload
-                      </button>
                     </div>
                   </div>
                 </div>
@@ -255,16 +245,16 @@ export const UserPage = () => {
               className="mb-3"
               justify
             >
-              <Tab eventKey="#friends" title="Friends">
+              <Tab eventKey="friends" title="Friends">
                 <UserFriends userId={Number(userId)} userFriends={friends} />
               </Tab>
-              <Tab eventKey="#match-history" title="Match History">
+              <Tab eventKey="match-history" title="Match History">
                 <UserMatchHistory user={user}></UserMatchHistory>
               </Tab>
-              <Tab eventKey="#stats" title="Stats">
+              <Tab eventKey="stats" title="Stats">
                 <UserStats userStats={user.game_stats}></UserStats>
               </Tab>
-              <Tab eventKey="#ladder" title="Ladder">
+              <Tab eventKey="ladder" title="Ladder">
                 <GameLadder displayedUser={user}></GameLadder>
               </Tab>
             </Tabs>

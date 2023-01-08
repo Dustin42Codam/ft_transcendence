@@ -9,7 +9,7 @@ import {
 } from "../../redux/slices/currentUserSlice";
 import { UserStatus } from "../../models/Channel";
 import { Button, Form } from "react-bootstrap";
-import "./UserProfile.module.css";
+import "./UserProfile.css";
 import "../../components/UserFriends.css";
 import { useNavigate } from "react-router-dom";
 

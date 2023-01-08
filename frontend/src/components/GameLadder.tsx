@@ -17,10 +17,6 @@ function GameLadder(props: { displayedUser: any }) {
       .catch((err: any) => {
         console.log("🚀 ~ file: GameLadder.tsx:11 ~ fetchLadder ~ err", err);
       });
-    console.log(
-      "🚀 ~ file: GameLadder.tsx:13 ~ fetchLadder ~ response",
-      response
-    );
     setLadder(response.data);
   }
 
@@ -29,7 +25,8 @@ function GameLadder(props: { displayedUser: any }) {
   }, []);
 
   function navigateToUser(id: any) {
-    navigate(`/users/${id}#friends`);
+    const route: string = id == currentUser.id ? '/profile' : `/users/${id}`;
+    navigate(route);
     window.location.reload();
   }
 

@@ -53,13 +53,6 @@ function App() {
 
             <Route path={"*"} element={<NotFound />} />
 
-            {/* maybe to delete */}
-            {/*
-            <Route path={"/users/create"} element={<UserCreate />} />
-
-            <Route path={"/authenticate"} element={<Authenticate />} />
-            <Route path={"/achievements"} element={<Achievements />} />
-			*/}
           </Routes>
         </BrowserRouter>
       </div>

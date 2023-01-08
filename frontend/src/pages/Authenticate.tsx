@@ -2,8 +2,6 @@ import React from "react";
 import CallMadeIcon from "@mui/icons-material/CallMade";
 import ChatButton from "../components/ChatButton";
 import "../login.css";
-import axios from "axios";
-import logo from "./white42.png";
 
 const Authenticate = () => {
   async function login() {
