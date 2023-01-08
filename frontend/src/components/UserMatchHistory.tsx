@@ -2,7 +2,6 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useAppSelector } from "../redux/hooks";
 import { selectAllUsers } from "../redux/slices/usersSlice";
-import Wrapper from "./Wrapper";
 import "./GameLadder.css";
 
 function UserMatchHistory(props: { user: any }) {
@@ -15,10 +14,6 @@ function UserMatchHistory(props: { user: any }) {
       .catch((err: any) => {
         console.log("🚀 ~ file: GameMatches.tsx:11 ~ fetchMatches ~ err", err);
       });
-    console.log(
-      "🚀 ~ file: GameMatches.tsx:13 ~ fetchMatches ~ response",
-      response
-    );
     setMatches(response.data);
   }
 
