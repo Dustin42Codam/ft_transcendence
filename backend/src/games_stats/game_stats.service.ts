@@ -14,13 +14,15 @@ export class GameStatsService extends AbstractService {
   }
 
   async getGameStatsById(id: number) {
-    const gameStats = this.findOne({ id });
+    const gameStats = this.findOne({ id: id });
     if (!gameStats) throw new BadRequestException("These game stats do not exist");
     return gameStats;
   }
 
   async addWin(id: number) {
-    var gameStats = await this.getGameStatsById(id);
+    var gameStats = await this.getGameStatsById(Number(id));
+    console.log("🚀 ~ file: game_stats.service.ts:24 ~ GameStatsService ~ addWin ~ id", id)
+    console.log("🚀 ~ file: game_stats.service.ts:24 ~ GameStatsService ~ addWin ~ gameStats", gameStats)
     gameStats.win++;
     gameStats.played++;
     this.update(id, gameStats);

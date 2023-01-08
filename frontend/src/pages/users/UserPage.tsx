@@ -5,7 +5,6 @@ import Wrapper from "../../components/Wrapper";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { Button, Tab, Tabs } from "react-bootstrap";
 import UserFriends from "../../components/UserFriends";
-import { Avatar } from "@mui/material";
 import axios from "axios";
 import "./UserPage.css";
 import { selectCurrentUser } from "../../redux/slices/currentUserSlice";
@@ -51,12 +50,9 @@ export const UserPage = () => {
   async function fetchBlocked() {
     const response: any = await axios
       .get(`block/${userId}`)
-      .then((res: any) => res.data ? setBlocked(true) : setBlocked(false))
+      .then((res: any) => (res.data ? setBlocked(true) : setBlocked(false)))
       .catch((err: any) => {
-        console.log(
-          "🚀 ~ file: UserPage.tsx:29 ~ fetchBlocked ~ err",
-          err
-        );
+        console.log("🚀 ~ file: UserPage.tsx:29 ~ fetchBlocked ~ err", err);
       });
   }
 
@@ -104,8 +100,7 @@ export const UserPage = () => {
   }
 
   async function unblockUser() {
-    await axios
-      .post(`block/${userId}`).catch((error: any) => {
+    await axios.post(`block/${userId}`).catch((error: any) => {
       console.log("🚀 ~ file: UserPage.tsx ~ unblockFriend ~ error", error);
     });
     fetchFriends();
@@ -212,25 +207,22 @@ export const UserPage = () => {
                           {" "}
                           Add Friend{" "}
                         </button>
-                      )} {" "}
-                      {
-                        isBlocked === false ? (
-                          <button
-                            className="btn btn-outline-primary px-4"
-                            onClick={blockUser}
-                          >
-                            Block
-                          </button>
-                        ) : (
-                          <button
-                            className="btn btn-outline-primary px-4"
-                            onClick={unblockUser}
-                          >
-                            Unblock
-                          </button>
-                        )
-                      } {" "}
-                      
+                      )}{" "}
+                      {isBlocked === false ? (
+                        <button
+                          className="btn btn-outline-primary px-4"
+                          onClick={blockUser}
+                        >
+                          Block
+                        </button>
+                      ) : (
+                        <button
+                          className="btn btn-outline-primary px-4"
+                          onClick={unblockUser}
+                        >
+                          Unblock
+                        </button>
+                      )}{" "}
                       <button
                         className="btn btn-outline-primary px-4"
                         disabled={isBlocked}
@@ -244,6 +236,11 @@ export const UserPage = () => {
                       >
                         Message
                       </button>{" "}
+                      <button
+                        onClick={() => window.location.reload()}  
+                      >
+                        Reload
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -258,18 +255,16 @@ export const UserPage = () => {
               className="mb-3"
               justify
             >
-              <Tab eventKey="friends" title="Friends">
+              <Tab eventKey="#friends" title="Friends">
                 <UserFriends userId={Number(userId)} userFriends={friends} />
               </Tab>
-              <Tab eventKey="match-history" title="Match History" disabled>
-                <UserMatchHistory
-                  matchHistory={user.matches}
-                ></UserMatchHistory>
+              <Tab eventKey="#match-history" title="Match History">
+                <UserMatchHistory user={user}></UserMatchHistory>
               </Tab>
-              <Tab eventKey="stats" title="Stats">
+              <Tab eventKey="#stats" title="Stats">
                 <UserStats userStats={user.game_stats}></UserStats>
               </Tab>
-              <Tab eventKey="ladder" title="Ladder">
+              <Tab eventKey="#ladder" title="Ladder">
                 <GameLadder displayedUser={user}></GameLadder>
               </Tab>
             </Tabs>

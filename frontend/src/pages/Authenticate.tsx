@@ -33,7 +33,7 @@ const Authenticate = () => {
         icon={<CallMadeIcon fontSize="large" />}
       />
       <p>made by dkrecisz, alkrusts, lbisscho and avan-ber</p>
-      <p>&copy; 2022</p>
+      <p>&copy; 2023</p>
     </div>
   );
 };

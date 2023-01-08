@@ -1,11 +1,6 @@
 import React, { useEffect } from "react";
-import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import Wrapper from "../../components/Wrapper";
-import {
-  fetchFriends,
-  selectAllFriends,
-} from "../../redux/slices/friendsSlice";
 import {
   fetchCurrentUser,
   selectCurrentUser,
@@ -16,7 +11,6 @@ import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
 import "./UserProfile.module.css";
-import MatchHistory from "../../components/UserMatchHistory";
 import UserMatchHistory from "../../components/UserMatchHistory";
 import UserStats from "../../components/UserStats";
 import GameLadder from "../../components/GameLadder";
@@ -27,10 +21,6 @@ export const UserProfile = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    console.log(
-      "🚀 ~ file: UserProfile.tsx:25 ~ useEffect ~ currentUserStatus",
-      currentUserStatus
-    );
     if (currentUserStatus === "idle") {
       dispatch(fetchCurrentUser());
     }
@@ -75,9 +65,7 @@ export const UserProfile = () => {
                 <UserFriends userId={Number(currentUser.id)} />
               </Tab>
               <Tab eventKey="match-history" title="Match History">
-                <UserMatchHistory
-                  matchHistory={currentUser.matches}
-                ></UserMatchHistory>
+                <UserMatchHistory user={currentUser}></UserMatchHistory>
               </Tab>
               <Tab eventKey="stats" title="Stats">
                 <UserStats userStats={currentUser.game_stats}></UserStats>

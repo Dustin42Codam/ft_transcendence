@@ -14,10 +14,19 @@ export class GameController {
         return await this.gameService.getGameById(Number(id));
     }
 
+    @Get('user/:userId')
+    async getGamesByUserId(
+        @Param('userId') userId : Number
+    ) {
+        return await this.gameService.getAllGamesFromUser(Number(userId));
+    }
+
     @Post()
     async   createGame(
         @Body() body: GameCreateDto
     ) {
+        console.log("🚀 ~ file: game.controller.ts:21 ~ GameController ~ body", body)
+        
         return await this.gameService.createGame(body);
     }
 
@@ -30,7 +39,7 @@ export class GameController {
         return ladder;
     }
 
-    @UseGuards(AuthGuard)
+    // @UseGuards(AuthGuard)
     @Get('games/:id')
     async getAllGamesFromUser(
         @Param('games/id') id: string,

@@ -38,9 +38,14 @@ export class GameService extends AbstractService {
 	}
 
   async createGame(gameCreateDto: GameCreateDto) {
+    
     if (gameCreateDto.score_player_1 > gameCreateDto.score_player_2) {
-      await this.gameStatsService.addWin(gameCreateDto.player_1.id);
-      await this.gameStatsService.addLose(gameCreateDto.player_2.id);
+      console.log("🚀 ~ file: game.service.ts:45 type", typeof(gameCreateDto.player_1))
+      console.log("🚀 ~ file: game.service.ts:45 ~ GameService ~ createGame ~ gameCreateDto.player_1", gameCreateDto.player_1)
+      console.log("🚀 ~ file: game.service.ts:47 ~ GameService ~ createGame ~ gameCreateDto.player_2", gameCreateDto.player_2)
+      
+      await this.gameStatsService.addWin(Number(gameCreateDto.player_1.id));
+      await this.gameStatsService.addLose(Number(gameCreateDto.player_2.id));
     } else {
       await this.gameStatsService.addLose(gameCreateDto.player_1.id);
       await this.gameStatsService.addWin(gameCreateDto.player_2.id);
