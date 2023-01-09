@@ -51,6 +51,11 @@ export class ChatroomController {
     return this.chatroomService.getChatroomById(Number(id));
   }
 
+  @Get("all")
+  async getAllChatsFromUser(@Param("id") id: string) {
+    return this.chatroomService.getAllChatsFromUser();
+  }
+
   @Post("remove/:id")
   async removeChatroom(@Req() request: Request, @Param("id") id: string) {
     const chatroom = await this.chatroomService.getChatroomById(Number(id));

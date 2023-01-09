@@ -60,6 +60,16 @@ export class ChatroomService extends AbstractService {
     return allGroupchats;
   }
 
+  async getAllChatsFromUser(user: User) {
+    const membersFromUser = await this.memberService.getAllMembersFromUser(user);
+    var allChats = [];
+    for (let i = 0; i < membersFromUser.length; i++) {
+      allChats.push(membersFromUser[i].chatroom);
+    }
+    return allChats;
+  }
+
+
   async getAllOpenChatrooms() {
     return await this.ChatroomRepository.find({
       where: [{ type: ChatroomType.PUBLIC }, { type: ChatroomType.PROTECTED }],
