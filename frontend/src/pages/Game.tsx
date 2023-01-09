@@ -13,7 +13,18 @@ const Game = (props: any) => {
       keynum = e.which;
     }
 
-    console.log(String.fromCharCode(keynum));
+    console.log("Press: ", String.fromCharCode(keynum));
+  }
+  function myKeyRelese(e: any) {
+    let keynum: any;
+
+    if (window.event) {
+      keynum = e.keyCode;
+    } else if (e.which) {
+      keynum = e.which;
+    }
+
+    console.log("Relse: ", String.fromCharCode(keynum));
   }
   useEffect(() => {
     loadGame();
@@ -23,6 +34,7 @@ const Game = (props: any) => {
     <Wrapper>
       <canvas
         onKeyDown={(e) => myKeyPress(e)}
+        onKeyUp={(e) => myKeyRelese(e)}
         tabIndex={0}
         id="canvas"
         width="1300"

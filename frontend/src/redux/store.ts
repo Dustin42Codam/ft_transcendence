@@ -34,7 +34,7 @@ const rootReducer = (state: any, action: any) => {
 
 const persistConfig = {
   key: "root",
-  blacklist: ['socket'],
+  blacklist: ["socket"],
   storage,
 };
 
