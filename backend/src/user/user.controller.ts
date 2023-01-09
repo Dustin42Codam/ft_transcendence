@@ -7,7 +7,7 @@ import { UserUpdateNameDto } from "./dto/user-update-name.dto";
 import { AuthService } from "src/auth/auth.service";
 import { Request } from "express-session";
 
-@UseGuards(AuthGuard)
+// @UseGuards(AuthGuard)
 @Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService, private readonly authService: AuthService) {}

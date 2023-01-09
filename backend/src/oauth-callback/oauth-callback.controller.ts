@@ -2,6 +2,8 @@ import { Controller, Get, Req, Res, UseInterceptors } from "@nestjs/common";
 import { Request, Response } from "express-session";
 import { UserService } from "../user/user.service";
 import { JwtService } from "@nestjs/jwt";
+import { UserCreateDto } from "src/user/dto/user-create.dto";
+import { UserStatus } from "src/user/entity/user.entity";
 
 require("dotenv").config();
 
@@ -45,11 +47,10 @@ export class OauthCallbackController {
         },
       });
       user = await this.userService.findOne({ display_name: resp.display_name });
+      console.log("🚀 ~ file: oauth-callback.controller.ts:50 ~ OauthCallbackController ~ callback ~ user", user)
       if (!user) {
-        user = await registerUser(resp.data, this.userService);
-      }
-      request.session.user_id = user.id;
-
+		  user = await registerUser(resp.data, this.userService);
+		}
       const jwt = await this.jwtService.signAsync({ id: user.id });
 
       console.log("WE ARE SETTING A COOKIE WANING");
@@ -61,12 +62,15 @@ export class OauthCallbackController {
     }
 
     async function registerUser(data, userService) {
-      const user = await userService.createUser({
-        display_name: data.login,
-        avatar: data.image.link,
-        two_factor_auth: 0,
-        status: "online",
-      });
+		const userCreateDto: UserCreateDto = {
+			display_name: data.login,
+			intra_name: data.login,
+			avatar: data.image.link,
+			status: UserStatus.ONLINE
+		}
+      console.log("🚀 ~ file: oauth-callback.controller.ts:72 ~ OauthCallbackController ~ registerUser ~ userCreateDto", userCreateDto)
+      const user = await userService.createUser(userCreateDto);
+	  return user;
     }
   }
 }

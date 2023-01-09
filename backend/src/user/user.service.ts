@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from "@nestjs/common";
+import { BadRequestException, Injectable, Inject, forwardRef } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { AchievementService } from "src/achievement/achievement.service";
 import { AbstractService } from "src/common/abstract.service";
@@ -10,12 +10,16 @@ import { UserCreateDto } from "./dto/user-create.dto";
 import { UserInfoDto } from "./dto/user-info.dto";
 import { UserUpdateNameDto } from "./dto/user-update-name.dto";
 import { User, UserStatus } from "./entity/user.entity";
+import { TFA } from "src/tfa/entity/tfa.entity";
+import { TFAService } from "src/tfa/tfa.service";
 
 @Injectable()
 export class UserService extends AbstractService {
   constructor(
     private gameStatsService: GameStatsService,
     private achievementService: AchievementService,
+	@Inject(forwardRef(() => TFAService))
+	private TFAService: TFAService,
     @InjectRepository(User) private readonly userRepository: Repository<User>,
   ) {
     super(userRepository);
@@ -31,8 +35,17 @@ export class UserService extends AbstractService {
     return user;
   }
 
+  async setTwoFactorAuthenticationSecret(secret: string, userId: number) {
+	  var user = await this.getUserById(userId, ["tfa_secret"]);
+	  console.log("🚀 ~ file: user.service.ts:36 ~ UserService ~ setTwoFactorAuthenticationSecret ~ secret", secret)
+	  console.log("🚀 ~ file: user.service.ts:38 ~ UserService ~ setTwoFactorAuthenticationSecret ~ user", user)
+	  console.log("🚀 ~ file: user.service.ts:38 ~ UserService ~ setTwoFactorAuthenticationSecret ~ user.secret", user.tfa_secret)
+	  user.tfa_secret.twoFactorAuthenticationSecret = secret;
+	  await this.userRepository.update(userId, user);
+	  return user
+    };
+
 	async createUser(userCreateDto: UserCreateDto) {
-		const emptyGameStats: GameStatsCreateDto = {win: 0, lose: 0, played: 0}
 		const newUserInfo: UserInfoDto = {status: UserStatus.ONLINE, ...userCreateDto}
 		const all_users = await this.getUsers();
 		var unique_name = false
@@ -52,12 +65,16 @@ export class UserService extends AbstractService {
 				}
 			}
 		}
-		userCreateDto.display_name = name;
-		const newUser = await this.create(userCreateDto)
-		const gameStats = await this.gameStatsService.createGameStats(newUser);
-		await this.achievementService.createAllAchievements(newUser)
+		newUserInfo.display_name = name;
+		const newUser = await this.create(newUserInfo)
+		console.log("🚀 ~ file: user.service.ts:70 ~ UserService ~ createUser ~ newUser", newUser)
+		await this.gameStatsService.createGameStats(newUser);
+		// await this.achievementService.createAllAchievements(newUser);
+		const tfa_user = await this.getUserById(newUser.id, ["tfa_secret"])
+		await this.TFAService.createTFA(tfa_user);
 		return await this.getUserById(newUser.id, ["achievements", "game_stats"]);
 	}
+
 
 	async updateUserName(user: User, userUpdateNameDto: UserUpdateNameDto) {
 		const users = await this.getUsers();

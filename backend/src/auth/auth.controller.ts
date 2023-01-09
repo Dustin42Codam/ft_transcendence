@@ -27,6 +27,7 @@ export class AuthController {
 
     await this.userService.createUser({
       display_name: body.display_name,
+      intra_name: body.display_name,
       avatar: body.avatar,
       status: UserStatus.ONLINE,
     });

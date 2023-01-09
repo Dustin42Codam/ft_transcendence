@@ -17,6 +17,7 @@ import { GameStatsModule } from "./games_stats/game_stats.module";
 import { PostModule } from "./post/post.module";
 import { MessageModule } from "./message/message.module";
 import { AchievementModule } from "./achievement/achievement.module";
+import { TFAModule } from "./tfa/tfa.module";
 
 dotenv.config();
 
@@ -47,6 +48,7 @@ dotenv.config();
     OauthCallbackModule,
     UserModule,
     PostModule,
+    TFAModule,
   ],
   providers: [],
 })

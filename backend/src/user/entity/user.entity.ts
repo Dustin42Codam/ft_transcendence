@@ -20,6 +20,9 @@ export class User {
 	@Column({unique: true})
 	display_name: string;
 
+	@Column({unique: true})
+	intra_name: string;
+
   @Column()
   avatar: string;
 
@@ -55,7 +58,7 @@ export class User {
   @JoinColumn()
   game_stats: GameStats
 
-  @OneToOne(() => GameStats, {eager: true, cascade: true})
+  @OneToOne(() => TFA, {cascade: true})
   @JoinColumn()
   tfa_secret: TFA
 

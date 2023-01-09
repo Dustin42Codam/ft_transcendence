@@ -1,11 +1,8 @@
--	avatar upload strategy
+-	BE: avatar upload strategy
 	-	how to store images in backend?
--	unique name creation
+-	FE: unique name creation
 	-	test if username gets a unique value upon creation 
 	-	pop up when user changes a name which already exists
-
--	match history
-	-	check which api endpoint to use
 
 to fix:
 	-	POST http://localhost:3000/api/game

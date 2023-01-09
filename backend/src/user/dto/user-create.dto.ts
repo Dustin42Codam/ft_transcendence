@@ -5,6 +5,9 @@ export class UserCreateDto {
   display_name: string;
 
   @IsNotEmpty()
+  intra_name: string;
+
+  @IsNotEmpty()
   avatar: string;
 
   @IsNotEmpty()
