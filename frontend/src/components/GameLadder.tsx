@@ -25,7 +25,7 @@ function GameLadder(props: { displayedUser: any }) {
   }, []);
 
   function navigateToUser(id: any) {
-    const route: string = id == currentUser.id ? '/profile' : `/users/${id}`;
+    const route: string = id == currentUser.id ? "/profile" : `/users/${id}`;
     navigate(route);
     window.location.reload();
   }
@@ -42,10 +42,7 @@ function GameLadder(props: { displayedUser: any }) {
         </tr>
       </thead>
       {ladder.map((user: any, id: number) => (
-        <tbody
-          key={user.id}
-          onClick={() => navigateToUser(`${user.id}`)}
-        >
+        <tbody key={user.id} onClick={() => navigateToUser(`${user.id}`)}>
           <tr
             className={
               props.displayedUser.display_name === user.display_name

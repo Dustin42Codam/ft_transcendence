@@ -52,8 +52,9 @@ export class ChatroomController {
   }
 
   @Get("all")
-  async getAllChatsFromUser(@Param("id") id: string) {
-    return this.chatroomService.getAllChatsFromUser();
+  async getAllChatsFromUser(@Req() request: Request) {
+    const user = await this.userService.getUserById(request.session.user_id);
+    return this.chatroomService.getAllChatsFromUser(user);
   }
 
   @Post("remove/:id")

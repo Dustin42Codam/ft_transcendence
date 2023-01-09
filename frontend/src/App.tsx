@@ -52,7 +52,6 @@ function App() {
             <Route path={"/games"} element={<Game />} />
 
             <Route path={"*"} element={<NotFound />} />
-
           </Routes>
         </BrowserRouter>
       </div>

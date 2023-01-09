@@ -21,8 +21,6 @@ export class GameStatsService extends AbstractService {
 
   async addWin(id: number) {
     var gameStats = await this.getGameStatsById(Number(id));
-    console.log("🚀 ~ file: game_stats.service.ts:24 ~ GameStatsService ~ addWin ~ id", id)
-    console.log("🚀 ~ file: game_stats.service.ts:24 ~ GameStatsService ~ addWin ~ gameStats", gameStats)
     gameStats.win++;
     gameStats.played++;
     this.update(id, gameStats);

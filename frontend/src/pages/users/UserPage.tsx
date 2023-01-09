@@ -63,7 +63,7 @@ export const UserPage = () => {
 
   useEffect(() => {
     if (currentUser.id === user.id) {
-      navigate('/profile');
+      navigate("/profile");
     }
     fetchFriends();
     fetchFriendRequests();

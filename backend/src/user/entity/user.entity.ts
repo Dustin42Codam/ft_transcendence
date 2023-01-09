@@ -1,11 +1,10 @@
 import { Achievement } from "src/achievement/entity/achievement.entity";
 import { Block } from "src/blocked/entity/block.entity";
-import { Friend } from "src/friend/entity/friend.entity";
 import { FriendRequest } from "src/friend_request/entity/friend_request.entity";
 import { GameStats } from "src/games_stats/entity/game_stats.entity";
 import { Member } from "src/member/entity/member.entity";
 import { Column, Entity, OneToMany, JoinTable, PrimaryGeneratedColumn, OneToOne, JoinColumn } from "typeorm";
-import { Socket } from "socket.io-client";
+import { TFA } from "src/tfa/entity/tfa.entity";
 
 export enum UserStatus {
   ONLINE = "online",
@@ -53,8 +52,12 @@ export class User {
   received_friend_requests: FriendRequest[];
 
 	@OneToOne(() => GameStats, {eager: true, cascade: true})
-    @JoinColumn()
-    game_stats: GameStats
+  @JoinColumn()
+  game_stats: GameStats
+
+  @OneToOne(() => GameStats, {eager: true, cascade: true})
+  @JoinColumn()
+  tfa_secret: TFA
 
   @OneToMany(() => Member, (member: Member) => member.user)
   chatrooms: FriendRequest[];
