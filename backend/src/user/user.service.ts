@@ -10,12 +10,16 @@ import { UserCreateDto } from "./dto/user-create.dto";
 import { UserInfoDto } from "./dto/user-info.dto";
 import { User, UserStatus } from "./entity/user.entity";
 import experss, { Request } from "express";
+import { Socket } from "socket.io";
+import { parse } from "cookie";
+import { JwtService } from "@nestjs/jwt";
 
 @Injectable()
 export class UserService extends AbstractService {
   constructor(
     private gameStatsService: GameStatsService,
     private achievementService: AchievementService,
+    private jwtService: JwtService,
     @InjectRepository(User) private readonly userRepository: Repository<User>,
   ) {
     super(userRepository);
@@ -46,5 +50,11 @@ export class UserService extends AbstractService {
     Object.assign(user, status);
     await this.userRepository.save(user);
     return user;
+  }
+
+  async getUserFromClient(client: Socket): Promise<number> {
+    const cookie = parse(client.handshake.headers.cookie);
+    const decoded = await this.jwtService.verifyAsync(cookie.jwt);
+    return decoded.id;
   }
 }

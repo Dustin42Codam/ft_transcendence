@@ -23,6 +23,7 @@ export enum ChatroomType {
 import { selectCurrentChatroom } from "../redux/slices/socketSlice";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { selectCurrentUser } from "../redux/slices/currentUserSlice";
 
 type Chats = {
   id: number;
@@ -38,7 +39,7 @@ const GroupChatTable = () => {
   const groupChats = useAppSelector(selectGroupChats);
   let currentChatroom: any = store.getState().socket.currentChatRoom;
   const dispatch = useAppDispatch();
-
+  const user = useAppSelector(selectCurrentUser);
   const navigate = useNavigate();
 
   async function handleClick(name: string, chatToJoinIndex: number) {
@@ -46,6 +47,7 @@ const GroupChatTable = () => {
       socketActions.joinARoom({
         chatRoom: {
           id: groupChats[chatToJoinIndex].id,
+          userId: user.id,
           name: groupChats[chatToJoinIndex].name,
         },
       })

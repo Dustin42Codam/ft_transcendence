@@ -29,6 +29,7 @@ export type Message = {
 export type ChatRoom = {
   id: number;
   name: string;
+  userId : Number;
 };
 
 //TODO add authguard
@@ -55,30 +56,45 @@ export class ChatroomGateway implements OnGatewayInit, OnGatewayConnection, OnGa
 
   //this is fine I suppose like a general socket to connect to?
 	@UseGuards(AuthGuard)
-  async handleConnection(client: any, @Req() request: Request): Promise<void> {
+  async handleConnection(client: any): Promise<void> {
 		console.log(`client ${client.id} conected`);
+    const userId = await this.userService.getUserFromClient(client);
+    const user = await this.userService.getUserById(Number(userId));
+    if (!user) {
+      throw new BadRequestException(`User with id ${userId} does not exist.`);
+    }
+    await this.userService.update(user, { status: UserStatus.ONLINE })
     const sockets = this.io.sockets;
-    // this.userService.changeStatus(await this.authService.userId(request), UserStatus.ONLINE);
-    // console.log("client connected testing what is in client", client);
-    //TODO backend team set user status to online
   }
 
 	@UseGuards(AuthGuard)
-  handleDisconnect(client: any): void {
+  async handleDisconnect(client: any): Promise<void> {
     const sockets = this.io.sockets;
-    // this.userService.changeStatus(request.session.user_id, UserStatus.OFFLINE);
+    const userId = await this.userService.getUserFromClient(client);
+    const user = await this.userService.getUserById(Number(userId));
+    if (!user) {
+      throw new BadRequestException(`User with id ${userId} does not exist.`);
+    }
+    await this.userService.update(user, { status: UserStatus.ONLINE })
 		console.log(`client ${client.id} disconected`);
-    //TODO backend team set user status to offline
-    //
   }
 
 	@UseGuards(AuthGuard)
   @SubscribeMessage(ChatroomEvents.JoinChatRoom)
-  handelJoinRoom(client: Socket, payload: ChatRoom): void {
+  async handelJoinRoom(client: Socket, payload: ChatRoom): Promise<void> {
 		//console.log(client);
-    //TODO Liz check if chatroom exists
-    //TODO Liz check if user can join
-    //TODO Liz add member data type to payload
+    const chatroom = await this.chatroomService.getChatroomById(Number(payload.id));
+    if (!chatroom) {
+      throw new BadRequestException(`Chatroom with id ${payload.id} does not exist.`);
+    }
+    const user = await this.userService.getUserById(Number(payload.id));
+    if (!user) {
+      throw new BadRequestException(`User with id ${payload.userId} does not exist.`);
+    }
+    const member = await this.memberService.getMemberByUserAndChatroom(chatroom, user);
+    if (await this.memberService.isRestricted(member)) {
+      throw new BadRequestException(`User with id ${payload.userId} is restricted from chatroom with id ${payload.id}.`);
+    }
 		console.log("clienat jointed:" ,client.id, payload);
     client.join(`${payload.id}`);
     this.io.to(`${payload.id}`).emit(ChatroomEvents.JoinChatRoomSuccess, payload);
@@ -109,8 +125,6 @@ export class ChatroomGateway implements OnGatewayInit, OnGatewayConnection, OnGa
   @SubscribeMessage(ChatroomEvents.SendMessageToServer)
   async handleMessageToServer(client: Socket, payload: Message): Promise<void> {
     //client.broadcast
-    //TODO check if chatRoomId exists
-    //TODO Liz add the message to database
     console.log("getting here");
     const user = await this.userService.getUserById(Number(payload.authorId));
     const chatroom = await this.chatroomService.getChatroomById(Number(payload.chatRoomId));
@@ -127,17 +141,6 @@ export class ChatroomGateway implements OnGatewayInit, OnGatewayConnection, OnGa
     //TODO: emit the message
   }
 }
-
-// @UseGuards(AuthGuard)
-//   @SubscribeMessage(ChatroomEvents.SendMessageToServer)
-//   handleMessageToServer(client: Socket, payload: Message): void {
-//     //client.broadcast
-//     //TODO check if chatRoomId exists
-//     //TODO Liz add the message to database
-//         console.log("this is a message", payload, `${payload.chatRoomId}`);
-//     this.io.to(`${payload.chatRoomId}`).emit(ChatroomEvents.SendMessageToClient, payload);
-//   }
-// }
 
 /*
 		//this we can aslo get by cookie
