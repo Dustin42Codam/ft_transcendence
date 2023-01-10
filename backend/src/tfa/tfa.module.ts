@@ -14,7 +14,8 @@ import { ConfigService } from "@nestjs/config";
 		TypeOrmModule.forFeature([TFA]),
 		CommonModule,
 		forwardRef(() => UserModule),
-		AuthModule
+		AuthModule,
+		
 	],
     controllers: [TFAController], // TODO this is here for testing and should be removed
     providers: [TFAService, ConfigService],

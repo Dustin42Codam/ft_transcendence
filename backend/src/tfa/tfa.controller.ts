@@ -19,20 +19,23 @@ import { AuthGuard } from 'src/auth/auth.guard';
 import { AuthService } from 'src/auth/auth.service';
 import { UserService } from 'src/user/user.service';
 import { tfaCodeDto } from './dto/tfaCode.dto';
+import { JwtService } from '@nestjs/jwt';
+import { UserStatus } from 'src/user/entity/user.entity';
 
 @Controller("tfa")
 export class TFAController {
   constructor(
 		private readonly tfaService: TFAService,
 		private readonly authService: AuthService,
-		private readonly userSerive: UserService,
+		private readonly userService: UserService,
+		private readonly jwtService: JwtService
 	) {}
 
 	@Post('generate')
 	// @UseGuards(AuthGuard)
 	async register(@Res() response: Response, @Req() request: Request) {
 		const userId = await this.authService.userId(request);
-		const user = await this.userSerive.getUserById(userId);
+		const user = await this.userService.getUserById(userId);
 	  const { otpauthUrl } = 
 	  	await this.tfaService.generateTwoFactorAuthenticationSecret(user);
    
@@ -47,13 +50,45 @@ export class TFAController {
 	  @Body() { code } : tfaCodeDto
 	) {
 		const userId = await this.authService.userId(request);
-		const user = await this.userSerive.getUserById(userId);
+		const user = await this.userService.getUserById(userId);
 	  const isCodeValid = this.tfaService.isTwoFactorAuthenticationCodeValid(
 		code, user
 	  );
 	  if (!isCodeValid) {
 		throw new UnauthorizedException('Wrong authentication code');
 	  }
-	  await this.userSerive.update(user.id, {two_factor_auth: true});
+	  await this.userService.update(user.id, {two_factor_auth: true});
+	}
+
+	@Post('authenticate')
+	@HttpCode(200)
+	@UseGuards(AuthGuard)
+	async authenticate(
+	  @Req() request: Request,
+	  @Body() { code } : tfaCodeDto,
+	  @Res({ passthrough: true }) response: Response
+	) {
+		const userId = await this.authService.userId(request);
+		const user = await this.userService.getUserById(userId);
+
+	  const isCodeValid = this.tfaService.isTwoFactorAuthenticationCodeValid(
+		code, user
+	  );
+	  if (!isCodeValid) {
+		throw new UnauthorizedException('Wrong authentication code');
+	  }
+   
+	  // old method:
+	//   const jwt = await this.jwtService.signAsync({ id: user.id });
+	//   await this.userService.changeStatus(user.id, UserStatus.ONLINE);
+	//   response.cookie("jwt", jwt, { httpOnly: true, sameSite: "strict" });
+	//   return user;
+
+	// new method to distinguish a 2FA cookie from a normal cookie
+	const accessTokenCookie = this.authService.getCookieWithJwtAccessToken(user.id, true);
+ 
+    request.res.setHeader('Set-Cookie', [accessTokenCookie]);
+ 
+    return request.user;
 	}
 }

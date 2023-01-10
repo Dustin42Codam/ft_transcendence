@@ -1,4 +1,4 @@
-import { Redirect, UseGuards, ClassSerializerInterceptor, UseInterceptors, BadRequestException, Body, Controller, Get, NotFoundException, Post, Req, Res } from "@nestjs/common";
+import { Redirect, UseGuards, ClassSerializerInterceptor, UseInterceptors, BadRequestException, Body, Controller, Get, NotFoundException, Post, Req, Res, HttpCode } from "@nestjs/common";
 import { UserService } from "../user/user.service";
 import * as bcrypt from "bcrypt";
 import { RegisterDto } from "./models/register.dto";
@@ -50,6 +50,30 @@ export class AuthController {
     await this.userService.changeStatus(user.id, UserStatus.ONLINE);
     response.cookie("jwt", jwt, { httpOnly: true, sameSite: "strict" });
     console.log("succesfully logged in");
+    return user;
+  }
+
+  @HttpCode(200)
+  @UseGuards(AuthGuard)
+  @Post('log-in')
+  async logIn(@Req() request: Request) {
+	const userId = await this.authService.userId(request);
+	const user = await this.userService.getUserById(userId);
+    const accessTokenCookie = this.authService.getCookieWithJwtAccessToken(user.id);
+
+    const {
+      cookie: refreshTokenCookie,
+      token: refreshToken
+    } = this.authService.getCookieWithJwtRefreshToken(user.id);
+ 
+    await this.userService.setCurrentRefreshToken(refreshToken, user.id);
+ 
+    request.res.setHeader('Set-Cookie', [accessTokenCookie, refreshTokenCookie]);
+ 
+    if (user.isTwoFactorAuthenticationEnabled) {
+      return;
+    }
+
     return user;
   }
 

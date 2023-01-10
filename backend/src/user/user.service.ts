@@ -11,6 +11,7 @@ import { UserUpdateNameDto } from "./dto/user-update-name.dto";
 import { User, UserStatus } from "./entity/user.entity";
 import { TFA } from "src/tfa/entity/tfa.entity";
 import { TFAService } from "src/tfa/tfa.service";
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UserService extends AbstractService {
@@ -33,11 +34,15 @@ export class UserService extends AbstractService {
     return user;
   }
 
+  async setCurrentRefreshToken(refreshToken: string, userId: number) {
+    const currentHashedRefreshToken: any = await bcrypt.hash(refreshToken, 10);
+    await this.userRepository.update(userId, {
+      currentHashedRefreshToken,
+    });
+  }
+
   async setTwoFactorAuthenticationSecret(secret: string, userId: number) {
 	  var user = await this.getUserById(userId, ["tfa_secret"]);
-	  console.log("🚀 ~ file: user.service.ts:36 ~ UserService ~ setTwoFactorAuthenticationSecret ~ secret", secret)
-	  console.log("🚀 ~ file: user.service.ts:38 ~ UserService ~ setTwoFactorAuthenticationSecret ~ user", user)
-	  console.log("🚀 ~ file: user.service.ts:38 ~ UserService ~ setTwoFactorAuthenticationSecret ~ user.secret", user.tfa_secret)
 	  user.tfa_secret.twoFactorAuthenticationSecret = secret;
 	  await this.userRepository.update(userId, user);
 	  return user
@@ -70,7 +75,7 @@ export class UserService extends AbstractService {
 		// await this.achievementService.createAllAchievements(newUser);
 		const tfa_user = await this.getUserById(newUser.id, ["tfa_secret"])
 		await this.TFAService.createTFA(tfa_user);
-		return await this.getUserById(newUser.id, ["achievements", "game_stats"]);
+		return await this.getUserById(newUser.id, ["game_stats"]);
 	}
 
 
@@ -85,13 +90,11 @@ export class UserService extends AbstractService {
 		return user;
 	}
 
-	async changeStatus(id: number, status: UserStatus) {
-		
+	async changeStatus(id: number, status: UserStatus) {	
 		const user = await this.getUserById(id);
 		user.status = status;
 		Object.assign(user, status);
 		await this.userRepository.save(user);
 		return user;
-	}
-	
+	}	
 }

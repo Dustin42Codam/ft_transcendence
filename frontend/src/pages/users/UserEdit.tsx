@@ -52,6 +52,20 @@ const UserEdit = () => {
     navigate("/profile");
   };
 
+  async function generateQRCode() {
+    const response = await fetch("http://localhost:3000/api/tfa/generate", {
+      method: "POST",
+      credentials: "include",
+    });
+
+    const image = document.getElementById("qr") as HTMLImageElement | null;
+
+    if (image !== null) {
+      const str = URL.createObjectURL(await response.blob());
+      image.src = str;
+    }
+  }
+
   return (
     <Wrapper>
       <section id="content" className="container UserBody">
@@ -115,6 +129,10 @@ const UserEdit = () => {
                 <option value="true">on</option>
               </Form.Select>
             </div>
+			<div className="mb-3">
+                <button onClick={generateQRCode}>Generate QR Code</button>
+                <img src="" id="qr" />
+			</div>
             <Button type="submit">Save</Button>{" "}
             <Button onClick={navigateBack}>Back</Button>
           </form>
