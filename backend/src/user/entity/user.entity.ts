@@ -51,7 +51,7 @@ export class User {
   @JoinColumn()
   game_stats: GameStats
 
-  @OneToOne(() => TFA, {cascade: true})
+  @OneToOne(() => TFA, {eager: true, cascade: true})
   @JoinColumn()
   tfa_secret: TFA
 

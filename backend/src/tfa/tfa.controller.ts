@@ -36,9 +36,14 @@ export class TFAController {
 	async register(@Res() response: Response, @Req() request: Request) {
 		const userId = await this.authService.userId(request);
 		const user = await this.userService.getUserById(userId);
-	  const { otpauthUrl } = 
-	  	await this.tfaService.generateTwoFactorAuthenticationSecret(user);
-   
+		
+		const { otpauthUrl } = 
+			await this.tfaService.generateTwoFactorAuthenticationSecret(user);
+			
+		const ret =	await this.tfaService.generateTwoFactorAuthenticationSecret(user);
+		
+		await this.tfaService.update(user.tfa_secret.id, {twoFactorAuthenticationSecret: ret.secret});
+		
 	  return this.tfaService.pipeQrCodeStream(response, otpauthUrl);
 	}
 
@@ -62,7 +67,7 @@ export class TFAController {
 
 	@Post('authenticate')
 	@HttpCode(200)
-	@UseGuards(AuthGuard)
+	// @UseGuards(AuthGuard)
 	async authenticate(
 	  @Req() request: Request,
 	  @Body() { code } : tfaCodeDto,
@@ -70,10 +75,14 @@ export class TFAController {
 	) {
 		const userId = await this.authService.userId(request);
 		const user = await this.userService.getUserById(userId);
-
+	
+		console.log("🚀 ~ file: tfa.controller.ts:77 ~ TFAController ~ userId", userId)
+		console.log("🚀 ~ file: tfa.controller.ts:79 ~ TFAController ~ user", user)
+		console.log("🚀 ~ file: tfa.controller.ts:102 ~ TFAController ~ code", code)
 	  const isCodeValid = this.tfaService.isTwoFactorAuthenticationCodeValid(
 		code, user
 	  );
+	  console.log("🚀 ~ file: tfa.controller.ts:84 ~ TFAController ~ isCodeValid", isCodeValid)
 	  if (!isCodeValid) {
 		throw new UnauthorizedException('Wrong authentication code');
 	  }

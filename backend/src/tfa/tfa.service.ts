@@ -49,6 +49,9 @@ export class TFAService extends AbstractService {
 	}
 
 	public isTwoFactorAuthenticationCodeValid(twoFactorAuthenticationCode: string, user: User) {
+		console.log("🚀 ~ file: tfa.service.ts:52 ~ TFAService ~ isTwoFactorAuthenticationCodeValid ~ twoFactorAuthenticationCode", twoFactorAuthenticationCode)
+		console.log("🚀 ~ file: tfa.service.ts:52 ~ TFAService ~ isTwoFactorAuthenticationCodeValid ~ user", user)
+		
 		return authenticator.verify({
 		  token: twoFactorAuthenticationCode,
 		  secret: user.tfa_secret.twoFactorAuthenticationSecret

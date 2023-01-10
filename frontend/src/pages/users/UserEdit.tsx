@@ -12,6 +12,7 @@ import { Button, Form } from "react-bootstrap";
 import "./UserProfile.css";
 import "../../components/UserFriends.css";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const UserEdit = () => {
   const user = useAppSelector(selectCurrentUser);
@@ -20,6 +21,7 @@ const UserEdit = () => {
   const [avatar, setAvatar] = useState(user.avatar);
   const [status, setStatus] = useState(user.status);
   const [twoFA, setTwoFA] = useState(user.two_factor_auth);
+  const [code, setCode] = useState("");
 
   const ref = useRef<HTMLInputElement>(null);
   const dispatch = useAppDispatch();
@@ -64,6 +66,18 @@ const UserEdit = () => {
       const str = URL.createObjectURL(await response.blob());
       image.src = str;
     }
+  }
+
+  async function submit2FACode(e: SyntheticEvent) {
+    e.preventDefault();
+
+    const response = await axios.post("tfa/authenticate", {
+      code: code,
+    });
+    console.log(
+      "🚀 ~ file: UserEdit.tsx:79 ~ submit2FACode ~ response",
+      response
+    );
   }
 
   return (
@@ -129,14 +143,27 @@ const UserEdit = () => {
                 <option value="true">on</option>
               </Form.Select>
             </div>
-			<div className="mb-3">
-                <button onClick={generateQRCode}>Generate QR Code</button>
-                <img src="" id="qr" />
-			</div>
+            <div className="mb-3">
+              <button onClick={generateQRCode}>Generate QR Code</button>
+              <img src="" id="qr" />
+            </div>
             <Button type="submit">Save</Button>{" "}
             <Button onClick={navigateBack}>Back</Button>
           </form>
         </div>
+        <form onSubmit={submit2FACode}>
+          <div className="mb-3">
+            <label>
+              code:
+              <input
+                type="text"
+                name="code"
+                onChange={(e) => setCode(e.target.value)}
+              />
+            </label>
+            <input type="submit" value="Submit" />
+          </div>
+        </form>
       </section>
     </Wrapper>
   );
