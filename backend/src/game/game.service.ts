@@ -6,14 +6,12 @@ import { AbstractService } from "src/common/abstract.service";
 
 import { Game } from "./entity/game.entity";
 import { GameCreateDto } from "./dto/game-create.dto";
-import { AchievementService } from "src/achievement/achievement.service";
 import { GameStatsService } from "src/games_stats/game_stats.service";
 import { UserService } from "src/user/user.service";
 
 @Injectable()
 export class GameService extends AbstractService {
   constructor(
-        private achievementService : AchievementService,
         private gameStatsService : GameStatsService,
 		private userService : UserService,
 		@InjectRepository(Game) private readonly gameRepository: Repository<Game>
@@ -50,8 +48,6 @@ export class GameService extends AbstractService {
       await this.gameStatsService.addLose(gameCreateDto.player_1.id);
       await this.gameStatsService.addWin(gameCreateDto.player_2.id);
     }
-    await this.achievementService.checkGameAchievements(gameCreateDto.player_1.id);
-    await this.achievementService.checkGameAchievements(gameCreateDto.player_2.id);
     return await this.create(gameCreateDto);
   }
 

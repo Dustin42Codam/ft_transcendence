@@ -1,6 +1,5 @@
 import { BadRequestException, Injectable, Inject, forwardRef } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { AchievementService } from "src/achievement/achievement.service";
 import { AbstractService } from "src/common/abstract.service";
 import { GameStatsCreateDto } from "src/games_stats/dto/gamestats-create.dto";
 import { GameStats } from "src/games_stats/entity/game_stats.entity";
@@ -17,7 +16,6 @@ import { TFAService } from "src/tfa/tfa.service";
 export class UserService extends AbstractService {
   constructor(
     private gameStatsService: GameStatsService,
-    private achievementService: AchievementService,
 	@Inject(forwardRef(() => TFAService))
 	private TFAService: TFAService,
     @InjectRepository(User) private readonly userRepository: Repository<User>,

@@ -8,7 +8,6 @@ import { LogoutModule } from "./logout/logout.module";
 import { OauthCallbackModule } from "./oauth-callback/oauth-callback.module";
 import { BlockModule } from "./blocked/block.module";
 import * as dotenv from "dotenv";
-import { FriendRequestModule } from "./friend_request/friend_request.module";
 import { FriendModule } from "./friend/friend.module";
 import { MemberModule } from "./member/member.module";
 import { ChatroomModule } from "./chatroom/chatroom.module";
@@ -16,7 +15,6 @@ import { GameModule } from "./game/game.module";
 import { GameStatsModule } from "./games_stats/game_stats.module";
 import { PostModule } from "./post/post.module";
 import { MessageModule } from "./message/message.module";
-import { AchievementModule } from "./achievement/achievement.module";
 import { TFAModule } from "./tfa/tfa.module";
 
 dotenv.config();
@@ -34,12 +32,10 @@ dotenv.config();
       synchronize: true,
     }),
     AuthModule,
-    AchievementModule,
     BlockModule,
     ChatroomModule,
     CommonModule,
     FriendModule,
-    FriendRequestModule,
     LogoutModule,
     GameModule,
     GameStatsModule,

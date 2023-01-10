@@ -44,15 +44,15 @@ export const UserPage = () => {
   }
 
   function getBase64(file: any) {
-	var reader = new FileReader();
-	reader.readAsDataURL(file);
-	reader.onload = function () {
-	  console.log(reader.result);
-	};
-	reader.onerror = function (error) {
-	  console.log('Error: ', error);
-	};
- }
+    var reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = function () {
+      console.log(reader.result);
+    };
+    reader.onerror = function (error) {
+      console.log("Error: ", error);
+    };
+  }
 
   async function getQrCode() {
     const response: any = await axios.post(`tfa/generate`).catch((err: any) => {
@@ -62,26 +62,25 @@ export const UserPage = () => {
       );
     });
     // console.log("🚀 ~ file: UserPage.tsx:55 ~ getQrCode ~ response", response);
-	// var encoder = new JPEGEncoder(9);
-	// var jpgFile = encoder.encode(rawImage, 9);
-	const image = document.getElementById('qr') as HTMLImageElement | null;
-	console.log("🚀 ~ file: UserPage.tsx:58 ~ getQrCode ~ image", image)
-	
-	if (image !== null) {
-		
-		const str = response.data;
-		// const b64 = btoa(str);
-		// console.log("🚀 ~ file: UserPage.tsx:62 ~ getQrCode ~ str", btoa(str))
-		
-		// const encode = (str: string):string => Buffer.from(str, 'binary').toString('base64');
-		// console.log("🚀 ~ file: UserPage.tsx:62 ~ getQrCode ~ encode", encode(response.data))
-		
-		// image.src = encode;
-		// image.src = response.data;
-		// image.src = 'data:image/png;base64,' + btoa(response.data);
-		// document.body.appendChild(image);
-		// console.log("🚀 ~ file: UserPage.tsx:59 ~ getQrCode ~ image", image)
-	}
+    // var encoder = new JPEGEncoder(9);
+    // var jpgFile = encoder.encode(rawImage, 9);
+    const image = document.getElementById("qr") as HTMLImageElement | null;
+    console.log("🚀 ~ file: UserPage.tsx:58 ~ getQrCode ~ image", image);
+
+    if (image !== null) {
+      const str = response.data;
+      // const b64 = btoa(str);
+      // console.log("🚀 ~ file: UserPage.tsx:62 ~ getQrCode ~ str", btoa(str))
+
+      // const encode = (str: string):string => Buffer.from(str, 'binary').toString('base64');
+      // console.log("🚀 ~ file: UserPage.tsx:62 ~ getQrCode ~ encode", encode(response.data))
+
+      // image.src = encode;
+      // image.src = response.data;
+      // image.src = 'data:image/png;base64,' + btoa(response.data);
+      // document.body.appendChild(image);
+      // console.log("🚀 ~ file: UserPage.tsx:59 ~ getQrCode ~ image", image)
+    }
   }
 
   async function fetchBlocked() {
@@ -304,7 +303,7 @@ export const UserPage = () => {
               <Tab eventKey="qr" title="qr">
                 {/* <GameLadder displayedUser={user}></GameLadder> */}
                 <button onClick={getQrCode}>generate qr code</button>
-				<img src="" id="qr" />
+                <img src="" id="qr" />
               </Tab>
             </Tabs>
           </div>

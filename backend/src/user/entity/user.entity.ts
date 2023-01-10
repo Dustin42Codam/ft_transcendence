@@ -1,6 +1,4 @@
-import { Achievement } from "src/achievement/entity/achievement.entity";
 import { Block } from "src/blocked/entity/block.entity";
-import { FriendRequest } from "src/friend_request/entity/friend_request.entity";
 import { GameStats } from "src/games_stats/entity/game_stats.entity";
 import { Member } from "src/member/entity/member.entity";
 import { Column, Entity, OneToMany, JoinTable, PrimaryGeneratedColumn, OneToOne, JoinColumn } from "typeorm";
@@ -48,12 +46,6 @@ export class User {
   @OneToMany(() => Block, (block: Block) => block.receiver)
   received_blocks: Block[];
 
-  @OneToMany(() => FriendRequest, (friendRequest: FriendRequest) => friendRequest.sender)
-  send_friend_requests: FriendRequest[];
-
-  @OneToMany(() => FriendRequest, (friendRequest: FriendRequest) => friendRequest.receiver)
-  received_friend_requests: FriendRequest[];
-
 	@OneToOne(() => GameStats, {eager: true, cascade: true})
   @JoinColumn()
   game_stats: GameStats
@@ -63,8 +55,5 @@ export class User {
   tfa_secret: TFA
 
   @OneToMany(() => Member, (member: Member) => member.user)
-  chatrooms: FriendRequest[];
-
-  @OneToMany(() => Achievement, (achievement: Achievement) => achievement.user)
-  public achievements: Achievement[];
+  chatrooms: Member[];
 }

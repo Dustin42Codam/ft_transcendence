@@ -7,7 +7,6 @@ import { UserController } from "./user.controller";
 import { UserService } from "./user.service";
 import { UploadController } from "./upload.controller";
 import { GameStatsModule } from "src/games_stats/game_stats.module";
-import { AchievementModule } from "src/achievement/achievement.module";
 import { FriendModule } from "src/friend/friend.module";
 import { TFAModule } from "src/tfa/tfa.module";
 
@@ -17,7 +16,6 @@ import { TFAModule } from "src/tfa/tfa.module";
 	FriendModule,
 	CommonModule, 
 	GameStatsModule,
-	AchievementModule,
 	AuthModule,
 	forwardRef(() => TFAModule),
 	],
