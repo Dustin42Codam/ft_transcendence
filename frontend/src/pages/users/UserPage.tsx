@@ -55,31 +55,16 @@ export const UserPage = () => {
   }
 
   async function getQrCode() {
-    const response: any = await axios.post(`tfa/generate`).catch((err: any) => {
-      console.log(
-        "🚀 ~ file: UserPage.tsx:29 ~ fetchFriendRequests ~ err",
-        err
-      );
+    const response = await fetch("http://localhost:3000/api/tfa/generate", {
+      method: "POST",
+      credentials: "include",
     });
-    // console.log("🚀 ~ file: UserPage.tsx:55 ~ getQrCode ~ response", response);
-    // var encoder = new JPEGEncoder(9);
-    // var jpgFile = encoder.encode(rawImage, 9);
+
     const image = document.getElementById("qr") as HTMLImageElement | null;
-    console.log("🚀 ~ file: UserPage.tsx:58 ~ getQrCode ~ image", image);
 
     if (image !== null) {
-      const str = response.data;
-      // const b64 = btoa(str);
-      // console.log("🚀 ~ file: UserPage.tsx:62 ~ getQrCode ~ str", btoa(str))
-
-      // const encode = (str: string):string => Buffer.from(str, 'binary').toString('base64');
-      // console.log("🚀 ~ file: UserPage.tsx:62 ~ getQrCode ~ encode", encode(response.data))
-
-      // image.src = encode;
-      // image.src = response.data;
-      // image.src = 'data:image/png;base64,' + btoa(response.data);
-      // document.body.appendChild(image);
-      // console.log("🚀 ~ file: UserPage.tsx:59 ~ getQrCode ~ image", image)
+      const str = URL.createObjectURL(await response.blob());
+      image.src = str;
     }
   }
 
@@ -301,7 +286,6 @@ export const UserPage = () => {
                 <GameLadder displayedUser={user}></GameLadder>
               </Tab>
               <Tab eventKey="qr" title="qr">
-                {/* <GameLadder displayedUser={user}></GameLadder> */}
                 <button onClick={getQrCode}>generate qr code</button>
                 <img src="" id="qr" />
               </Tab>
