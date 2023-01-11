@@ -1,9 +1,9 @@
-import { Controller, Get, Req, Res, UseInterceptors } from "@nestjs/common";
 import { Request, Response } from "express-session";
-import { UserService } from "../user/user.service";
-import { JwtService } from "@nestjs/jwt";
-import { UserCreateDto } from "src/user/dto/user-create.dto";
-import { UserStatus } from "src/user/entity/user.entity";
+import { Controller, Get, Req, Res, UseInterceptors } from '@nestjs/common';
+import { UserService } from '../user/user.service';
+import { JwtService } from '@nestjs/jwt';
+import { UserStatus } from 'src/user/entity/user.entity';
+import { UserCreateDto } from 'src/user/dto/user-create.dto';
 
 require("dotenv").config();
 
@@ -46,16 +46,22 @@ export class OauthCallbackController {
           Authorization: "Bearer " + request.session.token,
         },
       });
+      
       user = await this.userService.findOne({ display_name: resp.display_name });
-      console.log("🚀 ~ file: oauth-callback.controller.ts:50 ~ OauthCallbackController ~ callback ~ user", user)
-      if (!user) {
-		  user = await registerUser(resp.data, this.userService);
-		}
-      const jwt = await this.jwtService.signAsync({ id: user.id });
 
-      console.log("WE ARE SETTING A COOKIE WANING");
-      response.cookie("jwt", jwt, { httpOnly: true, sameSite: "lax" });
-      response.redirect(`http://localhost:${process.env.FRONTEND_PORT}`);
+      if (!user) {
+		    user = await registerUser(resp.data, this.userService);
+		  }
+		
+		const jwt = await this.jwtService.signAsync({ id: user.id });
+		
+		response.cookie("jwt", jwt, { httpOnly: true, sameSite: "lax" });
+
+      if (user.two_factor_auth === true) {
+        response.redirect(`http://localhost:${process.env.FRONTEND_PORT}/authenticate/2fa`);
+      } else {
+        response.redirect(`http://localhost:${process.env.FRONTEND_PORT}`);
+      }
     } catch (e) {
       console.log("ERROR:", e);
       response.redirect(`http://localhost:${process.env.FRONTEND_PORT}/authenticate`);
@@ -68,7 +74,6 @@ export class OauthCallbackController {
 			avatar: data.image.link,
 			status: UserStatus.ONLINE
 		}
-      console.log("🚀 ~ file: oauth-callback.controller.ts:72 ~ OauthCallbackController ~ registerUser ~ userCreateDto", userCreateDto)
       const user = await userService.createUser(userCreateDto);
 	  return user;
     }

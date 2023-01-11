@@ -8,7 +8,6 @@ const Game = (props: any) => {
     let keynum: any;
 
     if (window.event) {
-      // IE
       keynum = e.keyCode;
     } else if (e.which) {
       keynum = e.which;

@@ -11,6 +11,11 @@ import { UserUpdateNameDto } from "./dto/user-update-name.dto";
 import { User, UserStatus } from "./entity/user.entity";
 import { TFA } from "src/tfa/entity/tfa.entity";
 import { TFAService } from "src/tfa/tfa.service";
+import * as bcrypt from 'bcrypt';
+import experss, { Request } from "express";
+import { Socket } from "socket.io";
+import { parse } from "cookie";
+import { JwtService } from "@nestjs/jwt";
 
 @Injectable()
 export class UserService extends AbstractService {
@@ -18,6 +23,7 @@ export class UserService extends AbstractService {
     private gameStatsService: GameStatsService,
 	@Inject(forwardRef(() => TFAService))
 	private TFAService: TFAService,
+    private jwtService: JwtService,
     @InjectRepository(User) private readonly userRepository: Repository<User>,
   ) {
     super(userRepository);
@@ -33,11 +39,15 @@ export class UserService extends AbstractService {
     return user;
   }
 
+  async setCurrentRefreshToken(refreshToken: string, userId: number) {
+    const currentHashedRefreshToken: any = await bcrypt.hash(refreshToken, 10);
+    await this.userRepository.update(userId, {
+      currentHashedRefreshToken,
+    });
+  }
+
   async setTwoFactorAuthenticationSecret(secret: string, userId: number) {
 	  var user = await this.getUserById(userId, ["tfa_secret"]);
-	  console.log("🚀 ~ file: user.service.ts:36 ~ UserService ~ setTwoFactorAuthenticationSecret ~ secret", secret)
-	  console.log("🚀 ~ file: user.service.ts:38 ~ UserService ~ setTwoFactorAuthenticationSecret ~ user", user)
-	  console.log("🚀 ~ file: user.service.ts:38 ~ UserService ~ setTwoFactorAuthenticationSecret ~ user.secret", user.tfa_secret)
 	  user.tfa_secret.twoFactorAuthenticationSecret = secret;
 	  await this.userRepository.update(userId, user);
 	  return user
@@ -96,13 +106,18 @@ export class UserService extends AbstractService {
 		return user;
 	}
 
-	async changeStatus(id: number, status: UserStatus) {
-		
+	async changeStatus(id: number, status: UserStatus) {	
 		const user = await this.getUserById(id);
 		user.status = status;
 		Object.assign(user, status);
 		await this.userRepository.save(user);
 		return user;
 	}
-	
+	async getUserFromClient(client: Socket): Promise<number> {
+		if (client.handshake.headers.cookie) {
+			const cookie = parse(client.handshake.headers.cookie);
+			const decoded = await this.jwtService.verifyAsync(cookie.jwt);
+			return decoded.id;
+		}
+	  }
 }

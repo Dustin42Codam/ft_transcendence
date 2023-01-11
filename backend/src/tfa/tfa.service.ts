@@ -9,6 +9,7 @@ import { User } from '../user/entity/user.entity';
 import { ConfigService } from '@nestjs/config';
 import { toFileStream } from 'qrcode';
 import { Response } from "express";
+import { JwtService } from "@nestjs/jwt";
 
 @Injectable()
 export class TFAService extends AbstractService {
@@ -17,6 +18,7 @@ export class TFAService extends AbstractService {
 		@Inject(forwardRef(() => UserService))
 		private readonly userService: UserService,
 		private readonly configService: ConfigService,
+		private readonly jwtService: JwtService
 
 	) {
 		super(TFARepository);
@@ -24,12 +26,11 @@ export class TFAService extends AbstractService {
 
 	public async generateTwoFactorAuthenticationSecret(user: User) {
 		const secret = authenticator.generateSecret();
-	 
 		const otpauthUrl = authenticator
 			.keyuri(
 				user.intra_name,
 				this.configService.get('TWO_FACTOR_AUTHENTICATION_APP_NAME'), secret);
-	 
+	
 		await this.userService.setTwoFactorAuthenticationSecret(secret, user.id);
 	 
 		return {
@@ -39,7 +40,6 @@ export class TFAService extends AbstractService {
 	}
 
 	async createTFA(user: User) {
-		console.log("🚀 ~ file: tfa.service.ts:42 ~ TFAService ~ createTFA ~ user", user)
 		await this.create({user: user});
 	}
 

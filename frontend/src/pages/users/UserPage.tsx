@@ -43,31 +43,6 @@ export const UserPage = () => {
     setFriendRequests(response.data);
   }
 
-  function getBase64(file: any) {
-    var reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = function () {
-      console.log(reader.result);
-    };
-    reader.onerror = function (error) {
-      console.log("Error: ", error);
-    };
-  }
-
-  async function getQrCode() {
-    const response = await fetch("http://localhost:3000/api/tfa/generate", {
-      method: "POST",
-      credentials: "include",
-    });
-
-    const image = document.getElementById("qr") as HTMLImageElement | null;
-
-    if (image !== null) {
-      const str = URL.createObjectURL(await response.blob());
-      image.src = str;
-    }
-  }
-
   async function fetchBlocked() {
     const response: any = await axios
       .get(`block/${userId}`)
@@ -149,6 +124,7 @@ export const UserPage = () => {
     dispatch(
       socketActions.joinARoom({
         chatRoom: {
+          userId: user.id,
           id: friendship.chatroom_id,
           name: "dm",
         },
@@ -204,7 +180,7 @@ export const UserPage = () => {
                     </span>
                     <h5 className="mt-3">{user.display_name}</h5>
 
-                    <div className="mt-2 buttons">
+                    <div className="mt-2 buttons button-layout">
                       {/* <FriendButton
                         friends={friends}
                         currentUser={currentUser}
@@ -284,10 +260,6 @@ export const UserPage = () => {
               </Tab>
               <Tab eventKey="ladder" title="Ladder">
                 <GameLadder displayedUser={user}></GameLadder>
-              </Tab>
-              <Tab eventKey="qr" title="qr">
-                <button onClick={getQrCode}>generate qr code</button>
-                <img src="" id="qr" />
               </Tab>
             </Tabs>
           </div>

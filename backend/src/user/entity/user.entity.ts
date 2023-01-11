@@ -3,6 +3,7 @@ import { GameStats } from "src/games_stats/entity/game_stats.entity";
 import { Member } from "src/member/entity/member.entity";
 import { Column, Entity, OneToMany, JoinTable, PrimaryGeneratedColumn, OneToOne, JoinColumn } from "typeorm";
 import { TFA } from "src/tfa/entity/tfa.entity";
+import { Exclude } from 'class-transformer';
 
 export enum UserStatus {
   ONLINE = "online",
@@ -50,10 +51,16 @@ export class User {
   @JoinColumn()
   game_stats: GameStats
 
-  @OneToOne(() => TFA, {cascade: true})
+  @OneToOne(() => TFA, {eager: true, cascade: true})
   @JoinColumn()
   tfa_secret: TFA
 
   @OneToMany(() => Member, (member: Member) => member.user)
   chatrooms: Member[];
+
+  @Column({
+    nullable: true,
+  })
+  @Exclude()
+  public currentHashedRefreshToken?: string;
 }

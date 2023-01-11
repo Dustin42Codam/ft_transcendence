@@ -1,4 +1,4 @@
-import { Redirect, UseGuards, ClassSerializerInterceptor, UseInterceptors, BadRequestException, Body, Controller, Get, NotFoundException, Post, Req, Res } from "@nestjs/common";
+import { Redirect, UseGuards, ClassSerializerInterceptor, UseInterceptors, BadRequestException, Body, Controller, Get, NotFoundException, Post, Req, Res, HttpCode } from "@nestjs/common";
 import { UserService } from "../user/user.service";
 import * as bcrypt from "bcrypt";
 import { RegisterDto } from "./models/register.dto";
@@ -7,11 +7,17 @@ import { Request, Response } from "express";
 import { AuthGuard } from "./auth.guard";
 import { AuthService } from "./auth.service";
 import { UserStatus } from "src/user/entity/user.entity";
+import { TFAService } from "src/tfa/tfa.service";
 
 @UseInterceptors(ClassSerializerInterceptor)
 @Controller()
 export class AuthController {
-  constructor(private userService: UserService, private jwtService: JwtService, private authService: AuthService) {}
+  constructor(
+		private readonly userService: UserService,
+		private readonly jwtService: JwtService,
+		private readonly authService: AuthService,
+		private readonly tfaService: TFAService,
+	) {}
 
   @Post("register")
   async register(@Body() body: RegisterDto) {
@@ -53,6 +59,30 @@ export class AuthController {
     return user;
   }
 
+  @HttpCode(200)
+  @UseGuards(AuthGuard)
+  @Post('log-in')
+  async logIn(@Req() request: Request) {
+	const userId = await this.authService.userId(request);
+	const user = await this.userService.getUserById(userId);
+    const accessTokenCookie = this.authService.getCookieWithJwtAccessToken(user.id);
+
+    const {
+      cookie: refreshTokenCookie,
+      token: refreshToken
+    } = this.authService.getCookieWithJwtRefreshToken(user.id);
+ 
+    await this.userService.setCurrentRefreshToken(refreshToken, user.id);
+ 
+    request.res.setHeader('Set-Cookie', [accessTokenCookie, refreshTokenCookie]);
+ 
+    if (user.isTwoFactorAuthenticationEnabled) {
+      return;
+    }
+
+    return user;
+  }
+
   @UseGuards(AuthGuard)
   @Get("me")
   async user(@Req() request: Request) {
@@ -67,8 +97,12 @@ export class AuthController {
   async logout(@Res({ passthrough: true }) response: Response, @Req() request: Request) {
     const userId = await this.authService.userId(request);
 
+    console.log("🚀 ~ file: auth.controller.ts:101 ~ AuthController ~ logout ~ response", response)
     response.clearCookie("jwt");
+    response.clearCookie("Authentication");
     response.clearCookie("connect.sid");
+
+	await this.tfaService.update(userId, {isAuthenticated: false});
 
     await this.userService.changeStatus(userId, UserStatus.OFFLINE);
 

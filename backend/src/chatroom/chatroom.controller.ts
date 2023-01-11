@@ -146,8 +146,6 @@ export class ChatroomController {
     return await this.memberService.createMember({ user: receiver, chatroom: chatroom, role: MemberRole.USER });
   }
 
-  //TODO Create chatroom, change Password, join Chatroom HASHING PASSWORDS
-
 	@Post()
 	async createChatroom(
 		@Body() body: ChatroomCreateDto,
@@ -165,7 +163,8 @@ export class ChatroomController {
 			throw new BadRequestException("PROTECTED chatrooms need to have a password.");
 		}
 		const {user_ids, ...createChatroom} = body;
-		user_ids.push(Number(request.session.user_id));
+    const user = await this.userService.getUserById(await this.authService.userId(request));
+    user_ids.push(Number(user.id));
 		const uniqueUsers : number[] = [... new Set(user_ids)];
 		var users : User[]= []
         console.log("🚀 ~ file: chatroom.controller.ts:184 ~ ChatroomController ~ uniqueUsers", uniqueUsers)

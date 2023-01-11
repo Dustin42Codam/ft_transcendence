@@ -4,3 +4,10 @@
   color: red;
   background-color: rgb(255, 255, 255);
 }
+
+.button-layout {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+}

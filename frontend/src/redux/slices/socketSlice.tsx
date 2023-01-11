@@ -4,6 +4,7 @@ import axios from "axios";
 export interface ChatRoom {
   id: number;
   name: string;
+  userId: number; // Added the userId so I can get it in the backend
 }
 
 export interface ChatState {
@@ -18,7 +19,7 @@ export const initialState: ChatState = {
   messages: [],
   isEstablishingConnection: false,
   isConnected: false,
-  currentChatRoom: { id: -1, name: "" },
+  currentChatRoom: { userId: -1, id: -1, name: "" },
   status: "",
 };
 
