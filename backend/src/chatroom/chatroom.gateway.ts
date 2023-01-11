@@ -19,6 +19,7 @@ import { UserService } from "src/user/user.service";
 import { MemberService } from "src/member/member.service";
 import { ChatroomService } from "./chatroom.service";
 import { MessageService } from "src/message/message.service";
+import { TFAService } from "src/tfa/tfa.service";
 
 export type Message = {
   content: string;
@@ -45,7 +46,9 @@ export class ChatroomGateway implements OnGatewayInit, OnGatewayConnection, OnGa
   private readonly memberService: MemberService,
   private readonly authService: AuthService,
   private readonly chatroomService: ChatroomService,
-  private readonly messageService: MessageService) {};
+  private readonly messageService: MessageService,
+  private readonly tfaService: TFAService,
+  ) {};
 
   private logger: Logger = new Logger("AppGateway");
   @WebSocketServer() io: Namespace;
@@ -56,27 +59,23 @@ export class ChatroomGateway implements OnGatewayInit, OnGatewayConnection, OnGa
 
   //this is fine I suppose like a general socket to connect to?
 	@UseGuards(AuthGuard)
-  async handleConnection(client: any): Promise<void> {
-		console.log(`client ${client.id} conected`);
+ 	 async handleConnection(client: any): Promise<void> {
+	console.log(`client ${client.id} conected`);
     const userId = await this.userService.getUserFromClient(client);
-    const user = await this.userService.getUserById(Number(userId));
-    if (!user) {
-      throw new BadRequestException(`User with id ${userId} does not exist.`);
-    }
-    await this.userService.update(user, { status: UserStatus.ONLINE })
-    const sockets = this.io.sockets;
+	if (userId) {
+		await this.userService.changeStatus(userId, UserStatus.ONLINE )
+		const sockets = this.io.sockets;
+	}
   }
 
 	@UseGuards(AuthGuard)
   async handleDisconnect(client: any): Promise<void> {
     const sockets = this.io.sockets;
     const userId = await this.userService.getUserFromClient(client);
-    const user = await this.userService.getUserById(Number(userId));
-    if (!user) {
-      throw new BadRequestException(`User with id ${userId} does not exist.`);
-    }
-    await this.userService.update(user, { status: UserStatus.ONLINE })
+	if (userId) {
+		await this.userService.changeStatus(userId, UserStatus.OFFLINE)
 		console.log(`client ${client.id} disconected`);
+	}
   }
 
 	@UseGuards(AuthGuard)

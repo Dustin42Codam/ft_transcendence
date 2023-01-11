@@ -18,10 +18,12 @@ function TwoFactorAuthentication() {
       .post("tfa/authenticate", {
         code: code,
       })
-      .then(() => {
-        navigate("/");
-      })
-      .catch(() => window.alert("Wrong code provided!"));
+      .then((res) => {
+        console.log("🚀 ~ file: TwoFactorAuthentication.tsx:22 ~ .then ~ res", res)
+		navigate("/profile");
+		window.location.reload();
+	})
+	.catch(() => window.alert("Wrong code provided!"));
   }
 
   return (

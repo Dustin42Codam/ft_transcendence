@@ -124,6 +124,7 @@ export const UserPage = () => {
     dispatch(
       socketActions.joinARoom({
         chatRoom: {
+          userId: user.id,
           id: friendship.chatroom_id,
           name: "dm",
         },

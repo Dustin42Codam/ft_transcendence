@@ -20,8 +20,8 @@ function App() {
   const socketStatus = useAppSelector((state) => state.socket.isConnected);
   const userStatus = useAppSelector((state) => state.currentUser.status);
   const currentUser = useAppSelector(selectCurrentUser);
-  
-//   console.log("🚀 ~ file: App.tsx:23 ~ App ~ currentUser", currentUser.tfa_secret.isAuthenticated);
+
+  //   console.log("🚀 ~ file: App.tsx:23 ~ App ~ currentUser", currentUser.tfa_secret.isAuthenticated);
 
   //TODO do not load the server if socket is not socketStatus is not true
   if (userStatus === "failed") {
@@ -38,8 +38,11 @@ function App() {
     );
   } else if (userStatus === "loading") {
     return <div className="App"></div>;
-//   } else if (currentUser.two_factor_auth === true && currentUser.tfa_secret.isAuthenticated === false) {
-  } else if (currentUser.two_factor_auth === true && currentUser.tfa_secret.isAuthenticated === false) {
+    //   } else if (currentUser.two_factor_auth === true && currentUser.tfa_secret.isAuthenticated === false) {
+  } else if (
+    currentUser.two_factor_auth === true &&
+    currentUser.tfa_secret.isAuthenticated === false
+  ) {
     return (
       <div className="App">
         <BrowserRouter>
