@@ -7,7 +7,7 @@ import { UserUpdateNameDto } from "./dto/user-update-name.dto";
 import { AuthService } from "src/auth/auth.service";
 import { Request } from "express-session";
 
-@UseGuards(AuthGuard)
+// @UseGuards(AuthGuard)
 @Controller("users")
 export class UserController {
   constructor(private readonly userService: UserService, private readonly authService: AuthService) {}
@@ -51,7 +51,16 @@ export class UserController {
         @Body() body: UserUpdateDto,
         @Param('id') id : number
     ) {
-        await this.userService.update(id, body);
+		const ret = await this.userService.update(id, body);
+		
+		if (body.display_name) {
+			const user = await this.userService.findOne({display_name: body.display_name});
+			// if (user.display_name === )
+		}
+        console.log("🚀 ~ file: user.controller.ts:54 ~ UserController ~ body", body)
+		
+        console.log("🚀 ~ file: user.controller.ts:55 ~ UserController ~ ret", ret)
+		
         return this.userService.getUserById(id);
     }
 }

@@ -114,6 +114,7 @@ const UserEdit = () => {
                   className="form-control"
                   value={user.avatar}
                   onChange={(e) => setAvatar(e.target.value)}
+				  required
                 />
                 <ImageUpload uploaded={updateImage} />
               </div>
@@ -124,6 +125,7 @@ const UserEdit = () => {
                 className="form-control"
                 defaultValue={user.display_name}
                 onChange={(e) => setName(e.target.value)}
+				required
               />
             </div>
             <div className="mb-3">
@@ -131,6 +133,7 @@ const UserEdit = () => {
               <Form.Select
                 defaultValue={status}
                 onChange={(e) => setStatus(e.target.value)}
+				required
               >
                 <option
                   key={UserStatus.OFFLINE}
@@ -151,10 +154,10 @@ const UserEdit = () => {
               </div>
               <div className="mb-3">
                 <label>
-                  code:
                   <input
                     type="text"
                     name="code"
+					placeholder="6-Digit-Key"
                     onChange={(e) => setCode(e.target.value)}
                   />
                 </label>

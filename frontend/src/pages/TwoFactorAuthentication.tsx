@@ -19,11 +19,14 @@ function TwoFactorAuthentication() {
         code: code,
       })
       .then((res) => {
-        console.log("🚀 ~ file: TwoFactorAuthentication.tsx:22 ~ .then ~ res", res)
-		navigate("/profile");
-		window.location.reload();
-	})
-	.catch(() => window.alert("Wrong code provided!"));
+        console.log(
+          "🚀 ~ file: TwoFactorAuthentication.tsx:22 ~ .then ~ res",
+          res
+        );
+        navigate("/profile");
+        window.location.reload();
+      })
+      .catch(() => window.alert("Wrong code provided!"));
   }
 
   return (
@@ -41,11 +44,10 @@ function TwoFactorAuthentication() {
         <form onSubmit={submitCode}>
           <div className="inputBox">
             <input
-              id="uname"
+              id="code"
               type="text"
-              name="Username"
+              name="code"
               placeholder="6-Digit-Key"
-              //   onSubmit={submitCode}
               onChange={(e) => setCode(e.target.value)}
             />
             <input type="submit" name="Submit" value="Submit" />
