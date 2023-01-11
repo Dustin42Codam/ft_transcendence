@@ -25,8 +25,6 @@ export class GameController {
     async   createGame(
         @Body() body: GameCreateDto
     ) {
-        console.log("🚀 ~ file: game.controller.ts:21 ~ GameController ~ body", body)
-        
         return await this.gameService.createGame(body);
     }
 
@@ -35,7 +33,6 @@ export class GameController {
     async getGamesLadder(
         ) {
         const ladder = await this.gameService.getGamesLadder();
-        console.log("🚀 ~ file: game.controller.ts:29 ~ GameController ~ ladder", ladder)
         return ladder;
     }
 

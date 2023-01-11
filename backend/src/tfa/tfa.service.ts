@@ -10,6 +10,7 @@ import { ConfigService } from '@nestjs/config';
 import { toFileStream } from 'qrcode';
 import { Response } from "express";
 import { JwtService } from "@nestjs/jwt";
+import * as crypto from "crypto";
 
 @Injectable()
 export class TFAService extends AbstractService {
@@ -25,13 +26,15 @@ export class TFAService extends AbstractService {
 	}
 
 	public async generateTwoFactorAuthenticationSecret(user: User) {
+		// authenticator.options = {
+		// 	crypto
+		// }
 		const secret = authenticator.generateSecret();
-	 
 		const otpauthUrl = authenticator
 			.keyuri(
 				user.intra_name,
 				this.configService.get('TWO_FACTOR_AUTHENTICATION_APP_NAME'), secret);
-	 
+	
 		await this.userService.setTwoFactorAuthenticationSecret(secret, user.id);
 	 
 		return {
@@ -49,9 +52,6 @@ export class TFAService extends AbstractService {
 	}
 
 	public isTwoFactorAuthenticationCodeValid(twoFactorAuthenticationCode: string, user: User) {
-		console.log("🚀 ~ file: tfa.service.ts:52 ~ TFAService ~ isTwoFactorAuthenticationCodeValid ~ twoFactorAuthenticationCode", twoFactorAuthenticationCode)
-		console.log("🚀 ~ file: tfa.service.ts:52 ~ TFAService ~ isTwoFactorAuthenticationCodeValid ~ user", user)
-		
 		return authenticator.verify({
 		  token: twoFactorAuthenticationCode,
 		  secret: user.tfa_secret.twoFactorAuthenticationSecret
