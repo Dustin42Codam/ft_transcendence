@@ -33,7 +33,7 @@ export class UserController {
 		return await this.userService.createUser(body);
 	}
 
-    @Post('name')
+  @Post('name')
 	async changeUsername(
         @Body() body: UserUpdateNameDto,
         @Req() request: Request
@@ -41,8 +41,10 @@ export class UserController {
 		const user = await this.userService.getUserById(request.session.user_id);
 		if (user)
 			return user;
-        if (user.display_name === body.display_name)
-            throw new BadRequestException("You already have this displayname");
+      if ("" === body.display_name)
+      throw new BadRequestException("You can not have a empty string as a username");
+    if (user.display_name === body.display_name)
+      throw new BadRequestException("You already have this displayname");
 		return await this.userService.updateUserName(user, body);
 	}
     //fixing this with authguards
