@@ -1,5 +1,5 @@
 import { Avatar } from "@mui/material";
-import React, { SyntheticEvent, useRef, useState } from "react";
+import React, { SyntheticEvent, useEffect, useRef, useState } from "react";
 import ImageUpload from "../../components/ImageUpload";
 import Wrapper from "../../components/Wrapper";
 import { useAppSelector, useAppDispatch } from "../../redux/hooks";
@@ -10,19 +10,20 @@ import {
 import { UserStatus } from "../../models/Channel";
 import { Button, Form } from "react-bootstrap";
 import "./UserProfile.css";
+import "./UserEdit.css";
 import "../../components/UserFriends.css";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { User } from "../../models/User";
 
 const UserEdit = () => {
-  const user = useAppSelector(selectCurrentUser);
+  const user: User = useAppSelector(selectCurrentUser);
 
   const [name, setName] = useState(user.display_name);
   const [avatar, setAvatar] = useState(user.avatar);
   const [status, setStatus] = useState(user.status);
   const [twoFA, setTwoFA] = useState(user.two_factor_auth);
   const [code, setCode] = useState("");
-
   const ref = useRef<HTMLInputElement>(null);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -30,14 +31,13 @@ const UserEdit = () => {
   const infoSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
 
-    if (name || avatar || status || twoFA) {
+    if (name || avatar || status) {
       await dispatch(
         updateCurrentUser({
           id: user.id,
           display_name: name,
           avatar,
           status,
-          two_factor_auth: twoFA,
         })
       );
     }
@@ -68,16 +68,26 @@ const UserEdit = () => {
     }
   }
 
-  async function submit2FACode(e: SyntheticEvent) {
+  async function deactivate2FA(e: SyntheticEvent) {
     e.preventDefault();
 
-    const response = await axios.post("tfa/authenticate", {
-      code: code,
-    });
-    console.log(
-      "🚀 ~ file: UserEdit.tsx:79 ~ submit2FACode ~ response",
-      response
-    );
+    const response = await axios
+      .post("tfa/turn-off", {
+        code: code,
+      })
+      .then(() => setTwoFA(false))
+      .catch((error) => window.alert("Wrong code provided!"));
+  }
+
+  async function activate2FA(e: SyntheticEvent) {
+    e.preventDefault();
+
+    const response = await axios
+      .post("tfa/turn-on", {
+        code: code,
+      })
+      .then(() => setTwoFA(true))
+      .catch((error) => window.alert("Wrong code provided!"));
   }
 
   return (
@@ -134,36 +144,32 @@ const UserEdit = () => {
               </Form.Select>
             </div>
             <div className="mb-3">
-              <label>Two Factor Authentication</label>
-              <Form.Select
-                onChange={(e) => setTwoFA(e.target.value)}
-                defaultValue={twoFA}
-              >
-                <option value="false">off</option>
-                <option value="true">on</option>
-              </Form.Select>
-            </div>
-            <div className="mb-3">
-              <button onClick={generateQRCode}>Generate QR Code</button>
-              <img src="" id="qr" />
+              Two Factor Authentication
+              <div className="mb-5">
+                <button onClick={generateQRCode}>Generate QR Code</button>
+                <img src="" id="qr" />
+              </div>
+              <div className="mb-3">
+                <label>
+                  code:
+                  <input
+                    type="text"
+                    name="code"
+                    onChange={(e) => setCode(e.target.value)}
+                  />
+                </label>
+
+                {twoFA === false ? (
+                  <button onClick={activate2FA}>Activate 2FA</button>
+                ) : (
+                  <button onClick={deactivate2FA}>Deactivate 2FA</button>
+                )}
+              </div>
             </div>
             <Button type="submit">Save</Button>{" "}
             <Button onClick={navigateBack}>Back</Button>
           </form>
         </div>
-        <form onSubmit={submit2FACode}>
-          <div className="mb-3">
-            <label>
-              code:
-              <input
-                type="text"
-                name="code"
-                onChange={(e) => setCode(e.target.value)}
-              />
-            </label>
-            <input type="submit" value="Submit" />
-          </div>
-        </form>
       </section>
     </Wrapper>
   );

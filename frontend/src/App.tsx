@@ -12,6 +12,7 @@ import { UserList } from "./pages/users/UserList";
 import { UserPage } from "./pages/users/UserPage";
 import { useAppDispatch, useAppSelector } from "./redux/hooks";
 import { Navigate, BrowserRouter, Routes, Route } from "react-router-dom";
+import TwoFactorAuthentication from "./pages/TwoFactorAuthentication";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -25,6 +26,7 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route path={"/authenticate"} element={<Authenticate />} />
+            <Route path={"/authenticate/2fa"} element={<TwoFactorAuthentication />} />
             <Route path={"*"} element={<NotFound />} />
             <Route path="/" element={<Navigate to="./authenticate" />} />
           </Routes>

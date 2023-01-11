@@ -14,6 +14,7 @@ import "./UserProfile.css";
 import UserMatchHistory from "../../components/UserMatchHistory";
 import UserStats from "../../components/UserStats";
 import GameLadder from "../../components/GameLadder";
+import { Button } from "react-bootstrap";
 
 export const UserProfile = () => {
   const currentUser = useAppSelector(selectCurrentUser);
@@ -49,6 +50,11 @@ export const UserProfile = () => {
 
                 <div className="media-body va-m mb-3">
                   <h2 className="media-heading">{currentUser.display_name}</h2>
+                </div>
+                <div className="media-body">
+                  <h2 className="media-heading">
+                    <Button className="">Edit</Button>
+                  </h2>
                 </div>
               </div>
             </div>

@@ -179,10 +179,7 @@ export const UserPage = () => {
                     </span>
                     <h5 className="mt-3">{user.display_name}</h5>
 
-                    <div
-						className="mt-2 buttons button-layout"
-
-					>
+                    <div className="mt-2 buttons button-layout">
                       {/* <FriendButton
                         friends={friends}
                         currentUser={currentUser}
