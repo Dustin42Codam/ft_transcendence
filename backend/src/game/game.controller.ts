@@ -28,7 +28,7 @@ export class GameController {
         return await this.gameService.createGame(body);
     }
 
-	// @UseGuards(AuthGuard)
+	@UseGuards(AuthGuard)
     @Get('get/ladder')
     async getGamesLadder(
         ) {
@@ -36,7 +36,7 @@ export class GameController {
         return ladder;
     }
 
-    // @UseGuards(AuthGuard)
+    @UseGuards(AuthGuard)
     @Get('games/:id')
     async getAllGamesFromUser(
         @Param('games/id') id: string,
