@@ -7,11 +7,17 @@ import { Request, Response } from "express";
 import { AuthGuard } from "./auth.guard";
 import { AuthService } from "./auth.service";
 import { UserStatus } from "src/user/entity/user.entity";
+import { TFAService } from "src/tfa/tfa.service";
 
 @UseInterceptors(ClassSerializerInterceptor)
 @Controller()
 export class AuthController {
-  constructor(private userService: UserService, private jwtService: JwtService, private authService: AuthService) {}
+  constructor(
+		private readonly userService: UserService,
+		private readonly jwtService: JwtService,
+		private readonly authService: AuthService,
+		private readonly tfaService: TFAService,
+	) {}
 
   @Post("register")
   async register(@Body() body: RegisterDto) {
@@ -91,8 +97,12 @@ export class AuthController {
   async logout(@Res({ passthrough: true }) response: Response, @Req() request: Request) {
     const userId = await this.authService.userId(request);
 
+    console.log("🚀 ~ file: auth.controller.ts:101 ~ AuthController ~ logout ~ response", response)
     response.clearCookie("jwt");
+    response.clearCookie("Authentication");
     response.clearCookie("connect.sid");
+
+	await this.tfaService.update(userId, {isAuthenticated: false});
 
     await this.userService.changeStatus(userId, UserStatus.OFFLINE);
 

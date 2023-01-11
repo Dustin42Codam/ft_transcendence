@@ -76,18 +76,18 @@ const UserEdit = () => {
         code: code,
       })
       .then(() => setTwoFA(false))
-      .catch((error) => window.alert("Wrong code provided!"));
+      .catch(() => window.alert("Wrong code provided!"));
   }
 
   async function activate2FA(e: SyntheticEvent) {
     e.preventDefault();
 
-    const response = await axios
+    await axios
       .post("tfa/turn-on", {
         code: code,
       })
       .then(() => setTwoFA(true))
-      .catch((error) => window.alert("Wrong code provided!"));
+      .catch(() => window.alert("Wrong code provided!"));
   }
 
   return (

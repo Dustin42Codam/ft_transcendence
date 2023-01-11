@@ -32,11 +32,10 @@ export class TFAController {
 	) {}
 
 	@Post('generate')
-	// @UseGuards(AuthGuard)
+	@UseGuards(AuthGuard)
 	async register(@Res() response: Response, @Req() request: Request) {
 		const userId = await this.authService.userId(request);
-		const user = await this.userService.getUserById(userId);
-			
+		const user = await this.userService.getUserById(userId);		
 		const ret =	await this.tfaService.generateTwoFactorAuthenticationSecret(user);
 		
 		await this.tfaService.update(user.tfa_secret.id, {twoFactorAuthenticationSecret: ret.secret});
@@ -46,7 +45,7 @@ export class TFAController {
 
 	@Post('turn-off')
 	@HttpCode(200)
-	// @UseGuards(AuthGuard)
+	@UseGuards(AuthGuard)
 	async turnOffTwoFactorAuthentication(
 	  @Req() request: Request,
 	  @Body() { code } : tfaCodeDto
@@ -59,12 +58,13 @@ export class TFAController {
 	  if (!isCodeValid) {
 		throw new UnauthorizedException('Wrong authentication code');
 	  }
+	  await this.tfaService.update(user.id, {isAuthenticated: false});
 	  await this.userService.update(user.id, {two_factor_auth: false});
 	}
 
 	@Post('turn-on')
 	@HttpCode(200)
-	// @UseGuards(AuthGuard)
+	@UseGuards(AuthGuard)
 	async turnOnTwoFactorAuthentication(
 	  @Req() request: Request,
 	  @Body() { code } : tfaCodeDto
@@ -75,14 +75,16 @@ export class TFAController {
 		code, user
 	  );
 	  if (!isCodeValid) {
-		throw new UnauthorizedException('Wrong authentication code');
-	  }
+		  throw new UnauthorizedException('Wrong authentication code');
+		}
+
+		await this.tfaService.update(user.id, {isAuthenticated: true});
 	  await this.userService.update(user.id, {two_factor_auth: true});
 	}
 
 	@Post('authenticate')
 	@HttpCode(200)
-	// @UseGuards(AuthGuard)
+	@UseGuards(AuthGuard)
 	async authenticate(
 	  @Req() request: Request,
 	  @Body() { code } : tfaCodeDto,
@@ -109,6 +111,8 @@ export class TFAController {
  
     request.res.setHeader('Set-Cookie', [accessTokenCookie]);
  
+	this.tfaService.update(user.id, {isAuthenticated: true});
+
     return request.user;
 	}
 }

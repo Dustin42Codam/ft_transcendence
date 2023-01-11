@@ -49,19 +49,18 @@ export class OauthCallbackController {
       });
       
       user = await this.userService.findOne({ display_name: resp.display_name });
-      
-      console.log("🚀 ~ file: oauth-callback.controller.ts:50 ~ OauthCallbackController ~ callback ~ user", user)
-      
+
       if (!user) {
 		    user = await registerUser(resp.data, this.userService);
 		  }
+		
+		const jwt = await this.jwtService.signAsync({ id: user.id });
+		
+		response.cookie("jwt", jwt, { httpOnly: true, sameSite: "lax" });
 
       if (user.two_factor_auth === true) {
         response.redirect(`http://localhost:${process.env.FRONTEND_PORT}/authenticate/2fa`);
       } else {
-        const jwt = await this.jwtService.signAsync({ id: user.id });
-      
-        response.cookie("jwt", jwt, { httpOnly: true, sameSite: "lax" });
         response.redirect(`http://localhost:${process.env.FRONTEND_PORT}`);
       }
     } catch (e) {
@@ -76,7 +75,6 @@ export class OauthCallbackController {
 			avatar: data.image.link,
 			status: UserStatus.ONLINE
 		}
-      console.log("🚀 ~ file: oauth-callback.controller.ts:72 ~ OauthCallbackController ~ registerUser ~ userCreateDto", userCreateDto)
       const user = await userService.createUser(userCreateDto);
 	  return user;
     }

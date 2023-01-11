@@ -63,7 +63,7 @@ export class JwtTwoFactorStrategy extends PassportStrategy(
       jwtFromRequest: ExtractJwt.fromExtractors([(request: Request) => {
         return request?.cookies?.Authentication;
       }]),
-      secretOrKey: configService.get('JWT_SECRET')
+      secretOrKey: configService.get('JWT_ACCESS_TOKEN_SECRET')
     });
   }
  

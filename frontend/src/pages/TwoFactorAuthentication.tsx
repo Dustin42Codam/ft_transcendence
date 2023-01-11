@@ -1,29 +1,58 @@
-import React, { useState } from 'react'
+import React, { SyntheticEvent, useState } from "react";
+import { useAppSelector } from "../redux/hooks";
+import { selectCurrentUser } from "../redux/slices/currentUserSlice";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { Button } from "react-bootstrap";
 // import "./TwoFactorAuthentication.css"
 
 function TwoFactorAuthentication() {
-	const [code, setCode] = useState(0);
-	
-	return (
-	<>
-		<div className="loginBox">
-			
-			<img className="user" src="https://i.ibb.co/yVGxFPR/2.png" height="100px" width="100px" />
-        	
-			<h3>Two Factor Authentication</h3>
-        	
-			<form action="login.php" method="post">
-        	
-				<div className="inputBox">
-					<input id="uname" type="text" name="Username" placeholder="6-Digit-Key"/>
-				</div>
-				
-				<input type="submit" name="" value="Login" />
-        
-			</form>
-    </div>
-	</>
-  )
+  const [code, setCode] = useState("");
+  const navigate = useNavigate();
+  const currentUser = useAppSelector(selectCurrentUser);
+
+  async function submitCode(e: SyntheticEvent) {
+    e.preventDefault();
+
+    await axios
+      .post("tfa/authenticate", {
+        code: code,
+      })
+      .then(() => {
+        navigate("/");
+      })
+      .catch(() => window.alert("Wrong code provided!"));
+  }
+
+  return (
+    <>
+      <div className="loginBox">
+        <img
+          className="user"
+          src={currentUser.avatar}
+          height="100px"
+          width="100px"
+        />
+
+        <p>Two Factor Authentication</p>
+
+        <form onSubmit={submitCode}>
+          <div className="inputBox">
+            <input
+              id="uname"
+              type="text"
+              name="Username"
+              placeholder="6-Digit-Key"
+              //   onSubmit={submitCode}
+              onChange={(e) => setCode(e.target.value)}
+            />
+            <input type="submit" name="Submit" value="Submit" />
+          </div>
+        </form>
+        {/* <Button onClick={() => navigate("/authenticate")}>Back</Button> */}
+      </div>
+    </>
+  );
 }
 
-export default TwoFactorAuthentication
+export default TwoFactorAuthentication;
