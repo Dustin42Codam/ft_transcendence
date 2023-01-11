@@ -1,10 +1,9 @@
-import { Controller, Get, Req, Res, UseInterceptors } from "@nestjs/common";
 import { Request, Response } from "express-session";
-import { UserService } from "../user/user.service";
-import { JwtService } from "@nestjs/jwt";
-import { UserCreateDto } from "src/user/dto/user-create.dto";
-import { UserStatus } from "src/user/entity/user.entity";
-import { use } from "passport";
+import { Controller, Get, Req, Res, UseInterceptors } from '@nestjs/common';
+import { UserService } from '../user/user.service';
+import { JwtService } from '@nestjs/jwt';
+import { UserStatus } from 'src/user/entity/user.entity';
+import { UserCreateDto } from 'src/user/dto/user-create.dto';
 
 require("dotenv").config();
 

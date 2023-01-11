@@ -12,6 +12,7 @@ import {
 import axios from "axios";
 import PopUp from "./PopUp";
 import PasswordPrompt from "./PasswordPrompt";
+import { selectCurrentUser } from "../redux/slices/currentUserSlice";
 
 export enum ChatroomType {
   PUBLIC = "public",
@@ -34,6 +35,7 @@ const JoinableChats = (props: any) => {
   const [isPopUp, setIsPopUp] = useState(false);
   const [password, setPassword] = useState<string>("");
   const [joinChatIndex, setJoinChatIndex] = useState<number>(0);
+  const user = useAppSelector(selectCurrentUser);
 
   function handelClick(index: number) {
     setJoinChatIndex(index);
@@ -48,6 +50,7 @@ const JoinableChats = (props: any) => {
           dispatch(
             socketActions.joinARoom({
               chatRoom: {
+                userId: user.id,
                 id: joinableChats[index].id,
                 name: joinableChats[index].name,
               },

@@ -33,11 +33,13 @@ describe("Testing if the god damn store works", () => {
       name: "",
     });
     store.dispatch(
-      socketActions.joinARoom({ chatRoom: { id: 1, name: "I am a chat jow" } })
+      socketActions.joinARoom({
+        chatRoom: { userId: 1, id: 1, name: "I am a chat jow" },
+      })
     );
     store.dispatch(
       socketActions.joinARoomSuccess({
-        chatRoom: { id: 1, name: "I am a chat jow" },
+        chatRoom: { userId: 1, id: 1, name: "I am a chat jow" },
       })
     );
     expect(store.getState().socket.currentChatRoom).toEqual({
@@ -45,7 +47,9 @@ describe("Testing if the god damn store works", () => {
       name: "I am a chat jow",
     });
     store.dispatch(
-      socketActions.leaveARoom({ chatRoom: { id: 1, name: "I am a chat jow" } })
+      socketActions.leaveARoom({
+        chatRoom: { userId: 1, id: 1, name: "I am a chat jow" },
+      })
     );
     store.dispatch(socketActions.leaveARoomSuccess());
     expect(store.getState().socket.currentChatRoom).toEqual({
