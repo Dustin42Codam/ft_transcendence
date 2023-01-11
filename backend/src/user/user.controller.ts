@@ -45,12 +45,21 @@ export class UserController {
             throw new BadRequestException("You already have this displayname");
 		return await this.userService.updateUserName(user, body);
 	}
-    
+    //fixing this with authguards
     @Post(':id')
     async update(
         @Body() body: UserUpdateDto,
         @Param('id') id : number
     ) {
+        if (body.avatar)
+        {
+          const user = await this.userService.getUserById(Number(id))
+          if (user.avatar.search("https://cdn.intra.42.fr") === -1) {
+            console.log("current file: " + user.avatar)
+            await this.userService.deleteAvatar(user);
+            console.log("new file: " + body.avatar);
+          }
+        }
         await this.userService.update(id, body);
         return this.userService.getUserById(id);
     }

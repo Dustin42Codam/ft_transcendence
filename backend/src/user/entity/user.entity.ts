@@ -22,7 +22,7 @@ export class User {
 	intra_name: string;
 
   @Column()
-  avatar: string;
+  avatar?: string;
 
   @Column("boolean", { default: false })
   two_factor_auth: boolean;

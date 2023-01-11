@@ -70,8 +70,19 @@ export class UserService extends AbstractService {
 		// await this.achievementService.createAllAchievements(newUser);
 		const tfa_user = await this.getUserById(newUser.id, ["tfa_secret"])
 		await this.TFAService.createTFA(tfa_user);
-		return await this.getUserById(newUser.id, ["achievements", "game_stats"]);
+		return await this.getUserById(newUser.id, ["game_stats"]);
 	}
+
+	async deleteAvatar(user: User) {
+		var fs = require('fs');
+		const filePath = user.avatar.replace("http://localhost:3000/api", ".");
+		console.log("deleting: " + filePath)
+		fs.unlink(filePath, (err) => {
+            if (err) {
+                throw new BadRequestException('Could not delete old avatar');
+            }
+        });
+    }
 
 
 	async updateUserName(user: User, userUpdateNameDto: UserUpdateNameDto) {
