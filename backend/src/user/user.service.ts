@@ -95,15 +95,12 @@ export class UserService extends AbstractService {
     }
 
 
-	async updateUserName(user: User, userUpdateNameDto: UserUpdateNameDto) {
+	async isUserNameUnique(newUserName: string) {
 		const users = await this.getUsers();
 		for (const user of users) {
-			if (user.display_name === userUpdateNameDto.display_name)
+			if (newUserName === user.display_name)
 				throw new BadRequestException("There is already a user with this displayname");
 		}
-		user.display_name = userUpdateNameDto.display_name;
-		await this.userRepository.update(user.id, user);
-		return user;
 	}
 
 	async changeStatus(id: number, status: UserStatus) {	
