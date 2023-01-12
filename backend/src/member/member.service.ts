@@ -28,7 +28,7 @@ export class MemberService extends AbstractService {
   }
 
   public isRestricted(member: Member) {
-    const timeNow = new Date(new Date().getTime());
+    const timeNow = new Date();
     if (member.banned == true || member.muted_until > timeNow) return true;
     return false;
   }

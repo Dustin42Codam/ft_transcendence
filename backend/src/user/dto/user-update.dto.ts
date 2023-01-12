@@ -6,7 +6,6 @@ export class UserUpdateDto {
   avatar?: string;
   two_factor_auth?: boolean;
   status?: UserStatus;
-  send_blocks?: Block[];
   game_socket_id?: string;
   chat_socket_id?: string;
 }

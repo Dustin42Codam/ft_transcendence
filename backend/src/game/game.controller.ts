@@ -21,7 +21,7 @@ export class GameController {
         return await this.gameService.getAllGamesFromUser(Number(userId));
     }
 
-    @Post()
+    @Post() // TODO this should probably be removed
     async   createGame(
         @Body() body: GameCreateDto
     ) {

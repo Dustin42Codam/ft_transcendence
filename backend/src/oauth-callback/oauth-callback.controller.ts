@@ -1,5 +1,5 @@
 import { Request, Response } from "express-session";
-import { Controller, Get, Req, Res, UseInterceptors } from '@nestjs/common';
+import { Controller, Get, Req, Res, UseInterceptors, BadRequestException } from '@nestjs/common';
 import { UserService } from '../user/user.service';
 import { JwtService } from '@nestjs/jwt';
 import { UserStatus } from 'src/user/entity/user.entity';
@@ -45,10 +45,10 @@ export class OauthCallbackController {
         headers: {
           Authorization: "Bearer " + request.session.token,
         },
-      });
-      
-      user = await this.userService.findOne({ display_name: resp.display_name });
-
+      })
+      if (!resp.data.login)
+        throw new BadRequestException("Intra changed his data.");
+      user = await this.userService.findOne({ intra_name: resp.data.login });
       if (!user) {
 		    user = await registerUser(resp.data, this.userService);
 		  }

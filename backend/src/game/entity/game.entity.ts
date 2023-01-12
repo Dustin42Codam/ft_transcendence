@@ -25,4 +25,7 @@ export class Game {
 
   @Column({ default: GameType })
   type: GameType;
+
+  @Column()
+  timestamp: Date;
 }
