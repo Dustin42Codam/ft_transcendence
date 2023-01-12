@@ -32,36 +32,27 @@ export class UserController {
 			return user;
 		return await this.userService.createUser(body);
 	}
-
-  @Post('name')
-	async changeUsername(
-        @Body() body: UserUpdateNameDto,
-        @Req() request: Request
-    ) {
-		const user = await this.userService.getUserById(request.session.user_id);
-		if (user)
-			return user;
-      if ("" === body.display_name)
-      throw new BadRequestException("You can not have a empty string as a username");
-    if (user.display_name === body.display_name)
-      throw new BadRequestException("You already have this displayname");
-		return await this.userService.updateUserName(user, body);
-	}
+  
     //fixing this with authguards
-    @Post(':id')
-    async update(
-        @Body() body: UserUpdateDto,
-        @Req() request: Request
-    ) {
-        const userId = await this.authService.userId(request);
-        if (body.avatar)
-        {
-          const user = await this.userService.getUserById(userId);
-          if (user.avatar.search("https://cdn.intra.42.fr") === -1) {
-            await this.userService.deleteAvatar(user);
-          }
+  @Post(':id')
+  async update(
+      @Body() body: UserUpdateDto,
+      @Req() request: Request
+  ) {
+      const userId = await this.authService.userId(request);
+      if (body.display_name) {
+        if (body.display_name === "")
+          throw new BadRequestException("You can not have a empty string as a username");
+        await this.userService.isUserNameUnique(body.display_name);
+      }
+      if (body.avatar)
+      {
+        const user = await this.userService.getUserById(userId);
+        if (user.avatar.search("https://cdn.intra.42.fr") === -1) {
+          await this.userService.deleteAvatar(user);
         }
-        await this.userService.update(userId, body);
-        return this.userService.getUserById(userId);
-    }
+      }
+      await this.userService.update(userId, body);
+      return this.userService.getUserById(userId);
+  }
 }
