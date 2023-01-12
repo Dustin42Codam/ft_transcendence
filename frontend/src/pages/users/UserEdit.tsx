@@ -114,7 +114,7 @@ const UserEdit = () => {
                   className="form-control"
                   value={user.avatar}
                   onChange={(e) => setAvatar(e.target.value)}
-				  required
+                  required
                 />
                 <ImageUpload uploaded={updateImage} />
               </div>
@@ -125,26 +125,8 @@ const UserEdit = () => {
                 className="form-control"
                 defaultValue={user.display_name}
                 onChange={(e) => setName(e.target.value)}
-				required
+                required
               />
-            </div>
-            <div className="mb-3">
-              <label>Status</label>
-              <Form.Select
-                defaultValue={status}
-                onChange={(e) => setStatus(e.target.value)}
-				required
-              >
-                <option
-                  key={UserStatus.OFFLINE}
-                  defaultValue={UserStatus.OFFLINE}
-                >
-                  offline
-                </option>
-                <option key={UserStatus.ONLINE} value={UserStatus.ONLINE}>
-                  online
-                </option>
-              </Form.Select>
             </div>
             <div className="mb-3">
               Two Factor Authentication
@@ -157,7 +139,7 @@ const UserEdit = () => {
                   <input
                     type="text"
                     name="code"
-					placeholder="6-Digit-Key"
+                    placeholder="6-Digit-Key"
                     onChange={(e) => setCode(e.target.value)}
                   />
                 </label>
