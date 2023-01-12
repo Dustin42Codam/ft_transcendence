@@ -184,6 +184,10 @@ class Bat extends MoveableObject {
     else this.positionY -= (this.powerUpBadHeight - this.normalBadHeight) / 2;
     this.height = this.powerUpBadHeight;
   }
+
+	moveUp(speed: number, direction: number) {
+		this.positionY += direction * speed;
+	}
 }
 
 class PowerUp extends MoveableObject {
@@ -228,20 +232,39 @@ class GameState {
   ctx: CanvasRenderingContext2D;
   width: number;
   height: number;
+  BatP1up: boolean;
+  BatP1down: boolean;
 
-  constructor(canvas: HTMLCanvasElement) {
-		if (!canvas.getContext) throw new Error("The Browser can not render the game");
-    this.scoreP1 = 0;
-    this.scoreP2 = 0;
-    this.frame = 0;
-    this.batP1 = new Bat(10, 160, 160, 200);
-    this.batP2 = new Bat(canvas.width - 20, canvas.height, 160, 200);
-    this.ball = new Ball(canvas.width, canvas.height, 2);
-    this.powerUp = new PowerUp(canvas.width, canvas.height, 600);
-    this.ctx = canvas.getContext("2d")!;
-		console.log("this is ctx", this.ctx);
-    this.width = canvas.width;
-    this.height = canvas.height;
+  constructor(canvas?: HTMLCanvasElement | null, gameState?: GameState | null) {
+    if (gameState) {
+      this.scoreP1 = gameState.scoreP1;
+      this.scoreP2 = gameState.scoreP2;
+      this.frame = gameState.frame;
+      this.batP1 = gameState.batP1;
+      this.batP2 = gameState.batP2;
+      this.ball = gameState.ball;
+      this.powerUp = gameState.powerUp;
+      this.ctx = gameState.ctx;
+      this.width = gameState.width;
+      this.height = gameState.height;
+      this.BatP1up = gameState.BatP1up;
+      this.BatP1down = gameState.BatP1down;
+    } else {
+      if (!canvas || !canvas.getContext)
+        throw new Error("The Browser can not render the game");
+      this.scoreP1 = 0;
+      this.scoreP2 = 0;
+      this.frame = 0;
+      this.batP1 = new Bat(10, 160, 160, 200);
+      this.batP2 = new Bat(canvas.width - 20, canvas.height, 160, 200);
+      this.ball = new Ball(canvas.width, canvas.height, 2);
+      this.powerUp = new PowerUp(canvas.width, canvas.height, 600);
+      this.ctx = canvas.getContext("2d")!;
+      this.width = canvas.width;
+      this.height = canvas.height;
+      this.BatP1up = false;
+      this.BatP1down = false;
+    }
   }
 
   //backend
@@ -249,9 +272,7 @@ class GameState {
     if (this.ball.positionX + this.ball.width < 0) {
       this.scoreP2 += 1;
       this.ball.reset(this.width, this.height);
-      console.log(
-        "P2 Scored\nP1 " + this.scoreP1 + " - " + this.scoreP2 + " P2\n\n"
-      );
+      console.log();
     } else if (this.ball.positionX > this.width) {
       this.scoreP1 += 1;
       this.ball.reset(this.width, this.height);
@@ -283,82 +304,66 @@ class GameState {
   }
 }
 
-	function myKeyPress(e: any, gameState: GameState) {
-		console.log("I am game 2state:", gameState);
-		let keynum: any;
-		e.preventDefault();
-
-		if (window.event) {
-			keynum = e.keyCode;
-		} else if (e.which) {
-			keynum = e.which;
-		}
-
-		//for somre reason ( this the key down
-		if (String.fromCharCode(keynum) == "(") {
-			console.log("Pres DOWN");
-			gameState.batP1.positionY += 1;
-		}
-		//for somre reason % this the key up
-		if (String.fromCharCode(keynum) == "&") {
-			console.log("Pres UP");
-			gameState.batP1.positionY -= 1;
-		}
-	}
-
-	function myKeyRelese(e: any, gameState: GameState) {
-		let keynum: any;
-		e.preventDefault();
-
-		if (window.event) {
-			keynum = e.keyCode;
-		} else if (e.which) {
-			keynum = e.which;
-		}
-		//for somre reason ( this the key down
-		if (String.fromCharCode(keynum) == "(") {
-			console.log("RELEASE DOWN");
-			gameState.batP1.positionY += 1;
-		}
-		//for somre reason & this the key up
-		if (String.fromCharCode(keynum) == "&") {
-			console.log("RELEASE UP");
-			gameState.batP1.positionY -= 1;
-		}
-	}
-
 const Game = (props: any) => {
-
-  let canvas: HTMLCanvasElement;
-  let gameState: GameState;
+  //const canvasRef = useRef();
+  //const [gameState, setGameState] = useState<GameState | null>(null);
 
   useEffect(() => {
-		const startAnimation = () => {
-			gameState.animation();
-			gameState.score();
-			gameState.frame += 1;
-			requestAnimationFrame(startAnimation);
-		};
-		canvas = document.getElementById("canvas") as HTMLCanvasElement;
-		gameState = new GameState(canvas);
-		console.log("I am game state:", gameState);
-		startAnimation();
-  }, []);
 
+		const canvas = document.getElementById("canvas") as HTMLCanvasElement	
+    const gameState = new GameState(canvas);
+
+
+    canvas.addEventListener("keydown", function onKeyDown(e) {
+      e.preventDefault();
+			let keynum: any;
+
+			if (window.event) {
+				keynum = e.keyCode;
+			} else if (e.which) {
+				keynum = e.which;
+			}
+
+      console.log(e, gameState);
+
+			if (String.fromCharCode(keynum) == "(") {
+				gameState.batP1.moveUp(10, 1);
+			}
+			if (String.fromCharCode(keynum) == "&") {
+				gameState.batP1.moveUp(10, -1);
+			}
+    });
+		console.log(canvas);
+    const startAnimation = () => {
+      gameState.animation();
+      gameState.score();
+      gameState.frame += 1;
+      requestAnimationFrame(startAnimation);
+    };
+    startAnimation();
+  }, []);
+/*
+  function myKeyPress(e: any) {}
+
+  function myKeyRelese(e: any) {
+    if (String.fromCharCode(keynum) == "(") {
+      e.preventDefault();
+      //gameState.batP1.positionY += 1;
+    }
+    if (String.fromCharCode(keynum) == "&") {
+      e.preventDefault();
+      //gameState.batP1.positionY -= 1;
+    }
+  }
+ */
 
   return (
     <Wrapper>
-      <canvas
-        onKeyDown={(e) => myKeyPress(e, gameState)}
-        onKeyUp={(e) => myKeyRelese(e, gameState)}
-        tabIndex={0}
-        id="canvas"
-        width="1300"
-        height="700"
-      >
-				Game is not supported for this borwser. Needs <b>cavas</b> support.
-			</canvas>
+      <canvas tabIndex={0} id="canvas" width="1300" height="700">
+        Game is not supported for this borwser. Needs <b>cavas</b> support.
+      </canvas>
     </Wrapper>
   );
 };
+
 export default Game;
