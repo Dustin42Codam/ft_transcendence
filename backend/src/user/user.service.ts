@@ -72,6 +72,10 @@ export class UserService extends AbstractService {
 					unique_name = false
 				}
 			}
+			if (unique_name) {
+				break
+			}
+			i++
 		}
 		newUserInfo.display_name = name;
 		const newUser = await this.create(newUserInfo)
