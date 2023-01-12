@@ -28,16 +28,44 @@ const UserEdit = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
+  useEffect(() => {
+	const button = document.getElementById("qr-button") as HTMLButtonElement;
+
+	button.addEventListener("click", async function onClick(event) {
+		event.preventDefault();
+
+		const response = await fetch("http://localhost:3000/api/tfa/generate", {
+		  method: "POST",
+		  credentials: "include",
+		});
+	
+		const image = document.getElementById("qr") as HTMLImageElement | null;
+	
+		if (image !== null) {
+		  const str = URL.createObjectURL(await response.blob());
+		  image.src = str;
+		}
+    });
+  }, [])
+  
+
   const infoSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
 
-    if (name || avatar || status) {
+	if (name === user.display_name && avatar) {
+		await dispatch(
+		  updateCurrentUser({
+			id: user.id,
+			avatar,
+		  })
+		);
+	}
+    else if (name || avatar) {
       await dispatch(
         updateCurrentUser({
           id: user.id,
           display_name: name,
           avatar,
-          status,
         })
       );
     }
@@ -54,14 +82,18 @@ const UserEdit = () => {
     navigate("/profile");
   };
 
-  async function generateQRCode() {
-    const response = await fetch("http://localhost:3000/api/tfa/generate", {
+  async function generateQRCode(image: any, e: any) {
+	e.preventDefault();
+
+	const response = await fetch("http://localhost:3000/api/tfa/generate", {
       method: "POST",
       credentials: "include",
     });
 
-    const image = document.getElementById("qr") as HTMLImageElement | null;
+    // const image = document.getElementById("qr") as HTMLImageElement | null;
 
+	console.log("🚀 ~ file: UserEdit.tsx:86 ~ generateQRCode ~ image", image)
+	
     if (image !== null) {
       const str = URL.createObjectURL(await response.blob());
       image.src = str;
@@ -114,7 +146,7 @@ const UserEdit = () => {
                   className="form-control"
                   value={user.avatar}
                   onChange={(e) => setAvatar(e.target.value)}
-                  required
+                //   required
                 />
                 <ImageUpload uploaded={updateImage} />
               </div>
@@ -125,13 +157,16 @@ const UserEdit = () => {
                 className="form-control"
                 defaultValue={user.display_name}
                 onChange={(e) => setName(e.target.value)}
-                required
+                // required
               />
             </div>
+            <Button type="submit">Save</Button>{" "}
+            <Button onClick={navigateBack}>Back</Button>
+          </form>
             <div className="mb-3">
               Two Factor Authentication
               <div className="mb-5">
-                <button onClick={generateQRCode}>Generate QR Code</button>
+                <button id="qr-button">Generate QR Code</button>
                 <img src="" id="qr" />
               </div>
               <div className="mb-3">
@@ -151,9 +186,6 @@ const UserEdit = () => {
                 )}
               </div>
             </div>
-            <Button type="submit">Save</Button>{" "}
-            <Button onClick={navigateBack}>Back</Button>
-          </form>
         </div>
       </section>
     </Wrapper>
