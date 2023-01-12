@@ -19,11 +19,14 @@ function TwoFactorAuthentication() {
         code: code,
       })
       .then((res) => {
-        console.log("🚀 ~ file: TwoFactorAuthentication.tsx:22 ~ .then ~ res", res)
-		navigate("/profile");
-		window.location.reload();
-	})
-	.catch(() => window.alert("Wrong code provided!"));
+        console.log(
+          "🚀 ~ file: TwoFactorAuthentication.tsx:22 ~ .then ~ res",
+          res
+        );
+        navigate("/profile");
+        window.location.reload();
+      })
+      .catch(() => window.alert("Wrong code provided!"));
   }
 
   return (

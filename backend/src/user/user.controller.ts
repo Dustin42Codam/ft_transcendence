@@ -7,7 +7,7 @@ import { UserUpdateNameDto } from "./dto/user-update-name.dto";
 import { AuthService } from "src/auth/auth.service";
 import { Request } from "express-session";
 
-@UseGuards(AuthGuard)
+// @UseGuards(AuthGuard)
 @Controller("users")
 export class UserController {
   constructor(private readonly userService: UserService, private readonly authService: AuthService) {}
@@ -51,18 +51,17 @@ export class UserController {
     @Post(':id')
     async update(
         @Body() body: UserUpdateDto,
-        @Param('id') id : number
+        @Req() request: Request
     ) {
+        const userId = await this.authService.userId(request);
         if (body.avatar)
         {
-          const user = await this.userService.getUserById(Number(id))
+          const user = await this.userService.getUserById(userId);
           if (user.avatar.search("https://cdn.intra.42.fr") === -1) {
-            console.log("current file: " + user.avatar)
             await this.userService.deleteAvatar(user);
-            console.log("new file: " + body.avatar);
           }
         }
-        await this.userService.update(id, body);
-        return this.userService.getUserById(id);
+        await this.userService.update(userId, body);
+        return this.userService.getUserById(userId);
     }
 }
