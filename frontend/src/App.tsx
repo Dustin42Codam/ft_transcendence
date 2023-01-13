@@ -62,8 +62,8 @@ function App() {
       </div>
     );
   } else {
-		store.dispatch(socketActions.startConnecting());
-		store.dispatch(gameSocketActions.startConnecting());
+    store.dispatch(socketActions.startConnecting());
+    store.dispatch(gameSocketActions.startConnecting());
     return (
       <div className="App">
         <BrowserRouter>
