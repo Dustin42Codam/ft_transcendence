@@ -9,6 +9,9 @@ export class TFA {
 	@Column({ nullable: true })
 	public twoFactorAuthenticationSecret?: string;
 
+	@Column("boolean", { default: false })
+	public isAuthenticated: boolean;
+
 	@OneToOne(() => User, (user: User) => user.tfa_secret)
     public user: User;
 }

@@ -4,11 +4,12 @@ import { UserModule } from "../user/user.module";
 import { CommonModule } from "src/common/common.module";
 import { AuthService } from "./auth.service";
 import { ConfigService } from "@nestjs/config";
+import { TFAModule } from "src/tfa/tfa.module";
 
 require("dotenv").config();
 
 @Module({
-  imports: [CommonModule, forwardRef(() => UserModule)],
+  imports: [CommonModule, forwardRef(() => UserModule), forwardRef(() => TFAModule)],
   controllers: [AuthController],
   providers: [AuthService, ConfigService],
   exports: [AuthService],

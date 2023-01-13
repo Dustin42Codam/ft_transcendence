@@ -21,10 +21,7 @@ export class GameService extends AbstractService {
 
 	async getGamesLadder() {
 		const users = await this.userService.getUsers(["game_stats"]);
-    // const sorted = users.sort((u1,u2) => u2.game_stats.win/u2.game_stats.played - u1.game_stats.win/u1.game_stats.played);
-    // const sorted = users.sort((u1,u2) => u1.game_stats.win - u2.game_stats.win);
-    const sorted = users.sort((u1,u2) => u2.game_stats.win - u1.game_stats.win);
-		
+    const sorted = users.sort((u1,u2) => (u2.game_stats.win - u2.game_stats.lose) - (u1.game_stats.win - u1.game_stats.lose));
 		return sorted;
 	}
 
@@ -36,24 +33,25 @@ export class GameService extends AbstractService {
 	}
 
   async createGame(gameCreateDto: GameCreateDto) {
-    
+    console.log(Number(gameCreateDto.player_1.id))
+    const player_1 = await this.userService.getUserById(Number(gameCreateDto.player_1), ["game_stats"])
+    const player_2 = await this.userService.getUserById(Number(gameCreateDto.player_2), ["game_stats"])
+    console.log(player_1)
+    console.log("-=-=-=-=-=-=-=-=-=-=-=-=-=-")
     if (gameCreateDto.score_player_1 > gameCreateDto.score_player_2) {
-      console.log("🚀 ~ file: game.service.ts:45 type", typeof(gameCreateDto.player_1))
-      console.log("🚀 ~ file: game.service.ts:45 ~ GameService ~ createGame ~ gameCreateDto.player_1", gameCreateDto.player_1)
-      console.log("🚀 ~ file: game.service.ts:47 ~ GameService ~ createGame ~ gameCreateDto.player_2", gameCreateDto.player_2)
-      
-      await this.gameStatsService.addWin(Number(gameCreateDto.player_1.id));
-      await this.gameStatsService.addLose(Number(gameCreateDto.player_2.id));
+      await this.gameStatsService.addWin(player_1);
+      await this.gameStatsService.addLose(player_2);
     } else {
-      await this.gameStatsService.addLose(gameCreateDto.player_1.id);
-      await this.gameStatsService.addWin(gameCreateDto.player_2.id);
+      await this.gameStatsService.addLose(player_1);
+      await this.gameStatsService.addWin(player_2);
     }
-    return await this.create(gameCreateDto);
+    return await this.create({...gameCreateDto, timestamp: new Date()});
   }
 
   async getAllGamesFromUser(id: number) {
-    return await this.gameRepository.find({
+    const allGames = await this.gameRepository.find({
       where: [{ player_1: id }, { player_2: id }],
     });
+    return allGames.sort((g1,g2) => (Number(g2.timestamp)) - (Number(g1.timestamp)));
   }
 }
