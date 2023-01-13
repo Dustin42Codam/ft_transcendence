@@ -8,8 +8,6 @@ import { AuthService } from "src/auth/auth.service";
 import { Request } from "express-session";
 
 @UseGuards(AuthGuard)
-@Controller("users")
-// @UseGuards(AuthGuard)
 @Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService, private readonly authService: AuthService) {}
@@ -29,6 +27,7 @@ export class UserController {
 	async create(
         @Body() body: UserCreateDto
     ) {
+    console.log("getting here");
 		const user = await this.userService.findOne({display_name: body.display_name});
 		if (user)
 			return user;
@@ -40,7 +39,7 @@ export class UserController {
         @Body() body: UserUpdateNameDto,
         @Req() request: Request
     ) {
-		const user = await this.userService.getUserById(request.session.user_id);
+		const user = await this.userService.getUserById(await this.authService.userId(request));
 		if (user)
 			return user;
         if (user.display_name === body.display_name)

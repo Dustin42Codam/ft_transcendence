@@ -26,7 +26,10 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route path={"/authenticate"} element={<Authenticate />} />
-            <Route path={"/authenticate/2fa"} element={<TwoFactorAuthentication />} />
+            <Route
+              path={"/authenticate/2fa"}
+              element={<TwoFactorAuthentication />}
+            />
             <Route path={"*"} element={<NotFound />} />
             <Route path="/" element={<Navigate to="./authenticate" />} />
           </Routes>

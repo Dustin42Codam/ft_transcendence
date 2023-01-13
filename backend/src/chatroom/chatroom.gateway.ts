@@ -58,24 +58,24 @@ export class ChatroomGateway implements OnGatewayInit, OnGatewayConnection, OnGa
 	@UseGuards(AuthGuard)
   async handleConnection(client: any): Promise<void> {
 		console.log(`client ${client.id} conected`);
-    const userId = await this.userService.getUserFromClient(client);
-    const user = await this.userService.getUserById(Number(userId));
-    if (!user) {
-      throw new BadRequestException(`User with id ${userId} does not exist.`);
-    }
-    await this.userService.update(user, { status: UserStatus.ONLINE })
+    // const userId = await this.userService.getUserFromClient(client);
+    // const user = await this.userService.getUserById(Number(userId));
+    // if (!user) {
+    //   throw new BadRequestException(`User with id ${userId} does not exist.`);
+    // }
+    // await this.userService.changeStatus(user, UserStatus.ONLINE);
     const sockets = this.io.sockets;
   }
 
 	@UseGuards(AuthGuard)
   async handleDisconnect(client: any): Promise<void> {
     const sockets = this.io.sockets;
-    const userId = await this.userService.getUserFromClient(client);
-    const user = await this.userService.getUserById(Number(userId));
-    if (!user) {
-      throw new BadRequestException(`User with id ${userId} does not exist.`);
-    }
-    await this.userService.update(user, { status: UserStatus.ONLINE })
+    // const userId = await this.userService.getUserFromClient(client);
+    // const user = await this.userService.getUserById(Number(userId));
+    // if (!user) {
+    //   throw new BadRequestException(`User with id ${userId} does not exist.`);
+    // }
+    // await this.userService.changeStatus(user, UserStatus.OFFLINE);
 		console.log(`client ${client.id} disconected`);
   }
 
