@@ -62,6 +62,7 @@ const Snicel = (props: any) => {
       }
     }
 
+		/*
     return function cleanup() {
       console.log("from [props] unmounting");
       dispatch(
@@ -74,6 +75,7 @@ const Snicel = (props: any) => {
         })
       );
     };
+	 */
   }, [props.location]);
   //const [lastPong, setLastPong] = useState<string | null>(null);
 
