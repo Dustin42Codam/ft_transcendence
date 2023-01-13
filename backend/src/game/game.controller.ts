@@ -40,6 +40,9 @@ export class GameController {
         @Req() request: Request
     ) {
         const userId = await this.authServcie.userId(request);
+        const user = await this.userService.getUserById(userId);
+        if (this.gameService.isAlreadyInGame(user))
+            throw new BadRequestException("This user is already in a game");
         //TODO add check if person is in the correct chatroom
         const game = await this.gameService.getGameById(Number(id));
         return this.gameService.addUserToGame(userId, game)
