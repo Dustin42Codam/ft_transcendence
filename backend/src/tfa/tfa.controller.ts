@@ -35,7 +35,7 @@ export class TFAController {
 	@UseGuards(AuthGuard)
 	async register(@Res() response: Response, @Req() request: Request) {
 		const userId = await this.authService.userId(request);
-		const user = await this.userService.getUserById(userId);		
+		const user = await this.userService.getUserById(userId, ['tfa_secret']);		
 		const ret =	await this.tfaService.generateTwoFactorAuthenticationSecret(user);
 		
 		await this.tfaService.update(user.tfa_secret.id, {twoFactorAuthenticationSecret: ret.secret});
@@ -51,7 +51,7 @@ export class TFAController {
 	  @Body() { code } : tfaCodeDto
 	) {
 		const userId = await this.authService.userId(request);
-		const user = await this.userService.getUserById(userId);
+		const user = await this.userService.getUserById(userId, ['tfa_secret']);
 	  const isCodeValid = this.tfaService.isTwoFactorAuthenticationCodeValid(
 		code, user
 	  );
@@ -70,7 +70,7 @@ export class TFAController {
 	  @Body() { code } : tfaCodeDto
 	) {
 		const userId = await this.authService.userId(request);
-		const user = await this.userService.getUserById(userId);
+		const user = await this.userService.getUserById(userId, ['tfa_secret']);
 	  const isCodeValid = this.tfaService.isTwoFactorAuthenticationCodeValid(
 		code, user
 	  );
@@ -91,7 +91,7 @@ export class TFAController {
 	  @Res({ passthrough: true }) response: Response
 	) {
 		const userId = await this.authService.userId(request);
-		const user = await this.userService.getUserById(userId);
+		const user = await this.userService.getUserById(userId, ['tfa_secret']);
 	
 	  const isCodeValid = this.tfaService.isTwoFactorAuthenticationCodeValid(
 		code, user

@@ -51,7 +51,7 @@ export class User {
   @JoinColumn()
   game_stats: GameStats
 
-  @OneToOne(() => TFA, {eager: true, cascade: true}) //TODO this can not be because of serurity should be solved by using hte relations par in getUserById
+  @OneToOne(() => TFA, {cascade: true})
   @JoinColumn()
   tfa_secret: TFA
 
