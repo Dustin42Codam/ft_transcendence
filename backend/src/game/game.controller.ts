@@ -15,7 +15,7 @@ export class GameController {
     private readonly userService: UserService
     ) {}
 
-    @Get(':id')
+    @Get('id/:id')//we can do something here maybe? //get :id must be interger
     async getGameById(
         @Param('id') id : Number
     ) {
@@ -30,7 +30,7 @@ export class GameController {
     }
 
     @Get('active')
-    async getAllActiveGames(){
+    async getAllActiveGames() {
         return await this.gameService.getAllActiveGames();
     }
 

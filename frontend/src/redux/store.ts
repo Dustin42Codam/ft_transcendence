@@ -7,10 +7,12 @@ import messagesReducer from "./slices/messagesSlice";
 import friendRequestsReducer from "./slices/friendRequestsSlice";
 import friendsReducer from "./slices/friendsSlice";
 import socketReducer from "./slices/socketSlice";
+import gameSocketReducer from "./slices/gameSocketSlice";
 import loggerMiddleware from "./loggerMiddleware";
 import { persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import socketMiddleware from "./socketMiddleware";
+import gameSocketMiddleware from "./gameMiddleware";
 
 const appReducer = combineReducers({
   chats: chatsReducer,
@@ -21,6 +23,7 @@ const appReducer = combineReducers({
   friendRequests: friendRequestsReducer,
   friends: friendsReducer,
   socket: socketReducer,
+  gameSocket: gameSocketReducer,
 });
 
 const rootReducer = (state: any, action: any) => {
@@ -34,6 +37,7 @@ const rootReducer = (state: any, action: any) => {
 
 const persistConfig = {
   key: "root",
+  blacklist: ["socket", "gameSocket"],
   storage,
 };
 
@@ -43,7 +47,11 @@ const store = configureStore({
   reducer: persistedReducer,
   devTools: process.env.NODE_ENV !== "production",
   middleware: (getDefaultMiddleware) => {
-    return getDefaultMiddleware().concat([loggerMiddleware, socketMiddleware]);
+    return getDefaultMiddleware().concat([
+      loggerMiddleware,
+      socketMiddleware,
+      gameSocketMiddleware,
+    ]);
   },
 });
 

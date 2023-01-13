@@ -2,6 +2,7 @@
 
 /*Shadow*/
 .popup-box {
+  z-index: 1;
   position: fixed;
   background: #00000090;
   width: 100%;

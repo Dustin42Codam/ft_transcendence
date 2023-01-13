@@ -8,6 +8,7 @@ import { selectCurrentChatroom, selectCurrentChatroomMessages } from "../redux/s
 import "./Message.css";
 import { fetchMessages } from "../redux/slices/messagesSlice";
 import axios from "axios";
+import { selectCurrentUser } from "../redux/slices/currentUserSlice";
 
 interface ChatMessage {
   chatRoomId: number;
@@ -19,6 +20,7 @@ const Chat = (props: any) => {
   const location = useLocation();
   const currentChatRoom = useAppSelector(selectCurrentChatroom);
   const currentChatRoomMessages = useAppSelector(selectCurrentChatroomMessages);
+  const currentUser = useAppSelector(selectCurrentUser);
   const [messages, setMessages] = useState([]);
   
   async function fetchMessages() {
@@ -32,25 +34,33 @@ const Chat = (props: any) => {
 		}
 	}
 	
-
-	
 	useEffect(() => {
 		fetchMessages();
-	}, [currentChatRoom])
-	
-	
-	console.log("🚀 ~ file: Chat.tsx:23 ~ Chat ~ messages", messages)
-  console.log("🚀 ~ file: Chat.tsx:19 ~ Chat ~ currentChatRoom", currentChatRoom)
-  console.log("🚀 ~ file: Chat.tsx:21 ~ Chat ~ currentChatRoomMessages", currentChatRoomMessages)
+	}, [currentChatRoom, currentChatRoomMessages])
 
+	console.log("🚀 ~ file: Chat.tsx:23 ~ Chat ~ messages", messages)
+	console.log("🚀 ~ file: Chat.tsx:19 ~ Chat ~ currentChatRoom", currentChatRoom)
+	console.log("🚀 ~ file: Chat.tsx:21 ~ Chat ~ currentChatRoomMessages", currentChatRoomMessages)
   
   return (
     <Wrapper>
       <div className="messageContainers">
-        {currentChatRoomMessages.map(
-          (chatMessges: ChatMessage, index: number) => (
-            <p className="message" key={index}>
-              {chatMessges.content} : {chatMessges.authorId}
+        {messages.map(
+          (chatMessges: any, index: number) => (
+			// {
+
+				// chatMessges.member.id === currentUser.id
+				// 	? ( <p className="message message_right" key={index}></p>)
+				// 	: ( <p className="message message_left" key={index}></p>)
+			// }
+            <p 
+				className=
+					{chatMessges.member.id === currentUser.id
+						? "message message_right" 
+						: "message message_left"}
+				key={index}
+			>
+              {chatMessges.message} : {chatMessges.member.id}
             </p>
           )
         )}

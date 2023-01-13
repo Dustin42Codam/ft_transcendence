@@ -23,18 +23,7 @@ const Snicel = (props: any) => {
   let currentChatroom: any = store.getState().socket.currentChatRoom;
   const currentUser = useAppSelector(selectCurrentUser);
   const inputRef = useRef<HTMLFormElement>(null);
-
-  /*	BUG LIFE
-   *
-   *	1.
-   *	If we go to /chat/name straig away. With straigth away I mean
-   *	I am accessing the page page with out going to it from the chat dropdown
-   *	locatio.state is null that causes the page to error and crash
-   *
-   *	2.
-   *	If we refresh the chat the messages do not get put to the screen for some reason.
-   */
-
+  
   useEffect(() => {
     //TO prevent bug one
     async function waitForIt() {
@@ -42,14 +31,13 @@ const Snicel = (props: any) => {
         //will check evert seccond if the chat room is set
         const interval = setInterval(function () {
           currentChatroom = store.getState().socket.currentChatRoom;
-          if (currentChatroom.id == -1 && currentChatroom.name == "") {
+          if (currentChatroom.id != -1 && currentChatroom.name != "") {
             resolve(null);
             clearInterval(interval);
           }
         }, 100);
       });
     }
-    console.log(currentChatroom, props.location.state);
     if (currentChatroom.id == -1 || currentChatroom.name == "") {
       navigate("/", {
         replace: true,
@@ -73,18 +61,18 @@ const Snicel = (props: any) => {
       }
     }
 
-    return function cleanup() {
-      console.log("from [props] unmounting");
-      dispatch(
-        socketActions.leaveARoom({
-          chatRoom: {
-            userId: currentUser.id,
-            id: props.location.state.id,
-            name: props.location.state.name,
-          },
-        })
-      );
-    };
+    // return function cleanup() {
+    //   console.log("from [props] unmounting");
+    //   dispatch(
+    //     socketActions.leaveARoom({
+    //       chatRoom: {
+    //         userId: currentUser.id,
+    //         id: props.location.state.id,
+    //         name: props.location.state.name,
+    //       },
+    //     })
+    //   );
+    // };
   }, [props.location]);
   //const [lastPong, setLastPong] = useState<string | null>(null);
 

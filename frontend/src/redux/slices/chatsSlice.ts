@@ -55,6 +55,7 @@ export const chatsSlice = createSlice({
   initialState,
   reducers: {
     removeChatFromJoinable(state, action) {
+		console.log("🚀 ~ file: chatsSlice.ts:59 ~ removeChatFromJoinable ~ action.payload", action.payload)
       state.joinable.splice(action.payload, 1);
     },
     /*

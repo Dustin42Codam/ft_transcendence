@@ -1,7 +1,4 @@
 import { WebSocketServer, OnGatewayDisconnect, OnGatewayConnection, WsResponse, OnGatewayInit, MessageBody, SubscribeMessage, WebSocketGateway } from "@nestjs/websockets";
-//import { MemberService } from "../member/member.service";
-//import { UserService } from "../user/user.service";
-//import { Member } from "../member/entity/member.entity";
 import { BadRequestException, Logger, Req } from "@nestjs/common";
 import { Request, Response } from "express";
 
@@ -60,12 +57,13 @@ export class ChatroomGateway implements OnGatewayInit, OnGatewayConnection, OnGa
   //this is fine I suppose like a general socket to connect to?
 	@UseGuards(AuthGuard)
  	 async handleConnection(client: any): Promise<void> {
-	console.log(`client ${client.id} conected`);
+		console.log(`client ${client.id} conected`);
     const userId = await this.userService.getUserFromClient(client);
-	if (userId) {
-		await this.userService.changeStatus(userId, UserStatus.ONLINE )
-		const sockets = this.io.sockets;
-	}
+
+		if (userId) {
+			await this.userService.changeStatus(userId, UserStatus.ONLINE );
+			const sockets = this.io.sockets;
+		}
   }
 
 	@UseGuards(AuthGuard)
@@ -81,19 +79,16 @@ export class ChatroomGateway implements OnGatewayInit, OnGatewayConnection, OnGa
 	@UseGuards(AuthGuard)
   @SubscribeMessage(ChatroomEvents.JoinChatRoom)
   async handelJoinRoom(client: Socket, payload: ChatRoom): Promise<void> {
-		//console.log(client);
     const chatroom = await this.chatroomService.getChatroomById(Number(payload.id));
     if (!chatroom) {
       throw new BadRequestException(`Chatroom with id ${payload.id} does not exist.`);
     }
-	const userId = await this.userService.getUserFromClient(client);
-    const user = await this.userService.getUserById(userId);
-    if (!user) {
-      throw new BadRequestException(`User with id ${payload.userId} does not exist.`);
+    const userId = await this.userService.getUserFromClient(client);
+    if (!userId) {
+      throw new BadRequestException(`User with id ${client.id} does not exist.`);
     }
+		const user = await this.userService.getUserById(userId);
     const member = await this.memberService.getMemberByUserAndChatroom(user, chatroom);
-    console.log("🚀 ~ file: chatroom.gateway.ts:95 ~ ChatroomGateway ~ handelJoinRoom ~ member", member)
-	
     if (await this.memberService.isRestricted(member)) {
       throw new BadRequestException(`User with id ${payload.userId} is restricted from chatroom with id ${payload.id}.`);
     }
