@@ -26,38 +26,53 @@ export class GameService extends AbstractService {
 		return sorted;
 	}
 
-    async getGameById(id: number) {
-        const game = this.findOne({id});
-        if (!game)
-            throw new BadRequestException("This Game does not exist");
+  async getGameById(id: number) {
+    const game = this.findOne({id});
+    if (!game) {
+      throw new BadRequestException("This Game does not exist");
+
+    }
 		return game;
 	}
 
-  // async createGame(gameCreateDto: GameCreateDto) {
-  //   const player_1 = await this.userService.getUserById(Number(gameCreateDto.player_1), ["game_stats"])
-  //   const player_2 = await this.userService.getUserById(Number(gameCreateDto.player_2), ["game_stats"])
-  //   if (gameCreateDto.score_player_1 > gameCreateDto.score_player_2) {
-  //     await this.gameStatsService.addWin(player_1);
-  //     await this.gameStatsService.addLose(player_2);
-  //   } else {
-  //     await this.gameStatsService.addLose(player_1);
-  //     await this.gameStatsService.addWin(player_2);
-  //   }
-  //   return await this.create({...gameCreateDto, timestamp: new Date()});
-  // }
+  private isGameFinished(score: number) {
+    return (score >= 5)
+  }
 
-  // private isGameFinished(score1: number, score2: number) {
-  //   return (score1 > 11) || (score2 > 11)
-  // }
+  async endGame(game: Game) {
+    const player_1 = await this.userService.getUserById(game.player_1, ["game_stats"])
+    const player_2 = await this.userService.getUserById(game.player_2, ["game_stats"])
+    if (game.score_player_1 > game.score_player_2) {
+      await this.gameStatsService.addWin(player_1);
+      await this.gameStatsService.addLose(player_2);
+    } else {
+      await this.gameStatsService.addLose(player_1);
+      await this.gameStatsService.addWin(player_2);
+    }
+    await this.update(game.id, game)
+    game.status = GameStatus.PASSIVE;
+    return game;
+  }
 
-  // async addScoreP1(gameId: number) {
+  async addScoreP1(gameId: number) {
+    const game = await this.getGameById(gameId)
+    game.score_player_1++;
+    if (this.isGameFinished(game.score_player_1)) {
+      return this.endGame(game);
+    }
+    await this.update(game.id, game)
+    return game
+  }
 
-  // }
-
-  //  async addScoreP2(gameId: number) {
-
-  // }
-
+  async addScoreP2(gameId: number) {
+    const game = await this.getGameById(gameId)
+    game.score_player_2++;
+    if (this.isGameFinished(game.score_player_2)) {
+      return this.endGame(game);
+    }
+    await this.update(game.id, game)
+    return game
+  }
 
   async getAllPassiveGamesFromUser(id: number) {
     const allGames = await this.gameRepository.find({

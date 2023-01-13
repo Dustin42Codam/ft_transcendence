@@ -1,4 +1,4 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn, CreateDateColumn } from "typeorm";
 import { User } from "src/user/entity/user.entity";
 
 export enum GameType {
@@ -33,7 +33,7 @@ export class Game {
   @Column()
   type: GameType;
 
-  @Column({nullable: true})
+  @CreateDateColumn()
   timestamp: Date;
 
   @Column({ default: GameStatus.PENDING })
