@@ -147,7 +147,6 @@ export class ChatroomController {
   }
 
   //TODO Create chatroom, change Password, join Chatroom HASHING PASSWORDS
-
 	@Post()
 	async createChatroom(
 		@Body() body: ChatroomCreateDto,
