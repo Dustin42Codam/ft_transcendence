@@ -44,7 +44,7 @@ export class UserController {
 			return user;
         if (user.display_name === body.display_name)
             throw new BadRequestException("You already have this displayname");
-		return await this.userService.updateUserName(user, body);
+		return await this.userService.update(user, body);
 	}
     
     @Post(':id')
