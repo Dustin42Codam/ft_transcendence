@@ -46,17 +46,17 @@ export class GameService extends AbstractService {
   //   return await this.create({...gameCreateDto, timestamp: new Date()});
   // }
 
-  private isGameFinished(score1: number, score2: number) {
-    return (score1 > 11) || (score2 > 11)
-  }
+  // private isGameFinished(score1: number, score2: number) {
+  //   return (score1 > 11) || (score2 > 11)
+  // }
 
-  async addScoreP1(gameId: number) {
+  // async addScoreP1(gameId: number) {
 
-  }
+  // }
 
-   async addScoreP2(gameId: number) {
+  //  async addScoreP2(gameId: number) {
 
-  }
+  // }
 
 
   async getAllPassiveGamesFromUser(id: number) {
