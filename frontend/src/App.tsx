@@ -14,9 +14,6 @@ import { useAppDispatch, useAppSelector } from "./redux/hooks";
 import { Navigate, BrowserRouter, Routes, Route } from "react-router-dom";
 import TwoFactorAuthentication from "./pages/TwoFactorAuthentication";
 import { selectCurrentUser } from "./redux/slices/currentUserSlice";
-import store from "./redux/store";
-import { socketActions } from "./redux/slices/socketSlice";
-import { gameSocketActions } from "./redux/slices/gameSocketSlice";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -62,8 +59,6 @@ function App() {
       </div>
     );
   } else {
-    store.dispatch(socketActions.startConnecting());
-    store.dispatch(gameSocketActions.startConnecting());
     return (
       <div className="App">
         <BrowserRouter>
