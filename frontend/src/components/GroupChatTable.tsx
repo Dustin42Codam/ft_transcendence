@@ -60,8 +60,10 @@ const GroupChatTable = () => {
       const interval = setInterval(function () {
         currentChatroom = store.getState().socket.currentChatRoom;
         // if (currentChatroom.id != -1 && currentChatroom.name != "") {
-        if (currentChatroom.id == groupChats[chatToJoinIndex].id && 
-			currentChatroom.name == groupChats[chatToJoinIndex].name) {
+        if (
+          currentChatroom.id == groupChats[chatToJoinIndex].id &&
+          currentChatroom.name == groupChats[chatToJoinIndex].name
+        ) {
           console.log("All goooed:", currentChatroom);
           resolve(null);
           clearInterval(interval);

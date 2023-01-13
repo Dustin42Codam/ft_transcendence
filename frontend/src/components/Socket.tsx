@@ -23,7 +23,7 @@ const Snicel = (props: any) => {
   let currentChatroom: any = store.getState().socket.currentChatRoom;
   const currentUser = useAppSelector(selectCurrentUser);
   const inputRef = useRef<HTMLFormElement>(null);
-  
+
   useEffect(() => {
     //TO prevent bug one
     async function waitForIt() {
@@ -38,41 +38,10 @@ const Snicel = (props: any) => {
         }, 100);
       });
     }
+    waitForIt();
     if (currentChatroom.id == -1 || currentChatroom.name == "") {
-      navigate("/", {
-        replace: true,
-      });
-      return;
-      if (window.performance) {
-        if (performance.navigation.type == 1) {
-          dispatch(
-            socketActions.leaveARoom({
-              chatRoom: {
-                userId: currentUser.id,
-                id: currentChatroom.id,
-                name: currentChatroom.name,
-              },
-            })
-          );
-          waitForIt();
-        } else {
-          alert("This page is not reloaded");
-        }
-      }
+      navigate("/", { replace: true });
     }
-
-    // return function cleanup() {
-    //   console.log("from [props] unmounting");
-    //   dispatch(
-    //     socketActions.leaveARoom({
-    //       chatRoom: {
-    //         userId: currentUser.id,
-    //         id: props.location.state.id,
-    //         name: props.location.state.name,
-    //       },
-    //     })
-    //   );
-    // };
   }, [props.location]);
   //const [lastPong, setLastPong] = useState<string | null>(null);
 
@@ -102,7 +71,7 @@ const Snicel = (props: any) => {
   return (
     <div>
       <ToastContainer />
-      <div className="chatBackgroudn">
+      <div className="chatBackground">
         <form onSubmit={(e) => sendMessage(e)} ref={inputRef}>
           <input
             className="chatInputBox"
