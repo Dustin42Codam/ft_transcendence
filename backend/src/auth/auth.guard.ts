@@ -24,7 +24,6 @@ export class AuthGuard implements CanActivate {
 		} catch (e) {
 			return false;
 		}
-    // console.log("checking the authguard");
     // const request = context.switchToHttp().getRequest();
     // console.log("🚀 ~ file: auth.guard.ts:24 ~ AuthGuard ~ request", request.session)
     // if (request.session.logged_in != true)

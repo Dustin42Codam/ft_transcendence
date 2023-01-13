@@ -4,6 +4,7 @@ import { AchievementModule } from "src/achievement/achievement.module";
 
 import { CommonModule } from "src/common/common.module";
 import { GameStatsModule } from "src/games_stats/game_stats.module";
+import { AuthModule } from "../auth/auth.module";
 
 import { Game } from "./entity/game.entity";
 import { GameController } from "./game.controller";
@@ -18,6 +19,7 @@ import { UserModule } from "src/user/user.module";
 		GameStatsModule,
 		CommonModule,
 		UserModule,
+		AuthModule,
 	],
   controllers: [GameController],
   providers: [GameService, GameGateway],

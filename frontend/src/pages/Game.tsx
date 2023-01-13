@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Wrapper from "../components/Wrapper";
+import { gameSocketActions } from "../redux/slices/gameSocketSlice";
+import { useAppDispatch } from "../redux/hooks";
 import "./Game.css";
 
 class MoveableObject {
@@ -185,9 +187,9 @@ class Bat extends MoveableObject {
     this.height = this.powerUpBadHeight;
   }
 
-	moveUp(speed: number, direction: number) {
-		this.positionY += direction * speed;
-	}
+  moveUp(speed: number, direction: number) {
+    this.positionY += direction * speed;
+  }
 }
 
 class PowerUp extends MoveableObject {
@@ -304,36 +306,44 @@ class GameState {
   }
 }
 
+
 const Game = (props: any) => {
+  const dispatch = useAppDispatch();
   //const canvasRef = useRef();
   //const [gameState, setGameState] = useState<GameState | null>(null);
+	const moveBatP1 = () => {
+		dispatch(
+			gameSocketActions.moveBat({"gameRoomId": 42,"direction": 1})
+		);
+		//inputRef.current!["messageInput"].value = "";
+	};
 
   useEffect(() => {
-
-		const canvas = document.getElementById("canvas") as HTMLCanvasElement	
+    const canvas = document.getElementById("canvas") as HTMLCanvasElement;
     const gameState = new GameState(canvas);
-
 
     canvas.addEventListener("keydown", function onKeyDown(e) {
       e.preventDefault();
-			let keynum: any;
+      let keynum: any;
 
-			if (window.event) {
-				keynum = e.keyCode;
-			} else if (e.which) {
-				keynum = e.which;
-			}
+      if (window.event) {
+        keynum = e.keyCode;
+      } else if (e.which) {
+        keynum = e.which;
+      }
 
       console.log(e, gameState);
 
-			if (String.fromCharCode(keynum) == "(") {
-				gameState.batP1.moveUp(10, 1);
-			}
-			if (String.fromCharCode(keynum) == "&") {
-				gameState.batP1.moveUp(10, -1);
-			}
+      if (String.fromCharCode(keynum) == "(") {
+				moveBatP1();
+        gameState.batP1.moveUp(10, 1);
+      }
+      if (String.fromCharCode(keynum) == "&") {
+				moveBatP1();
+        gameState.batP1.moveUp(10, -1);
+      }
     });
-		console.log(canvas);
+    console.log(canvas);
     const startAnimation = () => {
       gameState.animation();
       gameState.score();
@@ -342,7 +352,7 @@ const Game = (props: any) => {
     };
     startAnimation();
   }, []);
-/*
+  /*
   function myKeyPress(e: any) {}
 
   function myKeyRelese(e: any) {

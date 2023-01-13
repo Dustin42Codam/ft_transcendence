@@ -1,4 +1,7 @@
 import { WebSocketServer, OnGatewayDisconnect, OnGatewayConnection, WsResponse, OnGatewayInit, MessageBody, SubscribeMessage, WebSocketGateway } from "@nestjs/websockets";
+import { AuthGuard } from "../auth/auth.guard";
+import GameroomEvents from "./gameroomEvents";
+import { UseGuards } from "@nestjs/common";
 import { Namespace, Server, Socket } from "socket.io";
 import { Logger } from "@nestjs/common";
 
@@ -10,67 +13,57 @@ import { Logger } from "@nestjs/common";
   },
 })
 export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
-  private logger: Logger = new Logger("GameGateway");
+  //constructor(private readonly userService: UserService,
+  //private readonly memberService: MemberService) {};
 
+  private logger: Logger = new Logger("AppGateway");
   @WebSocketServer() io: Namespace;
+
   afterInit(server: Server) {
-    this.logger.log("Game Gateway is running");
+    this.logger.log("Game gateway: game namespace socket server is running");
   }
 
-  handleConnection(client) {
+  //this is fine I suppose like a general socket to connect to?
+	@UseGuards(AuthGuard)
+  handleConnection(client): void {
+		console.log(`game client ${client.id} conected`);
     const sockets = this.io.sockets;
-
-    console.log(`Game gateway: Client connected to: ${client.id}`);
-    console.log(`Game gateway: client count: ${sockets.size}`);
-    this.io.emit("Game gateway: clientConnected", `Client connected: ${client.id}`);
+    //TODO backend team set user status to online
   }
 
+	@UseGuards(AuthGuard)
   handleDisconnect(client: any): void {
     const sockets = this.io.sockets;
-    console.log(`Game gateway: Client disconnected: ${client.id}`);
-    console.log(`Game gateway: client count: ${sockets.size}`);
+		console.log(`game client ${client.id} disconected`);
+    //TODO backend team set user status to offline
   }
 
-  @SubscribeMessage("login")
-  handelLogin(client: Socket, payload: any): WsResponse<string> {
-    console.log("payload", payload);
-    return { event: "loginAck", data: payload };
+	@UseGuards(AuthGuard)
+  @SubscribeMessage(GameroomEvents.JoinGameRoom)
+  handelJoinRoom(client: Socket, payload: string): void {
+		//console.log(client);
+    //TODO Liz check if chatroom exists
+    //TODO Liz check if user can join
+    //TODO Liz add member data type to payload
+		console.log("game clienat jointed:" ,client.id, payload);
+    client.join(payload);
+    this.io.to(`${payload}`).emit(GameroomEvents.JoinGameRoomSuccess, payload);
   }
 
-  @SubscribeMessage("ping")
-  handlePong(client: Socket, payload: string): WsResponse<string> {
-    console.log("payload", payload);
-    return { event: "pong", data: null };
+	@UseGuards(AuthGuard)
+  @SubscribeMessage(GameroomEvents.LeaveGameRoom)
+  leaveJoinRoom(client: Socket, payload: string): void {
+		console.log("game client leaving: ", payload);
+    this.io.to(`${payload}`).emit(GameroomEvents.LeaveGameRoomSuccess, payload);
+    client.leave(`${payload}`);
   }
-  //maybe the logic need backend
-  //I am moving up or down
 
-  //@SubscribeMessage('game') {
-  //	this.io.to("room")emit("gameToClient", {batonePosition: y, battwoPosition: y, ballPosition: [x, y]);
-  //}
-  //@SubscribeMessage('batMovment') {
-  //	this.io.to("room")emit("gameToClient", {batonePosition: y, battwoPosition: y, ballPosition: [x, y]);
-  //}
 
-  //@SubscribeMessage('sendBallLocation')
-  //@SubscribeMessage('sendBatLocation')
-
-  //function win conditions
-  //one player leaves
-  //one player scoers enough golas
-
-  /*
-	//functions wincondition() {
-		//wich client I am?
-		//if win?
-		//this.io.to("room")emit("messageToClient", payload);
-  }
- */
-
-  @SubscribeMessage("messageToServer")
-  handleMessageToServer(client: Socket, payload: any) {
-    console.log(`Message ${payload} Recived`);
-    //client.broadcast
-    this.io.emit("messageToClient", payload);
+  //TODO for me add socket id to DB
+	@UseGuards(AuthGuard)
+  @SubscribeMessage(GameroomEvents.MoveBat)
+  handleMessageToServer(client: Socket, payload: any): void {
+		console.log("this is a message", payload, `${payload.chatRoomId}`);
+    this.io.to(`${payload.chatRoomId}`).emit(GameroomEvents.SendMessageToClient, payload);
   }
 }
