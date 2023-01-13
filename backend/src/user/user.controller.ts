@@ -7,8 +7,8 @@ import { UserUpdateNameDto } from "./dto/user-update-name.dto";
 import { AuthService } from "src/auth/auth.service";
 import { Request } from "express-session";
 
-@UseGuards(AuthGuard)
-@Controller('users')
+// @UseGuards(AuthGuard)
+@Controller("users")
 export class UserController {
   constructor(private readonly userService: UserService, private readonly authService: AuthService) {}
 
@@ -32,26 +32,27 @@ export class UserController {
 			return user;
 		return await this.userService.createUser(body);
 	}
-
-    @Post('name')
-	async changeUsername(
-        @Body() body: UserUpdateNameDto,
-        @Req() request: Request
-    ) {
-		const user = await this.userService.getUserById(request.session.user_id);
-		if (user)
-			return user;
-        if (user.display_name === body.display_name)
-            throw new BadRequestException("You already have this displayname");
-		return await this.userService.updateUserName(user, body);
-	}
-    
-    @Post(':id')
-    async update(
-        @Body() body: UserUpdateDto,
-        @Param('id') id : number
-    ) {
-        await this.userService.update(id, body);
-        return this.userService.getUserById(id);
-    }
+  
+    //fixing this with authguards
+  @Post(':id')
+  async update(
+      @Body() body: UserUpdateDto,
+      @Req() request: Request
+  ) {
+      const userId = await this.authService.userId(request);
+      if (body.display_name) {
+        if (body.display_name === "")
+          throw new BadRequestException("You can not have a empty string as a username");
+        await this.userService.isUserNameUnique(body.display_name);
+      }
+      if (body.avatar)
+      {
+        const user = await this.userService.getUserById(userId);
+        if (user.avatar.search("https://cdn.intra.42.fr") === -1) {
+          await this.userService.deleteAvatar(user);
+        }
+      }
+      await this.userService.update(userId, body);
+      return this.userService.getUserById(userId);
+  }
 }

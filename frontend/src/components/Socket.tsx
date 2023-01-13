@@ -49,6 +49,7 @@ const Snicel = (props: any) => {
           dispatch(
             socketActions.leaveARoom({
               chatRoom: {
+                userId: currentUser.id,
                 id: currentChatroom.id,
                 name: currentChatroom.name,
               },
@@ -66,6 +67,7 @@ const Snicel = (props: any) => {
       dispatch(
         socketActions.leaveARoom({
           chatRoom: {
+            userId: currentUser.id,
             id: props.location.state.id,
             name: props.location.state.name,
           },

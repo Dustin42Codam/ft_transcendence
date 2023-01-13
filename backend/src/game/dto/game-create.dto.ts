@@ -7,14 +7,5 @@ export class GameCreateDto {
   player_1: User;
 
   @IsNotEmpty()
-  player_2: User;
-
-  @IsNotEmpty()
-  score_player_1: number;
-
-  @IsNotEmpty()
-  score_player_2: number;
-
-  @IsNotEmpty()
   type: GameType;
 }

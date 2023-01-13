@@ -26,7 +26,7 @@ const gameSocketMiddleware: Middleware = (store) => {
         store.dispatch(gameSocketActions.connectionEstablished());
         //gameSocket.emit(GameEvent.RequestAllMessages);
       });
-			/*
+      /*
 			//TODO send bat position 
       gameSocket.on(GameEvent.ReceiveMessage, (chatMessage: GameMessage) => {
         store.dispatch(gameSocketActions.receiveMessage({ chatMessage }));
@@ -43,7 +43,7 @@ const gameSocketMiddleware: Middleware = (store) => {
       if (gameSocketActions.joinRoom.match(action)) {
         gameSocket.emit(GameEvent.JoinGameRoom, action.payload);
       }
-			/*
+      /*
 			 * TODO think how to send data from gameSocket to gameSocket
       if (gameSocketActions.sendMessage.match(action)) {
         gameSocket.emit(GameEvent.SendMessage, action.payload.chatMessage);
@@ -60,7 +60,7 @@ const gameSocketMiddleware: Middleware = (store) => {
         gameSocket.off("connect");
         gameSocket.off("disconnect");
         //gameSocket.off(GameEvent.ReceiveMessage);//TODO receiv BAT position
-				//Receiv ball position
+        //Receiv ball position
         gameSocket.off(GameEvent.JoinGameRoomSuccess);
         gameSocket.off(GameEvent.LeaveGameRoomSuccess);
         gameSocket.disconnect();

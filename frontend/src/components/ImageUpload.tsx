@@ -1,5 +1,6 @@
 import axios from "axios";
 import React from "react";
+import "../pages/users/UserEdit.css";
 
 const ImageUpload = (props: { uploaded: (url: string) => void }) => {
   const upload = async (files: FileList | null) => {
@@ -15,7 +16,7 @@ const ImageUpload = (props: { uploaded: (url: string) => void }) => {
   };
 
   return (
-    <label className="btn btn-primary">
+    <label className="btn btn-primary button2FA">
       Upload
       <input type="file" hidden onChange={(e) => upload(e.target.files)} />
     </label>

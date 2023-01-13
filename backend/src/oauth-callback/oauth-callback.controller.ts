@@ -1,7 +1,9 @@
-import { Controller, Get, Req, Res, UseInterceptors } from "@nestjs/common";
 import { Request, Response } from "express-session";
-import { UserService } from "../user/user.service";
-import { JwtService } from "@nestjs/jwt";
+import { Controller, Get, Req, Res, UseInterceptors, BadRequestException } from '@nestjs/common';
+import { UserService } from '../user/user.service';
+import { JwtService } from '@nestjs/jwt';
+import { UserStatus } from 'src/user/entity/user.entity';
+import { UserCreateDto } from 'src/user/dto/user-create.dto';
 
 require("dotenv").config();
 
@@ -43,30 +45,37 @@ export class OauthCallbackController {
         headers: {
           Authorization: "Bearer " + request.session.token,
         },
-      });
-      user = await this.userService.findOne({ display_name: resp.display_name });
+      })
+      if (!resp.data.login)
+        throw new BadRequestException("Intra changed his data.");
+      user = await this.userService.findOne({ intra_name: resp.data.login });
       if (!user) {
-        user = await registerUser(resp.data, this.userService);
+		    user = await registerUser(resp.data, this.userService);
+		  }
+		
+		const jwt = await this.jwtService.signAsync({ id: user.id });
+		
+		response.cookie("jwt", jwt, { httpOnly: true, sameSite: "lax" });
+
+      if (user.two_factor_auth === true) {
+        response.redirect(`http://localhost:${process.env.FRONTEND_PORT}/authenticate/2fa`);
+      } else {
+        response.redirect(`http://localhost:${process.env.FRONTEND_PORT}`);
       }
-      request.session.user_id = user.id;
-
-      const jwt = await this.jwtService.signAsync({ id: user.id });
-
-      console.log("WE ARE SETTING A COOKIE WANING");
-      response.cookie("jwt", jwt, { httpOnly: true, sameSite: "lax" });
-      response.redirect(`http://localhost:${process.env.FRONTEND_PORT}`);
     } catch (e) {
       console.log("ERROR:", e);
       response.redirect(`http://localhost:${process.env.FRONTEND_PORT}/authenticate`);
     }
 
     async function registerUser(data, userService) {
-      const user = await userService.createUser({
-        display_name: data.login,
-        avatar: data.image.link,
-        two_factor_auth: 0,
-        status: "online",
-      });
+		const userCreateDto: UserCreateDto = {
+			display_name: data.login,
+			intra_name: data.login,
+			avatar: data.image.link,
+			status: UserStatus.ONLINE
+		}
+      const user = await userService.createUser(userCreateDto);
+	  return user;
     }
   }
 }

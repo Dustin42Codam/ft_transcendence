@@ -1,13 +1,8 @@
-import React, { useEffect } from "react";
-import { useSelector } from "react-redux";
-import { RootState } from "../../redux/store";
-import { useAppSelector, useAppDispatch } from "../../redux/hooks";
-import { User } from "../../models/User";
+import React from "react";
+import { useAppSelector } from "../../redux/hooks";
 import Wrapper from "../../components/Wrapper";
 import { selectCurrentUser } from "../../redux/slices/currentUserSlice";
-import { selectAllFriends } from "../../redux/slices/friendsSlice";
 import { selectUsersWithoutUser } from "../../redux/slices/usersSlice";
-import "../../components/UserFriends.css";
 import { Link } from "react-router-dom";
 import "../../components/UserFriends.css";
 

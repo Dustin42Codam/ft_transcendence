@@ -7,7 +7,6 @@ import { Friend } from "./entity/friend.entity";
 import { FriendCreateDto } from "./dto/friend-create.dto";
 import { ChatroomService } from "src/chatroom/chatroom.service";
 import { ChatroomType } from "src/chatroom/entity/chatroom.entity";
-import { AchievementService } from "src/achievement/achievement.service";
 import { UserService } from "src/user/user.service";
 import { ChatroomInfoDto } from "src/chatroom/dto/chatroom-info.dto";
 import { User } from "src/user/entity/user.entity";
@@ -16,8 +15,6 @@ import { User } from "src/user/entity/user.entity";
 export class FriendService extends AbstractService {
   constructor(
     private chatroomService: ChatroomService,
-    @Inject(forwardRef(() => AchievementService))
-    private achievementService: AchievementService,
     @Inject(forwardRef(() => UserService))
     private userService: UserService,
     @InjectRepository(Friend) private readonly friendRepository: Repository<Friend>,
@@ -46,8 +43,6 @@ export class FriendService extends AbstractService {
         const newChatroom = await this.chatroomService.createChatroom([user1, user2], chatroomInfoDto, -1);
         const friendshipInfo = {chatroom_id: newChatroom.id, ...friendCreateDto};
         const friendship = await this.create(friendshipInfo)
-        // await this.achievementService.checkFriendshipAchievement(friendCreateDto.user_1_id);
-        // await this.achievementService.checkFriendshipAchievement(friendCreateDto.user_2_id);
         return friendship;
     }
 

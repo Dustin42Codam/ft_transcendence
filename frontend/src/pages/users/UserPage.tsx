@@ -3,9 +3,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import { selectUserById } from "../../redux/slices/usersSlice";
 import Wrapper from "../../components/Wrapper";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { Button, Tab, Tabs } from "react-bootstrap";
+import { Tab, Tabs } from "react-bootstrap";
 import UserFriends from "../../components/UserFriends";
-import { Avatar } from "@mui/material";
 import axios from "axios";
 import "./UserPage.css";
 import { selectCurrentUser } from "../../redux/slices/currentUserSlice";
@@ -41,10 +40,6 @@ export const UserPage = () => {
           err
         );
       });
-    console.log(
-      "🚀 ~ file: UserPage.tsx:28 ~ fetchFriendRequests ~ response",
-      response
-    );
     setFriendRequests(response.data);
   }
 
@@ -67,6 +62,9 @@ export const UserPage = () => {
   }
 
   useEffect(() => {
+    if (currentUser.id === user.id) {
+      navigate("/profile");
+    }
     fetchFriends();
     fetchFriendRequests();
     fetchBlocked();
@@ -126,6 +124,7 @@ export const UserPage = () => {
     dispatch(
       socketActions.joinARoom({
         chatRoom: {
+          userId: user.id,
           id: friendship.chatroom_id,
           name: "dm",
         },
@@ -133,7 +132,6 @@ export const UserPage = () => {
     );
     const id = toast.loading(`joining room: ${friendship.chatroom_id}!`);
     await new Promise((resolve, reject) => {
-      //will check evert seccond if the chat room is set
       const interval = setInterval(function () {
         currentChatroom = store.getState().socket.currentChatRoom;
         if (currentChatroom.id != -1) {
@@ -182,7 +180,7 @@ export const UserPage = () => {
                     </span>
                     <h5 className="mt-3">{user.display_name}</h5>
 
-                    <div className="mt-2 buttons">
+                    <div className="mt-2 buttons button-layout">
                       {/* <FriendButton
                         friends={friends}
                         currentUser={currentUser}
@@ -254,10 +252,8 @@ export const UserPage = () => {
               <Tab eventKey="friends" title="Friends">
                 <UserFriends userId={Number(userId)} userFriends={friends} />
               </Tab>
-              <Tab eventKey="match-history" title="Match History" disabled>
-                <UserMatchHistory
-                  matchHistory={user.matches}
-                ></UserMatchHistory>
+              <Tab eventKey="match-history" title="Match History">
+                <UserMatchHistory user={user}></UserMatchHistory>
               </Tab>
               <Tab eventKey="stats" title="Stats">
                 <UserStats userStats={user.game_stats}></UserStats>

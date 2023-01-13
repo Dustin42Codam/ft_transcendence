@@ -4,10 +4,8 @@ import { Repository } from "typeorm";
 
 import { AbstractService } from "src/common/abstract.service";
 
-import { BlockCreateDto } from "./dto/block-create.dto";
 import { Block } from "./entity/block.entity";
 
-import { FriendRequestService } from "../friend_request/friend_request.service";
 import { FriendService } from "src/friend/friend.service";
 import { User } from "src/user/entity/user.entity";
 import { Friend } from "src/friend/entity/friend.entity";
@@ -16,8 +14,6 @@ import { UserService } from "src/user/user.service";
 @Injectable()
 export class BlockService extends AbstractService {
   constructor(
-    @Inject(forwardRef(() => FriendRequestService))
-    private friendRequestService: FriendRequestService,
     private friendService: FriendService,
     private userService: UserService,
     @InjectRepository(Block) private readonly blockRepository: Repository<Block>,

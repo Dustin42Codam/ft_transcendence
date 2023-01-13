@@ -2,13 +2,13 @@ import { createAsyncThunk, PayloadAction, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
 export interface GameState {
-	gameRoomId: number;
-	BatP1X: number;
-	BatP1Y: number;
-	BatP2X: number;
-	BatP2Y: number;
-	BallX: number;
-	BallY: number;
+  gameRoomId: number;
+  BatP1X: number;
+  BatP1Y: number;
+  BatP2X: number;
+  BatP2Y: number;
+  BallX: number;
+  BallY: number;
   isEstablishingConnection: boolean;
   isConnected: boolean;
   status: any;
@@ -18,12 +18,12 @@ export const initialState: GameState = {
   isEstablishingConnection: false,
   isConnected: false,
   gameRoomId: -1,
-	BatP1X: -1,
-	BatP1Y: -1,
-	BatP2X: -1,
-	BatP2Y: -1,
-	BallX: -1,
-	BallY: -1,
+  BatP1X: -1,
+  BatP1Y: -1,
+  BatP2X: -1,
+  BatP2Y: -1,
+  BallX: -1,
+  BallY: -1,
   status: "",
 };
 
@@ -54,10 +54,7 @@ const gameSocketSlice = createSlice({
     joinRoom: (state, action: PayloadAction<number>) => {
       return;
     },
-    joinRoomSuccess: (
-      state,
-      action: PayloadAction<number>
-    ) => {
+    joinRoomSuccess: (state, action: PayloadAction<number>) => {
       state.gameRoomId = action.payload;
     },
     leaveRoom: (state, action: PayloadAction<number>) => {
@@ -67,13 +64,10 @@ const gameSocketSlice = createSlice({
       state.gameRoomId = initialState.gameRoomId;
       return;
     },
-    moveBat: (
-      state,
-      action: PayloadAction<any>
-    ) => {
+    moveBat: (state, action: PayloadAction<any>) => {
       return;
     },
-		/*
+    /*
 		 *TODO brodcast batposition ball position
 			thinking about is it better to bordcast ball trajectory?
     receiveAllMessages: (
@@ -94,7 +88,7 @@ const gameSocketSlice = createSlice({
     },
 	 */
   },
-	/*
+  /*
   extraReducers(builder) {
     builder
       .addCase(fetchCurrentGameRoomMessages.pending, (state, action) => {

@@ -1,11 +1,6 @@
 import React, { useEffect } from "react";
-import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import Wrapper from "../../components/Wrapper";
-import {
-  fetchFriends,
-  selectAllFriends,
-} from "../../redux/slices/friendsSlice";
 import {
   fetchCurrentUser,
   selectCurrentUser,
@@ -15,11 +10,11 @@ import UserFriends from "../../components/UserFriends";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
-import "./UserProfile.module.css";
-import MatchHistory from "../../components/UserMatchHistory";
+import "./UserProfile.css";
 import UserMatchHistory from "../../components/UserMatchHistory";
 import UserStats from "../../components/UserStats";
 import GameLadder from "../../components/GameLadder";
+import { Button } from "react-bootstrap";
 
 export const UserProfile = () => {
   const currentUser = useAppSelector(selectCurrentUser);
@@ -27,10 +22,6 @@ export const UserProfile = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    console.log(
-      "🚀 ~ file: UserProfile.tsx:25 ~ useEffect ~ currentUserStatus",
-      currentUserStatus
-    );
     if (currentUserStatus === "idle") {
       dispatch(fetchCurrentUser());
     }
@@ -60,6 +51,11 @@ export const UserProfile = () => {
                 <div className="media-body va-m mb-3">
                   <h2 className="media-heading">{currentUser.display_name}</h2>
                 </div>
+                <div className="media-body">
+                  <h2 className="media-heading">
+                    <Button className="">Edit</Button>
+                  </h2>
+                </div>
               </div>
             </div>
           </Link>
@@ -75,9 +71,7 @@ export const UserProfile = () => {
                 <UserFriends userId={Number(currentUser.id)} />
               </Tab>
               <Tab eventKey="match-history" title="Match History">
-                <UserMatchHistory
-                  matchHistory={currentUser.matches}
-                ></UserMatchHistory>
+                <UserMatchHistory user={currentUser}></UserMatchHistory>
               </Tab>
               <Tab eventKey="stats" title="Stats">
                 <UserStats userStats={currentUser.game_stats}></UserStats>

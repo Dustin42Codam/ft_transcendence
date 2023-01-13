@@ -10,20 +10,15 @@ const Dashboard = () => {
     return () => console.log("unmouting");
   });
 
-	function joinGameRoom() {
-    dispatch(
-      gameSocketActions.joinRoom(42)
-    );
-	}
+  function joinGameRoom() {
+    dispatch(gameSocketActions.joinRoom(42));
+  }
 
   return (
     <Wrapper>
-			<button onClick={joinGameRoom}> Regular Game</button>
-			<button> Power up Game </button>
-			<button> Send a game invite to some one </button>
-      connect the clinet to the socket server on login or is it more of a check
-      if a user is connected continure else try to connect to the server do not
-      login if you can not connect to socket io
+      <button onClick={joinGameRoom}> Regular Game</button>
+      <button> Power up Game </button>
+      <button> Send a game invite to some one </button>
     </Wrapper>
   );
 };

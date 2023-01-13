@@ -1,11 +1,9 @@
-import { Achievement } from "src/achievement/entity/achievement.entity";
 import { Block } from "src/blocked/entity/block.entity";
-import { Friend } from "src/friend/entity/friend.entity";
-import { FriendRequest } from "src/friend_request/entity/friend_request.entity";
 import { GameStats } from "src/games_stats/entity/game_stats.entity";
 import { Member } from "src/member/entity/member.entity";
 import { Column, Entity, OneToMany, JoinTable, PrimaryGeneratedColumn, OneToOne, JoinColumn } from "typeorm";
-import { Socket } from "socket.io-client";
+import { TFA } from "src/tfa/entity/tfa.entity";
+import { Exclude } from 'class-transformer';
 
 export enum UserStatus {
   ONLINE = "online",
@@ -21,8 +19,11 @@ export class User {
 	@Column({unique: true})
 	display_name: string;
 
+	@Column({unique: true})
+	intra_name: string;
+
   @Column()
-  avatar: string;
+  avatar?: string;
 
   @Column("boolean", { default: false })
   two_factor_auth: boolean;
@@ -46,19 +47,20 @@ export class User {
   @OneToMany(() => Block, (block: Block) => block.receiver)
   received_blocks: Block[];
 
-  @OneToMany(() => FriendRequest, (friendRequest: FriendRequest) => friendRequest.sender)
-  send_friend_requests: FriendRequest[];
-
-  @OneToMany(() => FriendRequest, (friendRequest: FriendRequest) => friendRequest.receiver)
-  received_friend_requests: FriendRequest[];
-
 	@OneToOne(() => GameStats, {eager: true, cascade: true})
-    @JoinColumn()
-    game_stats: GameStats
+  @JoinColumn()
+  game_stats: GameStats
+
+  @OneToOne(() => TFA, {eager: true, cascade: true}) //TODO this can not be because of serurity should be solved by using hte relations par in getUserById
+  @JoinColumn()
+  tfa_secret: TFA
 
   @OneToMany(() => Member, (member: Member) => member.user)
-  chatrooms: FriendRequest[];
+  chatrooms: Member[];
 
-  @OneToMany(() => Achievement, (achievement: Achievement) => achievement.user)
-  public achievements: Achievement[];
+  @Column({
+    nullable: true,
+  })
+  @Exclude()
+  public currentHashedRefreshToken?: string;
 }

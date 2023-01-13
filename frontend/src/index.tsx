@@ -37,8 +37,6 @@ async function main() {
   store.dispatch(fetchJoinableChats());
   store.dispatch(fetchGroupChats());
   //TODO add authgurad
-  store.dispatch(socketActions.startConnecting());
-  store.dispatch(gameSocketActions.startConnecting());
 
   root.render(
     <Provider store={store}>

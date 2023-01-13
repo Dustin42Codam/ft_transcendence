@@ -2,8 +2,6 @@ import React from "react";
 import CallMadeIcon from "@mui/icons-material/CallMade";
 import ChatButton from "../components/ChatButton";
 import "../login.css";
-import axios from "axios";
-import logo from "./white42.png";
 
 const Authenticate = () => {
   async function login() {
@@ -33,7 +31,7 @@ const Authenticate = () => {
         icon={<CallMadeIcon fontSize="large" />}
       />
       <p>made by dkrecisz, alkrusts, lbisscho and avan-ber</p>
-      <p>&copy; 2022</p>
+      <p>&copy; 2023</p>
     </div>
   );
 };

@@ -306,17 +306,14 @@ class GameState {
   }
 }
 
-
 const Game = (props: any) => {
   const dispatch = useAppDispatch();
   //const canvasRef = useRef();
   //const [gameState, setGameState] = useState<GameState | null>(null);
-	const moveBatP1 = () => {
-		dispatch(
-			gameSocketActions.moveBat({"gameRoomId": 42,"direction": 1})
-		);
-		//inputRef.current!["messageInput"].value = "";
-	};
+  const moveBatP1 = () => {
+    dispatch(gameSocketActions.moveBat({ gameRoomId: 42, direction: 1 }));
+    //inputRef.current!["messageInput"].value = "";
+  };
 
   useEffect(() => {
     const canvas = document.getElementById("canvas") as HTMLCanvasElement;
@@ -335,11 +332,11 @@ const Game = (props: any) => {
       console.log(e, gameState);
 
       if (String.fromCharCode(keynum) == "(") {
-				moveBatP1();
+        moveBatP1();
         gameState.batP1.moveUp(10, 1);
       }
       if (String.fromCharCode(keynum) == "&") {
-				moveBatP1();
+        moveBatP1();
         gameState.batP1.moveUp(10, -1);
       }
     });

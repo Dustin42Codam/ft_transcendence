@@ -1,3 +1,21 @@
--	avatar upload strategy
+-	BE: avatar upload strategy
 	-	how to store images in backend?
+-	FE: unique name creation
+	-	test if username gets a unique value upon creation 
+	-	pop up when user changes a name which already exists
 
+to fix:
+	-	POST http://localhost:3000/api/game
+		-	crashes in game_stat_service with req body:
+			{
+			  "player_1": 15,
+			  "player_2": 16,
+			  "score_player_1": 11,
+			  "score_player_2": 6,
+			  "type": "classic"
+			}
+	-	unique name creation
+		-	user edit data page reroutes to 404
+	-	make a sub component for a Friend button on the user page
+	-	UserPage - GameLadder - use navigate to route to
+		another user instead of a "Link"

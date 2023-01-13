@@ -3,7 +3,7 @@ import { AuthGuard } from "../auth/auth.guard";
 import GameroomEvents from "./gameroomEvents";
 import { UseGuards } from "@nestjs/common";
 import { Namespace, Server, Socket } from "socket.io";
-import { Logger } from "@nestjs/common";
+import { Logger, Req } from "@nestjs/common";
 
 @WebSocketGateway(3002, {
   namespace: "game",
@@ -64,6 +64,6 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
   @SubscribeMessage(GameroomEvents.MoveBat)
   handleMessageToServer(client: Socket, payload: any): void {
 		console.log("this is a message", payload, `${payload.chatRoomId}`);
-    this.io.to(`${payload.chatRoomId}`).emit(GameroomEvents.SendMessageToClient, payload);
+    //this.io.to(`${payload.chatRoomId}`).emit(GameroomEvents.SendMessageToClient, payload);
   }
 }

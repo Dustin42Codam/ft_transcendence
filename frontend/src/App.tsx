@@ -12,11 +12,19 @@ import { UserList } from "./pages/users/UserList";
 import { UserPage } from "./pages/users/UserPage";
 import { useAppDispatch, useAppSelector } from "./redux/hooks";
 import { Navigate, BrowserRouter, Routes, Route } from "react-router-dom";
+import TwoFactorAuthentication from "./pages/TwoFactorAuthentication";
+import { selectCurrentUser } from "./redux/slices/currentUserSlice";
+import store from "./redux/store";
+import { socketActions } from "./redux/slices/socketSlice";
+import { gameSocketActions } from "./redux/slices/gameSocketSlice";
 
 function App() {
   const dispatch = useAppDispatch();
   const socketStatus = useAppSelector((state) => state.socket.isConnected);
   const userStatus = useAppSelector((state) => state.currentUser.status);
+  const currentUser = useAppSelector(selectCurrentUser);
+
+  //   console.log("🚀 ~ file: App.tsx:23 ~ App ~ currentUser", currentUser.tfa_secret.isAuthenticated);
 
   //TODO do not load the server if socket is not socketStatus is not true
   if (userStatus === "failed") {
@@ -33,7 +41,29 @@ function App() {
     );
   } else if (userStatus === "loading") {
     return <div className="App"></div>;
+    //   } else if (currentUser.two_factor_auth === true && currentUser.tfa_secret.isAuthenticated === false) {
+  } else if (
+    currentUser.two_factor_auth === true &&
+    currentUser.tfa_secret.isAuthenticated === false
+  ) {
+    return (
+      <div className="App">
+        <BrowserRouter>
+          <Routes>
+            <Route path={"/authenticate"} element={<Authenticate />} />
+            <Route path={"*"} element={<NotFound />} />
+            <Route path="/" element={<Navigate to="./authenticate" />} />
+            <Route
+              path={"/authenticate/2fa"}
+              element={<TwoFactorAuthentication />}
+            />
+          </Routes>
+        </BrowserRouter>
+      </div>
+    );
   } else {
+		store.dispatch(socketActions.startConnecting());
+		store.dispatch(gameSocketActions.startConnecting());
     return (
       <div className="App">
         <BrowserRouter>
@@ -52,14 +82,6 @@ function App() {
             <Route path={"/games"} element={<Game />} />
 
             <Route path={"*"} element={<NotFound />} />
-
-            {/* maybe to delete */}
-            {/*
-            <Route path={"/users/create"} element={<UserCreate />} />
-
-            <Route path={"/authenticate"} element={<Authenticate />} />
-            <Route path={"/achievements"} element={<Achievements />} />
-			*/}
           </Routes>
         </BrowserRouter>
       </div>
