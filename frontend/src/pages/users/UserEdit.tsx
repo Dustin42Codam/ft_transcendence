@@ -29,38 +29,36 @@ const UserEdit = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-	const button = document.getElementById("qr-button") as HTMLButtonElement;
+    const button = document.getElementById("qr-button") as HTMLButtonElement;
 
-	button.addEventListener("click", async function onClick(event) {
-		event.preventDefault();
+    button.addEventListener("click", async function onClick(event) {
+      event.preventDefault();
 
-		const response = await fetch("http://localhost:3000/api/tfa/generate", {
-		  method: "POST",
-		  credentials: "include",
-		});
-	
-		const image = document.getElementById("qr") as HTMLImageElement | null;
-	
-		if (image !== null) {
-		  const str = URL.createObjectURL(await response.blob());
-		  image.src = str;
-		}
+      const response = await fetch("http://localhost:3000/api/tfa/generate", {
+        method: "POST",
+        credentials: "include",
+      });
+
+      const image = document.getElementById("qr") as HTMLImageElement | null;
+
+      if (image !== null) {
+        const str = URL.createObjectURL(await response.blob());
+        image.src = str;
+      }
     });
-  }, [])
-  
+  }, []);
 
   const infoSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
 
-	if (name === user.display_name && avatar) {
-		await dispatch(
-		  updateCurrentUser({
-			id: user.id,
-			avatar,
-		  })
-		);
-	}
-    else if (name || avatar) {
+    if (name === user.display_name && avatar) {
+      await dispatch(
+        updateCurrentUser({
+          id: user.id,
+          avatar,
+        })
+      );
+    } else if (name || avatar) {
       await dispatch(
         updateCurrentUser({
           id: user.id,
@@ -83,17 +81,17 @@ const UserEdit = () => {
   };
 
   async function generateQRCode(image: any, e: any) {
-	e.preventDefault();
+    e.preventDefault();
 
-	const response = await fetch("http://localhost:3000/api/tfa/generate", {
+    const response = await fetch("http://localhost:3000/api/tfa/generate", {
       method: "POST",
       credentials: "include",
     });
 
     // const image = document.getElementById("qr") as HTMLImageElement | null;
 
-	console.log("🚀 ~ file: UserEdit.tsx:86 ~ generateQRCode ~ image", image)
-	
+    console.log("🚀 ~ file: UserEdit.tsx:86 ~ generateQRCode ~ image", image);
+
     if (image !== null) {
       const str = URL.createObjectURL(await response.blob());
       image.src = str;
@@ -146,7 +144,7 @@ const UserEdit = () => {
                   className="form-control"
                   value={user.avatar}
                   onChange={(e) => setAvatar(e.target.value)}
-                //   required
+                  //   required
                 />
                 <ImageUpload uploaded={updateImage} />
               </div>
@@ -163,29 +161,29 @@ const UserEdit = () => {
             <Button type="submit">Save</Button>{" "}
             <Button onClick={navigateBack}>Back</Button>
           </form>
-            <div className="mb-3">
-              Two Factor Authentication
-              <div className="mb-5">
-                <button id="qr-button">Generate QR Code</button>
-                <img src="" id="qr" />
-              </div>
-              <div className="mb-3">
-                <label>
-                  <input
-                    type="text"
-                    name="code"
-                    placeholder="6-Digit-Key"
-                    onChange={(e) => setCode(e.target.value)}
-                  />
-                </label>
-
-                {twoFA === false ? (
-                  <button onClick={activate2FA}>Activate 2FA</button>
-                ) : (
-                  <button onClick={deactivate2FA}>Deactivate 2FA</button>
-                )}
-              </div>
+          <div className="mb-3">
+            Two Factor Authentication
+            <div className="mb-5">
+              <button id="qr-button">Generate QR Code</button>
+              <img src="" id="qr" />
             </div>
+            <div className="mb-3">
+              <label>
+                <input
+                  type="text"
+                  name="code"
+                  placeholder="6-Digit-Key"
+                  onChange={(e) => setCode(e.target.value)}
+                />
+              </label>
+
+              {twoFA === false ? (
+                <button onClick={activate2FA}>Activate 2FA</button>
+              ) : (
+                <button onClick={deactivate2FA}>Deactivate 2FA</button>
+              )}
+            </div>
+          </div>
         </div>
       </section>
     </Wrapper>

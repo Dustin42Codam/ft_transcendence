@@ -3,7 +3,14 @@ import { User } from "src/user/entity/user.entity";
 
 export enum GameType {
   CLASSIC = "classic",
-  POWER_UPS = "power_ups",
+  POWER_UP = "power_up",
+  PRIVATE = "private",
+}
+
+export enum GameStatus {
+  PENDING = "pending",
+  ACTIVE = "active",
+  PASSIVE = "passive",
 }
 
 @Entity("game")
@@ -14,18 +21,21 @@ export class Game {
   @Column()
   player_1: number;
 
-  @Column()
+  @Column({nullable: true})
   player_2: number;
 
-  @Column()
+  @Column({ default: 0 })
   score_player_1: number;
 
-  @Column()
+  @Column({ default: 0 })
   score_player_2: number;
 
-  @Column({ default: GameType })
+  @Column()
   type: GameType;
 
-  @Column()
+  @Column({nullable: true})
   timestamp: Date;
+
+  @Column({ default: GameStatus.PENDING })
+  status: GameStatus;
 }
