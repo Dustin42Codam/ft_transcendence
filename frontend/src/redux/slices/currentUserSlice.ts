@@ -42,8 +42,9 @@ export const fetchCurrentUser = createAsyncThunk(
 
 export const updateCurrentUser = createAsyncThunk(
   "currentUser/updateCurrentUser",
-  async (user: IUser) => {
+  async (user: any) => {
     const response = await axios.post(`users/${user.id}`, user);
+    console.log("🚀 ~ file: currentUserSlice.ts:48 ~ response", response);
     return response.data;
   }
 );
@@ -66,12 +67,24 @@ const currentUserSlice = createSlice({
         state.status = "failed";
         state.error = action.error.message;
       })
+      .addCase(updateCurrentUser.pending, (state, action) => {
+        state.status = "loading";
+      })
       .addCase(
         updateCurrentUser.fulfilled,
         (state: any, action: PayloadAction<IUser>) => {
-          state.currentUser.currentUser = action.payload;
+          console.log(
+            "🚀 ~ file: currentUserSlice.ts:75 ~ extraReducers ~ action",
+            action
+          );
+          state.currentUser = action.payload;
+          state.status = "succeeded";
         }
-      );
+      )
+      .addCase(updateCurrentUser.rejected, (state: any, action) => {
+        state.status = "failed";
+        state.error = action.error.message;
+      });
   },
 });
 

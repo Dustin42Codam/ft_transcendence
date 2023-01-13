@@ -1,16 +1,18 @@
 import "./App.css";
 import Game from "./pages/Game";
-import Chat from "./pages/Chat";
-import Users from "./pages/users/Users";
 import NotFound from "./pages/NotFound";
 import Dashboard from "./pages/Dashboard";
 import Authenticate from "./pages/Authenticate";
 import UserEdit from "./pages/users/UserEdit";
-import UserCreate from "./pages/users/UserCreate";
+import { UserProfile } from "./pages/users/UserProfile";
+import Chat from "./pages/Chat";
+import React, { useRef, useEffect } from "react";
+import { io, Socket } from "socket.io-client";
+import { UserList } from "./pages/users/UserList";
 import { UserPage } from "./pages/users/UserPage";
-import Achievements from "./pages/achievements/Achievements";
 import { useAppDispatch, useAppSelector } from "./redux/hooks";
 import { Navigate, BrowserRouter, Routes, Route } from "react-router-dom";
+import TwoFactorAuthentication from "./pages/TwoFactorAuthentication";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -24,6 +26,7 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route path={"/authenticate"} element={<Authenticate />} />
+            <Route path={"/authenticate/2fa"} element={<TwoFactorAuthentication />} />
             <Route path={"*"} element={<NotFound />} />
             <Route path="/" element={<Navigate to="./authenticate" />} />
           </Routes>
@@ -42,23 +45,15 @@ function App() {
 
             <Route path={"/chats/:name"} element={<Chat />} />
 
-            {/* <Route path={"/profile"} element={<UserProfile />} /> */}
+            <Route path={"/profile"} element={<UserProfile />} />
+            <Route path={"/profile/edit"} element={<UserEdit />} />
 
-            <Route path={"/users"} element={<Users />} />
+            <Route path={"/users"} element={<UserList />} />
             <Route path={"/users/:userId"} element={<UserPage />} />
 
             <Route path={"/games"} element={<Game />} />
 
             <Route path={"*"} element={<NotFound />} />
-
-            {/* maybe to delete */}
-            {/*
-            <Route path={"/users/:id/edit"} element={<UserEdit />} />
-            <Route path={"/users/create"} element={<UserCreate />} />
-
-            <Route path={"/authenticate"} element={<Authenticate />} />
-            <Route path={"/achievements"} element={<Achievements />} />
-			*/}
           </Routes>
         </BrowserRouter>
       </div>

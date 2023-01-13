@@ -1,11 +1,9 @@
-import { Achievement } from "src/achievement/entity/achievement.entity";
 import { Block } from "src/blocked/entity/block.entity";
-import { Friend } from "src/friend/entity/friend.entity";
-import { FriendRequest } from "src/friend_request/entity/friend_request.entity";
 import { GameStats } from "src/games_stats/entity/game_stats.entity";
 import { Member } from "src/member/entity/member.entity";
 import { Column, Entity, OneToMany, JoinTable, PrimaryGeneratedColumn, OneToOne, JoinColumn } from "typeorm";
-import { Socket } from "socket.io-client";
+import { TFA } from "src/tfa/entity/tfa.entity";
+import { Exclude } from 'class-transformer';
 
 export enum UserStatus {
   ONLINE = "online",
@@ -18,8 +16,11 @@ export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ unique: true }) //TODO check the approuch with unique. If unique people can take each others intra. If not unique everyone can have te same name
-  display_name: string;
+	@Column({unique: true})
+	display_name: string;
+
+	@Column({unique: true})
+	intra_name: string;
 
   @Column()
   avatar: string;
@@ -46,19 +47,20 @@ export class User {
   @OneToMany(() => Block, (block: Block) => block.receiver)
   received_blocks: Block[];
 
-  @OneToMany(() => FriendRequest, (friendRequest: FriendRequest) => friendRequest.sender)
-  send_friend_requests: FriendRequest[];
-
 	@OneToOne(() => GameStats, {eager: true, cascade: true})
-    @JoinColumn()
-    game_stats: GameStats
+  @JoinColumn()
+  game_stats: GameStats
 
-  @OneToMany(() => FriendRequest, (friendRequest: FriendRequest) => friendRequest.receiver)
-  received_friend_requests: FriendRequest[];
+  @OneToOne(() => TFA, {eager: true, cascade: true})
+  @JoinColumn()
+  tfa_secret: TFA
 
   @OneToMany(() => Member, (member: Member) => member.user)
-  chatrooms: FriendRequest[];
+  chatrooms: Member[];
 
-  @OneToMany(() => Achievement, (achievement: Achievement) => achievement.user)
-  public achievements: Achievement[];
+  @Column({
+    nullable: true,
+  })
+  @Exclude()
+  public currentHashedRefreshToken?: string;
 }

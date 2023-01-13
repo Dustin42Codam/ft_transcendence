@@ -3,13 +3,20 @@ import React from "react";
 import { Link } from "react-router-dom";
 import LogoutIcon from "@mui/icons-material/Logout";
 import "./Nav.css";
+import { useAppDispatch } from "../redux/hooks";
 
 const Nav = (props: any) => {
+  const dispatch = useAppDispatch();
+
   const logout = async () => {
     await axios
       .post("logout", {})
       .then((res) => (window.location.href = "http://localhost:4242"))
       .catch((err) => console.log("failed to logout", err));
+
+    dispatch({
+      type: "SIGNOUT_REQUEST",
+    });
   };
 
   return (

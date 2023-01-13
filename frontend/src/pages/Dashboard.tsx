@@ -9,8 +9,8 @@ const Dashboard = () => {
 
   return (
     <Wrapper>
-      connect the clinet to the socket server on login or is it more of a check
-      if a user is connected continure else try to connect to the server do not
+      connect the client to the socket server on login or is it more of a check
+      if a user is connected continue else try to connect to the server do not
       login if you can not connect to socket io
     </Wrapper>
   );

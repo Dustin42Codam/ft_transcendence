@@ -49,29 +49,38 @@ export class OauthCallbackController {
           Authorization: "Bearer " + request.session.token,
         },
       });
+      
       user = await this.userService.findOne({ display_name: resp.display_name });
+      
+      console.log("🚀 ~ file: oauth-callback.controller.ts:50 ~ OauthCallbackController ~ callback ~ user", user)
+      
       if (!user) {
-        user = await registerUser(resp.data, this.userService);
+		    user = await registerUser(resp.data, this.userService);
+		  }
+
+      if (user.two_factor_auth === true) {
+        response.redirect(`http://localhost:${process.env.FRONTEND_PORT}/authenticate/2fa`);
+      } else {
+        const jwt = await this.jwtService.signAsync({ id: user.id });
+      
+        response.cookie("jwt", jwt, { httpOnly: true, sameSite: "lax" });
+        response.redirect(`http://localhost:${process.env.FRONTEND_PORT}`);
       }
-      request.session.user_id = user.id;
-
-      const jwt = await this.jwtService.signAsync({ id: user.id });
-
-      console.log("WE ARE SETTING A COOKIE WANING");
-      response.cookie("jwt", jwt, { httpOnly: true, sameSite: "lax" });
-      response.redirect(`http://localhost:${process.env.FRONTEND_PORT}`);
     } catch (e) {
       console.log("ERROR:", e);
       response.redirect(`http://localhost:${process.env.FRONTEND_PORT}/authenticate`);
     }
 
     async function registerUser(data, userService) {
-      const user = await userService.createUser({
-        display_name: data.login,
-        avatar: data.image.link,
-        two_factor_auth: 0,
-        status: "online",
-      });
+		const userCreateDto: UserCreateDto = {
+			display_name: data.login,
+			intra_name: data.login,
+			avatar: data.image.link,
+			status: UserStatus.ONLINE
+		}
+      console.log("🚀 ~ file: oauth-callback.controller.ts:72 ~ OauthCallbackController ~ registerUser ~ userCreateDto", userCreateDto)
+      const user = await userService.createUser(userCreateDto);
+	  return user;
     }
   }
 }

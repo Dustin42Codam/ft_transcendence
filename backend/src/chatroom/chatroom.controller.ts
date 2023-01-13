@@ -51,6 +51,12 @@ export class ChatroomController {
     return this.chatroomService.getChatroomById(Number(id));
   }
 
+  @Get("all")
+  async getAllChatsFromUser(@Req() request: Request) {
+    const user = await this.userService.getUserById(request.session.user_id);
+    return this.chatroomService.getAllChatsFromUser(user);
+  }
+
   @Post("remove/:id")
   async removeChatroom(@Req() request: Request, @Param("id") id: string) {
     const chatroom = await this.chatroomService.getChatroomById(Number(id));
@@ -139,6 +145,8 @@ export class ChatroomController {
     if (receiverMember) return receiverMember;
     return await this.memberService.createMember({ user: receiver, chatroom: chatroom, role: MemberRole.USER });
   }
+
+  //TODO Create chatroom, change Password, join Chatroom HASHING PASSWORDS
 
 	@Post()
 	async createChatroom(

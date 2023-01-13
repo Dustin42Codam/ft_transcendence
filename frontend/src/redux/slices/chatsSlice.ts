@@ -23,10 +23,6 @@ export const fetchJoinableChats = createAsyncThunk(
   "chats/fetchJoinableChats",
   async () => {
     const response = await axios.get("chatroom/join");
-    console.log(
-      "🚀 ~ file: chatsSlice.ts:18 ~ fetchJoinableChats ~ response",
-      response
-    );
     return response.data;
   }
 );
@@ -35,10 +31,6 @@ export const fetchGroupChats = createAsyncThunk(
   "chats/fetchGroupChats",
   async () => {
     const response = await axios.get("chatroom/group");
-    console.log(
-      "🚀 ~ file: chatsSlice.ts:18 ~ fetchGroupChats ~ response",
-      response
-    );
     return response.data;
   }
 );
@@ -47,10 +39,6 @@ export const fetchDirectChats = createAsyncThunk(
   "chats/fetchDirectChats",
   async () => {
     const response = await axios.get("chatroom/dm");
-    console.log(
-      "🚀 ~ file: chatsSlice.ts:18 ~ fetchDirectChats ~ response",
-      response
-    );
     return response.data;
   }
 );
@@ -58,7 +46,6 @@ export const fetchDirectChats = createAsyncThunk(
 export const addNewGroupChat = createAsyncThunk(
   "chats/addNewGroupChat",
   async (data: any) => {
-    console.log("🚀 ~ file: chatsSlice.ts:66 ~ data.chat", data.chat);
     return await axios.post(`chatroom/`, data.chat);
   }
 );
@@ -92,7 +79,7 @@ export const chatsSlice = createSlice({
       })
       .addCase(fetchJoinableChats.fulfilled, (state: any, action) => {
         state.status = "succeeded";
-        state.joinable = state.joinable.concat(action.payload);
+        state.joinable = action.payload;
       })
       .addCase(fetchJoinableChats.rejected, (state: any, action) => {
         state.status = "failed";
@@ -103,7 +90,7 @@ export const chatsSlice = createSlice({
       })
       .addCase(fetchGroupChats.fulfilled, (state: any, action) => {
         state.status = "succeeded";
-        state.group = state.group.concat(action.payload);
+        state.group = action.payload;
       })
       .addCase(fetchGroupChats.rejected, (state: any, action) => {
         state.status = "failed";
@@ -114,7 +101,7 @@ export const chatsSlice = createSlice({
       })
       .addCase(fetchDirectChats.fulfilled, (state: any, action) => {
         state.status = "succeeded";
-        state.direct = state.direct.concat(action.payload);
+        state.direct = action.payload;
       })
       .addCase(fetchDirectChats.rejected, (state: any, action) => {
         state.status = "failed";
@@ -125,10 +112,6 @@ export const chatsSlice = createSlice({
       })
       .addCase(addNewGroupChat.fulfilled, (state: any, action: any) => {
         state.status = "succeeded";
-        console.log(
-          "🚀 ~ file: chatsSlice.ts:117 ~ .addCase ~ action.payload",
-          action.payload
-        );
         state.group.push(action.payload.data);
       })
       .addCase(addNewGroupChat.rejected, (state: any, action) => {
