@@ -90,7 +90,7 @@ export class ChatroomGateway implements OnGatewayInit, OnGatewayConnection, OnGa
     if (!userId) {
       throw new BadRequestException(`User doesn't excist.`);
     }
-    const user = await this.userService.getUserById(userId);
+    const user = await this.userService.getUserById(userId); 
     const member = await this.memberService.getMemberByUserAndChatroom(user, chatroom);
     if (await this.memberService.isRestricted(member)) {
       throw new BadRequestException(`User with id ${payload.userId} is restricted from chatroom with id ${payload.id}.`);
