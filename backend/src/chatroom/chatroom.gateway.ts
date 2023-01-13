@@ -86,11 +86,14 @@ export class ChatroomGateway implements OnGatewayInit, OnGatewayConnection, OnGa
     if (!chatroom) {
       throw new BadRequestException(`Chatroom with id ${payload.id} does not exist.`);
     }
-    const user = await this.userService.getUserById(Number(payload.id));
+	const userId = await this.userService.getUserFromClient(client);
+    const user = await this.userService.getUserById(userId);
     if (!user) {
       throw new BadRequestException(`User with id ${payload.userId} does not exist.`);
     }
-    const member = await this.memberService.getMemberByUserAndChatroom(chatroom, user);
+    const member = await this.memberService.getMemberByUserAndChatroom(user, chatroom);
+    console.log("🚀 ~ file: chatroom.gateway.ts:95 ~ ChatroomGateway ~ handelJoinRoom ~ member", member)
+	
     if (await this.memberService.isRestricted(member)) {
       throw new BadRequestException(`User with id ${payload.userId} is restricted from chatroom with id ${payload.id}.`);
     }
@@ -127,8 +130,10 @@ export class ChatroomGateway implements OnGatewayInit, OnGatewayConnection, OnGa
     console.log("getting here");
     const user = await this.userService.getUserById(Number(payload.authorId));
     const chatroom = await this.chatroomService.getChatroomById(Number(payload.chatRoomId));
-    if (!chatroom)
-    throw new BadRequestException(`Chatroom with id ${payload.chatRoomId} does not exist.`);
+    console.log("🚀 ~ file: chatroom.gateway.ts:133 ~ ChatroomGateway ~ handleMessageToServer ~ payload.chatRoomId", payload.chatRoomId)
+    if (!chatroom) {
+		throw new BadRequestException(`Chatroom with id ${payload.chatRoomId} does not exist.`);
+	}
     const member = await this.memberService.getMemberByUserAndChatroom(user, chatroom);
     if (await this.memberService.isRestricted(member))
       client.to('${payload.chatRoomId}').emit(ChatroomEvents.SendMessageToClient, 'You are restricted from sending messages.');
