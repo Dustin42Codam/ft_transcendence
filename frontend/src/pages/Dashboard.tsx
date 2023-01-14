@@ -13,7 +13,7 @@ const Dashboard = () => {
       axios
         .get("/game/active")
         .then((resp) => {
-          console.log("API:", resp.data);
+          console.log("active games:", resp.data);
           setActiveGames(resp.data);
         })
         .catch((err) => console.log(err));
@@ -27,7 +27,7 @@ const Dashboard = () => {
       .post("/game/classic", {})
       .then((resp) => console.log(resp))
       .catch((err) => console.log(err));
-    dispatch(gameSocketActions.joinRoom(42));
+    //dispatch(gameSocketActions.joinRoom(42));
   }
 
   return (

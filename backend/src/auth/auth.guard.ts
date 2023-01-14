@@ -13,7 +13,7 @@ export class AuthGuard implements CanActivate {
     }
 		try {
       const req = request.handshake.headers.cookie;
-			const jwt = req.substring(4, req.indexOf(";"));
+			const jwt = req.substring(req.indexOf("=") + 1);
       return this.jwtService.verify(jwt);
 		} catch (e) {
 			return false;

@@ -35,13 +35,18 @@ const gameSocketMiddleware: Middleware = (store) => {
       gameSocket.on(GameEvent.JoinGameRoomSuccess, (gameRoomId: number) => {
         store.dispatch(gameSocketActions.joinRoomSuccess(gameRoomId));
       });
+      gameSocket.on(GameEvent.MoveBatP2, (gameRoomId: number) => {
+        store.dispatch(gameSocketActions.moveBatP2(gameRoomId));
+      });
       gameSocket.on(GameEvent.LeaveGameRoomSuccess, () => {
         store.dispatch(gameSocketActions.leaveRoomSuccess());
       });
     }
     if (isConnectionEstablished) {
+			console.log("trying to join", gameSocketActions.joinRoom.match(action), action);
       if (gameSocketActions.joinRoom.match(action)) {
-        gameSocket.emit(GameEvent.JoinGameRoom, action.payload);
+				console.log("we are in", GameEvent.JoinGameRoom, action.payload);
+        gameSocket.emit(GameEvent.JoinGameRoom, String(action.payload));
       }
       /*
 			 * TODO think how to send data from gameSocket to gameSocket
@@ -49,12 +54,13 @@ const gameSocketMiddleware: Middleware = (store) => {
         gameSocket.emit(GameEvent.SendMessage, action.payload.chatMessage);
       }
 		 */
-      if (gameSocketActions.moveBat.match(action)) {
-        gameSocket.emit(GameEvent.MoveBat, action.payload);
+      if (gameSocketActions.moveBatP1.match(action)) {
+        gameSocket.emit(GameEvent.MoveBatP1, action.payload);
       }
       if (gameSocketActions.leaveRoom.match(action)) {
         gameSocket.emit(GameEvent.LeaveGameRoom, action.payload);
       }
+			/*if we want the client not to unsubscribe from stuff
       if (gameSocketActions.refreshPage.match(action)) {
         gameSocket.off("connect_failed");
         gameSocket.off("connect");
@@ -66,6 +72,7 @@ const gameSocketMiddleware: Middleware = (store) => {
         gameSocket.disconnect();
         store.dispatch(gameSocketActions.startConnecting());
       }
+		 */
     }
     next(action);
   };

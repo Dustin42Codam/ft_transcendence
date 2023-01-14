@@ -28,23 +28,17 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
   handleConnection(client): void {
 		console.log(`game client ${client.id} conected`);
     const sockets = this.io.sockets;
-    //TODO backend team set user status to online
   }
 
 	@UseGuards(AuthGuard)
   handleDisconnect(client: any): void {
     const sockets = this.io.sockets;
 		console.log(`game client ${client.id} disconected`);
-    //TODO backend team set user status to offline
   }
 
 	@UseGuards(AuthGuard)
   @SubscribeMessage(GameroomEvents.JoinGameRoom)
-  handelJoinRoom(client: Socket, payload: string): void {
-		//console.log(client);
-    //TODO Liz check if chatroom exists
-    //TODO Liz check if user can join
-    //TODO Liz add member data type to payload
+  handelJoinRoom(client: Socket, payload: any): void {
 		console.log("game clienat jointed:" ,client.id, payload);
     client.join(payload);
     this.io.to(`${payload}`).emit(GameroomEvents.JoinGameRoomSuccess, payload);
@@ -52,18 +46,15 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 
 	@UseGuards(AuthGuard)
   @SubscribeMessage(GameroomEvents.LeaveGameRoom)
-  leaveJoinRoom(client: Socket, payload: string): void {
+  leaveLeaveRoom(client: Socket, payload: string): void {
 		console.log("game client leaving: ", payload);
     this.io.to(`${payload}`).emit(GameroomEvents.LeaveGameRoomSuccess, payload);
     client.leave(`${payload}`);
   }
 
-
-  //TODO for me add socket id to DB
 	@UseGuards(AuthGuard)
-  @SubscribeMessage(GameroomEvents.MoveBat)
-  handleMessageToServer(client: Socket, payload: any): void {
-		console.log("this is a message", payload, `${payload.chatRoomId}`);
-    //this.io.to(`${payload.chatRoomId}`).emit(GameroomEvents.SendMessageToClient, payload);
+  @SubscribeMessage(GameroomEvents.MoveBatP1)
+  handleMoveBatP1(client: Socket, payload: any): void {
+		console.log("this is a the bat mooving ", payload, `${payload}`);
   }
 }

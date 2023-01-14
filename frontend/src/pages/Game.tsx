@@ -3,6 +3,7 @@ import Wrapper from "../components/Wrapper";
 import { gameSocketActions } from "../redux/slices/gameSocketSlice";
 import { useAppDispatch } from "../redux/hooks";
 import "./Game.css";
+import store from "../redux/store";
 
 class MoveableObject {
   positionX: number;
@@ -311,13 +312,15 @@ const Game = (props: any) => {
   //const canvasRef = useRef();
   //const [gameState, setGameState] = useState<GameState | null>(null);
   const moveBatP1 = () => {
-    dispatch(gameSocketActions.moveBat({ gameRoomId: 42, direction: 1 }));
+    dispatch(gameSocketActions.moveBatP1({ gameRoomId: 42, direction: 1 }));
     //inputRef.current!["messageInput"].value = "";
   };
 
   useEffect(() => {
     const canvas = document.getElementById("canvas") as HTMLCanvasElement;
     const gameState = new GameState(canvas);
+		console.log("store", store.getState());
+		dispatch(gameSocketActions.joinRoom(42));
 
     canvas.addEventListener("keydown", function onKeyDown(e) {
       e.preventDefault();

@@ -62,7 +62,7 @@ const Snicel = (props: any) => {
       }
     }
 
-		/*
+    /*
     return function cleanup() {
       console.log("from [props] unmounting");
       dispatch(

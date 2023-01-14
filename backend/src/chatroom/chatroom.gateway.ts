@@ -70,10 +70,10 @@ export class ChatroomGateway implements OnGatewayInit, OnGatewayConnection, OnGa
   async handleDisconnect(client: any): Promise<void> {
     const sockets = this.io.sockets;
     const userId = await this.userService.getUserFromClient(client);
-	if (userId) {
-		await this.userService.changeStatus(userId, UserStatus.OFFLINE)
-		console.log(`client ${client.id} disconected`);
-	}
+		if (userId) {
+			await this.userService.changeStatus(userId, UserStatus.OFFLINE)
+			console.log(`client ${client.id} disconected`);
+		}
   }
 
 	@UseGuards(AuthGuard)
