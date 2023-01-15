@@ -4,12 +4,7 @@ all:
 	docker-compose up --build
 
 dep:
-	@if [ $(shell node -v) = "v18.12.1" ]; then \
-		echo "\033[32mnode version good\033[0m"; \
-	else \
-		echo "\033[31mnode version not good\033[0m Have:" $(shell node -v) "wanted $(LTS)\n\033[33;5mTO FIX use:\033[0m nvm install --lts; nvm use --lts; nvm alias default 18.12.1"; \
-		:%; \
-	fi;
+
 
 frontend: dep
 	docker-compose -f $(SRC) up --build frontend

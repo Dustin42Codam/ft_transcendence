@@ -31,7 +31,7 @@ let persistor = persistStore(store);
 
 async function main() {
   store.dispatch(fetchCurrentUser());
-  store.dispatch(fetchMessages());
+  // store.dispatch(fetchMessages());
   store.dispatch(fetchUsers());
   store.dispatch(fetchDirectChats());
   store.dispatch(fetchJoinableChats());

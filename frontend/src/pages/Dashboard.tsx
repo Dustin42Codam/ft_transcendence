@@ -13,11 +13,9 @@ const Dashboard = () => {
       axios
         .get("/game/active")
         .then((resp) => {
-          console.log("API:", resp.data);
           setActiveGames(resp.data);
         })
         .catch((err) => console.log(err));
-      console.log("thses are active games", acitiveGames);
     }
     fetchAllActiveGames();
   }, []);

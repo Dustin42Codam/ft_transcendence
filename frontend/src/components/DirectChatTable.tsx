@@ -30,6 +30,10 @@ interface IState {
 
 const DirectChatTable = () => {
   const directChats = useAppSelector(selectDirectChats);
+  console.log(
+    "🚀 ~ file: DirectChatTable.tsx:33 ~ DirectChatTable ~ directChats",
+    directChats
+  );
 
   let navigate = useNavigate();
 

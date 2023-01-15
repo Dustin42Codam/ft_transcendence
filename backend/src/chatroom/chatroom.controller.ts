@@ -113,6 +113,8 @@ export class ChatroomController {
 
   @Post("join/:id")
   async joinChatroom(@Param("id") id: string, @Body() body: JoinChatroomDto, @Req() request: Request) {
+    console.log("🚀 ~ file: chatroom.controller.ts:116 ~ ChatroomController ~ joinChatroom ~ body", body)
+    
     const chatroom = await this.chatroomService.getChatroomById(Number(id));
     if ([ChatroomType.DIRECT, ChatroomType.PRIVATE].includes(chatroom.type)) throw new BadRequestException("You can not join a PRIVATE or DIRECT chatroom.");
     const user = await this.userService.getUserById(request.session.user_id);
@@ -166,9 +168,7 @@ export class ChatroomController {
     user_ids.push(Number(user.id));
 		const uniqueUsers : number[] = [... new Set(user_ids)];
 		var users : User[]= []
-        console.log("🚀 ~ file: chatroom.controller.ts:184 ~ ChatroomController ~ uniqueUsers", uniqueUsers)
         for (var user_id of uniqueUsers) {
-        console.log("🚀 ~ file: chatroom.controller.ts:186 ~ ChatroomController ~ user_id", user_id)
 				const user = await this.userService.findOne({id: user_id});
 				if (!user)
 					throw new BadRequestException("One of the users does not exist.");

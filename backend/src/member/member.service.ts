@@ -18,7 +18,7 @@ export class MemberService extends AbstractService {
   async getMemberByUserAndChatroom(user: User, chatroom: Chatroom) {
     const member = await this.findOne({ user, chatroom }, ["user", "chatroom"]);
     if (!member) {
-      throw new BadRequestException("This member does not exist.");  
+      throw new BadRequestException("This member does not exist.");
     }
     return member;
   }

@@ -1,5 +1,5 @@
 import { useLocation } from "react-router-dom";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Wrapper from "../components/Wrapper";
 import Socket from "../components/Socket";
 import "./Chat.css";
@@ -25,6 +25,8 @@ const Chat = (props: any) => {
   const currentChatRoomMessages = useAppSelector(selectCurrentChatroomMessages);
   const currentUser = useAppSelector(selectCurrentUser);
   const [messages, setMessages] = useState([]);
+  const dummy = useRef<HTMLDivElement>(null);
+  console.log("🚀 ~ file: Chat.tsx:29 ~ Chat ~ dummy", dummy);
 
   async function fetchMessages() {
     if (currentChatRoom.id !== -1) {
@@ -57,7 +59,7 @@ const Chat = (props: any) => {
         {messages.map((chatMessges: any, index: number) => (
           <p
             className={
-              chatMessges.member.user.id == currentUser.id
+              chatMessges.member.user.id === currentUser.id
                 ? "message message_right"
                 : "message message_left"
             }
@@ -66,8 +68,9 @@ const Chat = (props: any) => {
             {chatMessges.message} : {chatMessges.member.user.id}
           </p>
         ))}
+        <div ref={dummy}></div>
       </div>
-      <Socket location={location} />
+      <Socket location={location} dummy={dummy} />
     </Wrapper>
   );
 };

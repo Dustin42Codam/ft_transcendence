@@ -37,7 +37,7 @@ const rootReducer = (state: any, action: any) => {
 
 const persistConfig = {
   key: "root",
-  blacklist: ["socket", "gameSocket"],
+  blacklist: ["socket", "gameSocket", "chats"],
   storage,
 };
 
@@ -47,8 +47,8 @@ const store = configureStore({
   reducer: persistedReducer,
   devTools: process.env.NODE_ENV !== "production",
   middleware: (getDefaultMiddleware) => {
-    return getDefaultMiddleware().concat([
-      loggerMiddleware,
+    return getDefaultMiddleware({ serializableCheck: false }).concat([
+      // loggerMiddleware,
       socketMiddleware,
       gameSocketMiddleware,
     ]);

@@ -66,6 +66,7 @@ const Snicel = (props: any) => {
       })
     );
     inputRef.current!["messageInput"].value = "";
+    props.dummy.current.scrollIntoView({ behavior: "smooth" });
   };
 
   return (

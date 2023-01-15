@@ -1,0 +1,24 @@
+
+  .sign-in-button {
+	cursor: pointer;
+	border-radius: 5px;
+	font-weight: 600;
+	font-size: 30px;
+	margin: 50px 0px 0px 0px;
+	width: 200px;
+	padding: 5px 0;
+	box-shadow: 0 0 20px rgba(16, 0, 121, 0.2);
+	transition: 0.4s;
+	color: rgb(0, 0, 0);
+	background-color: rgba(255, 255, 255, 1);
+	border: 1px solid rgb(0, 247, 255);
+  }
+  
+  .sign-in-button:hover {
+	color: white;
+	width: 198px;
+	box-shadow: 0 0 21px rgba(26, 19, 75, 0.6);
+	background-color: rgb(34, 31, 49);
+  }
+  
+  

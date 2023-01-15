@@ -40,9 +40,19 @@ const GroupChatTable = () => {
   let currentChatroom: any = store.getState().socket.currentChatRoom;
   const dispatch = useAppDispatch();
   const user = useAppSelector(selectCurrentUser);
+  console.log("🚀 ~ file: GroupChatTable.tsx:43 ~ user", user);
   const navigate = useNavigate();
 
   async function handleClick(name: string, chatToJoinIndex: number) {
+    console.log(
+      "🚀 ~ file: GroupChatTable.tsx:47 ~ handleClick ~ chatToJoinIndex",
+      chatToJoinIndex
+    );
+    console.log(
+      "🚀 ~ file: GroupChatTable.tsx:55 ~ handleClick ~ groupChats",
+      groupChats
+    );
+    console.log("🚀 ~ file: GroupChatTable.tsx:56 ~ handleClick ~ user", user);
     dispatch(
       socketActions.joinARoom({
         chatRoom: {

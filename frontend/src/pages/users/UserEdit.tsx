@@ -18,10 +18,8 @@ import { User } from "../../models/User";
 
 const UserEdit = () => {
   const user: User = useAppSelector(selectCurrentUser);
-
   const [name, setName] = useState(user.display_name);
   const [avatar, setAvatar] = useState(user.avatar);
-  const [status, setStatus] = useState(user.status);
   const [twoFA, setTwoFA] = useState(user.two_factor_auth);
   const [code, setCode] = useState("");
   const ref = useRef<HTMLInputElement>(null);
