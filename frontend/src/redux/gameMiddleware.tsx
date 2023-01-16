@@ -32,6 +32,15 @@ const gameSocketMiddleware: Middleware = (store) => {
         store.dispatch(gameSocketActions.receiveMessage({ chatMessage }));
       });
 		 */
+      gameSocket.on(GameEvent.SpectateGameRoom, (spectateGame: any) => {
+				//TOAST a Message
+				//Join the user to go to the game room
+        //store.dispatch(gameSocketActions.joinRoomSuccess(spectateGame));
+      });
+      gameSocket.on(GameEvent.MessageToGameRoom, (messageToGameRoom: any) => {
+				//TOAST a Message
+        store.dispatch(gameSocketActions.joinRoomSuccess(messageToGameRoom));
+      });
       gameSocket.on(GameEvent.JoinGameRoomSuccess, (gameRoomId: number) => {
         store.dispatch(gameSocketActions.joinRoomSuccess(gameRoomId));
       });

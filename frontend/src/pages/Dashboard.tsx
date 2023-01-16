@@ -30,7 +30,7 @@ const Dashboard = () => {
     //dispatch(gameSocketActions.joinRoom(42));
   }
   async function spectateGame(gameIndex: number) {
-		console.log("I want to spectate the game gameIndex:", gameIndex);
+    console.log("I want to spectate the game gameIndex:", gameIndex);
   }
 
   return (
@@ -65,11 +65,15 @@ const Dashboard = () => {
                     <td>{games.active}</td>
                     <td>{games.timsstamp}</td>
                     <td>{games.type}</td>
-										<td><button 
-											onClick={(e) => {
-												spectateGame(index);
-											}}>Spectate
-										</button></td>
+                    <td>
+                      <button
+                        onClick={(e) => {
+                          spectateGame(index);
+                        }}
+                      >
+                        Spectate
+                      </button>
+                    </td>
                   </tr>
                 ))}
               </tbody>
