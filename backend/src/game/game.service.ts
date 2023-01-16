@@ -30,10 +30,9 @@ export class GameService extends AbstractService {
     const game = this.findOne({id});
     if (!game) {
       throw new BadRequestException("This Game does not exist");
-
     }
 		return game;
-	}
+}
 
   private isGameFinished(score: number) {
     return (score >= 5)
@@ -78,13 +77,13 @@ export class GameService extends AbstractService {
     const allGames = await this.gameRepository.find({
       where: [
         { player_1: id, status: GameStatus.PASSIVE},
-        { player_2: id, status: GameStatus.PASSIVE }
+        { player_2: id, status: GameStatus.PASSIVE}
       ],});
     return allGames.sort((g1,g2) => (Number(g2.timestamp)) - (Number(g1.timestamp)));
   }
 
   async getAllActiveGames() {
-    return await this.gameRepository.find({where: {status: GameStatus.PASSIVE}});
+    return await this.gameRepository.find({where: {status: GameStatus.ACTIVE}});
   }
 
   async addUserToGame(player_2: number, game: Game) {
