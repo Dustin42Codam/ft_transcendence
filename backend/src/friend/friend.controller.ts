@@ -29,7 +29,6 @@ export class FriendController {
 		@Req() request: Request,
 	) {
 		const currentUserId = await this.authService.userId(request);
-		console.log("🚀 ~ file: friend.controller.ts:28 ~ FriendController ~ currentUserId", currentUserId)
 		return this.friendService.getAllFriendshipsFromUser(currentUserId);
 	}
 
@@ -42,7 +41,7 @@ export class FriendController {
 		return this.friendService.getFriendshipByUserids(user1, Number(user2));
 	}
 
-	@Get('user/:id') //Maybe should be closed
+	@Get('user/:id') //TODO Do we need request here??
 	async getAllFriendsFromUser(
 		@Param('id') id : string,
 		@Req() request: Request,
@@ -55,12 +54,8 @@ export class FriendController {
 		@Param('id') friendId: number,
 		@Req() request: Request,
 	) {
-		const userId =
-			await this.authService.userId(request);
-		const friendship = 
-			await this.friendService
-				.getFriendshipByUserids(userId, friendId);
-
+		const userId = await this.authService.userId(request);
+		const friendship = await this.friendService.getFriendshipByUserids(userId, friendId);
 		return await this.friendService.deleteFriendship(friendship);
 	}
 
@@ -69,8 +64,7 @@ export class FriendController {
 		@Param('id') receiverId: string,
 		@Req() request: Request,
 	) {
-		const senderId =
-			await this.authService.userId(request);
+		const senderId = await this.authService.userId(request);
 		const sender = await this.userService.getUserById(senderId);
 		
 		const receiver = await this.userService.getUserById(Number(receiverId));
@@ -86,16 +80,16 @@ export class FriendController {
 			sender: sender,
 			receiver: receiver
 		});
-		if (blockBySender)
-			throw new BadRequestException
-				("You can not be a friend with a User that you blocked.");
+		if (blockBySender) {
+			throw new BadRequestException("You can not be a friend with a User that you blocked.");
+		}
 		const blockByReceiver = await this.blockService.findOne({
 			sender: receiver,
 			receiver: sender
 		});
-		if (blockByReceiver)
-			throw new BadRequestException
-				("You can not be a friend with a User that blocked you.");
+		if (blockByReceiver) {
+			throw new BadRequestException("You can not be a friend with a User that blocked you.");
+		}
 
 		return await this.friendService.createFriendship({
 			user_1_id: senderId,

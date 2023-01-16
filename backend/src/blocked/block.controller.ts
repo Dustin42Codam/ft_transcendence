@@ -20,7 +20,6 @@ export class BlockController {
 		@Req() request: Request
 	) {
 		const senderId = await this.authService.userId(request);
-		
 		return await this.blockService.getBlockByUserids(senderId, Number(userId));
 	}
 
@@ -50,10 +49,8 @@ export class BlockController {
     	@Param('userId') receiverUserId: string,
 		@Req() request: Request
     ) {
-		const authUserId =
-			await this.authService.userId(request);
-		const block = 
-			await this.blockService.getBlockByUserids(authUserId, Number(receiverUserId));
+		const authUserId = await this.authService.userId(request);
+		const block = await this.blockService.getBlockByUserids(authUserId, Number(receiverUserId));
 
 		if (block)
 			this.blockService.delete(block.id);

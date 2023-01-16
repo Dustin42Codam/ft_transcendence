@@ -15,7 +15,7 @@ export class GameController {
     private readonly userService: UserService
     ) {}
 
-    @Get('id/:id')//we can do something here maybe? //get :id must be interger
+    @Get('id/:id')
     async getGameById(
         @Param('id') id : Number
     ) {
