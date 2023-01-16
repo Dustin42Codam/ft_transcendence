@@ -16,7 +16,8 @@
 .authCard .title {
   font-size: 40px;
   font-weight: 600;
-  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
   font-family: sans-serif;
 }
 
@@ -35,10 +36,10 @@
   text-align: center;
 }
 
-.auth_footer div{
+.auth_footer div {
   margin: 10px;
 }
 
-.auth_footer .authors{
+.auth_footer .authors {
   margin: 10px;
 }

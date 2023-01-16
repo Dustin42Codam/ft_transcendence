@@ -40,7 +40,7 @@ const ParticleBackground = () => {
             },
             onHover: {
               enable: true,
-              mode: "bubble"
+              mode: "bubble",
             },
             resize: true,
           },
@@ -52,7 +52,7 @@ const ParticleBackground = () => {
               distance: 144,
               size: 12,
               opacity: 0.1,
-              duration: 2
+              duration: 2,
             },
             repulse: {
               distance: 200,
@@ -95,23 +95,23 @@ const ParticleBackground = () => {
           },
           opacity: {
             value: 0.75,
-            random: true
+            random: true,
           },
           shape: {
             type: "circle",
             stroke: {
-              width: 2
+              width: 2,
             },
             polygon: {
-              nb_sides: 8
-            }
+              nb_sides: 8,
+            },
           },
           size: {
             value: { min: 1, max: 5 },
           },
         },
         detectRetina: true,
-/*         fpsLimit: 60,
+        /*         fpsLimit: 60,
         interactivity: {
           events: {
             onClick: {

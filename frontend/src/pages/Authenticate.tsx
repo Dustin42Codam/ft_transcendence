@@ -19,17 +19,16 @@ const Authenticate = () => {
       "https://api.intra.42.fr/oauth/authorize?client_id=7c59d418a12bb6da95283ca1866d0db3946ff94528e8d7be5b98545c31f892ff&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fapi%2Foauth-callback&response_type=code&state=${stateValue}";
   }
   async function no_intra() {
-    await axios.post('users', {
-      display_name: 'John',
-			intra_name: 'john123',
-			avatar: 'https://randomuser.me/api/portraits/men/42.jpg',
-			status: 'online'
-    })
-    await axios.post('login', {
-      display_name: 'John'
-    })
-    document.location.href =
-    "http://localhost:4242/";
+    await axios.post("users", {
+      display_name: "John",
+      intra_name: "john123",
+      avatar: "https://randomuser.me/api/portraits/men/42.jpg",
+      status: "online",
+    });
+    await axios.post("login", {
+      display_name: "John",
+    });
+    document.location.href = "http://localhost:4242/";
   }
   return (
     <>

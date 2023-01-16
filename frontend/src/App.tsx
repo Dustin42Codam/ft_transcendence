@@ -44,7 +44,7 @@ function App() {
   //   console.log("🚀 ~ file: App.tsx:23 ~ App ~ currentUser", currentUser.tfa_secret.isAuthenticated);
 
   //TODO do not load the server if socket is not socketStatus is not true
-  if (userStatus === "failed") {
+  if (currentUser.id === -1) {
     return (
       <div className="App">
         <BrowserRouter>
@@ -59,8 +59,8 @@ function App() {
     );
   } else if (userStatus === "loading") {
     return <div className="App"></div>;
-    //   } else if (currentUser.two_factor_auth === true && currentUser.tfa_secret.isAuthenticated === false) {
-  } else if (
+  }
+  else if (
     currentUser.two_factor_auth === true &&
     currentUser.tfa_secret.isAuthenticated === false
   ) {
@@ -80,7 +80,8 @@ function App() {
         </BrowserRouter>
       </div>
     );
-  } else {
+  }
+  else {
     return (
       <div className="App">
         <BrowserRouter>
