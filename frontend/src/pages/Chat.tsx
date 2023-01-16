@@ -43,16 +43,6 @@ const Chat = (props: any) => {
     fetchMessages();
   }, [currentChatRoom, currentChatRoomMessages]);
 
-  console.log("🚀 ~ file: Chat.tsx:23 ~ Chat ~ messages", messages);
-  console.log(
-    "🚀 ~ file: Chat.tsx:19 ~ Chat ~ currentChatRoom",
-    currentChatRoom
-  );
-  console.log(
-    "🚀 ~ file: Chat.tsx:21 ~ Chat ~ currentChatRoomMessages",
-    currentChatRoomMessages
-  );
-
   return (
     <Wrapper>
       <div className="messageContainers">

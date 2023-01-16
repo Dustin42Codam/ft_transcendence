@@ -23,6 +23,7 @@ export const fetchJoinableChats = createAsyncThunk(
   "chats/fetchJoinableChats",
   async () => {
     const response = await axios.get("chatroom/join");
+    console.log("🚀 ~ file: chatsSlice.ts:28 ~ response.data", response.data)
     return response.data;
   }
 );
@@ -31,6 +32,8 @@ export const fetchGroupChats = createAsyncThunk(
   "chats/fetchGroupChats",
   async () => {
     const response = await axios.get("chatroom/group");
+    
+    console.log("🚀 ~ file: chatsSlice.ts:37 ~ response.data", response.data)
     return response.data;
   }
 );

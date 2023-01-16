@@ -167,7 +167,7 @@ class Bat extends MoveableObject {
 
   checkPowerUpTimer() {
     if (this.powerUpActive) {
-      if (this.powerUpTimer > 0) this, (this.powerUpTimer -= 1);
+      if (this.powerUpTimer > 0) this.powerUpTimer -= 1;
       else this.reset();
     }
   }
