@@ -30,8 +30,7 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route path={"/authenticate"} element={<Authenticate />} />
-            <Route path={"*"} element={<NotFound />} />
-            <Route path="/" element={<Navigate to="./authenticate" />} />
+            <Route path={"*"} element={<Authenticate />} />
           </Routes>
         </BrowserRouter>
       </div>
@@ -48,8 +47,7 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route path={"/authenticate"} element={<Authenticate />} />
-            <Route path={"*"} element={<NotFound />} />
-            <Route path="/" element={<Navigate to="./authenticate" />} />
+            <Route path={"*"} element={<Authenticate />} />
             <Route
               path={"/authenticate/2fa"}
               element={<TwoFactorAuthentication />}
@@ -63,7 +61,7 @@ function App() {
       <div className="App">
         <BrowserRouter>
           <Routes>
-            <Route path={"/"} element={<Dashboard />} />
+            <Route path={"/dashboard"} element={<Dashboard />} />
             <Route path="/authenticate" element={<Navigate to="/" />} />
 
             <Route path={"/chats/:name"} element={<Chat />} />
@@ -76,6 +74,7 @@ function App() {
 
             <Route path={"/games"} element={<Game />} />
 
+            <Route path={"/authenticate"} element={<Dashboard />} />
             <Route path={"*"} element={<NotFound />} />
           </Routes>
         </BrowserRouter>

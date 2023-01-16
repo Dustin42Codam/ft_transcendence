@@ -52,7 +52,7 @@ const gameSocketSlice = createSlice({
       state.isConnected = true;
     },
     joinRoom: (state, action: PayloadAction<number>) => {
-			console.log("trying reducer called");
+      console.log("trying reducer called");
       return;
     },
     joinRoomSuccess: (state, action: PayloadAction<number>) => {

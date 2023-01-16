@@ -23,7 +23,6 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
     this.logger.log("Game gateway: game namespace socket server is running");
   }
 
-  //this is fine I suppose like a general socket to connect to?
 	@UseGuards(AuthGuard)
   handleConnection(client): void {
 		console.log(`game client ${client.id} conected`);

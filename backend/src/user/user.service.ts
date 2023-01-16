@@ -119,6 +119,7 @@ export class UserService extends AbstractService {
 	async getUserFromClient(client: Socket): Promise<number> {
 		if (client.handshake.headers.cookie) {
 			const cookie = parse(client.handshake.headers.cookie);
+			console.log(cookie);
 			const decoded = await this.jwtService.verifyAsync(cookie.jwt);
 			return decoded.id;
 		}

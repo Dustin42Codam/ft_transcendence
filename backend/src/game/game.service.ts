@@ -69,7 +69,7 @@ export class GameService extends AbstractService {
   }
 
   async getAllActiveGames() {
-    return await this.gameRepository.find({where: {status: GameStatus.PASSIVE}});
+    return await this.gameRepository.find({where: {status: GameStatus.ACTIVE}});
   }
 
   async addUserToGame(player_2: number, game: Game) {

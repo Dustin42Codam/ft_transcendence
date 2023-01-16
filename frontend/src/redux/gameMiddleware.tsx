@@ -43,9 +43,13 @@ const gameSocketMiddleware: Middleware = (store) => {
       });
     }
     if (isConnectionEstablished) {
-			console.log("trying to join", gameSocketActions.joinRoom.match(action), action);
+      console.log(
+        "trying to join",
+        gameSocketActions.joinRoom.match(action),
+        action
+      );
       if (gameSocketActions.joinRoom.match(action)) {
-				console.log("we are in", GameEvent.JoinGameRoom, action.payload);
+        console.log("we are in", GameEvent.JoinGameRoom, action.payload);
         gameSocket.emit(GameEvent.JoinGameRoom, String(action.payload));
       }
       /*
@@ -60,7 +64,7 @@ const gameSocketMiddleware: Middleware = (store) => {
       if (gameSocketActions.leaveRoom.match(action)) {
         gameSocket.emit(GameEvent.LeaveGameRoom, action.payload);
       }
-			/*if we want the client not to unsubscribe from stuff
+      /*if we want the client not to unsubscribe from stuff
       if (gameSocketActions.refreshPage.match(action)) {
         gameSocket.off("connect_failed");
         gameSocket.off("connect");

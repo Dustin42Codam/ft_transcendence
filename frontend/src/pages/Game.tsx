@@ -319,8 +319,8 @@ const Game = (props: any) => {
   useEffect(() => {
     const canvas = document.getElementById("canvas") as HTMLCanvasElement;
     const gameState = new GameState(canvas);
-		console.log("store", store.getState());
-		dispatch(gameSocketActions.joinRoom(42));
+    console.log("store", store.getState());
+    dispatch(gameSocketActions.joinRoom(42));
 
     canvas.addEventListener("keydown", function onKeyDown(e) {
       e.preventDefault();
