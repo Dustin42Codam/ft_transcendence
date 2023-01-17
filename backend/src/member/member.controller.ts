@@ -23,7 +23,6 @@ export class MemberController {
 
   @Get(":id")
   async getMemberById(@Param("id") id: string) {
-    console.group(id);
     return this.memberService.getMemberById(Number(id));
   }
 
@@ -33,6 +32,12 @@ export class MemberController {
   // ) {
 
   // }
+
+  @Get("chatroom/id/:id")
+  async getAllMembersFromChatroom(@Param("id") id: string) {
+    const chatroom = await this.chatroomService.getChatroomById(Number(id));
+    return this.memberService.getAllMembersFromChatroom(chatroom);
+  }
 
   @Post("leave/:id")
   async leaveChatroom(
