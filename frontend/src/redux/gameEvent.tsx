@@ -6,7 +6,7 @@ enum GameroomEvents {
   GameRoomFull = "join_game_room_fail",
   LeaveGameRoom = "leave_game_room",
   LeaveGameRoomSuccess = "leave_game_room_success",
-	MessageToGameRoom = "message_to_game_room",
-	SpectateGameRoom = "spectate_game_room",
+  MessageToGameRoom = "message_to_game_room",
+  SpectateGameRoom = "spectate_game_room",
 }
 export default GameroomEvents;

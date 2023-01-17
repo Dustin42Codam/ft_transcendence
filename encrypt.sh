@@ -23,7 +23,7 @@ if [ $? -ne 0 ]; then
 	fi
 fi
 
-gpg --encrypt --output encrypted_env.gpg "$1"
+gpg --encrypt --output encrypted_ssh.gpg "$1"
 RET=$?
 if [ $RET -ne 0 ]; then
 	echo "Something went wrong..."

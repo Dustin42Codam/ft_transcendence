@@ -33,12 +33,12 @@ const gameSocketMiddleware: Middleware = (store) => {
       });
 		 */
       gameSocket.on(GameEvent.SpectateGameRoom, (spectateGame: any) => {
-				//TOAST a Message
-				//Join the user to go to the game room
+        //TOAST a Message
+        //Join the user to go to the game room
         //store.dispatch(gameSocketActions.joinRoomSuccess(spectateGame));
       });
       gameSocket.on(GameEvent.MessageToGameRoom, (messageToGameRoom: any) => {
-				//TOAST a Message
+        //TOAST a Message
         store.dispatch(gameSocketActions.joinRoomSuccess(messageToGameRoom));
       });
       gameSocket.on(GameEvent.JoinGameRoomSuccess, (gameRoomId: number) => {

@@ -23,7 +23,7 @@ if [ $? -ne 0 ]; then
 	fi
 fi
 
-gpg --decrypt --output .env "$1"
+gpg --decrypt --output .key "$1"
 RET=$?
 if [ $RET -ne 0 ]; then
 	echo "Something went wrong..."
