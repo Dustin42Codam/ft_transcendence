@@ -3,7 +3,6 @@ import "../login.css";
 
 export class NotFound extends Component {
   render() {
-    return <h2>404 NOT FOUND</h2>;
     const mystyle = {
       padding: "10px",
       fontFamily: "verdana",

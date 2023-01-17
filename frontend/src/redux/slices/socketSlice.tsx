@@ -52,6 +52,7 @@ const socketSlice = createSlice({
       state.isConnected = true;
     },
     joinARoom: (state, action: PayloadAction<{ chatRoom: ChatRoom }>) => {
+      state.currentChatRoom = action.payload.chatRoom;
       return;
     },
     joinARoomSuccess: (

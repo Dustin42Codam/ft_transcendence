@@ -18,6 +18,7 @@ import { PersistGate } from "redux-persist/integration/react";
 import { persistStore } from "redux-persist";
 import { fetchFriendRequests, fetchFriends } from "./redux/slices/friendsSlice";
 import { socketActions } from "./redux/slices/socketSlice";
+import { gameSocketActions } from "./redux/slices/gameSocketSlice";
 
 axios.defaults.baseURL = "http://localhost:3000/api/";
 axios.defaults.withCredentials = true;
@@ -30,13 +31,12 @@ let persistor = persistStore(store);
 
 async function main() {
   store.dispatch(fetchCurrentUser());
-  store.dispatch(fetchMessages());
+  // store.dispatch(fetchMessages());
   store.dispatch(fetchUsers());
   store.dispatch(fetchDirectChats());
   store.dispatch(fetchJoinableChats());
   store.dispatch(fetchGroupChats());
   //TODO add authgurad
-  store.dispatch(socketActions.startConnecting());
 
   root.render(
     <Provider store={store}>

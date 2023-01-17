@@ -14,7 +14,12 @@ import { AuthService } from "src/auth/auth.service";
 @UseGuards(AuthGuard)
 @Controller("member")
 export class MemberController {
-  constructor(private memberService: MemberService, private chatroomService: ChatroomService, private userServcie: UserService, private authService: AuthService) {}
+  constructor(
+	private memberService: MemberService,
+	private chatroomService: ChatroomService,
+	private userServcie: UserService,
+	private authService: AuthService
+) {}
 
   @Get(":id")
   async getMemberById(@Param("id") id: string) {
@@ -29,24 +34,38 @@ export class MemberController {
     @Req() request: Request,
   ) {
     const member = await this.memberService.getMemberById(Number(id));
-    if (await this.authService.userId(request) !== member.user.id) throw new BadRequestException("You can not leave a chatroom you are not in.");
+	const userId = await this.authService.userId(request)
+    if (userId !== member.user.id) {
+		throw new BadRequestException("You can not leave a chatroom you are not in.");
+	}
     const members = await this.memberService.getAllMembersFromChatroom(member.chatroom);
     if (members.length === 1) {
       return await this.chatroomService.deleteChatroom(member.chatroom.id);
     }
-    if (member.chatroom.type === ChatroomType.DIRECT) throw new BadRequestException("You can not leave a DIRECT chatroom.");
-    if (member.role === MemberRole.OWNER) throw new BadRequestException("A OWNER of a chatroom can not leave a chatroom. Give someone else the OWNER role if you want to leave.");
+    if (member.chatroom.type === ChatroomType.DIRECT) {
+		throw new BadRequestException("You can not leave a DIRECT chatroom.");
+	}
+    if (member.role === MemberRole.OWNER) {
+		throw new BadRequestException("A OWNER of a chatroom can not leave a chatroom. Give someone else the OWNER role if you want to leave.");
+	}
     return await this.memberService.delete(member.id);
   }
 
   @Post("ban/:id")
   async banMember(@Param("id") id: string, @Req() request: Request) {
     const receiver = await this.memberService.getMemberById(Number(id));
-    if (receiver.role === MemberRole.OWNER) throw new BadRequestException("The OWNER of a chatroom can not be banned.");
-    const user = await this.userServcie.getUserById(await this.authService.userId(request));
+    if (receiver.role === MemberRole.OWNER) {
+		throw new BadRequestException("The OWNER of a chatroom can not be banned.");
+	}
+	const userId = await this.authService.userId(request)
+    const user = await this.userServcie.getUserById(userId);
     const sender = await this.memberService.getMemberByUserAndChatroom(user, receiver.chatroom);
-    if (sender.role !== MemberRole.ADMIN && sender.role !== MemberRole.OWNER) throw new BadRequestException("You do not have the rights to ban members of this chatroom.");
-    if (sender.id === receiver.id) throw new BadRequestException("You can not ban yourself.");
+    if (sender.role !== MemberRole.ADMIN && sender.role !== MemberRole.OWNER) {
+		throw new BadRequestException("You do not have the rights to ban members of this chatroom.");
+	}
+    if (sender.id === receiver.id) {
+		throw new BadRequestException("You can not ban yourself.");
+	}
     receiver.banned = true;
     return await this.memberService.update(receiver.id, receiver);
   }
@@ -54,35 +73,55 @@ export class MemberController {
   @Post("unban/:id")
   async unbanMember(@Param("id") id: string, @Req() request: Request) {
     const receiver = await this.memberService.getMemberById(Number(id));
-    const user = await this.userServcie.getUserById(await this.authService.userId(request));
+	const userId = await this.authService.userId(request)
+    const user = await this.userServcie.getUserById(userId);
     const sender = await this.memberService.getMemberByUserAndChatroom(user, receiver.chatroom);
-    if (sender.role !== MemberRole.ADMIN && sender.role !== MemberRole.OWNER) throw new BadRequestException("You do not have the rights to unban members of this chatroom.");
-    if (sender.id === receiver.id) throw new BadRequestException("You can not unban yourself.");
+    if (sender.role !== MemberRole.ADMIN && sender.role !== MemberRole.OWNER) {
+		throw new BadRequestException("You do not have the rights to unban members of this chatroom.");
+	}
+    if (sender.id === receiver.id) {
+		throw new BadRequestException("You can not unban yourself.");
+	}
     receiver.banned = false;
     return await this.memberService.update(receiver.id, receiver);
   }
 
-  @Post("mute/:id")
+  @Post("mute/:id") //TODO check this, this should use request
   async muteMemberForTimePeriod(@Param("id") id: string, @Body() muteCreateDto: MuteMemberDto) {
-    if (muteCreateDto.time_in_seconds > 31556926) throw new BadRequestException("You can not mute someone for more than a year.");
-    if (muteCreateDto.time_in_seconds < 0) throw new BadRequestException("You can not mute someone for a negative amount of time.");
+    if (muteCreateDto.time_in_seconds > 31556926) {
+		throw new BadRequestException("You can not mute someone for more than a year.");
+	}
+    if (muteCreateDto.time_in_seconds < 0) {
+		throw new BadRequestException("You can not mute someone for a negative amount of time.");
+	}
     const receiver = await this.memberService.getMemberById(Number(id));
-    if (receiver.role === MemberRole.OWNER) throw new BadRequestException("The OWNER of a chatroom can not be muted.");
+    if (receiver.role === MemberRole.OWNER) {
+		throw new BadRequestException("The OWNER of a chatroom can not be muted.");
+	}
     const user = await this.userServcie.getUserById(muteCreateDto.sender_id);
     const sender = await this.memberService.getMemberByUserAndChatroom(user, receiver.chatroom);
-    if (sender.role !== MemberRole.ADMIN && sender.role !== MemberRole.OWNER) throw new BadRequestException("You do not have the rights to mute members of this chatroom.");
-    if (sender.id === receiver.id) throw new BadRequestException("You can not mute yourself.");
+    if (sender.role !== MemberRole.ADMIN && sender.role !== MemberRole.OWNER) {
+		throw new BadRequestException("You do not have the rights to mute members of this chatroom.");
+	}
+    if (sender.id === receiver.id) {
+		throw new BadRequestException("You can not mute yourself.");
+	}
     receiver.muted_until = new Date(new Date().getTime() + muteCreateDto.time_in_seconds * 1000);
     return await this.memberService.update(receiver.id, receiver);
   }
 
-  @Post("unmute/:id")
+  @Post("unmute/:id") // TODO also do a quick check for this
   async unmuteMember(@Param("id") id: string, @Req() request: Request) {
     const receiver = await this.memberService.getMemberById(Number(id));
-    const user = await this.userServcie.getUserById(await this.authService.userId(request));
+	const userId = await this.authService.userId(request)
+    const user = await this.userServcie.getUserById(userId);
     const sender = await this.memberService.getMemberByUserAndChatroom(user, receiver.chatroom);
-    if (sender.role !== MemberRole.ADMIN && sender.role !== MemberRole.OWNER) throw new BadRequestException("You do not have the rights to unmute members of this chatroom.");
-    if (sender.id === receiver.id) throw new BadRequestException("You can not unmute yourself.");
+    if (sender.role !== MemberRole.ADMIN && sender.role !== MemberRole.OWNER) {
+		throw new BadRequestException("You do not have the rights to unmute members of this chatroom.");
+	}
+    if (sender.id === receiver.id) {
+		throw new BadRequestException("You can not unmute yourself.");
+	}
     receiver.muted_until = new Date(new Date().getTime());
     return await this.memberService.update(receiver.id, receiver);
   }
@@ -90,10 +129,15 @@ export class MemberController {
   @Post("makeAdmin/:id")
   async makeMemberAdmin(@Param("id") id: string, @Req() request: Request) {
     const receiver = await this.memberService.getMemberById(Number(id));
-    if (receiver.role === MemberRole.OWNER) throw new BadRequestException("The OWNER of a chatroom can not be made Admin.");
-    const user = await this.userServcie.getUserById(await this.authService.userId(request));
+    if (receiver.role === MemberRole.OWNER) {
+		throw new BadRequestException("The OWNER of a chatroom can not be made Admin.");
+	}
+	const userId = await this.authService.userId(request)
+    const user = await this.userServcie.getUserById(userId);
     const sender = await this.memberService.getMemberByUserAndChatroom(user, receiver.chatroom);
-    if (sender.role !== MemberRole.ADMIN && sender.role !== MemberRole.OWNER) throw new BadRequestException("You do not have the rights to a member a ADMIN.");
+    if (sender.role !== MemberRole.ADMIN && sender.role !== MemberRole.OWNER) {
+		throw new BadRequestException("You do not have the rights to a member a ADMIN.");
+	}
     receiver.role = MemberRole.ADMIN;
     return await this.memberService.update(receiver.id, receiver);
   }
@@ -101,10 +145,15 @@ export class MemberController {
   @Post("removeAdmin/:id")
   async removeAdmin(@Param("id") id: string, @Req() request: Request) {
     const receiver = await this.memberService.getMemberById(Number(id));
-    if (receiver.role !== MemberRole.ADMIN) throw new BadRequestException("This member is not an admin.");
-    const user = await this.userServcie.getUserById(await this.authService.userId(request));
+    if (receiver.role !== MemberRole.ADMIN) {
+		throw new BadRequestException("This member is not an admin.");
+	}
+	const userId = await this.authService.userId(request)
+    const user = await this.userServcie.getUserById(userId);
     const sender = await this.memberService.getMemberByUserAndChatroom(user, receiver.chatroom);
-    if (sender.role !== MemberRole.OWNER) throw new BadRequestException("You do not have the rights to remove a ADMIN role from member.");
+    if (sender.role !== MemberRole.OWNER) {
+		throw new BadRequestException("You do not have the rights to remove a ADMIN role from member.");
+	}
     receiver.role = MemberRole.USER;
     return await this.memberService.update(receiver.id, receiver);
   }

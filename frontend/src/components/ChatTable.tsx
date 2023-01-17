@@ -30,6 +30,7 @@ interface IState {
 }
 
 const loginToChat = async (chatId: number) => {
+  console.log("🚀 ~ file: ChatTable.tsx:33 ~ loginToChat ~ chatId", chatId);
   return await axios
     .post("chatroom/join/" + chatId, {
       password: "password",
@@ -44,6 +45,10 @@ const ChatTable = () => {
   const joinableChats = useAppSelector(selectJoinableChats);
   const directChats = useAppSelector(selectDirectChats);
   const groupChats = useAppSelector(selectGroupChats);
+  console.log(
+    "🚀 ~ file: ChatTable.tsx:48 ~ ChatTable ~ groupChats",
+    groupChats
+  );
 
   let navigate = useNavigate();
 

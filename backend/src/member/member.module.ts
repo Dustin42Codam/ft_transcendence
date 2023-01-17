@@ -11,7 +11,13 @@ import { MemberController } from "./member.controller";
 import { MemberService } from "./member.service";
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Member]), forwardRef(() => ChatroomModule), forwardRef(() => UserModule), CommonModule, AuthModule],
+  imports: [
+      TypeOrmModule.forFeature([Member]),
+      forwardRef(() => ChatroomModule),
+      forwardRef(() => UserModule),
+      CommonModule,
+      AuthModule
+  ],
   providers: [MemberService],
   controllers: [MemberController],
   exports: [MemberService],

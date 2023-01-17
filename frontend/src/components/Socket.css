@@ -1,5 +1,5 @@
 .chatInputBox {
-  position: absolute;
+  position: fixed;
   bottom: calc(10%);
   min-width: 200px;
   left: 350px;
@@ -9,6 +9,6 @@
   width: calc(100vw - 450px);
 }
 
-.chatBackgroudn {
+.chatBackground {
   background: rgb(200, 200, 200);
 }

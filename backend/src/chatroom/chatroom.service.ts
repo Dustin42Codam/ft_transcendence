@@ -20,6 +20,7 @@ export class ChatroomService extends AbstractService {
   }
 
   async getChatroomById(id: number) {
+    console.log("🚀 ~ file: chatroom.service.ts:23 ~ ChatroomService ~ getChatroomById ~ id", id)
     const chatroom = await this.findOne({ id }, ["users"]);
     if (!chatroom) throw new BadRequestException("This chatroom does not exist");
     return chatroom;

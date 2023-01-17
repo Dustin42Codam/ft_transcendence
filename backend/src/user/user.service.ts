@@ -35,7 +35,9 @@ export class UserService extends AbstractService {
 
   async getUserById(id: number, relations?: any[]) {
     const user = await this.findOne({ id }, relations);
-    if (!user) throw new BadRequestException("This user does not exist");
+    if (!user) {
+			throw new BadRequestException("This user does not exist");
+		}
     return user;
   }
 
