@@ -10,7 +10,6 @@ import UserFriends from "../../components/UserFriends";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
-import "./UserProfile.css";
 import UserMatchHistory from "../../components/UserMatchHistory";
 import UserStats from "../../components/UserStats";
 import GameLadder from "../../components/GameLadder";

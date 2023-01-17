@@ -1,0 +1,85 @@
+.chat-user-list-grid {
+  /* display: grid; */
+  /* grid-template-columns: 20%; */
+  /* grid-template-rows: 20%; */
+  /* grid-template-rows: 20% 20% 20% 20% 20%; */
+  /* width: 1000px; */
+  /* align-items: end; */
+  /* justify-content: space-between; */
+}
+
+.chat-user-list-box :first-child {
+  /* align-self: center; */
+}
+
+.pop-up-member {
+  display: flex;
+  justify-content: end;
+  flex-direction: column;
+  padding: 10px;
+  font-size: 20px;
+}
+
+#bt1 {
+  font-size: 230px;
+}
+
+.popup-content {
+  margin: auto;
+  background: rgb(255, 255, 255);
+  /* width: 80%; */
+  width: 600px;
+  height: 500px;
+  padding: 5px;
+  overflow: scroll;
+}
+
+.popup-arrow {
+  color: rgb(255, 255, 255);
+}
+[role="tooltip"].popup-content {
+  width: 200px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 0px 3px;
+}
+
+.popup-overlay {
+  background: rgba(0, 0, 0, 0.5);
+}
+[data-popup="tooltip"].popup-overlay {
+  background: transparent;
+}
+
+.modal {
+  font-size: 12px;
+}
+
+.modal > .header {
+  width: 100%;
+  border-bottom: 1px solid gray;
+  font-size: 18px;
+  text-align: center;
+  padding: 5px;
+}
+.modal > .content {
+  width: 100%;
+  padding: 10px 5px;
+}
+.modal > .actions {
+  width: 100%;
+  padding: 10px 5px;
+  margin: auto;
+  text-align: center;
+}
+.modal > .close {
+  cursor: pointer;
+  position: absolute;
+  display: block;
+  padding: 2px 5px;
+  line-height: 20px;
+  right: -10px;
+  top: -10px;
+  font-size: 24px;
+  background: #ffffff;
+  border-radius: 18px;
+  border: 1px solid #cfcece;
+}

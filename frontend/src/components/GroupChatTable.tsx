@@ -12,6 +12,10 @@ import {
   selectGroupChats,
   selectJoinableChats,
 } from "../redux/slices/chatsSlice";
+import { selectCurrentChatroom } from "../redux/slices/socketSlice";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { selectCurrentUser } from "../redux/slices/currentUserSlice";
 
 export enum ChatroomType {
   PUBLIC = "public",
@@ -20,10 +24,6 @@ export enum ChatroomType {
   DIRECT = "direct",
   DEFAULT = "",
 }
-import { selectCurrentChatroom } from "../redux/slices/socketSlice";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import { selectCurrentUser } from "../redux/slices/currentUserSlice";
 
 type Chats = {
   id: number;
@@ -40,19 +40,9 @@ const GroupChatTable = () => {
   let currentChatroom: any = store.getState().socket.currentChatRoom;
   const dispatch = useAppDispatch();
   const user = useAppSelector(selectCurrentUser);
-  console.log("🚀 ~ file: GroupChatTable.tsx:43 ~ user", user);
   const navigate = useNavigate();
 
   async function handleClick(name: string, chatToJoinIndex: number) {
-    console.log(
-      "🚀 ~ file: GroupChatTable.tsx:47 ~ handleClick ~ chatToJoinIndex",
-      chatToJoinIndex
-    );
-    console.log(
-      "🚀 ~ file: GroupChatTable.tsx:55 ~ handleClick ~ groupChats",
-      groupChats
-    );
-    console.log("🚀 ~ file: GroupChatTable.tsx:56 ~ handleClick ~ user", user);
     dispatch(
       socketActions.joinARoom({
         chatRoom: {
@@ -74,7 +64,6 @@ const GroupChatTable = () => {
           currentChatroom.id == groupChats[chatToJoinIndex].id &&
           currentChatroom.name == groupChats[chatToJoinIndex].name
         ) {
-          console.log("All goooed:", currentChatroom);
           resolve(null);
           clearInterval(interval);
         }

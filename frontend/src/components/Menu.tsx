@@ -42,6 +42,7 @@ const Menu = (props: any) => {
       });
     }
   };
+
   return (
     <nav className={props.className}>
       <ToastContainer />
@@ -157,7 +158,7 @@ const Menu = (props: any) => {
               )}
               <GroupChatTable />
               <p className="navItemHiglight" onClick={() => joinChats()}>
-                <GroupAdd /> Join chanel
+                <GroupAdd /> Join channel
               </p>
               {joinChanel && (
                 <PopUp

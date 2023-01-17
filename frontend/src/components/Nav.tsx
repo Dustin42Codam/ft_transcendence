@@ -23,7 +23,6 @@ const Nav = (props: any) => {
     <nav className={props.className}>
       <div className="navBarContainer">
         <p className="nameProject">ft_transcendence</p>
-
         <Link
           to="/authenticate"
           className="logoutButton"

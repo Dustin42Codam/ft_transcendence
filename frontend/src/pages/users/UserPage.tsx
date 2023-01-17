@@ -12,36 +12,27 @@ import { FriendButton } from "../../components/FriendButton";
 import UserStats from "../../components/UserStats";
 import UserMatchHistory from "../../components/UserMatchHistory";
 import { socketActions } from "../../redux/slices/socketSlice";
-import { selectDirectChats } from "../../redux/slices/chatsSlice";
+import {
+  addNewGroupChat,
+  selectDirectChats,
+} from "../../redux/slices/chatsSlice";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import store from "../../redux/store";
 import GameLadder from "../../components/GameLadder";
+import { ChatroomType } from "../../components/ChatTable";
 
 export const UserPage = () => {
   const { userId } = useParams();
   const user = useAppSelector((state) => selectUserById(state, Number(userId)));
-
+  const directChats = useAppSelector(selectDirectChats);
   const [friends, setFriends] = useState<any>([]);
-  const [friendRequests, setFriendRequests] = useState<any>([]);
   const [isBlocked, setBlocked] = useState(false);
   const currentUser: any = useAppSelector(selectCurrentUser);
   const dispatch = useAppDispatch();
   const dm_id = useAppSelector(selectDirectChats);
   const navigate = useNavigate();
   let currentChatroom: any = store.getState().socket.currentChatRoom;
-
-  async function fetchFriendRequests() {
-    const response: any = await axios
-      .get(`friendRequest/my/all`)
-      .catch((err: any) => {
-        console.log(
-          "🚀 ~ file: UserPage.tsx:29 ~ fetchFriendRequests ~ err",
-          err
-        );
-      });
-    setFriendRequests(response.data);
-  }
 
   async function fetchBlocked() {
     const response: any = await axios
@@ -66,7 +57,6 @@ export const UserPage = () => {
       navigate("/profile");
     }
     fetchFriends();
-    fetchFriendRequests();
     fetchBlocked();
   }, [userId]);
 
@@ -121,16 +111,54 @@ export const UserPage = () => {
         return;
       });
 
+    console.log(
+      "🚀 ~ file: UserPage.tsx:113 ~ joinDM ~ friendship",
+      friendship
+    );
+
+    dispatch(
+      await addNewGroupChat({
+        chat: {
+          name: "",
+          password: "",
+          user_ids: [friendship.user_1_id, friendship.user_2_id],
+          type: ChatroomType.DIRECT,
+        },
+        user_id: currentUser.id,
+      })
+    );
+
+    return;
+
+    /*     if (!directChats.find((dm: any) => dm.name === user.display_name)) {
+      console.log("Dispatching...");
+      dispatch(
+        await addNewGroupChat({
+          chat: {
+            name: user.display_name,
+            // password: "",
+            user_ids: [],
+            type: ChatroomType.DIRECT,
+          },
+          user_id: currentUser.id,
+        })
+      );
+    } else {
+      console.log("Not dispatching!");
+    } */
+
     dispatch(
       socketActions.joinARoom({
         chatRoom: {
           userId: user.id,
           id: friendship.chatroom_id,
-          name: "dm",
+          // name: user.name,
+          name: "",
         },
       })
     );
-    const id = toast.loading(`joining room: ${friendship.chatroom_id}!`);
+
+    const id = toast.loading(`joining room: ${user.name}!`);
     await new Promise((resolve, reject) => {
       const interval = setInterval(function () {
         currentChatroom = store.getState().socket.currentChatRoom;
@@ -142,15 +170,15 @@ export const UserPage = () => {
       }, 100);
     });
     toast.update(id, {
-      render: `joined room: ${friendship.chatroom_id}!`,
+      render: `joined room: ${user.name}!`,
       autoClose: 1500,
       type: "success",
       isLoading: false,
     });
 
-    navigate("../chats/" + friendship.chatroom_id, {
+    navigate("../chats/dm/" + user.name, {
       replace: true,
-      state: friendship.chatroom_id,
+      state: user.name,
     });
   }
 

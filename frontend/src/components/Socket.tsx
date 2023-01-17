@@ -66,7 +66,8 @@ const Snicel = (props: any) => {
       })
     );
     inputRef.current!["messageInput"].value = "";
-    props.dummy.current.scrollIntoView({ behavior: "smooth" });
+    // props.dummy.current.scrollIntoView({ behavior: "smooth" });
+    // props.dummy.current. ({ behavior: "smooth" });
   };
 
   return (
@@ -79,8 +80,9 @@ const Snicel = (props: any) => {
             name="messageInput"
             onChange={(e) => userIsTyping(e.target.value)}
             type="text"
+            autoComplete="off"
           ></input>
-          <input type="submit" hidden />
+          <input type="submit" autoComplete="off" hidden />
         </form>
       </div>
     </div>

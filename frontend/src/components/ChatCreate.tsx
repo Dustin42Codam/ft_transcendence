@@ -8,7 +8,6 @@ import { ChatroomType } from "../models/Chats";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { selectCurrentUser } from "../redux/slices/currentUserSlice";
 import { addNewGroupChat } from "../redux/slices/chatsSlice";
-//import { addChatFromGroup } from "../redux/slices/chatsSlice";
 
 const ChatCreate = () => {
   const [name, setName] = useState("");
@@ -21,16 +20,6 @@ const ChatCreate = () => {
   const dispatch = useAppDispatch();
   const currentUser = useAppSelector(selectCurrentUser);
 
-  console.log("this is name:", name);
-  console.log("this is password:", password);
-  console.log("this is passwordConfirm:", passwordConfrim);
-  console.log(
-    "this is chat type:",
-    chatType,
-    ChatroomType.PROTECTED,
-    chatType === ChatroomType.PROTECTED
-  );
-
   return (
     <div className="chatGridContainer" id="chatGridContainer">
       <h1 id="chatHeader" className="gridItem header-1">
@@ -38,31 +27,27 @@ const ChatCreate = () => {
       </h1>
       <button
         className="gridItem chatButton"
-        onClick={async () =>
-          //how does this work you dispatching a cutom action dont you need to add then
-          dispatch(
-            await addNewGroupChat({
-              chat: {
-                name: name,
-                password: password,
-                user_ids: [],
-                type: chatType,
-              },
-              user_id: currentUser.id,
-            }) /*.then(() =>
-								dispatch(addChatFromGroup(
-									{
-										name: name,
-										password: password,
-										user_ids: [],
-										type: chatType,
-									}
-									)
-								)
-							)
-						 */
-          )
-        }
+        onClick={async () => {
+          if (!name) {
+            window.alert("Name can't be empty!");
+          } else if (password !== passwordConfrim) {
+            window.alert("Passwords did not match!");
+            setPasswordConfirm("");
+            setPassword("");
+          } else {
+            dispatch(
+              await addNewGroupChat({
+                chat: {
+                  name: name,
+                  password: password,
+                  user_ids: [],
+                  type: chatType,
+                },
+                user_id: currentUser.id,
+              })
+            );
+          }
+        }}
         type="button"
       >
         GO!
@@ -80,13 +65,16 @@ const ChatCreate = () => {
           <label id="chatPasswordInputLable" className="gridItem chatLable">
             Password
           </label>
+
           <TextInput id="passwordInput" type="password" setter={setPassword} />
+
           <label
             id="chatPasswordInputLableConfirm"
             className="gridItem chatLable"
           >
             Password confirm
           </label>
+
           <TextInput
             setter={setPasswordConfirm}
             id="confirmPasswordInput"

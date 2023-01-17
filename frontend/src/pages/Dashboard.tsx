@@ -3,6 +3,7 @@ import { gameSocketActions } from "../redux/slices/gameSocketSlice";
 import { useAppDispatch } from "../redux/hooks";
 import Wrapper from "../components/Wrapper";
 import axios from "axios";
+import Popup from "reactjs-popup";
 
 const Dashboard = () => {
   const dispatch = useAppDispatch();

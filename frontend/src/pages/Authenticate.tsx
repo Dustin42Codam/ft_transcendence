@@ -20,13 +20,13 @@ const Authenticate = () => {
   }
   async function no_intra() {
     await axios.post("users", {
-      display_name: "John",
+      display_name: "Theo",
       intra_name: "john123",
       avatar: "https://randomuser.me/api/portraits/men/42.jpg",
       status: "online",
     });
     await axios.post("login", {
-      display_name: "John",
+      display_name: "Theo",
     });
     document.location.href = "http://localhost:4242/";
   }

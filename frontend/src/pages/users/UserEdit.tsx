@@ -10,7 +10,6 @@ import {
 } from "../../redux/slices/currentUserSlice";
 import { UserStatus } from "../../models/Channel";
 import { Button, Form } from "react-bootstrap";
-import "./UserProfile.css";
 import "./UserEdit.css";
 import "../../components/UserFriends.css";
 import { useNavigate } from "react-router-dom";
@@ -49,8 +48,6 @@ const UserEdit = () => {
     });
   }, []);
 
-
-
   const infoSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
 
@@ -58,7 +55,7 @@ const UserEdit = () => {
       if (_user.display_name === name && name !== user.display_name) {
         window.alert("A user with this name already exists!");
         setName(user.display_name);
-        return ;
+        return;
       }
     }
 
@@ -67,8 +64,9 @@ const UserEdit = () => {
         id: user.id,
         display_name: name,
         avatar,
-    }))
-/* 
+      })
+    );
+    /* 
     if (name === user.display_name && avatar) {
       await dispatch(
         updateCurrentUser({
@@ -116,10 +114,9 @@ const UserEdit = () => {
         code: code,
       })
       .then(() => {
-          setTwoFA(false);
-          dispatch(update2FA({twoFA: false}));
-        }
-      )
+        setTwoFA(false);
+        dispatch(update2FA({ twoFA: false }));
+      })
       .catch(() => window.alert("Wrong code provided!"));
   }
 
@@ -132,9 +129,8 @@ const UserEdit = () => {
       })
       .then(() => {
         setTwoFA(true);
-        dispatch(update2FA({twoFA: true}));
-      }
-    )
+        dispatch(update2FA({ twoFA: true }));
+      })
       .catch(() => window.alert("Wrong code provided!"));
   }
 
@@ -162,7 +158,7 @@ const UserEdit = () => {
                   className="form-control"
                   value={user.avatar}
                   onChange={(e) => setAvatar(e.target.value)}
-                  //   required
+                  required
                 />
                 <ImageUpload uploaded={updateImage} />
               </div>
@@ -173,7 +169,7 @@ const UserEdit = () => {
                 className="form-control"
                 defaultValue={user.display_name}
                 onChange={(e) => setName(e.target.value)}
-                // required
+                required
               />
             </div>
             <Button type="submit">Save</Button>{" "}

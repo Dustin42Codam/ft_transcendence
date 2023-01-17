@@ -1,11 +1,7 @@
-import "./Message.css";
+import React from "react";
 
-const Message = (props: any) => {
-  return (
-    <div className="message">
-      {props.member}: {props.message} - at {props.timestamp}
-    </div>
-  );
-};
+function Message() {
+  return <div>Message</div>;
+}
 
 export default Message;
