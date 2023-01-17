@@ -88,6 +88,7 @@ function App() {
             <Route path="/authenticate" element={<Navigate to="/" />} />
 
             <Route path={"/chats/:name"} element={<Chat />} />
+            <Route path={"/chats/dm/:id"} element={<Chat />} />
             {/* <Route path={"/chats/dm/:name"} element={<ChatDM />} /> */}
 
             <Route path={"/profile"} element={<UserProfile />} />

@@ -77,7 +77,7 @@ const Menu = (props: any) => {
             Users
           </p>
         </NavLink>
-        <NavLink
+        {/* <NavLink
           to={"/games"}
           className="navItem"
           style={{ textDecoration: "none" }}
@@ -86,7 +86,7 @@ const Menu = (props: any) => {
             <SportsTennisIcon />
             Games
           </p>
-        </NavLink>
+        </NavLink> */}
         <div className="navItem">
           {activeDm === true ? (
             <React.Fragment>

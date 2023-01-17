@@ -25,14 +25,15 @@ import { ChatroomType } from "../../components/ChatTable";
 export const UserPage = () => {
   const { userId } = useParams();
   const user = useAppSelector((state) => selectUserById(state, Number(userId)));
-  const directChats = useAppSelector(selectDirectChats);
-  const [friends, setFriends] = useState<any>([]);
+  const [friendship, setFriendship] = useState<any>({});
   const [isBlocked, setBlocked] = useState(false);
+  const [friends, setFriends] = useState<any>([]);
   const currentUser: any = useAppSelector(selectCurrentUser);
   const dispatch = useAppDispatch();
   const dm_id = useAppSelector(selectDirectChats);
   const navigate = useNavigate();
   let currentChatroom: any = store.getState().socket.currentChatRoom;
+  const friendsAmount = "Friends (" + friends.length + ")";
 
   async function fetchBlocked() {
     const response: any = await axios
@@ -52,13 +53,31 @@ export const UserPage = () => {
     setFriends(response.data);
   }
 
+  async function fetchFriendship() {
+    const response = await axios
+      .get(`friend/this/${userId}`)
+      .then((response) => {
+        console.log(
+          "🚀 ~ file: UserPage.tsx:151 ~ joinDM ~ response",
+          response
+        );
+        return response.data;
+      })
+      .catch((error) => {
+        console.log("🚀 ~ file: UserPage.tsx:141 ~ joinDM ~ error", error);
+        return;
+      });
+    setFriendship(response);
+  }
+
   useEffect(() => {
     if (currentUser.id === user.id) {
       navigate("/profile");
     }
-    fetchFriends();
+    fetchFriendship();
     fetchBlocked();
-  }, [userId]);
+    fetchFriends();
+  }, [userId, friends.length]);
 
   async function addFriend() {
     await axios.post(`friend/${userId}`).catch((error: any) => {
@@ -97,68 +116,17 @@ export const UserPage = () => {
   }
 
   async function joinDM() {
-    const friendship = await axios
-      .get(`friend/this/${userId}`)
-      .then((response) => {
-        console.log(
-          "🚀 ~ file: UserPage.tsx:151 ~ joinDM ~ response",
-          response
-        );
-        return response.data;
-      })
-      .catch((error) => {
-        console.log("🚀 ~ file: UserPage.tsx:141 ~ joinDM ~ error", error);
-        return;
-      });
-
-    console.log(
-      "🚀 ~ file: UserPage.tsx:113 ~ joinDM ~ friendship",
-      friendship
-    );
-
-    dispatch(
-      await addNewGroupChat({
-        chat: {
-          name: "",
-          password: "",
-          user_ids: [friendship.user_1_id, friendship.user_2_id],
-          type: ChatroomType.DIRECT,
-        },
-        user_id: currentUser.id,
-      })
-    );
-
-    return;
-
-    /*     if (!directChats.find((dm: any) => dm.name === user.display_name)) {
-      console.log("Dispatching...");
-      dispatch(
-        await addNewGroupChat({
-          chat: {
-            name: user.display_name,
-            // password: "",
-            user_ids: [],
-            type: ChatroomType.DIRECT,
-          },
-          user_id: currentUser.id,
-        })
-      );
-    } else {
-      console.log("Not dispatching!");
-    } */
-
     dispatch(
       socketActions.joinARoom({
         chatRoom: {
           userId: user.id,
           id: friendship.chatroom_id,
-          // name: user.name,
-          name: "",
+          name: user.display_name,
         },
       })
     );
 
-    const id = toast.loading(`joining room: ${user.name}!`);
+    const id = toast.loading(`joining room: ${user.display_name}!`);
     await new Promise((resolve, reject) => {
       const interval = setInterval(function () {
         currentChatroom = store.getState().socket.currentChatRoom;
@@ -170,15 +138,15 @@ export const UserPage = () => {
       }, 100);
     });
     toast.update(id, {
-      render: `joined room: ${user.name}!`,
+      render: `joined room: ${user.display_name}!`,
       autoClose: 1500,
       type: "success",
       isLoading: false,
     });
 
-    navigate("../chats/dm/" + user.name, {
+    navigate("../chats/dm/" + user.display_name, {
       replace: true,
-      state: user.name,
+      state: user.display_name,
     });
   }
 
@@ -259,7 +227,7 @@ export const UserPage = () => {
                       <button
                         className="btn btn-outline-primary px-4"
                         onClick={joinDM}
-                        disabled={isBlocked}
+                        disabled={isBlocked || !friendship}
                       >
                         Message
                       </button>{" "}
@@ -277,7 +245,7 @@ export const UserPage = () => {
               className="mb-3"
               justify
             >
-              <Tab eventKey="friends" title="Friends">
+              <Tab eventKey="friends" title={friendsAmount}>
                 <UserFriends userId={Number(userId)} userFriends={friends} />
               </Tab>
               <Tab eventKey="match-history" title="Match History">
