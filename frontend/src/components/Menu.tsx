@@ -47,7 +47,7 @@ const Menu = (props: any) => {
       <ToastContainer />
       <div className="sideNavContainer">
         <NavLink
-          to={"/"}
+          to={"/dashboard"}
           className="navItem"
           style={{ textDecoration: "none" }}
         >

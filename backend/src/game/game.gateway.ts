@@ -1,5 +1,6 @@
 import { WebSocketServer, OnGatewayDisconnect, OnGatewayConnection, WsResponse, OnGatewayInit, MessageBody, SubscribeMessage, WebSocketGateway } from "@nestjs/websockets";
-import { AuthGuard } from "../auth/auth.guard";
+import { UserService } from "src/user/user.service";
+import { SocketAuthGuard } from "../auth/auth.socket.guard";
 import GameroomEvents from "./gameroomEvents";
 import { UseGuards } from "@nestjs/common";
 import { Namespace, Server, Socket } from "socket.io";
@@ -13,8 +14,7 @@ import { Logger, Req } from "@nestjs/common";
   },
 })
 export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
-  //constructor(private readonly userService: UserService,
-  //private readonly memberService: MemberService) {};
+  constructor(private readonly userService: UserService) {};
 
   private logger: Logger = new Logger("AppGateway");
   @WebSocketServer() io: Namespace;
@@ -23,47 +23,50 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
     this.logger.log("Game gateway: game namespace socket server is running");
   }
 
-  //this is fine I suppose like a general socket to connect to?
-	@UseGuards(AuthGuard)
-  handleConnection(client): void {
+  async handleConnection(client): Promise<void> {
+		//tmp gurad
+    await this.userService.getUserFromClient(client);
 		console.log(`game client ${client.id} conected`);
-    const sockets = this.io.sockets;
-    //TODO backend team set user status to online
   }
 
-	@UseGuards(AuthGuard)
-  handleDisconnect(client: any): void {
-    const sockets = this.io.sockets;
+  async handleDisconnect(client: any): Promise<void> {
+		//tmp gurad
+    await this.userService.getUserFromClient(client);
 		console.log(`game client ${client.id} disconected`);
-    //TODO backend team set user status to offline
   }
 
-	@UseGuards(AuthGuard)
+	//payload needs to have display_name, GameRoomId
+	@UseGuards(SocketAuthGuard)
   @SubscribeMessage(GameroomEvents.JoinGameRoom)
-  handelJoinRoom(client: Socket, payload: string): void {
-		//console.log(client);
-    //TODO Liz check if chatroom exists
-    //TODO Liz check if user can join
-    //TODO Liz add member data type to payload
-		console.log("game clienat jointed:" ,client.id, payload);
+  async handelJoinRoom(client: Socket, payload: any): Promise<void> {
+
     client.join(payload);
-    this.io.to(`${payload}`).emit(GameroomEvents.JoinGameRoomSuccess, payload);
+		const len = (await this.io.in(payload).fetchSockets()).length;
+
+		if (len == 1) {
+			client.emit(GameroomEvents.JoinGameRoomSuccess, 1);
+			this.io.to(payload).emit(GameroomEvents.JoinGameRoomSuccess, "Player 1 joined");
+			this.io.to(payload).emit(GameroomEvents.MessageToGameRoom, "Player 1 joined");
+		}
+		if (len == 2) {
+			client.to(payload).emit(GameroomEvents.JoinGameRoomSuccess, 2);
+			this.io.to(payload).emit(GameroomEvents.MessageToGameRoom, "Player 2 joined");
+		}
   }
 
-	@UseGuards(AuthGuard)
-  @SubscribeMessage(GameroomEvents.LeaveGameRoom)
-  leaveJoinRoom(client: Socket, payload: string): void {
-		console.log("game client leaving: ", payload);
-    this.io.to(`${payload}`).emit(GameroomEvents.LeaveGameRoomSuccess, payload);
-    client.leave(`${payload}`);
+	//payload needs to have display_name, GameRoomId
+	@UseGuards(SocketAuthGuard)
+  @SubscribeMessage(GameroomEvents.SpectateGameRoom)
+  async spectateRoom(client: Socket, payload: any): Promise<void> {
+
+		client.to(payload).emit(GameroomEvents.JoinGameRoomSuccess, 3)
+		this.io.to(payload).emit(GameroomEvents.MessageToGameRoom, `spectator ${payload.display_name} join`);
+
   }
 
-
-  //TODO for me add socket id to DB
-	@UseGuards(AuthGuard)
-  @SubscribeMessage(GameroomEvents.MoveBat)
-  handleMessageToServer(client: Socket, payload: any): void {
-		console.log("this is a message", payload, `${payload.chatRoomId}`);
-    //this.io.to(`${payload.chatRoomId}`).emit(GameroomEvents.SendMessageToClient, payload);
+	@UseGuards(SocketAuthGuard)
+  @SubscribeMessage(GameroomEvents.MoveBatP1)
+  handleMoveBatP1(client: Socket, payload: any): void {
+		console.log("this is a the bat mooving ", payload, `${payload}`);
   }
 }

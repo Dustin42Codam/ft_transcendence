@@ -42,6 +42,21 @@ const Snicel = (props: any) => {
     if (currentChatroom.id == -1 || currentChatroom.name == "") {
       navigate("/", { replace: true });
     }
+
+    /*
+    return function cleanup() {
+      console.log("from [props] unmounting");
+      dispatch(
+        socketActions.leaveARoom({
+          chatRoom: {
+            userId: currentUser.id,
+            id: props.location.state.id,
+            name: props.location.state.name,
+          },
+        })
+      );
+    };
+	 */
   }, [props.location]);
   //const [lastPong, setLastPong] = useState<string | null>(null);
 

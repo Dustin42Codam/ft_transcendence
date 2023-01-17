@@ -3,11 +3,11 @@ import { BadRequestException, Logger, Req } from "@nestjs/common";
 import { Request, Response } from "express";
 
 import { Namespace, Server, Socket } from "socket.io";
-import { AuthGuard } from "../auth/auth.guard";
 import { UseGuards } from "@nestjs/common";
 import ChatroomEvents from "./chatroomEvents";
 import { UserStatus } from "src/user/entity/user.entity";
 import { AuthService } from "src/auth/auth.service";
+import { SocketAuthGuard } from "../auth/auth.socket.guard";
 
 
 
@@ -48,36 +48,32 @@ export class ChatroomGateway implements OnGatewayInit, OnGatewayConnection, OnGa
   ) {};
 
   private logger: Logger = new Logger("AppGateway");
+
   @WebSocketServer() io: Namespace;
 
   afterInit(server: Server) {
     this.logger.log("Chat gateway: game namespace socket server is running");
   }
 
-  //this is fine I suppose like a general socket to connect to?
-	@UseGuards(AuthGuard)
- 	 async handleConnection(client: any): Promise<void> {
+ async handleConnection(client: any): Promise<void> {
 		console.log(`client ${client.id} conected`);
     const userId = await this.userService.getUserFromClient(client);
 	console.log("🚀 ~ file: chatroom.gateway.ts:64 ~ ChatroomGateway ~ handleConnection ~ userId", userId)
 
 		if (userId) {
 			await this.userService.changeStatus(userId, UserStatus.ONLINE );
-			const sockets = this.io.sockets;
 		}
   }
 
-	@UseGuards(AuthGuard)
   async handleDisconnect(client: any): Promise<void> {
-    const sockets = this.io.sockets;
     const userId = await this.userService.getUserFromClient(client);
-	if (userId) {
-		await this.userService.changeStatus(userId, UserStatus.OFFLINE)
-		console.log(`client ${client.id} disconected`);
-	}
+		if (userId) {
+			await this.userService.changeStatus(userId, UserStatus.OFFLINE)
+			console.log(`client ${client.id} disconected`);
+		}
   }
 
-	@UseGuards(AuthGuard)
+  @UseGuards(SocketAuthGuard)
   @SubscribeMessage(ChatroomEvents.JoinChatRoom)
   async handelJoinRoom(client: Socket, payload: ChatRoom): Promise<void> {
     const chatroom = await this.chatroomService.getChatroomById(Number(payload.id));
@@ -98,7 +94,7 @@ export class ChatroomGateway implements OnGatewayInit, OnGatewayConnection, OnGa
     this.io.to(`${payload.id}`).emit(ChatroomEvents.JoinChatRoomSuccess, payload);
   }
 
-	@UseGuards(AuthGuard)
+  @UseGuards(SocketAuthGuard)
   @SubscribeMessage(ChatroomEvents.LeaveChatRoom)
   leaveJoinRoom(client: Socket, payload: ChatRoom): void {
 		console.log("client leaving: ", payload);
@@ -106,20 +102,20 @@ export class ChatroomGateway implements OnGatewayInit, OnGatewayConnection, OnGa
     client.leave(`${payload.id}`);
   }
 
-	@UseGuards(AuthGuard)
+  @UseGuards(SocketAuthGuard)
   @SubscribeMessage("ping")
   handlePong(client: Socket, payload: string): WsResponse<string> {
     return { event: "pong", data: null };
   }
 
-	@UseGuards(AuthGuard)
+  @UseGuards(SocketAuthGuard)
   @SubscribeMessage("typing")
   handleTyping(client: Socket, payload: string): WsResponse<string> {
     return { event: "isTyping", data: payload };
   }
 
   //TODO for me add socket id to DB
-	@UseGuards(AuthGuard)
+  @UseGuards(SocketAuthGuard)
   @SubscribeMessage(ChatroomEvents.SendMessageToServer)
   async handleMessageToServer(client: Socket, payload: Message): Promise<void> {
     //client.broadcast
