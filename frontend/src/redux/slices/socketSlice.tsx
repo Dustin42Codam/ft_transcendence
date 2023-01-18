@@ -32,7 +32,7 @@ export interface ChatMessage {
 export const fetchCurrentChatRoomMessages = createAsyncThunk(
   "socket/fetchCurrentChatRoomMessages",
   async (chatroomId: number) => {
-    const response = await axios.get(`message/${chatroomId}`);
+    const response = await axios.get(`message/chatroom/id/${chatroomId}`);
 
     return response.data;
   }
