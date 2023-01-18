@@ -23,7 +23,7 @@ const Snicel = (props: any) => {
   let currentChatroom: any = store.getState().socket.currentChatRoom;
   const currentUser = useAppSelector(selectCurrentUser);
   const inputRef = useRef<HTMLFormElement>(null);
-  
+
   useEffect(() => {
     //TO prevent bug one
     async function waitForIt() {

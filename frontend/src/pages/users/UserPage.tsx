@@ -45,7 +45,7 @@ export const UserPage = () => {
 
   async function fetchBlocked() {
     const response: any = await axios
-      .get(`block/${userId}`)
+      .get(`block/receiverId/${userId}`)
       .then((res: any) => (res.data ? setBlocked(true) : setBlocked(false)))
       .catch((err: any) => {
         console.log("🚀 ~ file: UserPage.tsx:29 ~ fetchBlocked ~ err", err);
@@ -85,23 +85,19 @@ export const UserPage = () => {
   }
 
   async function blockUser() {
-    await axios
-      .post(`block`, {
-        receiver: {
-          id: userId,
-        },
-      })
-      .catch((error: any) => {
-        console.log("🚀 ~ file: UserPage.tsx ~ blockUser ~ error", error);
-      });
+    await axios.post(`block/add/receiverId/${userId}`).catch((error: any) => {
+      console.log("🚀 ~ file: UserPage.tsx ~ blockUser ~ error", error);
+    });
     fetchFriends();
     setBlocked(true);
   }
 
   async function unblockUser() {
-    await axios.post(`block/${userId}`).catch((error: any) => {
-      console.log("🚀 ~ file: UserPage.tsx ~ unblockFriend ~ error", error);
-    });
+    await axios
+      .post(`block/remove/receiverId/${userId}`)
+      .catch((error: any) => {
+        console.log("🚀 ~ file: UserPage.tsx ~ unblockFriend ~ error", error);
+      });
     fetchFriends();
     setBlocked(false);
   }

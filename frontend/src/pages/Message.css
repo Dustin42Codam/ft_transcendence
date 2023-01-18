@@ -9,15 +9,15 @@
 }
 
 .message_right {
-	align-self: flex-end;
-	color: rgb(244, 241, 208);
-	text-align: right;
+  align-self: flex-end;
+  color: rgb(244, 241, 208);
+  text-align: right;
 }
 
 .message_left {
-	align-self: flex-start;
-	color: rgb(244, 241, 208);
-	text-align: left;
+  align-self: flex-start;
+  color: rgb(244, 241, 208);
+  text-align: left;
 }
 
 /* 
