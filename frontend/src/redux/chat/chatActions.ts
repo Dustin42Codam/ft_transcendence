@@ -32,7 +32,7 @@ export const fetchChats = () => {
   return (dispatch: any) => {
     dispatch(fetchChatsRequest());
     axios
-      .get("chatroom/")
+      .get("chatroom/all") // maybe this is wrong
       .then((response) => {
         const chats = response.data;
         console.log("+++++++++++++++++++", chats);

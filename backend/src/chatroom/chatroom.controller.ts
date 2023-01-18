@@ -50,7 +50,7 @@ export class ChatroomController {
     return await this.chatroomService.getDMsFromUser(user);
   }
 
-  @Get(":id")
+  @Get("id/:id")
   async getChatroomById(@Param("id") id: string) {
     return this.chatroomService.getChatroomById(Number(id));
   }
@@ -67,7 +67,7 @@ export class ChatroomController {
 
   // }
 
-  @Post("type/:id")
+  @Post("type/id/:id")
   async changeChatroomType(@Param("id") id: string, @Body() body: ChatroomChangeTypeDto, @Req() request: Request) {
     if (![ChatroomType.DIRECT, ChatroomType.PRIVATE, ChatroomType.PUBLIC, ChatroomType.PROTECTED].includes(body.type)) {
       throw new BadRequestException("This chatroomtype does not exist.");
@@ -99,7 +99,7 @@ export class ChatroomController {
     this.chatroomService.update(chatroom.id, body);
   }
 
-  @Post("remove/:id")
+  @Post("remove/id/:id")
   async removeChatroom(@Req() request: Request, @Param("id") id: string) {
     const chatroom = await this.chatroomService.getChatroomById(Number(id));
 	  const userId = await this.authService.userId(request)
@@ -111,7 +111,7 @@ export class ChatroomController {
     return await this.chatroomService.deleteChatroom(chatroom);
   }
 
-  @Post("name/:id")
+  @Post("name/id/:id")
   async changeName(@Param("id") id: string, @Body() body: ChatroomChangeNameDto, @Req() request: Request) {
     const chatroom = await this.chatroomService.getChatroomById(Number(id));
     if (chatroom.type == ChatroomType.DIRECT) {
@@ -129,7 +129,7 @@ export class ChatroomController {
     this.chatroomService.update(chatroom.id, body);
   }
 
-  @Post("password/:id")
+  @Post("password/id/:id")
   async changePassword(@Param("id") id: string, @Body() body: ChatroomChangePasswordDto, @Req() request: Request) {
     const chatroom = await this.chatroomService.getChatroomById(Number(id));
     if (chatroom.type !== ChatroomType.PROTECTED) {
@@ -148,7 +148,7 @@ export class ChatroomController {
     this.chatroomService.update(chatroom.id, body);
   }
 
-  @Post("join/:id")    
+  @Post("join/id/:id")    
   async joinChatroom(@Param("id") id: string, @Body() body: JoinChatroomDto, @Req() request: Request) {
     console.log("🚀 ~ file: chatroom.controller.ts:116 ~ ChatroomController ~ joinChatroom ~ body", body)
     
@@ -182,7 +182,7 @@ export class ChatroomController {
     return await this.memberService.createMember({ user: user, chatroom: chatroom, role: MemberRole.USER });
   }
 
-  @Post("add/:id")
+  @Post("add/id/:id")
   async addUserToChatroom(@Param("id") id: string, @Body() body: AddUserDto, @Req() request: Request) {
     const chatroom = await this.chatroomService.getChatroomById(Number(id));
     if (chatroom.type == ChatroomType.DIRECT) {
@@ -212,7 +212,7 @@ export class ChatroomController {
 	  }
     return await this.memberService.createMember({ user: receiver, chatroom: chatroom, role: MemberRole.USER });
   }
-	@Post()
+	@Post('create')
 	async createChatroom(
 		@Body() body: ChatroomCreateDto,
 		@Req() request: Request

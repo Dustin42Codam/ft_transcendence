@@ -58,7 +58,7 @@ function ChatUserList() {
       const id = toast.loading(`Adding ${newUserName}...`);
 
       await axios
-        .post(`chatroom/add/${currentChat.id}`, { user_id: newUser.id })
+        .post(`chatroom/add/id/${currentChat.id}`, { user_id: newUser.id })
         .then(() => {
           toast.update(id, {
             render: `${newUserName} joined the chat!`,

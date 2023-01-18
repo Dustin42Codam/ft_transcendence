@@ -46,14 +46,14 @@ export const fetchDirectChats = createAsyncThunk(
 export const addNewGroupChat = createAsyncThunk(
   "chats/addNewGroupChat",
   async (data: any) => {
-    return await axios.post(`chatroom/`, data.chat);
+    return await axios.post(`chatroom/create`, data.chat);
   }
 );
 
 export const addNewDirectChat = createAsyncThunk(
   "chats/addNewDirectChat",
   async (data: any) => {
-    return await axios.post(`chatroom/`, data.chat);
+    return await axios.post(`chatroom/`, data.chat); // TODO this should never been called for direct chatroom
   }
 );
 
