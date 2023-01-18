@@ -22,7 +22,7 @@ export class GameController {
         return await this.gameService.getGameById(Number(id));
     }
 
-    @Get('user/passive/:userId')
+    @Get('user/passive/user/id/:id')
     async getGamesByUserId(
         @Param('userId') userId : Number
     ) {
@@ -42,7 +42,7 @@ export class GameController {
         return ladder;
     }
 
-    @Post('private/join/:id')
+    @Post('private/join/id/:id')
     async joinPrivateGameById(
         @Param('id') id : string,
         @Req() request: Request

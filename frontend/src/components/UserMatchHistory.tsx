@@ -10,7 +10,7 @@ function UserMatchHistory(props: { user: any }) {
 
   async function fetchMatches() {
     const response: any = await axios
-      .get(`game/user/passive/${props.user.id}`)
+      .get(`game/user/passive/id/${props.user.id}`)
       .catch((err: any) => {
         console.log("🚀 ~ file: GameMatches.tsx:11 ~ fetchMatches ~ err", err);
       });
