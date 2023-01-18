@@ -7,7 +7,7 @@ import { UserUpdateNameDto } from "./dto/user-update-name.dto";
 import { AuthService } from "src/auth/auth.service";
 import { Request } from "express-session";
 
-// @UseGuards(AuthGuard)
+// @UseGuards(AuthGuard) TODO turn on before handing in
 @Controller("users")
 export class UserController {
   constructor(private readonly userService: UserService, private readonly authService: AuthService) {}
@@ -33,7 +33,6 @@ export class UserController {
 		return await this.userService.createUser(body);
 	}
   
-    //fixing this with authguards
   @Post(':id')
   async update(
       @Body() body: UserUpdateDto,

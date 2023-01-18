@@ -96,7 +96,7 @@ export class ChatroomService extends AbstractService {
     return newChatroom;
   }
 
-  async deleteChatroom(chatroom: Chatroom) { //TODO should we also delete all its messages? if so also change it in the Trello
+  async deleteChatroom(chatroom: Chatroom) {
     for (const member of chatroom.users) {
       const allMessages = await this.messageService.getAllMessagesFromMember(member);
       for (const message of allMessages) {

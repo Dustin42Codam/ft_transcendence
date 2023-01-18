@@ -178,10 +178,4 @@ export class MemberController {
     sender.role = MemberRole.ADMIN;
     await this.memberService.update(sender.id, sender);
   }
-
-  // @Get("restricted/:id") //TODO this is only for testing, should be removed probably
-  // async isRestricted(@Param("id") id: string) {
-  //   const member = await this.memberService.getMemberById(Number(id));
-  //   return this.memberService.isRestricted(member);
-  // }
 }

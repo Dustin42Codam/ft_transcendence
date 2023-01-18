@@ -45,7 +45,7 @@ export class FriendController {
 		return friendship;
 	}
 
-	@Get('all/id/:id') //TODO Do we need request here??
+	@Get('all/id/:id')
 	async getAllFriendsFromUser(
 		@Param('id') id : string
 	) {
