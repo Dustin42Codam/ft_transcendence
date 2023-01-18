@@ -20,7 +20,7 @@ export class MemberController {
 	private authService: AuthService
 ) {}
 
-  @Get(":id")
+  @Get("id/:id")
   async getMemberById(@Param("id") id: string) {
     return this.memberService.getMemberById(Number(id));
   }
@@ -31,7 +31,7 @@ export class MemberController {
     return this.memberService.getAllMembersFromChatroom(chatroom);
   }
 
-  @Post("leave/:id")
+  @Post("leave/id/:id")
   async leaveChatroom(
     @Param("id") id: string,
     @Req() request: Request,
@@ -56,7 +56,7 @@ export class MemberController {
   }
 
   
-  @Post("ban/:id")
+  @Post("ban/id/:id")
   async banMember(@Param("id") id: string, @Req() request: Request) {
     const receiver = await this.memberService.getMemberById(Number(id));
     if (receiver.role === MemberRole.OWNER) {
@@ -75,7 +75,7 @@ export class MemberController {
     await this.memberService.update(receiver.id, receiver);
   }
 
-  @Post("unban/:id")
+  @Post("unban/id/:id")
   async unbanMember(
     @Param("id") id: string,
     @Req() request: Request
@@ -94,7 +94,7 @@ export class MemberController {
     return await this.memberService.update(receiver.id, receiver);
   }
 
-  @Post("mute/:id")
+  @Post("mute/id/:id")
   async muteMemberForTimePeriod(
     @Param("id") receiverId: string,
     @Req() request: Request
@@ -116,7 +116,7 @@ export class MemberController {
     await this.memberService.update(receiver.id, receiver);
   }
 
-  @Post("unmute/:id")
+  @Post("unmute/id/:id")
   async unmuteMember(@Param("id") id: string, @Req() request: Request) {
     const receiver = await this.memberService.getMemberById(Number(id));
 	  const userId = await this.authService.userId(request)
@@ -132,7 +132,7 @@ export class MemberController {
     return await this.memberService.update(receiver.id, receiver);
   }
 
-  @Post("makeAdmin/:id")
+  @Post("makeAdmin/id/:id")
   async makeMemberAdmin(@Param("id") id: string, @Req() request: Request) {
     const receiver = await this.memberService.getMemberById(Number(id));
     if (receiver.role === MemberRole.OWNER) {
@@ -148,7 +148,7 @@ export class MemberController {
     await this.memberService.update(receiver.id, receiver);
   }
 
-  @Post("removeAdmin/:id")
+  @Post("removeAdmin/id/:id")
   async removeAdmin(@Param("id") id: string, @Req() request: Request) {
     const receiver = await this.memberService.getMemberById(Number(id));
     if (receiver.role !== MemberRole.ADMIN) {
@@ -164,7 +164,7 @@ export class MemberController {
     return await this.memberService.update(receiver.id, receiver);
   }
 
-  @Post("owner/:id")
+  @Post("owner/id/:id")
   async makeOwner(@Param("id") id: string, @Req() request: Request) {
     const receiver = await this.memberService.getMemberById(Number(id));
 	  const userId = await this.authService.userId(request)

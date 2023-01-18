@@ -22,7 +22,7 @@ function ChatUserList() {
   );
 
   async function fetchChatUsers(id: number) {
-    const response = await axios.get(`member`);
+    const response = await axios.get(`member`); //TODO what do you want to call??
     setChatMembers(
       response.data.filter(
         (member: any) => member.chatroom.name === currentChat.name
@@ -106,7 +106,7 @@ function ChatUserList() {
 
     // console.log("🚀 ~ file: ChatUserList.tsx:92 ~ leaveChannel ~ member", member)
     await axios
-      .post(`member/leave/${member[0].id}`)
+      .post(`member/leave/id/${member[0].id}`)
       .then(() => {
         toast.update(id, {
           render: `${newUserName} joined the chat!`,
