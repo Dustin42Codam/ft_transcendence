@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Wrapper from "../../components/Wrapper";
 import {
@@ -10,22 +10,31 @@ import UserFriends from "../../components/UserFriends";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
-import "./UserProfile.css";
 import UserMatchHistory from "../../components/UserMatchHistory";
 import UserStats from "../../components/UserStats";
 import GameLadder from "../../components/GameLadder";
 import { Button } from "react-bootstrap";
+import axios from "axios";
 
 export const UserProfile = () => {
   const currentUser = useAppSelector(selectCurrentUser);
   const currentUserStatus = useAppSelector((state) => state.currentUser.status);
   const dispatch = useAppDispatch();
+  const [friends, setFriends] = useState<any>([]);
+  const friendsAmount = "Friends (" + friends.length + ")";
+
+  async function fetchFriends() {
+    const response: any = await axios
+      .get(`friend/user/${currentUser.id}`)
+      .catch((err: any) => {
+        console.log("🚀 ~ file: UserProfile.tsx:29 ~ fetchFriends ~ err", err);
+      });
+    setFriends(response.data);
+  }
 
   useEffect(() => {
-    if (currentUserStatus === "idle") {
-      dispatch(fetchCurrentUser());
-    }
-  }, [currentUserStatus, dispatch]);
+    fetchFriends();
+  }, [friends.length]);
 
   return (
     <Wrapper>
@@ -67,7 +76,7 @@ export const UserProfile = () => {
               className="mb-3"
               justify
             >
-              <Tab eventKey="friends" title="Friends">
+              <Tab eventKey="friends" title={friendsAmount}>
                 <UserFriends userId={Number(currentUser.id)} />
               </Tab>
               <Tab eventKey="match-history" title="Match History">

@@ -38,41 +38,10 @@ const Snicel = (props: any) => {
         }, 100);
       });
     }
+    waitForIt();
     if (currentChatroom.id == -1 || currentChatroom.name == "") {
-      navigate("/", {
-        replace: true,
-      });
-      return;
-      if (window.performance) {
-        if (performance.navigation.type == 1) {
-          dispatch(
-            socketActions.leaveARoom({
-              chatRoom: {
-                userId: currentUser.id,
-                id: currentChatroom.id,
-                name: currentChatroom.name,
-              },
-            })
-          );
-          waitForIt();
-        } else {
-          alert("This page is not reloaded");
-        }
-      }
+      navigate("/", { replace: true });
     }
-
-    // return function cleanup() {
-    //   console.log("from [props] unmounting");
-    //   dispatch(
-    //     socketActions.leaveARoom({
-    //       chatRoom: {
-    //         userId: currentUser.id,
-    //         id: props.location.state.id,
-    //         name: props.location.state.name,
-    //       },
-    //     })
-    //   );
-    // };
   }, [props.location]);
   //const [lastPong, setLastPong] = useState<string | null>(null);
 
@@ -97,20 +66,23 @@ const Snicel = (props: any) => {
       })
     );
     inputRef.current!["messageInput"].value = "";
+    // props.dummy.current.scrollIntoView({ behavior: "smooth" });
+    // props.dummy.current. ({ behavior: "smooth" });
   };
 
   return (
     <div>
       <ToastContainer />
-      <div className="chatBackgroudn">
+      <div className="chatBackground">
         <form onSubmit={(e) => sendMessage(e)} ref={inputRef}>
           <input
             className="chatInputBox"
             name="messageInput"
             onChange={(e) => userIsTyping(e.target.value)}
             type="text"
+            autoComplete="off"
           ></input>
-          <input type="submit" hidden />
+          <input type="submit" autoComplete="off" hidden />
         </form>
       </div>
     </div>

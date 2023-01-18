@@ -42,6 +42,7 @@ const Menu = (props: any) => {
       });
     }
   };
+
   return (
     <nav className={props.className}>
       <ToastContainer />
@@ -76,7 +77,7 @@ const Menu = (props: any) => {
             Users
           </p>
         </NavLink>
-        <NavLink
+        {/* <NavLink
           to={"/games"}
           className="navItem"
           style={{ textDecoration: "none" }}
@@ -85,7 +86,7 @@ const Menu = (props: any) => {
             <SportsTennisIcon />
             Games
           </p>
-        </NavLink>
+        </NavLink> */}
         <div className="navItem">
           {activeDm === true ? (
             <React.Fragment>
@@ -157,7 +158,7 @@ const Menu = (props: any) => {
               )}
               <GroupChatTable />
               <p className="navItemHiglight" onClick={() => joinChats()}>
-                <GroupAdd /> Join chanel
+                <GroupAdd /> Join channel
               </p>
               {joinChanel && (
                 <PopUp

@@ -5,7 +5,7 @@ import { ChatroomType } from "../../models/Chats";
 import { Message } from "../../models/Message";
 
 type Chat = {
-  name: string;
+  name?: string;
   password?: string;
   user_ids: [];
   type: ChatroomType;
@@ -45,6 +45,13 @@ export const fetchDirectChats = createAsyncThunk(
 
 export const addNewGroupChat = createAsyncThunk(
   "chats/addNewGroupChat",
+  async (data: any) => {
+    return await axios.post(`chatroom/`, data.chat);
+  }
+);
+
+export const addNewDirectChat = createAsyncThunk(
+  "chats/addNewDirectChat",
   async (data: any) => {
     return await axios.post(`chatroom/`, data.chat);
   }
@@ -116,12 +123,29 @@ export const chatsSlice = createSlice({
       })
       .addCase(addNewGroupChat.fulfilled, (state: any, action: any) => {
         state.status = "succeeded";
-        state.group.push(action.payload.data);
+        if (action.payload.data.type === ChatroomType.DIRECT) {
+          // state.direct.push()
+          state.direct.push(action.payload.data);
+        } else {
+          state.group.push(action.payload.data);
+        }
       })
       .addCase(addNewGroupChat.rejected, (state: any, action) => {
         state.status = "failed";
         state.error = action.error.message;
       });
+    // })
+    // .addCase(addNewDirectChat.pending, (state, action) => {
+    //   state.status = "loading";
+    // })
+    // .addCase(addNewDirectChat.fulfilled, (state: any, action: any) => {
+    //   state.status = "succeeded";
+    //   state.group.push(action.payload.data);
+    // })
+    // .addCase(addNewDirectChat.rejected, (state: any, action) => {
+    //   state.status = "failed";
+    //   state.error = action.error.message;
+    // });
   },
 });
 

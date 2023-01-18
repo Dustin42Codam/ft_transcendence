@@ -1,56 +1,29 @@
-/* @import url("https://fonts.cdnfonts.com/css/studio-sans"); */
-
-.chat-bar-container {
-  /* display: flex; */
-  padding: 15px;
-  flex-direction: row;
-  justify-content: space-between;
-}
-
-.chat-header {
-  /* margin: 0px 0px; */
-  padding: 20px;
-  background-color: #fff;
-  border-radius: 1%;
-  /* position: -webkit-sticky; */
-  /* position: sticky; */
-  /* top: 0; */
-  /* width: 400px; */
-  border: 5px rgb(0, 0, 0) solid;
-}
+@import url("https://fonts.cdnfonts.com/css/studio-sans");
 
 .messageContainers {
-  display: flex;
   flex-direction: column;
+  display: flex;
   font-family: "Studio Sans", sans-serif;
   color: rgb(244, 241, 208);
   border-radius: 5px;
   /* background-color: rgb(31, 33, 40); */
   min-width: 100%;
-  height: 700px;
+
+  flex-direction: column;
+  /* height */
+  height: 80%;
 }
 
 .chat-body {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-  margin: 30px;
-}
-
-.message {
-  background: rgb(0, 24, 111);
-  border-radius: 6px;
-  margin-bottom: 24px;
-  max-width: 600px;
-  padding: 12px;
-  font-size: 20px;
+  flex: 1;
+  background: #aaa;
+  overflow-y: scroll;
 }
 
 .message_right {
   align-self: flex-end;
   color: rgb(244, 241, 208);
   text-align: right;
-  background: rgb(0, 55, 255);
 }
 
 .message_left {
@@ -59,13 +32,21 @@
   text-align: left;
 }
 
+.chat-header {
+  margin: 40px;
+  background-color: #fff;
+  color: aqua;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+}
+
 .chatContainer {
   display: flex;
   font-family: "Studio Sans", sans-serif;
   background-color: rgb(16, 16, 20);
-  height: 100vh;
+  /* height: 100vh; */
 }
-
 .Messages {
   flex-direction: column;
 }
@@ -108,6 +89,13 @@
   overflow: auto;
   padding: 10px 10px 10px 40px;
 }
+.message {
+  background: rgb(0, 24, 111);
+  border-radius: 6px;
+  margin-bottom: 24px;
+  max-width: 600px;
+  padding: 12px;
+}
 
 .msgMeta {
   color: rgb(153, 217, 234);
@@ -121,7 +109,6 @@
 .sendMessageContainer {
   padding: 16px 20px 20px 16px;
 }
-
 .messageInput {
   padding: 14px;
   margin-right: 16px;
@@ -129,27 +116,4 @@
   border-radius: 6px;
   border: 1px solid rgb(153, 217, 234);
   font-size: 0.9rem;
-}
-
-.chatInputBox {
-  position: fixed;
-  bottom: calc(10%);
-  min-width: 200px;
-  left: 350px;
-  right: 100px;
-  width: auto;
-  font-size: 26px;
-  width: calc(100vw - 450px);
-}
-
-.chatBackground {
-  background: rgb(200, 200, 200);
-}
-
-.msg-avatar {
-  vertical-align: middle;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  margin: 5px;
 }

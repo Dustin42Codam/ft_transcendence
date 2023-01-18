@@ -59,6 +59,7 @@ export class ChatroomGateway implements OnGatewayInit, OnGatewayConnection, OnGa
  	 async handleConnection(client: any): Promise<void> {
 		console.log(`client ${client.id} conected`);
     const userId = await this.userService.getUserFromClient(client);
+	console.log("🚀 ~ file: chatroom.gateway.ts:64 ~ ChatroomGateway ~ handleConnection ~ userId", userId)
 
 		if (userId) {
 			await this.userService.changeStatus(userId, UserStatus.ONLINE );

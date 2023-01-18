@@ -12,6 +12,10 @@ import {
   selectGroupChats,
   selectJoinableChats,
 } from "../redux/slices/chatsSlice";
+import { selectCurrentChatroom } from "../redux/slices/socketSlice";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { selectCurrentUser } from "../redux/slices/currentUserSlice";
 
 export enum ChatroomType {
   PUBLIC = "public",
@@ -20,10 +24,6 @@ export enum ChatroomType {
   DIRECT = "direct",
   DEFAULT = "",
 }
-import { selectCurrentChatroom } from "../redux/slices/socketSlice";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import { selectCurrentUser } from "../redux/slices/currentUserSlice";
 
 type Chats = {
   id: number;

@@ -38,6 +38,6 @@ export class Member {
   @ManyToOne(() => User, (user: User) => user.chatrooms)
   user: User;
 
-  @ManyToOne(() => Chatroom, (chatroom: Chatroom) => chatroom.users)
+  @ManyToOne(() => Chatroom, (chatroom: Chatroom) => chatroom.users, {eager: true})
   chatroom: Chatroom;
 }

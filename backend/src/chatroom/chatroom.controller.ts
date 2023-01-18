@@ -150,6 +150,8 @@ export class ChatroomController {
 
   @Post("join/:id")    
   async joinChatroom(@Param("id") id: string, @Body() body: JoinChatroomDto, @Req() request: Request) {
+    console.log("🚀 ~ file: chatroom.controller.ts:116 ~ ChatroomController ~ joinChatroom ~ body", body)
+    
     const chatroom = await this.chatroomService.getChatroomById(Number(id));
     if ([ChatroomType.DIRECT, ChatroomType.PRIVATE].includes(chatroom.type)) {
 		  throw new BadRequestException("You can not join a PRIVATE or DIRECT chatroom.");

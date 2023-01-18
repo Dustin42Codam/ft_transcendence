@@ -87,13 +87,13 @@ textarea {
 }
 
 #confirmPasswordInput {
-  grid-column-start: 1;
-  grid-row-start: 6;
-  grid-column-end: 2;
-}
-
-#passwordInput {
   grid-column-start: 2;
   grid-row-start: 6;
   grid-column-end: 3;
+}
+
+#passwordInput {
+  grid-column-start: 1;
+  grid-row-start: 6;
+  grid-column-end: 2;
 }

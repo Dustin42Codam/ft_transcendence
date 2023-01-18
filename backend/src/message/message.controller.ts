@@ -55,7 +55,7 @@ export class MessageController {
         }
       }
     }
-    return messages;
+    return messages.sort((m1, m2) => m1.timestamp.getTime() - m2.timestamp.getTime());
   }
 
   @Post()

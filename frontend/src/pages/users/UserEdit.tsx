@@ -5,23 +5,23 @@ import Wrapper from "../../components/Wrapper";
 import { useAppSelector, useAppDispatch } from "../../redux/hooks";
 import {
   selectCurrentUser,
+  update2FA,
   updateCurrentUser,
 } from "../../redux/slices/currentUserSlice";
 import { UserStatus } from "../../models/Channel";
 import { Button, Form } from "react-bootstrap";
-import "./UserProfile.css";
 import "./UserEdit.css";
 import "../../components/UserFriends.css";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { User } from "../../models/User";
+import { selectAllUsers } from "../../redux/slices/usersSlice";
 
 const UserEdit = () => {
-  const user: User = useAppSelector(selectCurrentUser);
-
+  const user = useAppSelector(selectCurrentUser);
+  const users = useAppSelector(selectAllUsers);
   const [name, setName] = useState(user.display_name);
   const [avatar, setAvatar] = useState(user.avatar);
-  const [status, setStatus] = useState(user.status);
   const [twoFA, setTwoFA] = useState(user.two_factor_auth);
   const [code, setCode] = useState("");
   const ref = useRef<HTMLInputElement>(null);
@@ -51,22 +51,48 @@ const UserEdit = () => {
   const infoSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
 
+    for (const _user of users) {
+      if (_user.display_name === name && name !== user.display_name) {
+        window.alert("A user with this name already exists!");
+        setName(user.display_name);
+        return;
+      }
+    }
+
+    await dispatch(
+      updateCurrentUser({
+        id: user.id,
+        display_name: name,
+        avatar,
+      })
+    );
+    /* 
     if (name === user.display_name && avatar) {
       await dispatch(
         updateCurrentUser({
           id: user.id,
           avatar,
         })
-      );
+      )
     } else if (name || avatar) {
-      await dispatch(
-        updateCurrentUser({
-          id: user.id,
-          display_name: name,
-          avatar,
-        })
-      );
-    }
+        for (const user of users) {
+          if (user.display_name === name) {
+            window.alert("A user with this name already exists!");
+            return ;
+          }
+        }
+
+        const response = await dispatch(
+          updateCurrentUser({
+            id: user.id,
+            display_name: name,
+            avatar,
+          }))
+          console.log("🚀 ~ file: UserEdit.tsx:71 ~ infoSubmit ~ response", response)
+      window.location.reload();
+      // if (response.meta.)
+
+    } */
   };
 
   const updateImage = (url: string) => {
@@ -80,32 +106,17 @@ const UserEdit = () => {
     navigate("/profile");
   };
 
-  async function generateQRCode(image: any, e: any) {
-    e.preventDefault();
-
-    const response = await fetch("http://localhost:3000/api/tfa/generate", {
-      method: "POST",
-      credentials: "include",
-    });
-
-    // const image = document.getElementById("qr") as HTMLImageElement | null;
-
-    console.log("🚀 ~ file: UserEdit.tsx:86 ~ generateQRCode ~ image", image);
-
-    if (image !== null) {
-      const str = URL.createObjectURL(await response.blob());
-      image.src = str;
-    }
-  }
-
   async function deactivate2FA(e: SyntheticEvent) {
     e.preventDefault();
 
-    const response = await axios
+    await axios
       .post("tfa/turn-off", {
         code: code,
       })
-      .then(() => setTwoFA(false))
+      .then(() => {
+        setTwoFA(false);
+        dispatch(update2FA({ twoFA: false }));
+      })
       .catch(() => window.alert("Wrong code provided!"));
   }
 
@@ -116,7 +127,10 @@ const UserEdit = () => {
       .post("tfa/turn-on", {
         code: code,
       })
-      .then(() => setTwoFA(true))
+      .then(() => {
+        setTwoFA(true);
+        dispatch(update2FA({ twoFA: true }));
+      })
       .catch(() => window.alert("Wrong code provided!"));
   }
 
@@ -144,7 +158,7 @@ const UserEdit = () => {
                   className="form-control"
                   value={user.avatar}
                   onChange={(e) => setAvatar(e.target.value)}
-                  //   required
+                  required
                 />
                 <ImageUpload uploaded={updateImage} />
               </div>
@@ -155,7 +169,7 @@ const UserEdit = () => {
                 className="form-control"
                 defaultValue={user.display_name}
                 onChange={(e) => setName(e.target.value)}
-                // required
+                required
               />
             </div>
             <Button type="submit">Save</Button>{" "}

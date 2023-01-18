@@ -3,6 +3,7 @@ import { gameSocketActions } from "../redux/slices/gameSocketSlice";
 import { useAppDispatch } from "../redux/hooks";
 import Wrapper from "../components/Wrapper";
 import axios from "axios";
+import Popup from "reactjs-popup";
 
 const Dashboard = () => {
   const dispatch = useAppDispatch();
@@ -13,11 +14,9 @@ const Dashboard = () => {
       axios
         .get("/game/active")
         .then((resp) => {
-          console.log("API:", resp.data);
           setActiveGames(resp.data);
         })
         .catch((err) => console.log(err));
-      console.log("thses are active games", acitiveGames);
     }
     fetchAllActiveGames();
   }, []);

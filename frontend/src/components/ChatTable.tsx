@@ -45,6 +45,10 @@ const ChatTable = () => {
   const joinableChats = useAppSelector(selectJoinableChats);
   const directChats = useAppSelector(selectDirectChats);
   const groupChats = useAppSelector(selectGroupChats);
+  console.log(
+    "🚀 ~ file: ChatTable.tsx:48 ~ ChatTable ~ groupChats",
+    groupChats
+  );
 
   let navigate = useNavigate();
 

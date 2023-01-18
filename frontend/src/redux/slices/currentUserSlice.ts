@@ -34,25 +34,34 @@ export const fetchCurrentUser = createAsyncThunk(
   "currentUser/fetchCurrentUser",
   async () => {
     const response = await axios.get("me");
-    console.log("🚀 ~ file: currentUserSlice.ts:29 ~ response", response);
-
     return response.data;
   }
 );
 
 export const updateCurrentUser = createAsyncThunk(
   "currentUser/updateCurrentUser",
-  async (user: any) => {
-    const response = await axios.post(`users/${user.id}`, user);
-    console.log("🚀 ~ file: currentUserSlice.ts:48 ~ response", response);
-    return response.data;
+  async (user: any, { rejectWithValue }) => {
+    try {
+      const response: any = await axios.post(`users/${user.id}`, user);
+      return response.data;
+    } catch (error: any) {
+      if (!error.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
   }
 );
 
 const currentUserSlice = createSlice({
   name: "currentUser",
   initialState,
-  reducers: {},
+  reducers: {
+    update2FA(state, action) {
+      const { twoFA } = action.payload;
+      state.currentUser.two_factor_auth = twoFA;
+    },
+  },
   // reducers for action creators which are declared outside of createSlice()
   extraReducers(builder) {
     builder
@@ -73,20 +82,23 @@ const currentUserSlice = createSlice({
       .addCase(
         updateCurrentUser.fulfilled,
         (state: any, action: PayloadAction<IUser>) => {
-          console.log(
-            "🚀 ~ file: currentUserSlice.ts:75 ~ extraReducers ~ action",
-            action
-          );
           state.currentUser = action.payload;
           state.status = "succeeded";
         }
       )
-      .addCase(updateCurrentUser.rejected, (state: any, action) => {
+      .addCase(updateCurrentUser.rejected, (state: any, action: any) => {
         state.status = "failed";
-        state.error = action.error.message;
+        console.log(
+          "🚀 ~ file: currentUserSlice.ts:78 ~ .addCase ~ action",
+          action
+        );
+        state.error = action.payload.message;
       });
   },
 });
+
+// action creators
+export const { update2FA } = currentUserSlice.actions;
 
 // selectors
 export const selectCurrentUser = (state: any) => state.currentUser.currentUser;

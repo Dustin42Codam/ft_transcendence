@@ -6,6 +6,7 @@ const TextInput = (props: any) => {
       type={props.type}
       id={props.id}
       onChange={(e) => props.setter(e.target.value)}
+      required
     />
   );
 };

@@ -8,7 +8,6 @@ import {
   selectCurrentChatroom,
   selectCurrentChatroomMessages,
 } from "../redux/slices/socketSlice";
-import "./Message.css";
 import { fetchMessages } from "../redux/slices/messagesSlice";
 import axios from "axios";
 import { selectCurrentUser } from "../redux/slices/currentUserSlice";
@@ -25,7 +24,7 @@ interface ChatMessage {
   authorId: number;
 }
 
-const Chat = (props: any) => {
+const ChatDM = (props: any) => {
   const location = useLocation();
   const currentChat = useAppSelector(selectCurrentChatroom);
   const currentChatMessages = useAppSelector(selectCurrentChatroomMessages);
@@ -104,4 +103,4 @@ const Chat = (props: any) => {
     </Wrapper>
   );
 };
-export default Chat;
+export default ChatDM;
