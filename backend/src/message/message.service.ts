@@ -28,7 +28,15 @@ export class MessageService extends AbstractService {
   //         .getMany();
   // }
 
-  async getAmountMessagesFromUser(user: User) {
+  async getAllMessagesFromMember(member: Member) {
+    return await this.messageRepository.find({
+      where: {
+        member: member,
+      },
+    });
+  }
+
+  async getALLMessagesFromUser(user: User) {
     const allMembersFromUser: Member[] = await this.memberService.getAllMembersFromUser(user);
     console.log(allMembersFromUser);
     var amount = 0;

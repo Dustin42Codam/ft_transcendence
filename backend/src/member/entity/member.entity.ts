@@ -33,7 +33,7 @@ export class Member {
   banned: boolean;
 
   @Column({ default: MemberStatus.ACTIVE })
-  status: boolean;
+  status: MemberStatus;
 
   @ManyToOne(() => User, (user: User) => user.chatrooms)
   user: User;

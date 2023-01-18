@@ -12,11 +12,17 @@ import { Member, MemberRole, MemberStatus } from "src/member/entity/member.entit
 import { User } from "src/user/entity/user.entity";
 import * as bcrypt from "bcrypt";
 import { ChatroomInfoDto } from "./dto/chatroom-info.dto";
+import { MessageService } from "src/message/message.service";
 
 @Injectable()
 export class ChatroomService extends AbstractService {
-  constructor(private memberService: MemberService, @InjectRepository(Chatroom) private readonly ChatroomRepository: Repository<Chatroom>) {
-    super(ChatroomRepository);
+  constructor(
+    private memberService: MemberService,
+    private messageService: MessageService,
+    @InjectRepository(Chatroom)
+    private readonly chatroomRepository: Repository<Chatroom>,
+  ) {
+    super(chatroomRepository);
   }
 
   async getChatroomById(id: number) {
@@ -72,7 +78,7 @@ export class ChatroomService extends AbstractService {
 
 
   async getAllOpenChatrooms() {
-    return await this.ChatroomRepository.find({
+    return await this.chatroomRepository.find({
       where: [{ type: ChatroomType.PUBLIC }, { type: ChatroomType.PROTECTED }],
       relations: ["users"],
     });
@@ -91,8 +97,12 @@ export class ChatroomService extends AbstractService {
   }
 
   async deleteChatroom(chatroom: Chatroom) { //TODO should we also delete all its messages? if so also change it in the Trello
-    for (let i = 0; i < chatroom.users.length; i++) {
-      await this.memberService.delete(chatroom.users[i].id);
+    for (const member of chatroom.users) {
+      const allMessages = await this.messageService.getAllMessagesFromMember(member);
+      for (const message of allMessages) {
+        await this.messageService.delete(message.id)
+      }
+      await this.memberService.delete(member.id);
     }
     return await this.delete(chatroom.id);
   }
