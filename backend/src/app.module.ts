@@ -13,7 +13,6 @@ import { MemberModule } from "./member/member.module";
 import { ChatroomModule } from "./chatroom/chatroom.module";
 import { GameModule } from "./game/game.module";
 import { GameStatsModule } from "./games_stats/game_stats.module";
-import { PostModule } from "./post/post.module";
 import { MessageModule } from "./message/message.module";
 import { TFAModule } from "./tfa/tfa.module";
 
@@ -43,7 +42,6 @@ dotenv.config();
     MessageModule,
     OauthCallbackModule,
     UserModule,
-    PostModule,
     TFAModule,
   ],
   providers: [],
