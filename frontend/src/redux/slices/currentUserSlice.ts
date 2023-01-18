@@ -42,7 +42,7 @@ export const updateCurrentUser = createAsyncThunk(
   "currentUser/updateCurrentUser",
   async (user: any, { rejectWithValue }) => {
     try {
-      const response: any = await axios.post(`users/${user.id}`, user)
+      const response: any = await axios.post(`users/${user.id}`, user);
       return response.data;
     } catch (error: any) {
       if (!error.response) {
@@ -60,7 +60,7 @@ const currentUserSlice = createSlice({
     update2FA(state, action) {
       const { twoFA } = action.payload;
       state.currentUser.two_factor_auth = twoFA;
-    }
+    },
   },
   // reducers for action creators which are declared outside of createSlice()
   extraReducers(builder) {
@@ -80,14 +80,18 @@ const currentUserSlice = createSlice({
         state.status = "loading";
       })
       .addCase(
-        updateCurrentUser.fulfilled, (state: any, action: PayloadAction<IUser>) => {
+        updateCurrentUser.fulfilled,
+        (state: any, action: PayloadAction<IUser>) => {
           state.currentUser = action.payload;
           state.status = "succeeded";
         }
       )
       .addCase(updateCurrentUser.rejected, (state: any, action: any) => {
         state.status = "failed";
-        console.log("🚀 ~ file: currentUserSlice.ts:78 ~ .addCase ~ action", action)
+        console.log(
+          "🚀 ~ file: currentUserSlice.ts:78 ~ .addCase ~ action",
+          action
+        );
         state.error = action.payload.message;
       });
   },

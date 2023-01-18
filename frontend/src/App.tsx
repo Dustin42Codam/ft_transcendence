@@ -57,8 +57,7 @@ function App() {
     );
   } else if (userStatus === "loading") {
     return <div className="App"></div>;
-  }
-  else if (
+  } else if (
     currentUser.two_factor_auth === true &&
     currentUser.tfa_secret.isAuthenticated === false
   ) {
@@ -82,8 +81,7 @@ function App() {
         </BrowserRouter>
       </div>
     );
-  }
-  else {
+  } else {
     return (
       <div className="App">
         <BrowserRouter>
@@ -92,6 +90,8 @@ function App() {
             <Route path="/authenticate" element={<Navigate to="/" />} />
 
             <Route path={"/chats/:name"} element={<Chat />} />
+            <Route path={"/chats/dm/:id"} element={<Chat />} />
+            {/* <Route path={"/chats/dm/:name"} element={<ChatDM />} /> */}
 
             <Route path={"/profile"} element={<UserProfile />} />
             <Route path={"/profile/edit"} element={<UserEdit />} />

@@ -26,9 +26,9 @@ export class Member {
   @Column({ default: false })
   banned: boolean;
 
-  @ManyToOne(() => User, (user: User) => user.chatrooms)
+  @ManyToOne(() => User, (user: User) => user.chatrooms, {eager: true})
   user: User;
 
-  @ManyToOne(() => Chatroom, (chatroom: Chatroom) => chatroom.users)
+  @ManyToOne(() => Chatroom, (chatroom: Chatroom) => chatroom.users, {eager: true})
   chatroom: Chatroom;
 }

@@ -24,7 +24,7 @@ interface ChatMessage {
   authorId: number;
 }
 
-const Chat = (props: any) => {
+const ChatDM = (props: any) => {
   const location = useLocation();
   const currentChat = useAppSelector(selectCurrentChatroom);
   const currentChatMessages = useAppSelector(selectCurrentChatroomMessages);
@@ -103,4 +103,4 @@ const Chat = (props: any) => {
     </Wrapper>
   );
 };
-export default Chat;
+export default ChatDM;

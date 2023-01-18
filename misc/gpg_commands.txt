@@ -1,6 +1,3 @@
-# generate new keys
-gpg --full-generate-key
-
 # encrypt
 gpg --encrypt --output file.gpg file-to-encrypt
 

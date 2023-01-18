@@ -1,8 +1,0 @@
-.contentBody .content {
-  flex: 1 1 auto;
-  display: flex;
-  flex-direction: row;
-  overflow: auto;
-  /* background-color: rgb(255, 255, 255); */
-  background-color: rgb(100, 100, 100);
-}
