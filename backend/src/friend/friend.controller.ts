@@ -17,7 +17,7 @@ export class FriendController {
 		private readonly userService: UserService,
 	) {}
 
-	@Get(':id')
+	@Get('id/:id')
 	async getFriendshipById(
 		@Param('id') id : string
 	) {
@@ -32,7 +32,7 @@ export class FriendController {
 		return this.friendService.getAllFriendshipsFromUser(currentUserId);
 	}
 
-	@Get('this/:id')
+	@Get('user/id/:id')
 	async getFriendshipByUserid(
 		@Param('id') user2 : string,
 		@Req() request: Request,
@@ -52,7 +52,7 @@ export class FriendController {
 		return this.friendService.getAllFriendshipsFromUser(Number(id));
 	}
 
-	@Post('remove/:id') //NOTE Removed return value
+	@Post('remove/id/:id') //NOTE Removed return value
 	async removeFriendship(
 		@Param('id') receiverId: string,
 		@Req() request: Request,
@@ -64,7 +64,7 @@ export class FriendController {
 		}
 	}
 
-	@Post(':id')
+	@Post('add/id/:id')
 	async addFriendship(
 		@Param('id') receiverId: string,
 		@Req() request: Request,

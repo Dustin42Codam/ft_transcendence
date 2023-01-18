@@ -46,7 +46,7 @@ export const UserPage = () => {
 
   async function fetchFriends() {
     const response: any = await axios
-      .get(`friend/user/${userId}`)
+      .get(`friend/user/id/${userId}`)
       .catch((err: any) => {
         console.log("🚀 ~ file: UserPage.tsx:29 ~ fetchFriends ~ err", err);
       });
@@ -55,7 +55,7 @@ export const UserPage = () => {
 
   async function fetchFriendship() {
     const response = await axios
-      .get(`friend/this/${userId}`)
+      .get(`friend/user/id/${userId}`)
       .then((response) => {
         console.log(
           "🚀 ~ file: UserPage.tsx:151 ~ joinDM ~ response",
@@ -80,14 +80,14 @@ export const UserPage = () => {
   }, [userId, friends.length]);
 
   async function addFriend() {
-    await axios.post(`friend/${userId}`).catch((error: any) => {
+    await axios.post(`friend/id/${userId}`).catch((error: any) => {
       console.log("🚀 ~ file: UserPage.tsx ~ addFriend ~ error", error);
     });
     fetchFriends();
   }
 
   async function removeFriend() {
-    await axios.post(`friend/remove/${userId}`).catch((error: any) => {
+    await axios.post(`friend/remove/id/${userId}`).catch((error: any) => {
       console.log("🚀 ~ file: UserPage.tsx ~ removeFriend ~ error", error);
     });
     fetchFriends();

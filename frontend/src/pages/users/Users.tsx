@@ -11,7 +11,7 @@ import "./User.css";
 
 const AddFriendButton = (props: { sender: number; receiver: number }) => {
   const addFriend = async (sender: number, receiver: number) => {
-    axios.post("friendRequest", { sender, receiver });
+    axios.post("friendRequest", { sender, receiver }); // TODO we do not have friendrequest anymore right
   };
 
   return (

@@ -25,7 +25,7 @@ export const UserProfile = () => {
 
   async function fetchFriends() {
     const response: any = await axios
-      .get(`friend/user/${currentUser.id}`)
+      .get(`friend/all/id/${currentUser.id}`)
       .catch((err: any) => {
         console.log("🚀 ~ file: UserProfile.tsx:29 ~ fetchFriends ~ err", err);
       });

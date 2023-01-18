@@ -37,7 +37,7 @@ export const FriendButton = (props: {
 
   async function fetchFriendRequest() {
     const response: any = await axios
-      .get(`friendRequest/${props.userId}`)
+      .get(`friendRequest/${props.userId}`) //TODO maybe remoce because this does not exist anymore right?
       .catch((err: any) => {
         console.log("🚀 ~ file: FriendButton ~ fetchFriendRequest ~ err", err);
       });
