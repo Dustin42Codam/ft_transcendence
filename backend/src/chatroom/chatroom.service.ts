@@ -20,9 +20,10 @@ export class ChatroomService extends AbstractService {
   }
 
   async getChatroomById(id: number) {
-    console.log("🚀 ~ file: chatroom.service.ts:23 ~ ChatroomService ~ getChatroomById ~ id", id)
     const chatroom = await this.findOne({ id }, ["users"]);
-    if (!chatroom) throw new BadRequestException("This chatroom does not exist");
+    if (!chatroom) {
+      throw new BadRequestException("This chatroom does not exist");
+    }
     return chatroom;
   }
 
@@ -90,14 +91,14 @@ export class ChatroomService extends AbstractService {
     return newChatroom;
   }
 
-  async deleteChatroom(chatroom: Chatroom) {
+  async deleteChatroom(chatroom: Chatroom) { //TODO should we also delete all its messages? if so also change it in the Trello
     for (let i = 0; i < chatroom.users.length; i++) {
       await this.memberService.delete(chatroom.users[i].id);
     }
     return await this.delete(chatroom.id);
   }
 
-  hashPassword(password: string) {
+  async hashPassword(password: string) {
     return bcrypt.hash(password, 12);
   }
 }
