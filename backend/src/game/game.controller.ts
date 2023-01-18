@@ -34,6 +34,14 @@ export class GameController {
         return await this.gameService.getAllActiveGames();
     }
 
+	@UseGuards(AuthGuard) //TODO this should probably over the whole class
+    @Get('get/ladder')
+    async getGamesLadder(
+        ) {
+        const ladder = await this.gameService.getGamesLadder();
+        return ladder;
+    }
+
     @Post('private/join/:id')
     async joinPrivateGameById(
         @Param('id') id : string,
@@ -50,7 +58,6 @@ export class GameController {
 
     @Post('private')
     async createPrivateGameById(
-        @Param('id') id : Number,
         @Req() request: Request
     ) {
         const userId = await this.authServcie.userId(request);
@@ -90,13 +97,5 @@ export class GameController {
         } else {
             return this.gameService.create({player_1: userId, type: GameType.POWER_UP})
         }
-    }
-
-	@UseGuards(AuthGuard)
-    @Get('get/ladder')
-    async getGamesLadder(
-        ) {
-        const ladder = await this.gameService.getGamesLadder();
-        return ladder;
     }
 }

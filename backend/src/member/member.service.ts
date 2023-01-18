@@ -25,7 +25,9 @@ export class MemberService extends AbstractService {
 
   async getMemberById(id: number) {
     const member = await this.findOne({ id }, ["user", "chatroom"]);
-    if (!member) throw new BadRequestException("This member does not exist.");
+    if (!member) {
+      throw new BadRequestException("This member does not exist.");
+    }
     return member;
   }
 

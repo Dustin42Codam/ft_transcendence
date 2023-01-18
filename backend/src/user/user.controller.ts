@@ -41,13 +41,14 @@ export class UserController {
   ) {
       const userId = await this.authService.userId(request);
       if (body.display_name) {
-        if (body.display_name === "")
+        if (body.display_name === "") {
           throw new BadRequestException("You can not have a empty string as a username");
+        }
         await this.userService.isUserNameUnique(body.display_name);
       }
+      const user = await this.userService.getUserById(userId);
       if (body.avatar)
       {
-        const user = await this.userService.getUserById(userId);
         if (user.avatar.search("https://cdn.intra.42.fr") === -1) {
           await this.userService.deleteAvatar(user);
         }
