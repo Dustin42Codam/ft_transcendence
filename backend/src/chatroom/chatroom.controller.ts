@@ -1,6 +1,6 @@
 import { Body, UseGuards, BadRequestException, Controller, Get, Param, Post, Req } from "@nestjs/common";
 import { AuthGuard } from "src/auth/auth.guard";
-import { MemberRole } from "src/member/entity/member.entity";
+import { MemberRole, MemberStatus } from "src/member/entity/member.entity";
 import { MemberService } from "src/member/member.service";
 import { User } from "src/user/entity/user.entity";
 import { UserService } from "src/user/user.service";
@@ -148,7 +148,7 @@ export class ChatroomController {
     this.chatroomService.update(chatroom.id, body);
   }
 
-  @Post("join/:id")
+  @Post("join/:id")    
   async joinChatroom(@Param("id") id: string, @Body() body: JoinChatroomDto, @Req() request: Request) {
     const chatroom = await this.chatroomService.getChatroomById(Number(id));
     if ([ChatroomType.DIRECT, ChatroomType.PRIVATE].includes(chatroom.type)) {
@@ -160,7 +160,7 @@ export class ChatroomController {
       user: user,
       chatroom: chatroom,
     });
-    if (member) {
+    if (member && member.status === MemberStatus.ACTIVE) {
 		  return member;
 	  }
     if (chatroom.type === ChatroomType.PROTECTED) {
@@ -171,6 +171,11 @@ export class ChatroomController {
       if (hashword !== chatroom.password) {
 		    throw new BadRequestException("The password is incorrect");
 	    }
+    }
+    if (member) {
+      member.status = MemberStatus.ACTIVE
+      await this.memberService.update(member.id, member);
+      return member
     }
     return await this.memberService.createMember({ user: user, chatroom: chatroom, role: MemberRole.USER });
   }
@@ -197,6 +202,10 @@ export class ChatroomController {
     }
     const receiverMember = await this.memberService.findOne({ user: receiver, chatroom: chatroom }, ["user", "chatroom"]);
     if (receiverMember) {
+      if (receiver.status === MemberStatus.INACTIVE) {
+        receiver.status = MemberStatus.ACTIVE
+        await this.memberService.update(receiver.id, receiver);
+      }
 		  return receiverMember;
 	  }
     return await this.memberService.createMember({ user: receiver, chatroom: chatroom, role: MemberRole.USER });

@@ -8,7 +8,7 @@ import { Chatroom, ChatroomType } from "./entity/chatroom.entity";
 import { ChatroomCreateDto } from "./dto/chatroom-create.dto";
 
 import { MemberService } from "src/member/member.service";
-import { Member, MemberRole } from "src/member/entity/member.entity";
+import { Member, MemberRole, MemberStatus } from "src/member/entity/member.entity";
 import { User } from "src/user/entity/user.entity";
 import * as bcrypt from "bcrypt";
 import { ChatroomInfoDto } from "./dto/chatroom-info.dto";
@@ -40,11 +40,10 @@ export class ChatroomService extends AbstractService {
 
   async getAllJoinableChatroomForUser(user: User) {
     const allOpenChatrooms = await this.getAllOpenChatrooms();
-    const members = await this.memberService.getAllMembersFromUser(user);
     var allJoinableChats = [];
     for (const chatroom of allOpenChatrooms) {
       const member = await this.memberService.findOne({ user, chatroom }, ["user", "chatroom"]);
-      if (!member) {
+      if (!member || member.status == MemberStatus.INACTIVE) {
         allJoinableChats.push(chatroom);
       }
     }
@@ -54,9 +53,9 @@ export class ChatroomService extends AbstractService {
   async getGroupchatsFromUser(user: User) {
     const membersFromUser = await this.memberService.getAllMembersFromUser(user);
     var allGroupchats = [];
-    for (let i = 0; i < membersFromUser.length; i++) {
-      if ([ChatroomType.PRIVATE, ChatroomType.PROTECTED, ChatroomType.PUBLIC].includes(membersFromUser[i].chatroom.type)) {
-        allGroupchats.push(membersFromUser[i].chatroom);
+    for (const member of membersFromUser) {
+      if ([ChatroomType.PRIVATE, ChatroomType.PROTECTED, ChatroomType.PUBLIC].includes(member.chatroom.type)) {
+        allGroupchats.push(member)
       }
     }
     return allGroupchats;
@@ -65,8 +64,8 @@ export class ChatroomService extends AbstractService {
   async getAllChatsFromUser(user: User) {
     const membersFromUser = await this.memberService.getAllMembersFromUser(user);
     var allChats = [];
-    for (let i = 0; i < membersFromUser.length; i++) {
-      allChats.push(membersFromUser[i].chatroom);
+    for (const member of membersFromUser) {
+      allChats.push(member.chatroom);
     }
     return allChats;
   }

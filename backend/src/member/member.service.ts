@@ -4,7 +4,7 @@ import { InjectRepository } from "@nestjs/typeorm";
 
 import { AbstractService } from "../common/abstract.service";
 
-import { Member } from "./entity/member.entity";
+import { Member, MemberStatus } from "./entity/member.entity";
 import { MemberCreateDto } from "./dto/member-create.dto";
 import { Chatroom, ChatroomType } from "../chatroom/entity/chatroom.entity";
 import { User } from "../user/entity/user.entity";
@@ -17,7 +17,7 @@ export class MemberService extends AbstractService {
 
   async getMemberByUserAndChatroom(user: User, chatroom: Chatroom) {
     const member = await this.findOne({ user, chatroom }, ["user", "chatroom"]);
-    if (!member) {
+    if (!member || member.status === MemberStatus.INACTIVE) {
       throw new BadRequestException("This member does not exist.");  
     }
     return member;
@@ -25,7 +25,7 @@ export class MemberService extends AbstractService {
 
   async getMemberById(id: number) {
     const member = await this.findOne({ id }, ["user", "chatroom"]);
-    if (!member) {
+    if (!member || member.status === MemberStatus.INACTIVE) {
       throw new BadRequestException("This member does not exist.");
     }
     return member;
@@ -41,6 +41,7 @@ export class MemberService extends AbstractService {
     const members = await this.memberRepository.find({
       where: {
         user: user,
+        status: MemberStatus.ACTIVE
       },
       relations: ["chatroom", "user"],
     });
@@ -51,6 +52,7 @@ export class MemberService extends AbstractService {
     const members = await this.memberRepository.find({
       where: {
         chatroom: chatroom,
+        status: MemberStatus.ACTIVE
       },
       relations: ["user"],
     });

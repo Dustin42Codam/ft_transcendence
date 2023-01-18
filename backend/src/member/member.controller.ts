@@ -1,6 +1,6 @@
 import { Body, UseGuards, BadRequestException, Controller, Get, Param, Post, Req } from "@nestjs/common";
 
-import { Member, MemberRole } from "./entity/member.entity";
+import { Member, MemberRole, MemberStatus } from "./entity/member.entity";
 import { MemberService } from "./member.service";
 import { MemberCreateDto } from "./dto/member-create.dto";
 import { ChatroomType } from "src/chatroom/entity/chatroom.entity";
@@ -51,7 +51,8 @@ export class MemberController {
     if (member.role === MemberRole.OWNER) {
 		  throw new BadRequestException("A OWNER of a chatroom can not leave a chatroom. Give someone else the OWNER role if you want to leave.");
 	  }
-    await this.memberService.delete(member.id);
+    member.status = MemberStatus.INACTIVE;
+    await this.memberService.update(member.id, member);
   }
 
   
