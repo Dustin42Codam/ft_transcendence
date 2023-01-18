@@ -17,7 +17,7 @@ export class UserController {
     return this.userService.paginate(page);
   }
 
-  @Get(":id")
+  @Get("id/:id")
   async getUserById(@Param("id") id: string) {
     return this.userService.getUserById(Number(id));
   }
@@ -33,7 +33,7 @@ export class UserController {
 		return await this.userService.createUser(body);
 	}
   
-  @Post(':id')
+  @Post('id/:id')
   async update(
       @Body() body: UserUpdateDto,
       @Req() request: Request
