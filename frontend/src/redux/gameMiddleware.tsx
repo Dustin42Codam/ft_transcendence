@@ -3,6 +3,12 @@ import { io, Socket } from "socket.io-client";
 import { gameSocketActions } from "./slices/gameSocketSlice";
 import GameEvent from "./gameEvent";
 
+interface JoinGameRoom {
+	UserName: string;
+	UserType: string;
+	GameRoomId: number;
+}
+
 const gameSocketMiddleware: Middleware = (store) => {
   let gameSocket: Socket = io("ws://localhost:3002/game", {
     autoConnect: false,
@@ -37,12 +43,14 @@ const gameSocketMiddleware: Middleware = (store) => {
         //Join the user to go to the game room
         //store.dispatch(gameSocketActions.joinRoomSuccess(spectateGame));
       });
+			/*
       gameSocket.on(GameEvent.MessageToGameRoom, (messageToGameRoom: any) => {
         //TOAST a Message
         store.dispatch(gameSocketActions.joinRoomSuccess(messageToGameRoom));
       });
-      gameSocket.on(GameEvent.JoinGameRoomSuccess, (gameRoomId: number) => {
-        store.dispatch(gameSocketActions.joinRoomSuccess(gameRoomId));
+		 */
+      gameSocket.on(GameEvent.JoinGameRoomSuccess, (payload: JoinGameRoom) => {
+        store.dispatch(gameSocketActions.joinRoomSuccess(payload));
       });
       gameSocket.on(GameEvent.MoveBatP2, (gameRoomId: number) => {
         store.dispatch(gameSocketActions.moveBatP2(gameRoomId));

@@ -319,7 +319,9 @@ const Game = (props: any) => {
   useEffect(() => {
     const canvas = document.getElementById("canvas") as HTMLCanvasElement;
     const gameState = new GameState(canvas);
-    console.log("store", store.getState());
+		//UserName
+		//UserType
+		//GameRoomId
     dispatch(gameSocketActions.joinRoom(42));
 
     canvas.addEventListener("keydown", function onKeyDown(e) {

@@ -13,6 +13,7 @@ export interface ChatState {
   isConnected: boolean;
   currentChatRoom: ChatRoom;
   status: any;
+	notificatoin: string;
 }
 
 export const initialState: ChatState = {
@@ -21,6 +22,7 @@ export const initialState: ChatState = {
   isConnected: false,
   currentChatRoom: { userId: -1, id: -1, name: "" },
   status: "",
+	notificatoin: "",
 };
 
 export interface ChatMessage {
@@ -50,6 +52,14 @@ const socketSlice = createSlice({
     },
     connectionEstablished: (state) => {
       state.isConnected = true;
+    },
+    getNotificatoin: (state, action: PayloadAction<string>) => {
+			state.notificatoin = action.payload;
+      return;
+    },
+    clearNotification: (state) => {
+			state.notificatoin = "";
+      return;
     },
     joinARoom: (state, action: PayloadAction<{ chatRoom: ChatRoom }>) => {
       return;
@@ -117,5 +127,7 @@ export const selectCurrentChatroom = (state: any) =>
   state.socket.currentChatRoom;
 export const selectCurrentChatroomMessages = (state: any) =>
   state.socket.messages;
+export const selectChatNotification = (state: any) =>
+  state.socket.notificatoin;
 
 export default socketSlice.reducer;

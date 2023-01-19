@@ -41,6 +41,9 @@ const socketMiddleware: Middleware = (store) => {
       socket.on(SocketEvent.LeaveChatRoomSuccess, () => {
         store.dispatch(socketActions.leaveARoomSuccess());
       });
+      socket.on(SocketEvent.ChatRoomNotification, (notification: string) => {
+        store.dispatch(socketActions.getNotificatoin(notification));
+      });
     }
     if (isConnectionEstablished) {
       if (socketActions.joinARoom.match(action)) {

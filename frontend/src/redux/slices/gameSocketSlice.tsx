@@ -1,8 +1,16 @@
 import { createAsyncThunk, PayloadAction, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
+interface JoinGameRoom {
+	UserName: string;
+	UserType: string;
+	GameRoomId: number;
+}
+
 export interface GameState {
   gameRoomId: number;
+	P1Name: string;
+	P2Name: string;
   BatP1X: number;
   BatP1Y: number;
   BatP2X: number;
@@ -12,12 +20,15 @@ export interface GameState {
   isEstablishingConnection: boolean;
   isConnected: boolean;
   status: any;
+	spectators: Array<string>;
 }
 
 export const initialState: GameState = {
   isEstablishingConnection: false,
   isConnected: false,
   gameRoomId: -1,
+	P1Name: "",
+	P2Name: "",
   BatP1X: -1,
   BatP1Y: -1,
   BatP2X: -1,
@@ -25,6 +36,7 @@ export const initialState: GameState = {
   BallX: -1,
   BallY: -1,
   status: "",
+	spectators: [],
 };
 
 /*
@@ -52,11 +64,13 @@ const gameSocketSlice = createSlice({
       state.isConnected = true;
     },
     joinRoom: (state, action: PayloadAction<number>) => {
-      console.log("trying reducer called");
       return;
     },
-    joinRoomSuccess: (state, action: PayloadAction<number>) => {
-      state.gameRoomId = action.payload;
+    joinRoomSuccess: (state, action: PayloadAction<JoinGameRoom>) => {
+			console.log("this is payload", action.payload);
+      state.gameRoomId = action.payload.GameRoomId;
+			//if (payload
+      //state.gameRoomId = action.payload.gameRoomId;
     },
     leaveRoom: (state, action: PayloadAction<number>) => {
       return;

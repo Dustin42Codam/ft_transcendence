@@ -6,6 +6,12 @@ import { UseGuards } from "@nestjs/common";
 import { Namespace, Server, Socket } from "socket.io";
 import { Logger, Req } from "@nestjs/common";
 
+interface JoinGameRoom {
+	UserName: string;
+	UserType: string;
+	GameRoomId: number;
+}
+
 @WebSocketGateway(3002, {
   namespace: "game",
   cors: {
@@ -38,13 +44,15 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 	//payload needs to have display_name, GameRoomId
 	@UseGuards(SocketAuthGuard)
   @SubscribeMessage(GameroomEvents.JoinGameRoom)
-  async handelJoinRoom(client: Socket, payload: any): Promise<void> {
+  async handelJoinRoom(client: Socket, payload: string): Promise<void> {
 
     client.join(payload);
 		const len = (await this.io.in(payload).fetchSockets()).length;
+    console.log("user from client", await this.userService.getUserFromClient(client));
+    await this.userService.getUserFromClient(client);
 
 		if (len == 1) {
-			client.emit(GameroomEvents.JoinGameRoomSuccess, 1);
+			//client.emit(GameroomEvents.JoinGameRoomSuccess, 12);
 			this.io.to(payload).emit(GameroomEvents.JoinGameRoomSuccess, "Player 1 joined");
 			this.io.to(payload).emit(GameroomEvents.MessageToGameRoom, "Player 1 joined");
 		}

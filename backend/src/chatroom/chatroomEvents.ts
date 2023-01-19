@@ -7,5 +7,6 @@ enum ChatroomEvents {
   JoinChatRoomSuccess = "join_chat_room_success",
   LeaveChatRoom = "leave_chat_room",
   LeaveChatRoomSuccess = "leave_chat_room_success",
+  ChatRoomNotification = "chat_room_notification",
 }
 export default ChatroomEvents;

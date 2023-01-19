@@ -6,7 +6,7 @@ import Authenticate from "./pages/Authenticate";
 import UserEdit from "./pages/users/UserEdit";
 import { UserProfile } from "./pages/users/UserProfile";
 import Chat from "./pages/Chat";
-import React, { useRef, useEffect } from "react";
+import React, { useEffect } from "react";
 import { io, Socket } from "socket.io-client";
 import { UserList } from "./pages/users/UserList";
 import { UserPage } from "./pages/users/UserPage";
@@ -15,11 +15,27 @@ import { Navigate, BrowserRouter, Routes, Route } from "react-router-dom";
 import TwoFactorAuthentication from "./pages/TwoFactorAuthentication";
 import { selectCurrentUser } from "./redux/slices/currentUserSlice";
 
+import { socketActions } from "./redux/slices/socketSlice";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import store from "./redux/store";
+
 function App() {
-  const dispatch = useAppDispatch();
   const socketStatus = useAppSelector((state) => state.socket.isConnected);
   const userStatus = useAppSelector((state) => state.currentUser.status);
   const currentUser = useAppSelector(selectCurrentUser);
+  const dispatch = useAppDispatch();
+  const chatNotificatoin = useAppSelector((state) => state.socket.notificatoin);
+  //const notificatoin = useAppSelector(selectCurrentNotification);
+	//const  = useAppSelector(selectChatNotification);
+	//const [gameNotificatoin, setGameNotificatoin] = useAppSelector(selectGameNotification);
+
+	useEffect(() => {
+		if (chatNotificatoin != "") {
+			toast(chatNotificatoin);
+			store.dispatch(socketActions.clearNotification());
+		}
+	}, [chatNotificatoin]);
 
   //   console.log("🚀 ~ file: App.tsx:23 ~ App ~ currentUser", currentUser.tfa_secret.isAuthenticated);
 
@@ -30,7 +46,7 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route path={"/authenticate"} element={<Authenticate />} />
-            <Route path={"*"} element={<Authenticate />} />
+            <Route path={"*"} element={<Navigate to="/authenticate" />} />
           </Routes>
         </BrowserRouter>
       </div>
@@ -47,11 +63,11 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route path={"/authenticate"} element={<Authenticate />} />
-            <Route path={"*"} element={<Authenticate />} />
             <Route
               path={"/authenticate/2fa"}
               element={<TwoFactorAuthentication />}
             />
+            <Route path={"*"} element={<Authenticate />} />
           </Routes>
         </BrowserRouter>
       </div>
@@ -59,10 +75,11 @@ function App() {
   } else {
     return (
       <div className="App">
+			<ToastContainer />
         <BrowserRouter>
           <Routes>
             <Route path={"/dashboard"} element={<Dashboard />} />
-            <Route path="/authenticate" element={<Navigate to="/" />} />
+            <Route path="/authenticate" element={<Navigate to="/dashboard" />} />
 
             <Route path={"/chats/:name"} element={<Chat />} />
 

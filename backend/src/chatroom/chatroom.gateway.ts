@@ -85,12 +85,14 @@ export class ChatroomGateway implements OnGatewayInit, OnGatewayConnection, OnGa
     }
 		const user = await this.userService.getUserById(userId);
     const member = await this.memberService.getMemberByUserAndChatroom(user, chatroom);
+		console.log("this is member", member);
     if (await this.memberService.isRestricted(member)) {
       throw new BadRequestException(`User with id ${payload.userId} is restricted from chatroom with id ${payload.id}.`);
     }
 		console.log("clienat jointed:" ,client.id, payload);
     client.join(`${payload.id}`);
-    this.io.to(`${payload.id}`).emit(ChatroomEvents.JoinChatRoomSuccess, payload);
+    this.io.to(`${payload.id}`).emit(ChatroomEvents.ChatRoomNotification, `${member.user.display_name} joined the room`);
+    client.emit(ChatroomEvents.JoinChatRoomSuccess, payload);
   }
 
   @UseGuards(SocketAuthGuard)

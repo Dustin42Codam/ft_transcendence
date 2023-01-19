@@ -16,8 +16,10 @@ import { useAppSelector } from "../redux/hooks";
 import { selectJoinableChats } from "../redux/slices/chatsSlice";
 import PopUp from "./PopUp";
 import "./Menu.css";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { socketActions } from "../redux/slices/socketSlice";
+
+import { useAppDispatch } from "../redux/hooks";
+import store from "../redux/store";
 
 const Menu = (props: any) => {
   const [activeDm, setActiveDm] = useState(false);
@@ -26,25 +28,11 @@ const Menu = (props: any) => {
   const [joinChanel, setJoinChanel] = useState(false);
   const joinableChats = useAppSelector(selectJoinableChats);
 
+
   const joinChats = () => {
-    if (joinableChats.length > 0) {
-      setJoinChanel(!joinChanel);
-    } else {
-      toast("🦄 You do not have any chats to join MENU thingiy", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-    }
   };
   return (
     <nav className={props.className}>
-      <ToastContainer />
       <div className="sideNavContainer">
         <NavLink
           to={"/dashboard"}
