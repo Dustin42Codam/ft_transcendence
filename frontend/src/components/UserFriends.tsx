@@ -12,7 +12,7 @@ export const UserFriends = (props: { userId: number; userFriends?: any }) => {
   useEffect(() => {
     async function fetchDataCall() {
       const response: any = await axios
-        .get(`friend/user/id/${props.userId}`)
+        .get(`friend/all/id/${props.userId}`)
         .catch((err: any) => {
           console.log("🚀 ~ file: UserPage.tsx:29 ~ fetchDataCall ~ err", err);
         });

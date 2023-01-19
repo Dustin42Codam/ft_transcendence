@@ -212,7 +212,7 @@ function ChatUserList() {
       const id = toast.loading(`Banning user ${member.user.display_name}...`);
 
       await axios
-        .post(`member/ban/${member.id}`)
+        .post(`member/ban/id/${member.id}`)
         .then(() => {
           toast.update(id, {
             render: `${member.user.display_name} banned!`,
@@ -252,7 +252,7 @@ function ChatUserList() {
       const id = toast.loading(`Unbanning user ${member.user.display_name}...`);
 
       await axios
-        .post(`member/unban/${member.id}`)
+        .post(`member/unban/id/${member.id}`)
         .then(() => {
           toast.update(id, {
             render: `${member.user.display_name} unbanned!`,
@@ -292,7 +292,7 @@ function ChatUserList() {
       const id = toast.loading(`Giving ${member.user.display_name} admin rights...`);
 
       await axios
-        .post(`member/makeAdmin/${member.id}`)
+        .post(`member/makeAdmin/id/${member.id}`)
         .then(() => {
           toast.update(id, {
             render: `${member.user.display_name} set as admin!`,
@@ -332,7 +332,7 @@ function ChatUserList() {
       const id = toast.loading(`Removing admin rights from ${member.user.display_name}...`);
 
       await axios
-        .post(`member/removeAdmin/${member.id}`)
+        .post(`member/removeAdmin/id/${member.id}`)
         .then(() => {
           toast.update(id, {
             render: `${member.user.display_name} removed as admin!`,
@@ -372,7 +372,7 @@ function ChatUserList() {
 	const id = toast.loading(`Muting user ${member.user.display_name}...`);
 
       await axios
-        .post(`member/mute/${member.id}`, {sender_id: currentUser.id, time_in_seconds: 300})
+        .post(`member/mute/id/${member.id}`)
         .then(() => {
           toast.update(id, {
             render: `${member.user.display_name} muted!`,
@@ -412,7 +412,7 @@ function ChatUserList() {
       const id = toast.loading(`Unmutening user ${member.user.display_name}...`);
 
       await axios
-        .post(`member/unmute/${member.id}`)
+        .post(`member/unmute/id/${member.id}`)
         .then(() => {
           toast.update(id, {
             render: `${member.user.display_name} umuted!`,
@@ -469,10 +469,10 @@ function ChatUserList() {
 
                 <button>send game invite</button>
 
-				{currentMember?.role !== 'user' && member.banned === false && (<button onClick={() => banUser(member)}>ban for 5 minutes</button>)}
+				{currentMember?.role !== 'user' && member.banned === false && (<button onClick={() => banUser(member)}>ban</button>)}
 				{currentMember?.role !== 'user' && member.banned === true && (<button onClick={() => unbanUser(member)}>unban</button>)}
 
-				{currentMember?.role !== 'user' && member.muted_until < new Date().toISOString() && (<button onClick={() => muteUser(member)}>mute</button>)}
+				{currentMember?.role !== 'user' && member.muted_until < new Date().toISOString() && (<button onClick={() => muteUser(member)}>mute (10s)</button>)}
 				{currentMember?.role !== 'user' && member.muted_until >= new Date().toISOString() && (<button onClick={() => unmuteUser(member)}>unmute</button>)}
 				
 				{currentMember?.role !== 'user' && member.role === 'user' && (<button onClick={() => makeAdmin(member)}>make admin</button>)}

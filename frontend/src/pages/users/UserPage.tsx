@@ -34,19 +34,21 @@ export const UserPage = () => {
   const navigate = useNavigate();
   let currentChatroom: any = store.getState().socket.currentChatRoom;
   const friendsAmount = "Friends (" + friends.length + ")";
-
+  
   async function fetchBlocked() {
+	  console.log("🚀 ~ file: UserPage.tsx:27 ~ UserPage ~ userId", userId)
     const response: any = await axios
       .get(`block/receiverId/${userId}`)
-      .then((res: any) => (res.data ? setBlocked(true) : setBlocked(false)))
+      .then((res: any) => setBlocked(true))
       .catch((err: any) => {
-        console.log("🚀 ~ file: UserPage.tsx:29 ~ fetchBlocked ~ err", err);
+		setBlocked(false)
+        // console.log("🚀 ~ file: UserPage.tsx:29 ~ fetchBlocked ~ err", err);
       });
   }
 
   async function fetchFriends() {
     const response: any = await axios
-      .get(`friend/user/id/${userId}`)
+      .get(`friend/all/id/${userId}`)
       .catch((err: any) => {
         console.log("🚀 ~ file: UserPage.tsx:29 ~ fetchFriends ~ err", err);
       });
@@ -80,13 +82,14 @@ export const UserPage = () => {
   }, [userId, friends.length]);
 
   async function addFriend() {
-    await axios.post(`friend/id/${userId}`).catch((error: any) => {
+    await axios.post(`friend/add/id/${userId}`).catch((error: any) => {
       console.log("🚀 ~ file: UserPage.tsx ~ addFriend ~ error", error);
     });
     fetchFriends();
   }
 
   async function removeFriend() {
+	console.log('removing')
     await axios.post(`friend/remove/id/${userId}`).catch((error: any) => {
       console.log("🚀 ~ file: UserPage.tsx ~ removeFriend ~ error", error);
     });

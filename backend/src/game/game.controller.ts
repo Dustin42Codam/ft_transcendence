@@ -17,15 +17,16 @@ export class GameController {
 
     @Get('id/:id')
     async getGameById(
-        @Param('id') id : Number
+        @Param('id') id : string
     ) {
         return await this.gameService.getGameById(Number(id));
     }
 
-    @Get('user/passive/user/id/:id')
+    @Get('passive/user/id/:id')
     async getGamesByUserId(
-        @Param('userId') userId : Number
+        @Param('id') userId : string
     ) {
+		console.log(userId)
         return await this.gameService.getAllPassiveGamesFromUser(Number(userId));
     }
 

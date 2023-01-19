@@ -61,7 +61,7 @@ export class ChatroomService extends AbstractService {
     var allGroupchats = [];
     for (const member of membersFromUser) {
       if ([ChatroomType.PRIVATE, ChatroomType.PROTECTED, ChatroomType.PUBLIC].includes(member.chatroom.type)) {
-        allGroupchats.push(member)
+        allGroupchats.push(member.chatroom)
       }
     }
     return allGroupchats;

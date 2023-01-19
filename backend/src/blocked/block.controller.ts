@@ -15,16 +15,26 @@ export class BlockController {
 	
 	@Get('receiverId/:id')
 	async getBlockByUserId(
-		@Param(':id') userId : string,
+		@Param('id') userId : string,
 		@Req() request: Request
 	) {
+		console.log(userId)
 		const senderId = await this.authService.userId(request);
 		return await this.blockService.getBlockByUserids(senderId, Number(userId));
 	}
 
+	@Get('user/:id')
+	async getBlocksFromUser(
+		@Param('id') id : string,
+	) {
+		console.log("🚀 ~ file: block.controller.ts:30 ~ BlockController ~ userId", id)
+		const sender = await this.userService.getUserById(Number(id))
+		return await this.blockService.getBlocksFromUser(sender);
+	}
+
 	@Post('add/receiverId/:id')
 	async block(
-		@Param(':id') receiverId : string,
+		@Param('id') receiverId : string,
 		@Req() request: Request
 	) {
 		const senderId = await this.authService.userId(request);
@@ -45,7 +55,7 @@ export class BlockController {
 
 	@Post('remove/receiverId/:id')
 	async remove(
-    	@Param(':id') receiverId: string,
+    	@Param('id') receiverId: string,
 		@Req() request: Request
     ) {
 		const authId = await this.authService.userId(request);

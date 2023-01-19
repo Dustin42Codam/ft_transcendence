@@ -112,7 +112,7 @@ export class MemberController {
     if (sender.id === receiver.id) {
 		  throw new BadRequestException("You can not mute yourself.");
 	  }
-    receiver.muted_until = new Date(new Date().getTime() + 420 * 1000); //TODO change this to 25 sec or so for evaluation
+    receiver.muted_until = new Date(new Date().getTime() + 10 * 1000);
     await this.memberService.update(receiver.id, receiver);
   }
 

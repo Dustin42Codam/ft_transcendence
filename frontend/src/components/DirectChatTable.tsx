@@ -47,7 +47,7 @@ const DirectChatTable = () => {
 
   async function fetchFriends() {
     const response: any = await axios
-      .get(`friend/user/id/${user.id}`)
+      .get(`friend/all/id/${user.id}`)
       .catch((err: any) => {
         console.log(
           "🚀 ~ file: DirectChatTable.tsx:47 ~ DirectChatTable ~ err",

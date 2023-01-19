@@ -59,7 +59,7 @@ export class FriendController {
 	) {
 		const userId = await this.authService.userId(request);
 		const friendship = await this.friendService.getFriendshipByUserids(userId, Number(receiverId));
-		if (!friendship) {
+		if (friendship) {
 			await this.friendService.deleteFriendship(friendship)
 		}
 	}

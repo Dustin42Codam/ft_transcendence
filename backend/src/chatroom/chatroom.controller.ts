@@ -102,10 +102,10 @@ export class ChatroomController {
   @Post("remove/id/:id")
   async removeChatroom(@Req() request: Request, @Param("id") id: string) {
     const chatroom = await this.chatroomService.getChatroomById(Number(id));
-	  const userId = await this.authService.userId(request)
+	const userId = await this.authService.userId(request)
     const user = await this.userService.getUserById(userId, ["chatrooms"]);
     const member = await this.memberService.getMemberByUserAndChatroom(user, chatroom);
-    if (member.role != MemberRole.OWNER) {
+    if (member.role !== MemberRole.OWNER) {
 		throw new BadRequestException("You are not the owner of this chatroom.");
 	}
     return await this.chatroomService.deleteChatroom(chatroom.id);
