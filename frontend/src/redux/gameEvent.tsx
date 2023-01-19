@@ -8,5 +8,6 @@ enum GameroomEvents {
   LeaveGameRoomSuccess = "leave_game_room_success",
   MessageToGameRoom = "message_to_game_room",
   SpectateGameRoom = "spectate_game_room",
+  GameRoomNotification = "game_room_notification",
 }
 export default GameroomEvents;

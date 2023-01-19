@@ -19,6 +19,7 @@ import { socketActions } from "./redux/slices/socketSlice";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import store from "./redux/store";
+import { gameSocketActions } from "./redux/slices/gameSocketSlice";
 
 function App() {
   const socketStatus = useAppSelector((state) => state.socket.isConnected);
@@ -28,7 +29,7 @@ function App() {
   const chatNotificatoin = useAppSelector((state) => state.socket.notificatoin);
   //const notificatoin = useAppSelector(selectCurrentNotification);
 	//const  = useAppSelector(selectChatNotification);
-	//const [gameNotificatoin, setGameNotificatoin] = useAppSelector(selectGameNotification);
+	const gameNotificatoin = useAppSelector((state) => state.gameSocket.notificatoin);
 
 	useEffect(() => {
 		if (chatNotificatoin != "") {
@@ -36,6 +37,13 @@ function App() {
 			store.dispatch(socketActions.clearNotification());
 		}
 	}, [chatNotificatoin]);
+
+	useEffect(() => {
+		if (gameNotificatoin != "") {
+			toast(gameNotificatoin);
+			store.dispatch(gameSocketActions.clearNotification());
+		}
+	}, [gameNotificatoin]);
 
   //   console.log("🚀 ~ file: App.tsx:23 ~ App ~ currentUser", currentUser.tfa_secret.isAuthenticated);
 

@@ -21,6 +21,7 @@ export interface GameState {
   isConnected: boolean;
   status: any;
 	spectators: Array<string>;
+	notificatoin: string;
 }
 
 export const initialState: GameState = {
@@ -37,6 +38,7 @@ export const initialState: GameState = {
   BallY: -1,
   status: "",
 	spectators: [],
+	notificatoin: "",
 };
 
 /*
@@ -62,6 +64,14 @@ const gameSocketSlice = createSlice({
     },
     connectionEstablished: (state) => {
       state.isConnected = true;
+    },
+    getNotificatoin: (state, action: PayloadAction<string>) => {
+			state.notificatoin = action.payload;
+      return;
+    },
+    clearNotification: (state) => {
+			state.notificatoin = "";
+      return;
     },
     joinRoom: (state, action: PayloadAction<number>) => {
       return;
@@ -128,5 +138,8 @@ const gameSocketSlice = createSlice({
 });
 
 export const gameSocketActions = gameSocketSlice.actions;
+
+export const selectChatNotification = (state: any) =>
+  state.gameSocket.notificatoin;
 
 export default gameSocketSlice.reducer;

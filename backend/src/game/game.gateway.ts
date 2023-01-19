@@ -20,7 +20,7 @@ interface JoinGameRoom {
   },
 })
 export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
-  constructor(private readonly userService: UserService) {};
+  constructor(private readonly userService: UserService,) {};
 
   private logger: Logger = new Logger("AppGateway");
   @WebSocketServer() io: Namespace;
@@ -48,13 +48,13 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 
     client.join(payload);
 		const len = (await this.io.in(payload).fetchSockets()).length;
-    console.log("user from client", await this.userService.getUserFromClient(client));
-    await this.userService.getUserFromClient(client);
 
 		if (len == 1) {
 			//client.emit(GameroomEvents.JoinGameRoomSuccess, 12);
-			this.io.to(payload).emit(GameroomEvents.JoinGameRoomSuccess, "Player 1 joined");
-			this.io.to(payload).emit(GameroomEvents.MessageToGameRoom, "Player 1 joined");
+			const userId = await this.userService.getUserFromClient(client);
+			const user = await this.userService.getUserById(userId);
+			this.io.to(payload).emit(GameroomEvents.JoinGameRoomSuccess, payload);
+			this.io.to(payload).emit(GameroomEvents.GameRoomNotification, `Player 1: ${user.display_name}`);
 		}
 		if (len == 2) {
 			client.to(payload).emit(GameroomEvents.JoinGameRoomSuccess, 2);

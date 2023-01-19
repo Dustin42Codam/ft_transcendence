@@ -58,6 +58,9 @@ const gameSocketMiddleware: Middleware = (store) => {
       gameSocket.on(GameEvent.LeaveGameRoomSuccess, () => {
         store.dispatch(gameSocketActions.leaveRoomSuccess());
       });
+      gameSocket.on(GameEvent.GameRoomNotification, (notification: string) => {
+        store.dispatch(gameSocketActions.getNotificatoin(notification));
+      });
     }
     if (isConnectionEstablished) {
       console.log(
