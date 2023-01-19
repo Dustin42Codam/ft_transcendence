@@ -31,7 +31,7 @@ export const initialState: GameState = {
 export const fetchCurrentGameRoomMessages = createAsyncThunk(
   "socket/fetchCurrentGameRoomMessages",
   async (gameroomId: number) => {
-    const response = await axios.get(`message/${chatroomId}`);
+    const response = await axios.get(`message/chatroom/id/${chatroomId}`);
 
     return response.data;
   }

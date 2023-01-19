@@ -34,7 +34,7 @@ export class MessageController {
   //   }
 
   @UseGuards(AuthGuard)
-  @Get(":id")
+  @Get("chatroom/id/:id")
   async getMessagesfromChatroom(@Param("id") chatroomId: string, @Req() request: Request) {
     const chatroom: Chatroom = await this.chatroomService.getChatroomById(Number(chatroomId));
     const check_messages = await this.messageService.all(["member", "member.user", "member.chatroom"]);

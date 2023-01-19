@@ -32,7 +32,7 @@ interface IState {
 const loginToChat = async (chatId: number) => {
   console.log("🚀 ~ file: ChatTable.tsx:33 ~ loginToChat ~ chatId", chatId);
   return await axios
-    .post("chatroom/join/" + chatId, {
+    .post("chatroom/join/id/" + chatId, {
       password: "password",
     })
     .then((res) => {})

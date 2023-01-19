@@ -16,7 +16,7 @@ export class Chatroom {
   @Column()
   name: string;
 
-  @Column({ nullable: true }) // TODO should be hash and make sure that everything is protected
+  @Column({ nullable: true })
   password: string;
 
   @Column({

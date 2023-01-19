@@ -56,7 +56,7 @@ const JoinableChats = (props: any) => {
       setIsPopUp(!isPopUp);
     } else {
       axios
-        .post("chatroom/join/" + joinableChats[index].id)
+        .post("chatroom/join/id/" + joinableChats[index].id)
         .then(() => {
           dispatch(removeChatFromJoinable(index));
           props.setJoinableChats(false);
@@ -88,7 +88,7 @@ const JoinableChats = (props: any) => {
   //if a password is entered this will fire
   useEffect(() => {
     const loginToChat = async (chat: Chats, chatPassword: string) => {
-      return await axios.post("chatroom/join/" + chat.id, {
+      return await axios.post("chatroom/join/id/" + chat.id, {
         password: chatPassword,
       });
     };

@@ -7,7 +7,7 @@ import { UserUpdateNameDto } from "./dto/user-update-name.dto";
 import { AuthService } from "src/auth/auth.service";
 import { Request } from "express-session";
 
-// @UseGuards(AuthGuard)
+// @UseGuards(AuthGuard) TODO turn on before handing in
 @Controller("users")
 export class UserController {
   constructor(private readonly userService: UserService, private readonly authService: AuthService) {}
@@ -17,7 +17,7 @@ export class UserController {
     return this.userService.paginate(page);
   }
 
-  @Get(":id")
+  @Get("id/:id")
   async getUserById(@Param("id") id: string) {
     return this.userService.getUserById(Number(id));
   }
@@ -33,8 +33,7 @@ export class UserController {
 		return await this.userService.createUser(body);
 	}
   
-    //fixing this with authguards
-  @Post(':id')
+  @Post('id/:id')
   async update(
       @Body() body: UserUpdateDto,
       @Req() request: Request
@@ -42,8 +41,9 @@ export class UserController {
       const userId = await this.authService.userId(request);
       const user = await this.userService.getUserById(userId);
       if (body.display_name && body.display_name !== user.display_name) {
-        if (body.display_name === "")
+        if (body.display_name === "") {
           throw new BadRequestException("You can not have a empty string as a username");
+        }
         await this.userService.isUserNameUnique(body.display_name);
       }
       if (body.avatar)

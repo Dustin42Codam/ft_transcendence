@@ -48,7 +48,7 @@ export const addNewGroupChat = createAsyncThunk(
 	"chats/addNewGroupChat",
 	async (data: any, { rejectWithValue }) => {
 	  try {
-		const response: any = await axios.post(`chatroom/`, data.chat);
+		const response: any = await axios.post(`chatroom/create`, data.chat);
 		return response.data;
 	  } catch (error: any) {
 		if (!error.response) {
@@ -63,7 +63,7 @@ export const deleteChat = createAsyncThunk(
 	"chats/deleteChat",
 	async (chat: any, { rejectWithValue }) => {
 	  try {
-		const response: any = await axios.post(`chatroom/remove/${chat.id}`)
+		const response: any = await axios.post(`chatroom/remove/id/${chat.id}`)
 		return chat;
 	  } catch (error: any) { 
 		if (!error.response) {

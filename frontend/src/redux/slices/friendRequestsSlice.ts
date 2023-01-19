@@ -16,8 +16,8 @@ const initialState = {
 export const _fetchFriendRequests = createAsyncThunk(
   "friends/fetchFriendRequests",
   async () => {
-    const mySent = await axios.get(`friendRequest/mySent`);
-    const myReceived = await axios.get(`friendRequest/myReceived`);
+    const mySent = await axios.get(`friendRequest/mySent`); //TODO does not exist anymore
+    const myReceived = await axios.get(`friendRequest/myReceived`); //TODO does not exist anymore
 
     return {
       send: mySent.data,
@@ -29,7 +29,7 @@ export const _fetchFriendRequests = createAsyncThunk(
 export const fetchFriendRequests = createAsyncThunk(
   "friends/fetchFriendRequests",
   async () => {
-    const response = await axios.get(`friendRequest/myReceived`);
+    const response = await axios.get(`friendRequest/myReceived`); //TODO does not exist anymore
 
     return response.data;
   }

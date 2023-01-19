@@ -17,7 +17,7 @@ export class FriendController {
 		private readonly userService: UserService,
 	) {}
 
-	@Get(':id')
+	@Get('id/:id')
 	async getFriendshipById(
 		@Param('id') id : string
 	) {
@@ -32,34 +32,39 @@ export class FriendController {
 		return this.friendService.getAllFriendshipsFromUser(currentUserId);
 	}
 
-	@Get('this/:id')
-	async getFriendshipByUserids(
+	@Get('user/id/:id')
+	async getFriendshipByUserid(
 		@Param('id') user2 : string,
 		@Req() request: Request,
 	) {
 		const user1 = await this.authService.userId(request);
-		return this.friendService.getFriendshipByUserids(user1, Number(user2));
+		const friendship = await this.friendService.getFriendshipByUserids(user1, Number(user2));
+		if (!friendship) {
+			throw new BadRequestException("This friendship does not exists.");
+		}
+		return friendship;
 	}
 
-	@Get('user/:id') //TODO Do we need request here??
+	@Get('all/id/:id')
 	async getAllFriendsFromUser(
-		@Param('id') id : string,
-		@Req() request: Request,
+		@Param('id') id : string
 	) {
 		return this.friendService.getAllFriendshipsFromUser(Number(id));
 	}
 
-	@Post('remove/:id')
+	@Post('remove/id/:id') //NOTE Removed return value
 	async removeFriendship(
-		@Param('id') friendId: number,
+		@Param('id') receiverId: string,
 		@Req() request: Request,
 	) {
 		const userId = await this.authService.userId(request);
-		const friendship = await this.friendService.getFriendshipByUserids(userId, friendId);
-		return await this.friendService.deleteFriendship(friendship);
+		const friendship = await this.friendService.getFriendshipByUserids(userId, Number(receiverId));
+		if (!friendship) {
+			await this.friendService.deleteFriendship(friendship)
+		}
 	}
 
-	@Post(':id')
+	@Post('add/id/:id')
 	async addFriendship(
 		@Param('id') receiverId: string,
 		@Req() request: Request,

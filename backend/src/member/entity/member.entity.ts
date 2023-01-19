@@ -8,6 +8,12 @@ export enum MemberRole {
   USER = "user",
 }
 
+export enum MemberStatus {
+  ACTIVE = "active",
+  INACTIVE = "inactive",
+}
+
+
 @Entity("member")
 export class Member {
   @PrimaryGeneratedColumn()
@@ -26,7 +32,10 @@ export class Member {
   @Column({ default: false })
   banned: boolean;
 
-  @ManyToOne(() => User, (user: User) => user.chatrooms, {eager: true})
+  @Column({ default: MemberStatus.ACTIVE })
+  status: MemberStatus;
+
+  @ManyToOne(() => User, (user: User) => user.chatrooms)
   user: User;
 
   @ManyToOne(() => Chatroom, (chatroom: Chatroom) => chatroom.users, {eager: true})

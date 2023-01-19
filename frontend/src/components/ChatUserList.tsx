@@ -82,7 +82,7 @@ function ChatUserList() {
       const id = toast.loading(`Adding ${newUserName}...`);
 
       await axios
-        .post(`chatroom/add/${currentChat.id}`, { user_id: newUser.id, senderId: currentUser.id })
+        .post(`chatroom/add/id/${currentChat.id}`, { user_id: newUser.id })
         .then(() => {
           toast.update(id, {
             render: `${newUserName} joined the chat!`,
@@ -131,7 +131,7 @@ function ChatUserList() {
 
     // console.log("🚀 ~ file: ChatUserList.tsx:92 ~ leaveChannel ~ member", member)
     await axios
-      .post(`member/leave/${member[0].id}`)
+      .post(`member/leave/id/${member[0].id}`)
       .then(() => {
         toast.update(id, {
           render: `${newUserName} joined the chat!`,

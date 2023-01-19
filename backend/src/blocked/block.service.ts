@@ -23,19 +23,23 @@ export class BlockService extends AbstractService {
 
   async getBlockById(id: number) {
     const block = await this.findOne({ id }, ["sender", "receiver"]);
-    if (!block) throw new BadRequestException("This block does not exist");
+    if (!block) {
+      throw new BadRequestException("This block does not exist");
+    }
     return block;
   }
 
-    async getBlockByUserids(user1_id: number, user2_id: number) {
-      const user1 = await this.userService.findOne({id: user1_id}); 
-      const user2 = await this.userService.findOne({id: user2_id}); 
+    async getBlockByUserids(senderId: number, receiverId: number) {
+      const sender = await this.userService.getUserById(senderId); 
+      const receiver = await this.userService.getUserById(receiverId); 
       const block = await this.findOne(
         {
-          sender: user1,
-          receiver: user2
+          sender: sender,
+          receiver: receiver
         });
-      
+      if (!block) {
+        throw new BadRequestException("This block does not exist");
+      }
       return block;
     }
 
@@ -50,7 +54,7 @@ export class BlockService extends AbstractService {
     return await this.findOne({ sender: sender, receiver: receiver });
   }
 
-	async block(sender, receiver) {
+	async block(sender: User, receiver: User) {
 		const friendship = await this.friendService.getFriendshipByUserids(sender.id, receiver.id)
 		if (friendship)
 			await this.friendService.deleteFriendship(friendship);

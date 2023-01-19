@@ -8,21 +8,28 @@ import { Chatroom, ChatroomType } from "./entity/chatroom.entity";
 import { ChatroomCreateDto } from "./dto/chatroom-create.dto";
 
 import { MemberService } from "src/member/member.service";
-import { Member, MemberRole } from "src/member/entity/member.entity";
+import { Member, MemberRole, MemberStatus } from "src/member/entity/member.entity";
 import { User } from "src/user/entity/user.entity";
 import * as bcrypt from "bcrypt";
 import { ChatroomInfoDto } from "./dto/chatroom-info.dto";
+import { MessageService } from "src/message/message.service";
 
 @Injectable()
 export class ChatroomService extends AbstractService {
-  constructor(private memberService: MemberService, @InjectRepository(Chatroom) private readonly ChatroomRepository: Repository<Chatroom>) {
-    super(ChatroomRepository);
+  constructor(
+    private memberService: MemberService,
+    private messageService: MessageService,
+    @InjectRepository(Chatroom)
+    private readonly chatroomRepository: Repository<Chatroom>,
+  ) {
+    super(chatroomRepository);
   }
 
   async getChatroomById(id: number) {
-    console.log("🚀 ~ file: chatroom.service.ts:23 ~ ChatroomService ~ getChatroomById ~ id", id)
     const chatroom = await this.findOne({ id }, ["users"]);
-    if (!chatroom) throw new BadRequestException("This chatroom does not exist");
+    if (!chatroom) {
+      throw new BadRequestException("This chatroom does not exist");
+    }
     return chatroom;
   }
 
@@ -39,11 +46,10 @@ export class ChatroomService extends AbstractService {
 
   async getAllJoinableChatroomForUser(user: User) {
     const allOpenChatrooms = await this.getAllOpenChatrooms();
-    const members = await this.memberService.getAllMembersFromUser(user);
     var allJoinableChats = [];
     for (const chatroom of allOpenChatrooms) {
       const member = await this.memberService.findOne({ user, chatroom }, ["user", "chatroom"]);
-      if (!member) {
+      if (!member || member.status == MemberStatus.INACTIVE) {
         allJoinableChats.push(chatroom);
       }
     }
@@ -53,9 +59,9 @@ export class ChatroomService extends AbstractService {
   async getGroupchatsFromUser(user: User) {
     const membersFromUser = await this.memberService.getAllMembersFromUser(user);
     var allGroupchats = [];
-    for (let i = 0; i < membersFromUser.length; i++) {
-      if ([ChatroomType.PRIVATE, ChatroomType.PROTECTED, ChatroomType.PUBLIC].includes(membersFromUser[i].chatroom.type)) {
-        allGroupchats.push(membersFromUser[i].chatroom);
+    for (const member of membersFromUser) {
+      if ([ChatroomType.PRIVATE, ChatroomType.PROTECTED, ChatroomType.PUBLIC].includes(member.chatroom.type)) {
+        allGroupchats.push(member)
       }
     }
     return allGroupchats;
@@ -64,15 +70,15 @@ export class ChatroomService extends AbstractService {
   async getAllChatsFromUser(user: User) {
     const membersFromUser = await this.memberService.getAllMembersFromUser(user);
     var allChats = [];
-    for (let i = 0; i < membersFromUser.length; i++) {
-      allChats.push(membersFromUser[i].chatroom);
+    for (const member of membersFromUser) {
+      allChats.push(member.chatroom);
     }
     return allChats;
   }
 
 
   async getAllOpenChatrooms() {
-    return await this.ChatroomRepository.find({
+    return await this.chatroomRepository.find({
       where: [{ type: ChatroomType.PUBLIC }, { type: ChatroomType.PROTECTED }],
       relations: ["users"],
     });
@@ -92,13 +98,17 @@ export class ChatroomService extends AbstractService {
 
   async deleteChatroom(chatroomId: number) {
 	const chatroom = await this.getChatroomById(chatroomId);
-    for (let i = 0; i < chatroom.users.length; i++) {
-      await this.memberService.delete(chatroom.users[i].id);
+    for (const member of chatroom.users) {
+      const allMessages = await this.messageService.getAllMessagesFromMember(member);
+      for (const message of allMessages) {
+        await this.messageService.delete(message.id)
+      }
+      await this.memberService.delete(member.id);
     }
     return await this.delete(chatroom.id);
   }
 
-  hashPassword(password: string) {
+  async hashPassword(password: string) {
     return bcrypt.hash(password, 12);
   }
 }

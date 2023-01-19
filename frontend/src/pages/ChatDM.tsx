@@ -40,7 +40,7 @@ const ChatDM = (props: any) => {
 
   async function fetchMessages() {
     if (currentChat.id !== -1) {
-      const response: any = await axios.get(`message/${currentChat.id}`);
+      const response: any = await axios.get(`message/chatroom/id/${currentChat.id}`);
       setMessages(response?.data);
     }
   }
