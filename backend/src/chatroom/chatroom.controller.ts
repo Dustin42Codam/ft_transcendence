@@ -70,7 +70,7 @@ export class ChatroomController {
     if (member.role != MemberRole.OWNER) {
 		throw new BadRequestException("You are not the owner of this chatroom.");
 	}
-    return await this.chatroomService.deleteChatroom(chatroom);
+    return await this.chatroomService.deleteChatroom(chatroom.id);
   }
 
   @Post("name/:id")

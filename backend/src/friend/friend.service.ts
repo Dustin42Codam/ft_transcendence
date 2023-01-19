@@ -63,7 +63,7 @@ export class FriendService extends AbstractService {
 
   async deleteFriendship(friendship: Friend) {
     const chatroom = await this.chatroomService.findOne({ id: friendship.chatroom_id }, ["users"]);
-    await this.chatroomService.deleteChatroom(chatroom);
+    await this.chatroomService.deleteChatroom(chatroom.id);
     return await this.delete(friendship.id);
   }
 }

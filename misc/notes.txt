@@ -61,14 +61,9 @@ todo:
 			-	only owners can un/set users as owner
 			-	no endpoints for that
 
-		-	ping pong invite
+		+	Leave channel bug
 
-		-	leave channel
-			-	set other user as channel owner
-			-	channel owner?
-			-	test each if statement
-				in controller with requests
-				from the frontend
+		-	ping pong invite
 
 		-	remove user from chat ???
 			-	authorized
@@ -77,7 +72,7 @@ todo:
 			-	invalid name
 
 bugs:
-		-	joinable/groupchats redux bug
+		+	joinable/groupchats bug
 		-	chatroom long list
 
 notes:
@@ -87,6 +82,11 @@ notes:
 	-	ChatLobby?
 	-	ChatCreate?
 	-	ChatTable?
+
+	-	what happen if last member leaves the chatroom?
+		-	delete chat room?
+		-	leave empty?
+			-	if so then first member who joins becomes channel owner
 
 
 toasties:

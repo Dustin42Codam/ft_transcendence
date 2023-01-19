@@ -90,7 +90,8 @@ export class ChatroomService extends AbstractService {
     return newChatroom;
   }
 
-  async deleteChatroom(chatroom: Chatroom) {
+  async deleteChatroom(chatroomId: number) {
+	const chatroom = await this.getChatroomById(chatroomId);
     for (let i = 0; i < chatroom.users.length; i++) {
       await this.memberService.delete(chatroom.users[i].id);
     }
