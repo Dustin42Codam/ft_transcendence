@@ -1,5 +1,12 @@
 @import url("https://fonts.cdnfonts.com/css/studio-sans");
 
+
+
+#root, html, body, #app, #app>div {
+	height: 100%
+}
+  
+
 body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -44,6 +51,7 @@ p {
   order: -1;
   flex: 0 0 250px;
   overflow: auto;
+  height: 75vh;
 }
 
 .contentBody .ads {

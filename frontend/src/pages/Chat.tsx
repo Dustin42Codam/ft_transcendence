@@ -58,6 +58,8 @@ const Chat = (props: any) => {
   return (
     <Wrapper>
       <div className="messageContainers">
+
+        <div className="chat-body">
         <div className="chat-header">
           {user && (
             <Link to={`/users/${user.id}`}>
@@ -66,8 +68,6 @@ const Chat = (props: any) => {
           )}
           <ChatUserList />
         </div>
-
-        <div className="chat-body">
           {messages?.map((msg: any, index: number) =>
             msg.member.user.id === currentUser.id ? (
               <p className="message message_right" key={index}>
@@ -97,8 +97,8 @@ const Chat = (props: any) => {
           )}
 
           <Socket location={location} /* dummy={dummy} */ />
-          <div ref={dummy}></div>
         </div>
+          <div ref={dummy}></div>
       </div>
     </Wrapper>
   );

@@ -6,21 +6,49 @@ todo:
 	-	check error handling in user edit
 	-	bug when splittin direct / group chats in navbar
 		into 2 seperate components ????
-	-	add toasts for every store/api event
-		-	to redux?
+	->	add toasts for every store/api event
+		->	add to redux
+			->	chat delete
 	-	Redux store
 		-	add current_chat_member slices
 		-	sync with sockets?
 		-	place every manual fetch into redux slice
-	-	Chat
+	->	Chat
+		-	auto scroll to bottom
+		-	chat user list
+			-	add avatar to user cards
+		-	chat header
+			+ create sticky chat navbar
+			-	make chat header responsive to screen size
+				(see chat input box)
+		-	creating chats
+			-	add toasts with server response
+				+	on error
+				-	on success
+		-	update (current) chat
+			-	add update chat to redux slice
 		-	sync with redux?
-		-	add user to chat
-			+	authorized
-			+	unauthorized check
-			+	no empty name
-			+	no invalid name
-			-	check if user is already in a chat room
-		-	ban user
+		-	fetch current chat members
+
+		Bug:
+			-	create a channel but not set as owner
+				-> FIX replace request.session.user_id
+				-> return this.chatroomService.createChatroom(users, createChatroom, Number(request.session.user_id));
+
+		+	delete chat
+			+	only as owner???
+
+		+	add user to chat
+			+	admin can add another user to chat
+			+	invalid or empty user name displays error
+			+	only admins or owner can add new users
+			+	check if user is already in a chat room
+
+		->	ban user
+			->	create button
+			-	test as owner
+			-	test as admin
+			-	test as user
 		-	unban user
 		->	set others as admin
 			->	authorized
@@ -31,7 +59,6 @@ todo:
 		-	mute user
 			-	minutes
 		-	unmute user
-		-	delete chat
 		-	ping pong invite
 		-	leave channel
 			-	set other user as channel owner

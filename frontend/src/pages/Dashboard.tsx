@@ -30,34 +30,37 @@ const Dashboard = () => {
   }
 
   return (
-    <Wrapper>
-      <div className="">
-        <button onClick={joinGameRoom}> Regular Game</button>
-        <button> Power up Game </button>
-        <button> Send a game invite to some one </button>
-        {acitiveGames ? (
-          <React.Fragment>
-            {acitiveGames.map((games: any, index: number) => (
-              <div
-                key={index}
-                className="gameRow"
-                /*
-								 * //TODO spectate
-								 * onClick={(e) => {
-									handelClick(index);
-								}}
-							 */
-              >
-                {games}
-              </div>
-            ))}
-            )
-          </React.Fragment>
-        ) : (
-          <React.Fragment></React.Fragment>
-        )}
-      </div>
-    </Wrapper>
+	<Wrapper>
+
+	</Wrapper>
+    // <Wrapper>
+    //   <div className="">
+    //     <button onClick={joinGameRoom}> Regular Game</button>
+    //     <button> Power up Game </button>
+    //     <button> Send a game invite to some one </button>
+    //     {acitiveGames ? (
+    //       <React.Fragment>
+    //         {acitiveGames.map((games: any, index: number) => (
+    //           <div
+    //             key={index}
+    //             className="gameRow"
+    //             /*
+	// 							 * //TODO spectate
+	// 							 * onClick={(e) => {
+	// 								handelClick(index);
+	// 							}}
+	// 						 */
+    //           >
+    //             {games}
+    //           </div>
+    //         ))}
+    //         )
+    //       </React.Fragment>
+    //     ) : (
+    //       <React.Fragment></React.Fragment>
+    //     )}
+    //   </div>
+    // </Wrapper>
   );
 };
 export default Dashboard;

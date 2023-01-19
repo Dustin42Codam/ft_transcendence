@@ -170,6 +170,7 @@ export class ChatroomController {
 
   @Post("add/:id")
   async addUserToChatroom(@Param("id") id: string, @Body() body: AddUserDto, @Req() request: Request) {
+    console.log("🚀 ~ file: chatroom.controller.ts:173 ~ ChatroomController ~ addUserToChatroom ~ body", body)
     const chatroom = await this.chatroomService.getChatroomById(Number(id));
     if (chatroom.type == ChatroomType.DIRECT) throw new BadRequestException("You can not add a User to a DIRECT chatroom.");
 	const senderId = await this.authService.userId(request)
@@ -210,7 +211,8 @@ export class ChatroomController {
 			throw new BadRequestException("PROTECTED chatrooms need to have a password.");
 		}
 		const {user_ids, ...createChatroom} = body;
-    	const user = await this.userService.getUserById(await this.authService.userId(request));
+		const userId = await this.authService.userId(request);
+    	const user = await this.userService.getUserById(userId);
     	user_ids.push(Number(user.id));
 		const uniqueUsers : number[] = [... new Set(user_ids)];
 		var users : User[]= []
@@ -220,6 +222,6 @@ export class ChatroomController {
 					throw new BadRequestException("One of the users does not exist.");
 				users.push(user)
 		}
-		return this.chatroomService.createChatroom(users, createChatroom, Number(request.session.user_id));
+		return this.chatroomService.createChatroom(users, createChatroom, userId);
 	}
 }

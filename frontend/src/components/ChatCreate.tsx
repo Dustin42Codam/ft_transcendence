@@ -8,6 +8,9 @@ import { ChatroomType } from "../models/Chats";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { selectCurrentUser } from "../redux/slices/currentUserSlice";
 import { addNewGroupChat } from "../redux/slices/chatsSlice";
+import ToastError from "./toasts/ToastError";
+import { toast } from "react-toastify";
+import { RootState } from "../redux/store";
 
 const ChatCreate = () => {
   const [name, setName] = useState("");
@@ -16,9 +19,56 @@ const ChatCreate = () => {
   const [chatType, setChatType] = useState<ChatroomType>(
     ChatroomType.PROTECTED
   );
-
   const dispatch = useAppDispatch();
   const currentUser = useAppSelector(selectCurrentUser);
+  const chatStatus = useAppSelector((state) => state.chats.status);
+  const chatError = useAppSelector((state) => state.chats.error);
+
+	async function createChat() {
+		if (!name) {
+		  window.alert("Name can't be empty!");
+		} else if (chatType === ChatroomType.PROTECTED && password !== passwordConfrim) {
+		  // window.alert("Passwords did not match!");
+		  toast.error('Passwords did not match!',
+			  {
+			  position: "top-right",
+			  autoClose: 5000,
+			  hideProgressBar: false,
+			  closeOnClick: true,
+			  pauseOnHover: true,
+			  draggable: true,
+			  progress: undefined,
+			  theme: "colored",
+			});
+		} else {
+				dispatch(
+					await addNewGroupChat({
+					  chat: {
+						  name: name,
+						  password: password,
+						  user_ids: [],
+						  type: chatType,
+					  },
+					  user_id: currentUser.id,
+					}))
+				if (chatStatus === 'failed') {
+					toast.error(`${chatError}`, {
+						position: "top-right",
+						autoClose: 5000,
+						hideProgressBar: false,
+						closeOnClick: true,
+						pauseOnHover: true,
+						draggable: true,
+						progress: undefined,
+						theme: "colored",
+				  	});
+				}
+				if (chatStatus === 'loading') {
+
+				}
+
+	  }
+	}
 
   return (
     <div className="chatGridContainer" id="chatGridContainer">
@@ -27,27 +77,7 @@ const ChatCreate = () => {
       </h1>
       <button
         className="gridItem chatButton"
-        onClick={async () => {
-          if (!name) {
-            window.alert("Name can't be empty!");
-          } else if (password !== passwordConfrim) {
-            window.alert("Passwords did not match!");
-            setPasswordConfirm("");
-            setPassword("");
-          } else {
-            dispatch(
-              await addNewGroupChat({
-                chat: {
-                  name: name,
-                  password: password,
-                  user_ids: [],
-                  type: chatType,
-                },
-                user_id: currentUser.id,
-              })
-            );
-          }
-        }}
+        onClick={createChat}
         type="button"
       >
         GO!
@@ -56,9 +86,9 @@ const ChatCreate = () => {
         Feel free to create a chat room.
       </h6>
       <label id="nameInputLable">
-        <p>Name</p>
+        <p>Name{password}</p>
       </label>
-      <SelectInput id="selectChatInput" setter={setChatType} />
+      <SelectInput id="selectChatInput" setChatType={setChatType} setPassword={setPassword} />
       <TextInput setter={setName} id="nameInput" type="text" />
       {chatType === ChatroomType.PROTECTED ? (
         <React.Fragment>
@@ -66,7 +96,15 @@ const ChatCreate = () => {
             Password
           </label>
 
-          <TextInput id="passwordInput" type="password" setter={setPassword} />
+          {/* <TextInput id="passwordInput" type="password" setter={setPassword} /> */}
+
+		  <input
+      type="password"
+      id="passwordInput"
+      onChange={(e: any) => setPassword(e.target.value)}
+      required
+    />
+
 
           <label
             id="chatPasswordInputLableConfirm"

@@ -18,15 +18,27 @@ const Authenticate = () => {
     document.location.href =
       "https://api.intra.42.fr/oauth/authorize?client_id=7c59d418a12bb6da95283ca1866d0db3946ff94528e8d7be5b98545c31f892ff&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fapi%2Foauth-callback&response_type=code&state=${stateValue}";
   }
-  async function no_intra() {
+  async function loginAsJohn() {
     await axios.post("users", {
-      display_name: "Theo",
-      intra_name: "john123",
-      avatar: "https://randomuser.me/api/portraits/men/42.jpg",
+      display_name: "John",
+      intra_name: "John",
+      avatar: "https://randomuser.me/api/portraits/men/41.jpg",
       status: "online",
     });
     await axios.post("login", {
-      display_name: "Theo",
+      display_name: "John",
+    });
+    document.location.href = "http://localhost:4242/";
+  }
+  async function loginAsAva() {
+    await axios.post("users", {
+      display_name: "Ava",
+      intra_name: "Ava",
+      avatar: "https://randomuser.me/api/portraits/women/42.jpg",
+      status: "online",
+    });
+    await axios.post("login", {
+      display_name: "Ava",
     });
     document.location.href = "http://localhost:4242/";
   }
@@ -56,7 +68,8 @@ const Authenticate = () => {
           </div>
         </div>
       </div>
-      <SignInButton func={no_intra} name="no intra" />
+      <SignInButton func={loginAsJohn} name="login as John (debug)" />
+      <SignInButton func={loginAsAva} name="login as Ava (debug)" />
     </>
   );
 };
