@@ -18,7 +18,7 @@ function ChatUserList() {
   const currentMember = chatMembers.find((member: any) => member.user.id === currentUser.id);
   const [newUserName, setNewUserName] = useState("");
   const [rerender, setRerender] = useState(true);
-  const allUsers = useAppSelector(selectAllUsers); // to delete
+  const allUsers = useAppSelector(selectAllUsers); // delete???
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const chatStatus = useAppSelector((state) => state.chats.status);
@@ -33,7 +33,7 @@ function ChatUserList() {
     const response = await axios.get(`member/chatroom/id/${currentChat.id}`);
     setChatMembers(
       response.data.filter(
-        (member: any) => member.chatroom.name === currentChat.name
+        (member: any) => member.chatroom.id === currentChat.id
       )
     );
 	console.log(
@@ -215,7 +215,7 @@ function ChatUserList() {
         .post(`member/ban/${member.id}`)
         .then(() => {
           toast.update(id, {
-            render: `Banned ${member.user.display_name}!`,
+            render: `${member.user.display_name} banned!`,
             type: "success",
             isLoading: false,
             position: "top-right",
@@ -255,7 +255,167 @@ function ChatUserList() {
         .post(`member/unban/${member.id}`)
         .then(() => {
           toast.update(id, {
-            render: `Unbanned ${member.user.display_name}!`,
+            render: `${member.user.display_name} unbanned!`,
+            type: "success",
+            isLoading: false,
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+          });
+        })
+        .catch((error: any) => {
+          console.log(error);
+          toast.update(id, {
+            render: `${error.response.data.message}`,
+            type: "error",
+            position: "top-right",
+            autoClose: 5000,
+            isLoading: false,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+          });
+        });
+		setRerender(!rerender);
+  }
+
+  async function makeAdmin(member: any) {
+
+      const id = toast.loading(`Giving ${member.user.display_name} admin rights...`);
+
+      await axios
+        .post(`member/makeAdmin/${member.id}`)
+        .then(() => {
+          toast.update(id, {
+            render: `${member.user.display_name} set as admin!`,
+            type: "success",
+            isLoading: false,
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+          });
+        })
+        .catch((error: any) => {
+          console.log(error);
+          toast.update(id, {
+            render: `${error.response.data.message}`,
+            type: "error",
+            position: "top-right",
+            autoClose: 5000,
+            isLoading: false,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+          });
+        });
+		setRerender(!rerender);
+  }
+
+  async function removeAdmin(member: any) {
+
+      const id = toast.loading(`Removing admin rights from ${member.user.display_name}...`);
+
+      await axios
+        .post(`member/removeAdmin/${member.id}`)
+        .then(() => {
+          toast.update(id, {
+            render: `${member.user.display_name} removed as admin!`,
+            type: "success",
+            isLoading: false,
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+          });
+        })
+        .catch((error: any) => {
+          console.log(error);
+          toast.update(id, {
+            render: `${error.response.data.message}`,
+            type: "error",
+            position: "top-right",
+            autoClose: 5000,
+            isLoading: false,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+          });
+        });
+		setRerender(!rerender);
+  }
+
+  async function muteUser(member: any) {
+
+	const id = toast.loading(`Muting user ${member.user.display_name}...`);
+
+      await axios
+        .post(`member/mute/${member.id}`, {sender_id: currentUser.id, time_in_seconds: 300})
+        .then(() => {
+          toast.update(id, {
+            render: `${member.user.display_name} muted!`,
+            type: "success",
+            isLoading: false,
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+          });
+        })
+        .catch((error: any) => {
+          console.log(error);
+          toast.update(id, {
+            render: `${error.response.data.message}`,
+            type: "error",
+            position: "top-right",
+            autoClose: 5000,
+            isLoading: false,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+          });
+        });
+		setRerender(!rerender);
+  }
+
+  async function unmuteUser(member: any) {
+
+      const id = toast.loading(`Unmutening user ${member.user.display_name}...`);
+
+      await axios
+        .post(`member/unmute/${member.id}`)
+        .then(() => {
+          toast.update(id, {
+            render: `${member.user.display_name} umuted!`,
             type: "success",
             isLoading: false,
             position: "top-right",
@@ -301,7 +461,6 @@ function ChatUserList() {
           />
 
           <div className="chat-user-list-grid">
-            {/* <div className='chat-user-list-flex'> */}
             {chatMembers.map((member: any, index: number) =>
 				member.user.id !== currentUser.id &&
               <div className="pop-up-member" key={index}>
@@ -310,12 +469,14 @@ function ChatUserList() {
 
                 <button>send game invite</button>
 
-				{currentMember?.role !== 'user' && member.banned === false && (<button onClick={() => banUser(member)}>ban</button>)}
+				{currentMember?.role !== 'user' && member.banned === false && (<button onClick={() => banUser(member)}>ban for 5 minutes</button>)}
 				{currentMember?.role !== 'user' && member.banned === true && (<button onClick={() => unbanUser(member)}>unban</button>)}
 
-				<button>mute</button>
-                
-				<button>set as admin</button>
+				{currentMember?.role !== 'user' && member.muted_until < new Date().toISOString() && (<button onClick={() => muteUser(member)}>mute</button>)}
+				{currentMember?.role !== 'user' && member.muted_until >= new Date().toISOString() && (<button onClick={() => unmuteUser(member)}>unmute</button>)}
+				
+				{currentMember?.role !== 'user' && member.role === 'user' && (<button onClick={() => makeAdmin(member)}>make admin</button>)}
+				{currentMember?.role !== 'user' && member.role === 'admin' && (<button onClick={() => removeAdmin(member)}>remove admin</button>)}
               </div>
             )}
           </div>

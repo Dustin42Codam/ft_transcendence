@@ -10,7 +10,7 @@ export class Message {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => Member)
+  @ManyToOne(() => Member, {cascade: true})
   member: Member;
 
   @Column()

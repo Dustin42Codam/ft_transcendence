@@ -30,13 +30,14 @@ todo:
 		-	sync with redux?
 		-	fetch current chat members
 
-		Bug:
+		BUG:
 			-	create a channel but not set as owner
 				-> FIX replace request.session.user_id
 				-> return this.chatroomService.createChatroom(users, createChatroom, Number(request.session.user_id));
 
 		+	delete chat
 			+	only as owner???
+			-	FIX: can't delete chat on backend
 
 		+	add user to chat
 			+	admin can add another user to chat
@@ -44,22 +45,24 @@ todo:
 			+	only admins or owner can add new users
 			+	check if user is already in a chat room
 
-		->	ban user
-			->	create button
-			-	test as owner
-			-	test as admin
-			-	test as user
-		-	unban user
-		->	set others as admin
-			->	authorized
-			-	unauthorized
-		->	unset others as admin
-			->	authorized
-			-	unauthorized
-		-	mute user
-			-	minutes
-		-	unmute user
+		+	un/ban user
+			+	only admins or owner can un/ban users
+			+	un/banned users cannot write messages
+				->	connect via sockets???
+
+		+	un/mute user
+			+	only admins or owners can un/set users as admins
+			+	muted users cannot write messages
+
+		+	un/set other users as admin
+			+	only admins or owners can un/set users as admins
+
+		->	un/set other users as owners
+			-	only owners can un/set users as owner
+			-	no endpoints for that
+
 		-	ping pong invite
+
 		-	leave channel
 			-	set other user as channel owner
 			-	channel owner?
