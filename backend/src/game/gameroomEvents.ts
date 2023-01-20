@@ -11,6 +11,8 @@ enum GameroomEvents {
   LeaveGameRoomSuccess = "leave_game_room_success",
   SpectateGameRoom = "spectate_game_room",
   GameRoomNotification = "game_room_notification",
+  ClientWantsToStartGame = "client_want_to_start_game",
+  ServerStartedTheGame = "server_start_the_game",
   //GameRoomFull = "join_game_room_fail",
   //MessageToGameRoom = "message_to_game_room",
 }

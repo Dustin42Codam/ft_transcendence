@@ -108,6 +108,12 @@ const gameSocketSlice = createSlice({
 		getBall: (state, action: PayloadAction<any>) => {
 			return ;
 		},
+		serverStartedTheGame: (state, action: PayloadAction<any>) => {
+			return ;
+		},
+		clientWantsToStartGame: (state, action: PayloadAction<any>) => {
+			return ;
+		},
   },
 });
 

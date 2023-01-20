@@ -77,27 +77,26 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
   }
 
 	@UseGuards(SocketAuthGuard)
-  @SubscribeMessage(GameroomEvents.GetBatP2)
-  handleGetBatP2(client: Socket, payload: any): void {
-		this.io.to(payload.GameRoomId).emit(GameroomEvents.GetBatP2, 1);
+  @SubscribeMessage(GameroomEvents.ClientWantsToStartGame)
+  handleStartGame(client: Socket, payload: any): void {
+		//payload needs to have game room id
+		//payload needs to have ball XV YV
+		//payload needs to have P1Bat
+		//payload needs to have P2Bat
+		//thats it
+		this.io.to(payload.GameRoomId).emit(GameroomEvents.ServerStartedTheGame, 3);
   }
 
 	@UseGuards(SocketAuthGuard)
-  @SubscribeMessage(GameroomEvents.GetBatP1)
-  handleGetBatP1(client: Socket, payload: any): void {
-		this.io.to(payload.GameRoomId).emit(GameroomEvents.GetBatP1, 2);
+  @SubscribeMessage(GameroomEvents.MoveBatP1)
+  handleMoveBatP1(client: Socket, payload: any): void {
+		//this.io.to(payload.GameRoomId).emit(GameroomEvents.GetBatP1, 2);
   }
 
 	@UseGuards(SocketAuthGuard)
   @SubscribeMessage(GameroomEvents.MoveBatP2)
   handleMoveBatP2(client: Socket, payload: any): void {
-		this.io.to(payload.GameRoomId).emit(GameroomEvents.MoveBatP2, 3);
-  }
-
-	@UseGuards(SocketAuthGuard)
-  @SubscribeMessage(GameroomEvents.GetBall)
-  handleMoveBatP1(client: Socket, payload: any): void {
-		this.io.to(payload.GameRoomId).emit(GameroomEvents.MoveBatP1, 4);
+		//this.io.to(payload.GameRoomId).emit(GameroomEvents.MoveBatP2, 3);
   }
 
 }

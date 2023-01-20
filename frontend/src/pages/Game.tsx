@@ -317,42 +317,63 @@ const Game = (props: any) => {
   };
 
   useEffect(() => {
-    const canvas = document.getElementById("canvas") as HTMLCanvasElement;
-    const gameState = new GameState(canvas);
-    //UserName
-    //UserType
-    //GameRoomId
-    dispatch(gameSocketActions.joinRoom(42));
+		const waitForTheGameToStart = async () => {
+			const data = await new Promise((resolve, reject)  => {
+				(function loop() {
+					 setTimeout(() => {
+						console.log("hi there");
+						if (false) {
+							resolve(true);
+						}
+						loop();
+					}, 1000);
+				})();
+			})
+			const datas = await data;
+			console.log("bye there");
+			
+		}
+		waitForTheGameToStart().then(() => {
+			const canvas = document.getElementById("canvas") as HTMLCanvasElement;
+			//before this we need to have the data before we can build the game
+			//how can we get the position for
+			//we have to use a promise
+			const gameState = new GameState(canvas);
+			//UserName
+			//UserType
+			//GameRoomId
+			dispatch(gameSocketActions.joinRoom(42));
 
-    canvas.addEventListener("keydown", function onKeyDown(e) {
-      e.preventDefault();
-      let keynum: any;
+			canvas.addEventListener("keydown", function onKeyDown(e) {
+				e.preventDefault();
+				let keynum: any;
 
-      if (window.event) {
-        keynum = e.keyCode;
-      } else if (e.which) {
-        keynum = e.which;
-      }
+				if (window.event) {
+					keynum = e.keyCode;
+				} else if (e.which) {
+					keynum = e.which;
+				}
 
-      console.log(e, gameState);
+				console.log(e, gameState);
 
-      if (String.fromCharCode(keynum) == "(") {
-        gameState.batP1.moveUp(10, 1);
-        //
-      }
-      if (String.fromCharCode(keynum) == "&") {
-        //
-        gameState.batP1.moveUp(10, -1);
-      }
-    });
-    console.log(canvas);
-    const startAnimation = () => {
-      gameState.animation();
-      gameState.score();
-      gameState.frame += 1;
-      requestAnimationFrame(startAnimation);
-    };
-    startAnimation();
+				if (String.fromCharCode(keynum) == "(") {
+					gameState.batP1.moveUp(10, 1);
+					//
+				}
+				if (String.fromCharCode(keynum) == "&") {
+					//
+					gameState.batP1.moveUp(10, -1);
+				}
+			});
+			console.log(canvas);
+			const startAnimation = () => {
+				gameState.animation();
+				gameState.score();
+				gameState.frame += 1;
+				requestAnimationFrame(startAnimation);
+			};
+			startAnimation();
+		});
   }, []);
   /*
   function myKeyPress(e: any) {}
