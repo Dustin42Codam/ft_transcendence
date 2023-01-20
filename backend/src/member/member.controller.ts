@@ -174,6 +174,9 @@ export class MemberController {
     if (sender.role !== MemberRole.OWNER) {
 		  throw new BadRequestException("You do not have the rights to make a member OWNER.");
 	  }
+    if (sender.id === receiver.id) {
+		  throw new BadRequestException("You are not allowed to make yourself OWNER.");
+	  }
     receiver.role = MemberRole.OWNER;
     await this.memberService.update(receiver.id, receiver);
     sender.role = MemberRole.ADMIN;
@@ -188,6 +191,9 @@ export class MemberController {
     const sender = await this.memberService.getMemberByUserAndChatroom(user, receiver.chatroom);
     if (sender.role !== MemberRole.OWNER) {
 		  throw new BadRequestException("You do not have the rights to remove a member.");
+	  }
+    if (sender.id === receiver.id) {
+		  throw new BadRequestException("You are not allowed to remove yourself.");
 	  }
     receiver.status = MemberStatus.INACTIVE;
     receiver.role = MemberRole.USER;
