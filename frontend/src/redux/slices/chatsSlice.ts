@@ -45,33 +45,33 @@ export const fetchDirectChats = createAsyncThunk(
 );
 
 export const addNewGroupChat = createAsyncThunk(
-	"chats/addNewGroupChat",
-	async (data: any, { rejectWithValue }) => {
-	  try {
-		const response: any = await axios.post(`chatroom/create`, data.chat);
-		return response.data;
-	  } catch (error: any) {
-		if (!error.response) {
-		  throw error;
-		}
-		return rejectWithValue(error.response.data);
-	  }
-	}
+  "chats/addNewGroupChat",
+  async (data: any, { rejectWithValue }) => {
+    try {
+      const response: any = await axios.post(`chatroom/create`, data.chat);
+      return response.data;
+    } catch (error: any) {
+      if (!error.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  }
 );
 
 export const deleteChat = createAsyncThunk(
-	"chats/deleteChat",
-	async (chat: any, { rejectWithValue }) => {
-	  try {
-		const response: any = await axios.post(`chatroom/remove/id/${chat.id}`)
-		return chat;
-	  } catch (error: any) { 
-		if (!error.response) {
-			throw error;
-		}
-		return rejectWithValue(error.response.data);
-	  }
-	}
+  "chats/deleteChat",
+  async (chat: any, { rejectWithValue }) => {
+    try {
+      const response: any = await axios.post(`chatroom/remove/id/${chat.id}`);
+      return chat;
+    } catch (error: any) {
+      if (!error.response) {
+        throw error;
+      }
+      return rejectWithValue(error.response.data);
+    }
+  }
 );
 
 export const chatsSlice = createSlice({
@@ -139,25 +139,25 @@ export const chatsSlice = createSlice({
         state.status = "loading";
       })
       .addCase(addNewGroupChat.fulfilled, (state: any, action: any) => {
-		  state.status = "succeeded";
-          state.group.push(action.payload);
+        state.status = "succeeded";
+        state.group.push(action.payload);
       })
       .addCase(addNewGroupChat.rejected, (state: any, action: any) => {
         state.status = "failed";
         state.error = action.payload.message;
-    	})
-    	.addCase(deleteChat.pending, (state, action) => {
-    	  state.status = "loading";
-    	})
-    	.addCase(deleteChat.fulfilled, (state: any, action: any) => {
-			state.status = "succeeded";
-			// #FIX
-			state.group.splice(action.payload, 1);
-    	})
-    	.addCase(deleteChat.rejected, (state: any, action) => {
-    	  state.status = "failed";
-    	  state.error = action.error.message;
-    	});
+      })
+      .addCase(deleteChat.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(deleteChat.fulfilled, (state: any, action: any) => {
+        state.status = "succeeded";
+        // #FIX
+        state.group.splice(action.payload, 1);
+      })
+      .addCase(deleteChat.rejected, (state: any, action) => {
+        state.status = "failed";
+        state.error = action.error.message;
+      });
   },
 });
 

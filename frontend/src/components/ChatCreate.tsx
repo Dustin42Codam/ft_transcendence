@@ -24,51 +24,52 @@ const ChatCreate = () => {
   const chatStatus = useAppSelector((state) => state.chats.status);
   const chatError = useAppSelector((state) => state.chats.error);
 
-	async function createChat() {
-		if (!name) {
-		  window.alert("Name can't be empty!");
-		} else if (chatType === ChatroomType.PROTECTED && password !== passwordConfrim) {
-		  // window.alert("Passwords did not match!");
-		  toast.error('Passwords did not match!',
-			  {
-			  position: "top-right",
-			  autoClose: 5000,
-			  hideProgressBar: false,
-			  closeOnClick: true,
-			  pauseOnHover: true,
-			  draggable: true,
-			  progress: undefined,
-			  theme: "colored",
-			});
-		} else {
-				dispatch(
-					await addNewGroupChat({
-					  chat: {
-						  name: name,
-						  password: password,
-						  user_ids: [],
-						  type: chatType,
-					  },
-					  user_id: currentUser.id,
-					}))
-				if (chatStatus === 'failed') {
-					toast.error(`${chatError}`, {
-						position: "top-right",
-						autoClose: 5000,
-						hideProgressBar: false,
-						closeOnClick: true,
-						pauseOnHover: true,
-						draggable: true,
-						progress: undefined,
-						theme: "colored",
-				  	});
-				}
-				if (chatStatus === 'loading') {
-
-				}
-
-	  }
-	}
+  async function createChat() {
+    if (!name) {
+      window.alert("Name can't be empty!");
+    } else if (
+      chatType === ChatroomType.PROTECTED &&
+      password !== passwordConfrim
+    ) {
+      // window.alert("Passwords did not match!");
+      toast.error("Passwords did not match!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+    } else {
+      dispatch(
+        await addNewGroupChat({
+          chat: {
+            name: name,
+            password: password,
+            user_ids: [],
+            type: chatType,
+          },
+          user_id: currentUser.id,
+        })
+      );
+      if (chatStatus === "failed") {
+        toast.error(`${chatError}`, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+      }
+      if (chatStatus === "loading") {
+      }
+    }
+  }
 
   return (
     <div className="chatGridContainer" id="chatGridContainer">
@@ -86,9 +87,13 @@ const ChatCreate = () => {
         Feel free to create a chat room.
       </h6>
       <label id="nameInputLable">
-        <p>Name{password}</p>
+        <p>Name</p>
       </label>
-      <SelectInput id="selectChatInput" setChatType={setChatType} setPassword={setPassword} />
+      <SelectInput
+        id="selectChatInput"
+        setChatType={setChatType}
+        setPassword={setPassword}
+      />
       <TextInput setter={setName} id="nameInput" type="text" />
       {chatType === ChatroomType.PROTECTED ? (
         <React.Fragment>
@@ -98,13 +103,12 @@ const ChatCreate = () => {
 
           {/* <TextInput id="passwordInput" type="password" setter={setPassword} /> */}
 
-		  <input
-      type="password"
-      id="passwordInput"
-      onChange={(e: any) => setPassword(e.target.value)}
-      required
-    />
-
+          <input
+            type="password"
+            id="passwordInput"
+            onChange={(e: any) => setPassword(e.target.value)}
+            required
+          />
 
           <label
             id="chatPasswordInputLableConfirm"

@@ -30,9 +30,7 @@ const Dashboard = () => {
   }
 
   return (
-	<Wrapper>
-
-	</Wrapper>
+    <Wrapper></Wrapper>
     // <Wrapper>
     //   <div className="">
     //     <button onClick={joinGameRoom}> Regular Game</button>
@@ -45,11 +43,11 @@ const Dashboard = () => {
     //             key={index}
     //             className="gameRow"
     //             /*
-	// 							 * //TODO spectate
-	// 							 * onClick={(e) => {
-	// 								handelClick(index);
-	// 							}}
-	// 						 */
+    // 							 * //TODO spectate
+    // 							 * onClick={(e) => {
+    // 								handelClick(index);
+    // 							}}
+    // 						 */
     //           >
     //             {games}
     //           </div>

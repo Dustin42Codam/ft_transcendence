@@ -1,11 +1,12 @@
 @import url("https://fonts.cdnfonts.com/css/studio-sans");
 
-
-
-#root, html, body, #app, #app>div {
-	height: 100%
+#root,
+html,
+body,
+#app,
+#app > div {
+  height: 100%;
 }
-  
 
 body {
   -webkit-font-smoothing: antialiased;

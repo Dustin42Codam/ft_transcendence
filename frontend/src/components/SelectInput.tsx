@@ -7,16 +7,20 @@ export enum ChatroomType {
   DIRECT = "direct",
 }
 
-const SelectInput = (props: {id: any, setChatType: any, setPassword: any}) => {
-	
-	function changeChatType (e: any) {
-		if (e.target.value === ChatroomType.PRIVATE) {
-			props.setPassword(undefined);
-		}
-		props.setChatType(e.target.value);
-	}
+const SelectInput = (props: {
+  id: any;
+  setChatType: any;
+  setPassword: any;
+}) => {
+ 
+	function changeChatType(e: any) {
+    if (e.target.value === ChatroomType.PRIVATE) {
+      props.setPassword(undefined);
+    }
+    props.setChatType(e.target.value);
+  }
 
-	return (
+  return (
     <select id={props.id} onChange={(e: any) => changeChatType(e)}>
       <option value={ChatroomType.PROTECTED}>Protected</option>
       <option value={ChatroomType.PRIVATE}>Private</option>

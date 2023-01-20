@@ -34,7 +34,7 @@ const Authenticate = () => {
     await axios.post("users", {
       display_name: "Ava",
       intra_name: "Ava",
-      avatar: "https://randomuser.me/api/portraits/women/42.jpg",
+      avatar: "https://randomuser.me/api/portraits/women/43.jpg",
       status: "online",
     });
     await axios.post("login", {

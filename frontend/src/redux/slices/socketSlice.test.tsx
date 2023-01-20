@@ -6,6 +6,7 @@ import { fetchCurrentChatRoomMessages } from "./socketSlice";
 import { configureStore } from "@reduxjs/toolkit";
 import { combineReducers } from "redux";
 import axios from "axios";
+import { ChatroomType } from "../../components/ChatTable";
 
 jest.mock("axios");
 
@@ -34,12 +35,12 @@ describe("Testing if the god damn store works", () => {
     });
     store.dispatch(
       socketActions.joinARoom({
-        chatRoom: { userId: 1, id: 1, name: "I am a chat jow" },
+        chatRoom: { userId: 1, id: 1, name: "I am a chat jow", type: ChatroomType.DIRECT },
       })
     );
     store.dispatch(
       socketActions.joinARoomSuccess({
-        chatRoom: { userId: 1, id: 1, name: "I am a chat jow" },
+        chatRoom: { userId: 1, id: 1, name: "I am a chat jow", type: ChatroomType.DIRECT },
       })
     );
     expect(store.getState().socket.currentChatRoom).toEqual({
@@ -48,7 +49,7 @@ describe("Testing if the god damn store works", () => {
     });
     store.dispatch(
       socketActions.leaveARoom({
-        chatRoom: { userId: 1, id: 1, name: "I am a chat jow" },
+        chatRoom: { userId: 1, id: 1, name: "I am a chat jow", type: ChatroomType.DIRECT },
       })
     );
     store.dispatch(socketActions.leaveARoomSuccess());

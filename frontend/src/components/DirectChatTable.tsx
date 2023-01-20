@@ -62,20 +62,17 @@ const DirectChatTable = () => {
   }, []);
 
   async function handleClick(name: string, i: number) {
-    // const i = 0;
-    console.log("🚀 ~ file: DirectChatTable.tsx:59 ~ handleClick ~ name", name);
-    console.log("🚀 ~ file: DirectChatTable.tsx:59 ~ handleClick ~ i", i);
-
     dispatch(
       socketActions.joinARoom({
         chatRoom: {
           id: directChats[i].id,
           userId: user.id,
           name: name,
+		  type: ChatroomType.DIRECT
         },
       })
     );
-    const id = toast.loading(`joining room: ${directChats[i].i}!`);
+    // const id = toast.loading(`joining room: ${directChats[i].i}!`);
     await new Promise((resolve, reject) => {
       //will check evert seccond if the chat room is set
       const interval = setInterval(function () {
@@ -85,18 +82,17 @@ const DirectChatTable = () => {
           currentChatroom.id === directChats[i].id &&
           currentChatroom.name === name
         ) {
-          console.log("All goooed:", currentChatroom);
           resolve(null);
           clearInterval(interval);
         }
       }, 100);
     });
-    toast.update(id, {
-      render: `joined room: ${directChats[i].name}!`,
-      autoClose: 1500,
-      type: "success",
-      isLoading: false,
-    });
+    // toast.update(id, {
+    //   render: `joined room: ${directChats[i].name}!`,
+    //   autoClose: 1500,
+    //   type: "success",
+    //   isLoading: false,
+    // });
 
     navigate("/chats/dm/" + name, {
       replace: true,

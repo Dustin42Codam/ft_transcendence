@@ -34,14 +34,14 @@ export const UserPage = () => {
   const navigate = useNavigate();
   let currentChatroom: any = store.getState().socket.currentChatRoom;
   const friendsAmount = "Friends (" + friends.length + ")";
-  
+
   async function fetchBlocked() {
-	  console.log("🚀 ~ file: UserPage.tsx:27 ~ UserPage ~ userId", userId)
+    console.log("🚀 ~ file: UserPage.tsx:27 ~ UserPage ~ userId", userId);
     const response: any = await axios
       .get(`block/receiverId/${userId}`)
       .then((res: any) => setBlocked(true))
       .catch((err: any) => {
-		setBlocked(false)
+        setBlocked(false);
         // console.log("🚀 ~ file: UserPage.tsx:29 ~ fetchBlocked ~ err", err);
       });
   }
@@ -89,7 +89,7 @@ export const UserPage = () => {
   }
 
   async function removeFriend() {
-	console.log('removing')
+    console.log("removing");
     await axios.post(`friend/remove/id/${userId}`).catch((error: any) => {
       console.log("🚀 ~ file: UserPage.tsx ~ removeFriend ~ error", error);
     });
@@ -121,6 +121,7 @@ export const UserPage = () => {
           userId: user.id,
           id: friendship.chatroom_id,
           name: user.display_name,
+		  type: ChatroomType.DIRECT
         },
       })
     );

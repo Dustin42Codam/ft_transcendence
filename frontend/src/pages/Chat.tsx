@@ -41,7 +41,9 @@ const Chat = (props: any) => {
 
   async function fetchMessages() {
     if (currentChat.id !== -1) {
-      const response: any = await axios.get(`message/chatroom/id/${currentChat.id}`);
+      const response: any = await axios.get(
+        `message/chatroom/id/${currentChat.id}`
+      );
       setMessages(response?.data);
     }
   }
@@ -59,16 +61,15 @@ const Chat = (props: any) => {
   return (
     <Wrapper>
       <div className="messageContainers">
-
         <div className="chat-body">
-        <div className="chat-header">
-          {user && (
-            <Link to={`/users/${user.id}`}>
-              <img src={user.avatar} alt="avatar" className="msg-avatar" />
-            </Link>
-          )}
-          <ChatUserList />
-        </div>
+          <div className="chat-header">
+            {user && (
+              <Link to={`/users/${user.id}`}>
+                <img src={user.avatar} alt="avatar" className="msg-avatar" />
+              </Link>
+            )}
+            <ChatUserList currentChat={currentChat}/>
+          </div>
           {messages?.map((msg: any, index: number) =>
             msg.member.user.id === currentUser.id ? (
               <p className="message message_right" key={index}>
@@ -99,7 +100,7 @@ const Chat = (props: any) => {
 
           <Socket location={location} /* dummy={dummy} */ />
         </div>
-          <div ref={dummy}></div>
+        <div ref={dummy}></div>
       </div>
     </Wrapper>
   );

@@ -1,10 +1,12 @@
 import { createAsyncThunk, PayloadAction, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { ChatroomType } from "../../models/Channel";
 
 export interface ChatRoom {
   id: number;
   name: string;
   userId: number; // Added the userId so I can get it in the backend
+  type: string;
 }
 
 export interface ChatState {
@@ -19,7 +21,12 @@ export const initialState: ChatState = {
   messages: [],
   isEstablishingConnection: false,
   isConnected: false,
-  currentChatRoom: { userId: -1, id: -1, name: "" },
+  currentChatRoom: {
+		userId: -1,
+		id: -1,
+		name: "",
+		type: ""
+	},
   status: "",
 };
 
@@ -42,6 +49,9 @@ const socketSlice = createSlice({
   name: "socket",
   initialState,
   reducers: {
+	updateChatName: (state, action: PayloadAction<{ chatRoom: ChatRoom }>) => {
+		state.currentChatRoom.name = action.payload.chatRoom.name;
+	},
     startConnecting: (state) => {
       state.isEstablishingConnection = true;
     },

@@ -1,9 +1,21 @@
-import React from 'react'
-import { toast } from 'react-toastify';
+import React from "react";
+import { toast } from "react-toastify";
 // #delete
-function ToastError (props: {msg: any}) {
+function ToastError(props: { msg: any }) {
+  toast.error(props.msg, {
+    position: "top-right",
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "colored",
+  });
 
-	toast.error(props.msg, {
+  return (
+    <div>
+      {toast.error(props.msg, {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -12,23 +24,9 @@ function ToastError (props: {msg: any}) {
         draggable: true,
         progress: undefined,
         theme: "colored",
-      });
-
-  return (
-	<div>
-		{
-			toast.error(props.msg, {
-    		    position: "top-right",
-    		    autoClose: 5000,
-    		    hideProgressBar: false,
-    		    closeOnClick: true,
-    		    pauseOnHover: true,
-    		    draggable: true,
-    		    progress: undefined,
-    		    theme: "colored",
-		})}
-	</div>
-  )
+      })}
+    </div>
+  );
 }
 
-export default ToastError
+export default ToastError;

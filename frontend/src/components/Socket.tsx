@@ -21,16 +21,17 @@ const Snicel = (props: any) => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [chatMembers, setChatMembers] = useState<any>([]);
-  const [ currentMember_, setCurrentMember_ ] = useState();
-  const [ message, setMessage ] = useState("");
+  const [currentMember_, setCurrentMember_] = useState();
+  const [message, setMessage] = useState("");
   const currentUser = useAppSelector(selectCurrentUser);
-  const currentMember = chatMembers.find((member: any) => member.user.id === currentUser.id);
+  const currentMember = chatMembers.find(
+    (member: any) => member.user.id === currentUser.id
+  );
   const currentChat = useAppSelector(
-	    (state: any) => state.socket.currentChatRoom
-	  );
-	let currentChatroom: any = store.getState().socket.currentChatRoom;
-	const inputRef = useRef<HTMLFormElement>(null);
-	
+    (state: any) => state.socket.currentChatRoom
+  );
+  let currentChatroom: any = store.getState().socket.currentChatRoom;
+  const inputRef = useRef<HTMLFormElement>(null);
 
   async function fetchChatUsers() {
     const response = await axios.get(`member/chatroom/id/${currentChat.id}`);
@@ -45,7 +46,9 @@ const Snicel = (props: any) => {
     if (currentChat.id !== -1) {
       fetchChatUsers();
     }
-	setCurrentMember_(chatMembers.find((member: any) => member.user.id === currentUser.id));
+    setCurrentMember_(
+      chatMembers.find((member: any) => member.user.id === currentUser.id)
+    );
   }, [currentChat.id, message]);
 
   useEffect(() => {
@@ -66,47 +69,48 @@ const Snicel = (props: any) => {
     }
   }, [props.location]);
 
-
   const sendMessage = (e: any) => {
     e.preventDefault();
     console.log(currentChatroom);
 
-	console.log("🚀 ~ file: Socket.tsx:93 ~ sendMessage ~ currentMember.muted_until", currentMember.muted_until)
-	if (currentMember.banned === true) {
-		toast.error(`You are banned!`, {
-			position: "top-right",
-			autoClose: 5000,
-			hideProgressBar: false,
-			closeOnClick: true,
-			pauseOnHover: true,
-			draggable: true,
-			progress: undefined,
-			theme: "colored",
-		  });
-	} else if (currentMember.muted_until >= new Date().toISOString()) {
-		toast.error(`You are muted until ${currentMember.muted_until}!`, {
-			position: "top-right",
-			autoClose: 5000,
-			hideProgressBar: false,
-			closeOnClick: true,
-			pauseOnHover: true,
-			draggable: true,
-			progress: undefined,
-			theme: "colored",
-		  });
-	}
-	else {
-		dispatch(
-		  socketActions.sendMessage({
-			chatMessage: {
-			  chatRoomId: currentChatroom.id,
-			  content: inputRef.current!["messageInput"].value,
-			  authorId: currentUser.id,
-			},
-		  })
-		);
-		inputRef.current!["messageInput"].value = "";
-	}
+    console.log(
+      "🚀 ~ file: Socket.tsx:93 ~ sendMessage ~ currentMember.muted_until",
+      currentMember.muted_until
+    );
+    if (currentMember.banned === true) {
+      toast.error(`You are banned!`, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+    } else if (currentMember.muted_until >= new Date().toISOString()) {
+      toast.error(`You are muted until ${currentMember.muted_until}!`, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+    } else {
+      dispatch(
+        socketActions.sendMessage({
+          chatMessage: {
+            chatRoomId: currentChatroom.id,
+            content: inputRef.current!["messageInput"].value,
+            authorId: currentUser.id,
+          },
+        })
+      );
+      inputRef.current!["messageInput"].value = "";
+    }
   };
 
   return (

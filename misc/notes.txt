@@ -1,13 +1,18 @@
 
 todo:
 
+	-	chat type should be able to change
+	+	name of chatroom should be able to change
+	+	password for Protected chatrooms should be changeable
 
-	-	remove delete ban/mute from DMs
+	-	add user button pop ups with a user list
+
+	-	confirm window when delete channel
+	+	change ownership when owner leaves room
+	+	remove delete ban/mute from DMs
 	-	create a component for dm chats
 	-	rewrite seperate wrapper in Chat component
 	-	check error handling in user edit
-	-	bug when splittin direct / group chats in navbar
-		into 2 seperate components ????
 	->	add toasts for every store/api event
 		->	add to redux
 			->	chat delete
@@ -16,7 +21,7 @@ todo:
 		-	sync with sockets?
 		-	place every manual fetch into redux slice
 	->	Chat
-		-	auto scroll to bottom
+		+	auto scroll to bottom
 		-	chat user list
 			-	add avatar to user cards
 		-	chat header
@@ -27,19 +32,17 @@ todo:
 			-	add toasts with server response
 				+	on error
 				-	on success
+
 		-	update (current) chat
 			-	add update chat to redux slice
-		-	sync with redux?
-		-	fetch current chat members
 
-		BUG:
-			-	create a channel but not set as owner
-				-> FIX replace request.session.user_id
-				-> return this.chatroomService.createChatroom(users, createChatroom, Number(request.session.user_id));
+		-	sync with redux?
+
+		-	fetch current chat members
 
 		+	delete chat
 			+	only as owner???
-			-	FIX: can't delete chat on backend
+			+	FIX: can't delete chat on backend
 
 		+	add user to chat
 			+	admin can add another user to chat
@@ -59,9 +62,8 @@ todo:
 		+	un/set other users as admin
 			+	only admins or owners can un/set users as admins
 
-		->	un/set other users as owners
-			-	only owners can un/set users as owner
-			-	no endpoints for that
+		+	set other users as owners
+			+	only owners can set another user as owner
 
 		+	Leave channel bug
 
@@ -74,21 +76,22 @@ todo:
 			-	invalid name
 
 bugs:
+		-	admin leaves channel -> rejoins -> still admin
+		
+	fixed:
 		+	joinable/groupchats bug
-		-	chatroom long list
+		+	chatroom long list
+		+	create a channel but not set as owner
+			+ FIX replace request.session.user_id
+			+ return this.chatroomService.createChatroom(users, createChatroom, Number(request.session.user_id));
+		+	bug when splittin direct / group chats in navbar
+			+	into 2 seperate components ????
 
 notes:
-	-	don't forget that also the name of the chatroom should be able to change
-		-	and maybe also the password for Protected chatrooms
 	
 	-	ChatLobby?
 	-	ChatCreate?
 	-	ChatTable?
-
-	-	what happen if last member leaves the chatroom?
-		-	delete chat room?
-		-	leave empty?
-			-	if so then first member who joins becomes channel owner
 
 
 toasties:

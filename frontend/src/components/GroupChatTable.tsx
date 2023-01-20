@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import store from "../redux/store";
 import { useAppDispatch } from "../redux/hooks";
 import { socketActions } from "../redux/slices/socketSlice";
@@ -8,6 +8,7 @@ import PublicIcon from "@mui/icons-material/Public";
 import "./ChatTable.css";
 import { useAppSelector } from "../redux/hooks";
 import {
+	fetchGroupChats,
   selectDirectChats,
   selectGroupChats,
   selectJoinableChats,
@@ -41,6 +42,17 @@ const GroupChatTable = () => {
   const dispatch = useAppDispatch();
   const user = useAppSelector(selectCurrentUser);
   const navigate = useNavigate();
+  let data = useAppSelector(selectGroupChats);
+  
+  async function fetchChatData() {
+		dispatch(fetchGroupChats())
+		// setGroupChats()
+	}
+
+  useEffect(() => {
+	fetchChatData();
+  }, [currentChatroom])
+  
 
   async function handleClick(name: string, chatToJoinIndex: number) {
     dispatch(
@@ -49,6 +61,7 @@ const GroupChatTable = () => {
           id: groupChats[chatToJoinIndex].id,
           userId: user.id,
           name: groupChats[chatToJoinIndex].name,
+		  type: groupChats[chatToJoinIndex].type
         },
       })
     );
@@ -71,7 +84,7 @@ const GroupChatTable = () => {
       }, 100);
     });
     toast.update(id, {
-      render: `joined room: ${groupChats[chatToJoinIndex].name}!`,
+      render: `Switched to room: ${groupChats[chatToJoinIndex].name}!`,
       autoClose: 1500,
       type: "success",
       isLoading: false,

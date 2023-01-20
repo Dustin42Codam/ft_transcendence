@@ -31,24 +31,22 @@ type Chats = {
 const JoinableChats = (props: any) => {
   const dispatch = useAppDispatch();
   let navigate = useNavigate();
-//   const joinableChats = useAppSelector(selectJoinableChats);
-	const [ joinableChats, setJoinableChats ] = useState<any>([]);
+  //   const joinableChats = useAppSelector(selectJoinableChats);
+  const [joinableChats, setJoinableChats] = useState<any>([]);
   const [isPopUp, setIsPopUp] = useState(false);
   const [password, setPassword] = useState<string>("");
   const [joinChatIndex, setJoinChatIndex] = useState<number>(0);
   const user = useAppSelector(selectCurrentUser);
 
-
   async function fetchChats() {
-	const response = await axios.get('chatroom/join');
-	
-	setJoinableChats(response.data);
+    const response = await axios.get("chatroom/join");
+
+    setJoinableChats(response.data);
   }
 
   useEffect(() => {
-	fetchChats()
-  }, [])
-
+    fetchChats();
+  }, []);
 
   function handelClick(index: number) {
     setJoinChatIndex(index);
@@ -66,6 +64,7 @@ const JoinableChats = (props: any) => {
                 userId: user.id,
                 id: joinableChats[index].id,
                 name: joinableChats[index].name,
+				type: joinableChats[index].type
               },
             })
           );
@@ -82,8 +81,6 @@ const JoinableChats = (props: any) => {
         });
     }
   }
-
-  
 
   //if a password is entered this will fire
   useEffect(() => {
