@@ -1,8 +1,8 @@
 export class PaginatedResult {
-	data: any[];
-	meta: {
-		total: number,
-		page: number,
-		last_page: number
-	}
+  data: any[];
+  meta: {
+    total: number;
+    page: number;
+    last_page: number;
+  };
 }

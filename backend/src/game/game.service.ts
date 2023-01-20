@@ -4,48 +4,112 @@ import { Repository } from "typeorm";
 
 import { AbstractService } from "src/common/abstract.service";
 
-import { Game } from "./entity/game.entity";
+import { Game, GameStatus, GameType } from "./entity/game.entity";
 import { GameCreateDto } from "./dto/game-create.dto";
-import { AchievementService } from "src/achievement/achievement.service";
 import { GameStatsService } from "src/games_stats/game_stats.service";
+import { UserService } from "src/user/user.service";
+import { User } from "src/user/entity/user.entity";
 
 @Injectable()
 export class GameService extends AbstractService {
   constructor(
-        private achievementService : AchievementService,
         private gameStatsService : GameStatsService,
+		private userService : UserService,
 		@InjectRepository(Game) private readonly gameRepository: Repository<Game>
 	) {
 		super(gameRepository);
 	}
 
-    async getGameById(id: number) {
-        const game = this.findOne({id});
-        if (!game)
-            throw new BadRequestException("This Game does not exist");
-		return game;
+	async getGamesLadder() {
+		const users = await this.userService.getUsers(["game_stats"]);
+    const sorted = users.sort((u1,u2) => (u2.game_stats.win - u2.game_stats.lose) - (u1.game_stats.win - u1.game_stats.lose));
+		return sorted;
 	}
 
-    async createGame(gameCreateDto: GameCreateDto) {
-        if (gameCreateDto.score_player_1 > gameCreateDto.score_player_2) {
-            await this.gameStatsService.addWin(gameCreateDto.player_1.id);
-            await this.gameStatsService.addLose(gameCreateDto.player_2.id);
-        } else {
-            await this.gameStatsService.addLose(gameCreateDto.player_1.id);
-            await this.gameStatsService.addWin(gameCreateDto.player_2.id);
-        }
-        await this.achievementService.checkGameAchievements(gameCreateDto.player_1.id);
-        await this.achievementService.checkGameAchievements(gameCreateDto.player_2.id);
-        return await this.create(gameCreateDto);
+  async getGameById(id: number) {
+    const game = this.findOne({id});
+    if (!game) {
+      throw new BadRequestException("This Game does not exist");
     }
+		return game;
+}
 
-    async getAllGamesFromUser(id: number) {
-        return await this.gameRepository.find({
-            where: [
-                {player_1: id},
-                {player_2: id}
-            ]
-        })
+  private isGameFinished(score: number) {
+    return (score >= 5)
+  }
+
+  async endGame(game: Game) {
+    const player_1 = await this.userService.getUserById(game.player_1, ["game_stats"])
+    const player_2 = await this.userService.getUserById(game.player_2, ["game_stats"])
+    if (game.score_player_1 > game.score_player_2) {
+      await this.gameStatsService.addWin(player_1);
+      await this.gameStatsService.addLose(player_2);
+    } else {
+      await this.gameStatsService.addLose(player_1);
+      await this.gameStatsService.addWin(player_2);
     }
+    await this.update(game.id, game)
+    game.status = GameStatus.PASSIVE;
+    return game;
+  }
 
+  async addScoreP1(gameId: number) {
+    const game = await this.getGameById(gameId)
+    game.score_player_1++;
+    if (this.isGameFinished(game.score_player_1)) {
+      return this.endGame(game);
+    }
+    await this.update(game.id, game)
+    return game
+  }
+
+  async addScoreP2(gameId: number) {
+    const game = await this.getGameById(gameId)
+    game.score_player_2++;
+    if (this.isGameFinished(game.score_player_2)) {
+      return this.endGame(game);
+    }
+    await this.update(game.id, game)
+    return game
+  }
+
+  async getAllPassiveGamesFromUser(id: number) {
+    const allGames = await this.gameRepository.find({
+      where: [
+        { player_1: id, status: GameStatus.PASSIVE},
+        { player_2: id, status: GameStatus.PASSIVE}
+      ],});
+    return allGames.sort((g1,g2) => (Number(g2.timestamp)) - (Number(g1.timestamp)));
+  }
+
+  async getAllActiveGames() {
+    return await this.gameRepository.find({where: {status: GameStatus.ACTIVE}});
+  }
+
+  async addUserToGame(player_2: number, game: Game) {
+    game.player_2 = player_2
+    game.status = GameStatus.ACTIVE
+    await this.update(game.id, game);
+    return game;
+  }
+
+  async isAlreadyInGame(user: User) {
+    const allPendingGames: Game[] =  await this.gameRepository.find({
+      where: [
+        {status: GameStatus.PENDING},
+        {status: GameStatus.ACTIVE}
+      ]});
+      console.log(allPendingGames)
+    for (const game of allPendingGames) {
+      console.log(game)
+      if (game.player_1 === user.id) {
+        return true;
+      }
+      if (game.status === GameStatus.ACTIVE && game.player_2 === user.id) {
+        return true
+      }
+    }
+    console.log("return false")
+    return false;
+  }
 }

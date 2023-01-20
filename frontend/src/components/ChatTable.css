@@ -1,0 +1,24 @@
+@import url("https://fonts.cdnfonts.com/css/studio-sans");
+
+.chatTableContainer {
+  overflow-y: scroll;
+  max-height: 600px;
+  display: flex;
+  font-family: "Studio Sans", sans-serif;
+  background-color: rgb(16, 16, 20);
+  color: rgb(244, 241, 208);
+  grid-gap: 5px;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.chatRow {
+  background-color: rgb(31, 33, 40);
+  transition-duration: 2s;
+  border-left: thick solid rgb(255, 165, 0);
+  border-radius: 5px;
+}
+
+.chatRow:hover {
+  font-size: calc(12px + 0.3rem);
+}

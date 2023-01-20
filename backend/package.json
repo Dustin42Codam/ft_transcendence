@@ -9,10 +9,10 @@
 		"prebuild": "rimraf dist",
 		"build": "nest build",
 		"format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
-		"start": "nest start",
-		"start:dev": "nest start --watch",
-		"start:debug": "nest start --debug --watch",
-		"start:prod": "node dist/main",
+		"start": "npx prettier --write src/; nest start",
+		"start:dev": "npx prettier --write src/; nest start --watch",
+		"start:debug": "npx prettier --write src/; nest start --debug --watch",
+		"start:prod": "npx prettier --write src/; node dist/main",
 		"lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
 		"test": "jest",
 		"test:watch": "jest --watch",
@@ -27,7 +27,10 @@
 		"@nestjs/jwt": "^9.0.0",
 		"@nestjs/passport": "^9.0.0",
 		"@nestjs/platform-express": "^9.0.0",
+		"@nestjs/platform-socket.io": "^9.2.1",
+		"@nestjs/swagger": "^6.1.4",
 		"@nestjs/typeorm": "^9.0.1",
+		"@nestjs/websockets": "^9.2.1",
 		"@types/bcryptjs": "^2.4.2",
 		"@types/json2csv": "^5.0.3",
 		"@types/multer": "^1.4.7",
@@ -39,6 +42,7 @@
 		"config": "^3.3.8",
 		"cookie-parser": "^1.4.6",
 		"cors": "^2.8.5",
+		"crypto": "^1.0.1",
 		"dotenv": "^16.0.3",
 		"express": "^4.18.2",
 		"express-session": "^1.17.3",
@@ -46,11 +50,13 @@
 		"morgan": "^1.10.0",
 		"multer": "^1.4.5-lts.1",
 		"nodemon": "^2.0.20",
+		"otplib": "^12.0.1",
 		"passport": "^0.6.0",
 		"passport-jwt": "^4.0.0",
 		"passport-local": "^1.0.0",
 		"pg": "^8.8.0",
-		"query-string": "^7.1.1",
+		"qrcode": "^1.5.1",
+		"query-string": "^4.3.4",
 		"reflect-metadata": "^0.1.13",
 		"rimraf": "^3.0.2",
 		"rxjs": "^7.2.0",
@@ -58,6 +64,7 @@
 	},
 	"devDependencies": {
 		"@nestjs/cli": "^9.0.0",
+		"@nestjs/platform-ws": "^9.2.1",
 		"@nestjs/schematics": "^9.0.0",
 		"@nestjs/testing": "^9.0.0",
 		"@types/bcrypt": "^5.0.0",
@@ -74,16 +81,22 @@
 		"eslint-config-prettier": "^8.3.0",
 		"eslint-plugin-prettier": "^4.0.0",
 		"jest": "28.1.3",
+		"mock-socket": "^9.1.5",
 		"prettier": "^2.3.2",
+		"socket.io-client": "^4.5.4",
 		"source-map-support": "^0.5.20",
 		"supertest": "^6.1.3",
 		"ts-jest": "28.0.8",
 		"ts-loader": "^9.2.3",
 		"ts-node": "^10.0.0",
 		"tsconfig-paths": "4.1.0",
-		"typescript": "^4.7.4"
+		"typescript": "^4.7.4",
+		"ws": "^8.11.0"
 	},
 	"jest": {
+		"moduleNameMapper": {
+			"^src/(.*)$": "<rootDir>/$1"
+		},
 		"moduleFileExtensions": [
 			"js",
 			"json",
@@ -98,6 +111,8 @@
 			"**/*.(t|j)s"
 		],
 		"coverageDirectory": "../coverage",
-		"testEnvironment": "node"
+		"testEnvironment": "node",
+		"testTimeout": 4000,
+		"verbose": true
 	}
 }

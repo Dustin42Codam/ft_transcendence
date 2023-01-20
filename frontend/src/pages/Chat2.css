@@ -1,0 +1,119 @@
+@import url("https://fonts.cdnfonts.com/css/studio-sans");
+
+.messageContainers {
+  flex-direction: column;
+  display: flex;
+  font-family: "Studio Sans", sans-serif;
+  color: rgb(244, 241, 208);
+  border-radius: 5px;
+  /* background-color: rgb(31, 33, 40); */
+  min-width: 100%;
+
+  flex-direction: column;
+  /* height */
+  height: 80%;
+}
+
+.chat-body {
+  flex: 1;
+  background: #aaa;
+  overflow-y: scroll;
+}
+
+.message_right {
+  align-self: flex-end;
+  color: rgb(244, 241, 208);
+  text-align: right;
+}
+
+.message_left {
+  align-self: flex-start;
+  color: rgb(244, 241, 208);
+  text-align: left;
+}
+
+.chat-header {
+  margin: 40px;
+  background-color: #fff;
+  color: aqua;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+}
+
+.chatContainer {
+  display: flex;
+  font-family: "Studio Sans", sans-serif;
+  background-color: rgb(16, 16, 20);
+  /* height: 100vh; */
+}
+.Messages {
+  flex-direction: column;
+}
+
+.chatContainer {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 4fr;
+  gap: 20px;
+}
+
+/* Room and users component */
+.roomAndUsersColumn {
+  border-right: 1px solid #dfdfdf;
+}
+.roomTitle {
+  margin-bottom: 60px;
+  text-transform: uppercase;
+  font-size: 2rem;
+  color: #fff;
+}
+.usersTitle {
+  font-size: 1.2rem;
+  color: #fff;
+}
+.usersList {
+  list-style-type: none;
+  padding-left: 0;
+  margin-bottom: 60px;
+  color: rgb(153, 217, 234);
+}
+.usersList li {
+  margin-bottom: 12px;
+}
+
+/* Messages */
+.messagesColumn {
+  height: 85vh;
+  overflow: auto;
+  padding: 10px 10px 10px 40px;
+}
+.message {
+  background: rgb(0, 24, 111);
+  border-radius: 6px;
+  margin-bottom: 24px;
+  max-width: 600px;
+  padding: 12px;
+}
+
+.msgMeta {
+  color: rgb(153, 217, 234);
+  font-size: 0.75rem;
+}
+.msgText {
+  color: #fff;
+}
+
+/* Message input and button */
+.sendMessageContainer {
+  padding: 16px 20px 20px 16px;
+}
+.messageInput {
+  padding: 14px;
+  margin-right: 16px;
+  width: 60%;
+  border-radius: 6px;
+  border: 1px solid rgb(153, 217, 234);
+  font-size: 0.9rem;
+}

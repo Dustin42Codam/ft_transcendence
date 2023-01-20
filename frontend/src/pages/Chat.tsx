@@ -1,101 +1,107 @@
-import React, { Component } from "react";
+import { useLocation } from "react-router-dom";
+import React, { useEffect, useRef, useState } from "react";
 import Wrapper from "../components/Wrapper";
+import Socket from "../components/Socket";
+import Message from "../components/Message";
+import { useAppSelector } from "../redux/hooks";
+import {
+  selectCurrentChatroom,
+  selectCurrentChatroomMessages,
+} from "../redux/slices/socketSlice";
+import "./Message.css";
+import { fetchMessages } from "../redux/slices/messagesSlice";
 import axios from "axios";
+import { selectCurrentUser } from "../redux/slices/currentUserSlice";
 
-//https://www.geeksforgeeks.org/how-to-fetch-data-from-an-api-in-reactjs/
-export enum UserRole {
-  OWNER = "owner",
-  ADMIN = "admin",
-  USER = "user",
-}
+import "./Chat.css";
+import { Link } from "react-router-dom";
+import Popup from "reactjs-popup";
+import ChatUserList from "../components/ChatUserList";
+import { selectAllUsers } from "../redux/slices/usersSlice";
 
-export enum UserStatus {
-  ONLINE = "online",
-  OFFLINE = "offline",
-  IN_A_GAME = "in_a_game",
-}
-
-type User = {
-  role: UserRole;
-  muted: boolean;
-  muted_unti: Date;
-  banned: boolean;
-  user_id: number;
-  chatroom_id: number;
-};
-
-export enum ChatroomType {
-  PUBLIC = "public",
-  PROTECTED = "protected",
-  PRIVATE = "private",
-  DIRECT = "direct",
-}
-
-type Messages = {
+interface ChatMessage {
+  chatRoomId: number;
   content: string;
-  date: Date;
-  type: ChatroomType;
-};
-
-type Chats = {
-  name: string;
-  type: ChatroomType;
-  users: User[];
-  messages: Messages[];
-};
-
-interface IState {
-  chats: Chats;
-}
-function createChat() {
-  //event.preventDefault();
-  alert(1);
+  authorId: number;
 }
 
-export default class Chat extends Component {
-  constructor(props: any) {
-    super(props);
-    this.state = { chats: [] };
+const Chat = (props: any) => {
+  const location = useLocation();
+  const currentChat = useAppSelector(selectCurrentChatroom);
+  const currentChatMessages = useAppSelector(selectCurrentChatroomMessages);
+  const currentUser = useAppSelector(selectCurrentUser);
+  const [messages, setMessages] = useState([]);
+  const dummy = useRef<HTMLDivElement>(null);
+  const users = useAppSelector(selectAllUsers);
+  let user;
+
+  if (currentChat.id !== -1) {
+    user = users.find((user: any) => user.display_name === currentChat.name);
   }
-  async componentDidMount() {
-    await axios
-      .get("chats")
-      .then((response) => this.setState({ chats: response.data }))
-      .catch((err) => console.log(err));
+
+  async function fetchMessages() {
+    if (currentChat.id !== -1) {
+      const response: any = await axios.get(`message/chatroom/id/${currentChat.id}`);
+      setMessages(response?.data);
+    }
   }
-  render() {
-    return (
-      <Wrapper>
-        <div className="card">
-          <h2>Create a Chat</h2>
-          <div className="container">
-            <form onSubmit={createChat}>
-              <label>
-                Make chat private(not visable in the public chat table.
-                <input type="checkbox" id="private-name-input"></input>
-              </label>
-              <br />
-              <label>
-                Chate name input:
-                <input type="text" id="chat-name-input"></input>
-              </label>
-              <br />
-              <label>
-                Chose chat password:
-                <input type="password" id="chat-password-input"></input>
-              </label>
-              <br />
-              <label>
-                Repeat the chat password:
-                <input type="password" id="repete-chat-password-input"></input>
-              </label>
-              <br />
-              <input type="submit" value="Submit" />
-            </form>
-          </div>
+
+  useEffect(() => {
+    fetchMessages();
+    // divRef.scrollIntoView({ behavior: 'smooth' });
+    dummy?.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "end",
+      inline: "nearest",
+    });
+  }, [currentChat, currentChatMessages]);
+
+  return (
+    <Wrapper>
+      <div className="messageContainers">
+        <div className="chat-header">
+          {user && (
+            <Link to={`/users/${user.id}`}>
+              <img src={user.avatar} alt="avatar" className="msg-avatar" />
+            </Link>
+          )}
+          <ChatUserList />
         </div>
-        <div className="table-responsive">Chats</div>
-      </Wrapper>
-    );
-  }
-}
+
+        <div className="chat-body">
+          {messages?.map((msg: any, index: number) =>
+            msg.member.user.id === currentUser.id ? (
+              <p className="message message_right" key={index}>
+                {msg.message}
+                {""} {""}
+                <Link to={`/users/${msg.member.user.id}`}>
+                  <img
+                    src={msg.member.user.avatar}
+                    alt="avatar"
+                    className="msg-avatar"
+                  />
+                </Link>
+              </p>
+            ) : (
+              <p className="message message_left" key={index}>
+                <Link to={`/users/${msg.member.user.id}`}>
+                  <img
+                    src={msg.member.user.avatar}
+                    alt="avatar"
+                    className="msg-avatar"
+                  />
+                </Link>
+                {""} {""}
+                {msg.message}
+              </p>
+            )
+          )}
+
+          <Socket location={location} /* dummy={dummy} */ />
+          <div ref={dummy}></div>
+        </div>
+      </div>
+    </Wrapper>
+  );
+};
+export default Chat;

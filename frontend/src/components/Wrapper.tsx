@@ -1,22 +1,28 @@
-import React, { Component } from "react";
 import Nav from "./Nav";
+import React, { useEffect } from "react";
 import Menu from "./Menu";
+import store from "../redux/store";
+import { socketActions } from "../redux/slices/socketSlice";
+import { gameSocketActions } from "../redux/slices/gameSocketSlice";
 
 const Wrapper = (props: any) => {
+  useEffect(() => {
+    if (!store.getState().socket.isEstablishingConnection) {
+      store.dispatch(socketActions.startConnecting());
+    }
+    if (!store.getState().gameSocket.isEstablishingConnection) {
+      store.dispatch(gameSocketActions.startConnecting());
+    }
+  }, []);
   return (
-    <>
-      <Nav />
-
-      <div className="container-fluid">
-        <div className="row">
-          <Menu />
-          <main className="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-            {props.children}
-            {/* {this.props.date} */}
-          </main>
-        </div>
+    <div className="wrapper">
+      <Nav className="header" />
+      <div className="contentBody">
+        <Menu className="sidenav" />
+        <div className="content">{props.children}</div>
       </div>
-    </>
+      <div className="footer"></div>
+    </div>
   );
 };
 

@@ -1,49 +1,56 @@
 import { Body, BadRequestException, UseGuards, Controller, Get, Param, Post, Req } from "@nestjs/common";
 import { BlockService } from "./block.service";
 import { UserService } from "src/user/user.service";
-import { BlockCreateDto } from "./dto/block-create.dto";
 import { AuthGuard } from "src/auth/auth.guard";
 import express, { Request} from "express";
+import { AuthService } from "src/auth/auth.service";
 
 @UseGuards(AuthGuard)
-@Controller('block')
+@Controller("block")
 export class BlockController {
 	constructor(private readonly blockService: BlockService,
-				private readonly userService: UserService) {}
+				private readonly userService: UserService,
+				private readonly authService: AuthService,
+				) {}
 	
-	@Get(':id')
-	async getBlockById(
-		@Param('id') id : string
-	) {
-		return this.blockService.getBlockById(Number(id));
-	}
-
-	@Post()
-	async block(
-		@Body() blockCreateDto: BlockCreateDto,
+	@Get('receiverId/:id')
+	async getBlockByUserId(
+		@Param(':id') userId : string,
 		@Req() request: Request
 	) {
-		if (request.session.user_id === blockCreateDto.receiver.id) {
+		const senderId = await this.authService.userId(request);
+		return await this.blockService.getBlockByUserids(senderId, Number(userId));
+	}
+
+	@Post('add/receiverId/:id')
+	async block(
+		@Param(':id') receiverId : string,
+		@Req() request: Request
+	) {
+		const senderId = await this.authService.userId(request);
+		const sender = await this.userService.getUserById(senderId);
+		const receiver = await this.userService.getUserById(Number(receiverId));
+		if (senderId === receiver.id) {
 			throw new BadRequestException("You can not block yourself.")
 		}
-		const sender = await this.userService.getUserById(request.session.user_id);
+
 		const block = await this.blockService.findOne({
 			sender: sender,
-			receiver: blockCreateDto.receiver,
+			receiver: receiver,
 		});
 		if (block)
 			return block;
-		return await this.blockService.block(sender, blockCreateDto.receiver);
+		return await this.blockService.block(sender, receiver);
 	}
 
-	@Post(':id')
+	@Post('remove/receiverId/:id')
 	async remove(
-    	@Param('id') id: string,
+    	@Param(':id') receiverId: string,
 		@Req() request: Request
     ) {
-		const block = await this.blockService.getBlockById(Number(id));
-    	if (request.session.user_id !== block.sender.id)
-			throw new BadRequestException("You can only remove block send by you)");
-		return this.blockService.delete(Number(id));
+		const authId = await this.authService.userId(request);
+		const block = await this.blockService.getBlockByUserids(authId, Number(receiverId));
+		if (block)
+			this.blockService.delete(block.id);
 	}
 }

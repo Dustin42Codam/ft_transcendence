@@ -1,28 +1,41 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn, CreateDateColumn } from "typeorm";
 import { User } from "src/user/entity/user.entity";
 
 export enum GameType {
-	CLASSIC = 'classic',
-	POWER_UPS = 'power_ups'
+  CLASSIC = "classic",
+  POWER_UP = "power_up",
+  PRIVATE = "private",
 }
 
-@Entity('game')
+export enum GameStatus {
+  PENDING = "pending",
+  ACTIVE = "active",
+  PASSIVE = "passive",
+}
+
+@Entity("game")
 export class Game {
-    @PrimaryGeneratedColumn()
-	id: number;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @Column()
-	player_1: number;
+  @Column()
+  player_1: number;
 
-    @Column()
-	player_2: number;
+  @Column({nullable: true})
+  player_2: number;
 
-    @Column()
-	score_player_1: number;
+  @Column({ default: 0 })
+  score_player_1: number;
 
-	@Column()
-	score_player_2: number;
+  @Column({ default: 0 })
+  score_player_2: number;
 
-    @Column({default: GameType})
-	type: GameType;
+  @Column()
+  type: GameType;
+
+  @CreateDateColumn()
+  timestamp: Date;
+
+  @Column({ default: GameStatus.PENDING })
+  status: GameStatus;
 }

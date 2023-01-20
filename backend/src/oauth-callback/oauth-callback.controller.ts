@@ -1,7 +1,9 @@
-import { Controller, Get, Req, Res, UseInterceptors } from '@nestjs/common';
-import { Request, Response } from 'express-session';
+import { Request, Response } from "express-session";
+import { Controller, Get, Req, Res, UseInterceptors, BadRequestException } from '@nestjs/common';
 import { UserService } from '../user/user.service';
 import { JwtService } from '@nestjs/jwt';
+import { UserStatus } from 'src/user/entity/user.entity';
+import { UserCreateDto } from 'src/user/dto/user-create.dto';
 
 require("dotenv").config();
 
@@ -9,101 +11,71 @@ const axios = require("axios");
 const qs = require("query-string");
 const url = `https://api.intra.42.fr/oauth/token`;
 const config = {
-	headers: {
-	  "Content-Type": "application/x-www-form-urlencoded",
-	},
+  headers: {
+    "Content-Type": "application/x-www-form-urlencoded",
+  },
 };
 
 // @UseInterceptors(ClassSerializerInterceptor)
 @Controller()
 export class OauthCallbackController {
+  constructor(private userService: UserService, private jwtService: JwtService) {}
 
-	constructor (
-		private userService: UserService,
-		private jwtService: JwtService
-	) {}
+  @Get("oauth-callback")
+  async callback(@Req() request: Request, @Res() response: Response) {
+    const stateFromServer = request.query.state;
+    var resp: any;
+    var user: any;
 
-	@Get('oauth-callback')
-	callback(
-		@Req() request: Request,
-		@Res() response: Response
-	) {
-		// State from Server
-		const stateFromServer = request.query.state;
-		// if (stateFromServer !== request.session.stateValue) { TODO
-		// 	console.error("State doesn't match. uh-oh.");
-		// 	console.error(`Saw: ${stateFromServer}, but expected: &{request.session.stateValue}`);
-		// 	response.redirect(`http://localhost:${process.env.FRONTEND_PORT}/authenticate`);
-		// 	return;
-		// }
+    try {
+      resp = await axios.post(
+        url,
+        qs.stringify({
+          client_id: process.env.CLIENT_ID,
+          client_secret: process.env.CLIENT_SECRET,
+          code: request.query.code,
+          grant_type: "authorization_code",
+          redirect_uri: process.env.REDIRECT_URI,
+        }),
+        config,
+      );
+      request.session.token = resp.data.access_token;
 
-		axios.post(
-			url,
-			qs.stringify({
-			client_id: process.env.CLIENT_ID,
-			client_secret: process.env.CLIENT_SECRET,
-			code: request.query.code,
-			grant_type: "authorization_code",
-			redirect_uri: process.env.REDIRECT_URI,
-			}),
-			config
-		)
-		.then((result) => {
-
-			request.session.token = result.data.access_token;
-
-			axios.get(`https://api.intra.42.fr/v2/me`, {
-				headers: {
-					'Authorization': 'Bearer ' + request.session.token,
-				}
-			})
-			.then(ret => ret.data)
-			.then(registerUser)
-			.then(async (ret) => {
-				console.log('Logging in user...');
-				console.log('Data:', ret);
-				
-				console.log('this.userService:', this.userService);
-				const user = await this.userService.findOne({display_name: ret.display_name})
-				const jwt = await this.jwtService.signAsync({id: user.id});
+      resp = await axios.get("https://api.intra.42.fr/v2/me", {
+        headers: {
+          Authorization: "Bearer " + request.session.token,
+        },
+      })
+      if (!resp.data.login)
+        throw new BadRequestException("Intra changed his data.");
+      user = await this.userService.findOne({ intra_name: resp.data.login });
+      if (!user) {
+		    user = await registerUser(resp.data, this.userService);
+		  }
 		
-				response.cookie('jwt', jwt, {httpOnly: true, sameSite: 'lax'});
+		const jwt = await this.jwtService.signAsync({ id: user.id });
+		
+		response.cookie("jwt", jwt, { httpOnly: true, sameSite: "lax" });
 
-				return (user)
-			})
-			.then((ret) => {
-				console.log('reg user ret: ', ret);
-				response.redirect(`http://localhost:${process.env.FRONTEND_PORT}`);
-			})
-			.catch(err => {
-				console.log(err)
-				response.redirect(`http://localhost:${process.env.FRONTEND_PORT}/authenticate`);
-			})
-		})
-		.catch((err) => {
-			console.error(err);
-			response.redirect(`http://localhost:${process.env.FRONTEND_PORT}/authenticate`);
-		})
+      if (user.two_factor_auth === true) {
+        response.redirect(`http://localhost:${process.env.FRONTEND_PORT}/authenticate/2fa`);
+      } else {
+        response.redirect(`http://localhost:${process.env.FRONTEND_PORT}`);
+      }
+    } catch (e) {
+      console.log("ERROR:", e);
+      response.redirect(`http://localhost:${process.env.FRONTEND_PORT}/authenticate`);
+    }
 
-		function registerUser(data: any, userService: UserService) {
-			console.log('Registering user...');
-			console.log('Data: ', data.displayname);
-			return (
-				axios.post(
-					`http://localhost:${process.env.BACKEND_PORT}/api/users`,
-					{
-						display_name: data.login,
-						avatar: data.image_url,
-						two_factor_auth: 0,
-						status: 'online'
-					}
-				)
-				.then(ret => ret.data)
-				.catch(err => {
-					console.log(err);
-					response.redirect(`http://localhost:${process.env.FRONTEND_PORT}/authenticate`);
-				})
-			)
+    async function registerUser(data, userService) {
+		const userCreateDto: UserCreateDto = {
+			display_name: data.login,
+			intra_name: data.login,
+			avatar: data.image.link,
+			status: UserStatus.ONLINE
 		}
-	}
+      const user = await userService.createUser(userCreateDto);
+	  return user;
+    }
+  }
 }

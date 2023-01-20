@@ -1,3 +1,3 @@
 export class ChatroomChangeNameDto {
-    name: string;
+  name: string;
 }

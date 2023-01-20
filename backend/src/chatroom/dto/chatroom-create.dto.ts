@@ -1,15 +1,14 @@
-import { IsNotEmpty } from 'class-validator'
-import { ChatroomType } from '../entity/chatroom.entity';
+import { IsNotEmpty } from "class-validator";
+import { ChatroomType } from "../entity/chatroom.entity";
 export class ChatroomCreateDto {
+  @IsNotEmpty()
+  name: string;
 
-	@IsNotEmpty()
-	name: string;
+  @IsNotEmpty()
+  type: ChatroomType;
 
-	@IsNotEmpty()
-	type: ChatroomType;
+  password?: string;
 
-	password?: string;
-
-	@IsNotEmpty()
-	user_ids: number[];
+  @IsNotEmpty()
+  user_ids: number[];
 }

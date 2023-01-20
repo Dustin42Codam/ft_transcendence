@@ -1,0 +1,99 @@
+input {
+  background-color: rgb(16, 16, 20);
+  border: none; /* <-- removes input borders */
+  border: solid 1px #ccc;
+  border-radius: 5px;
+  border-color: rgb(105, 105, 105);
+  transition-duration: 1s;
+  caret-color: rgb(244, 241, 208);
+}
+
+/*When hover on highlights*/
+input:hover {
+  border-color: rgb(244, 241, 208);
+}
+
+/*When clicked on highlights*/
+input:selection {
+  border-color: rgb(244, 241, 208);
+}
+/*When clicked on highlights*/
+input:focus {
+  border-color: rgb(244, 241, 208);
+  outline: none;
+}
+
+/*color of text*/
+input,
+select,
+textarea {
+  color: rgb(244, 241, 208);
+}
+
+.chatGridContainer {
+  grid-template-columns: repeat(auto-fit, auto);
+}
+
+#chatHeader {
+  grid-column-start: 1;
+  grid-column-end: 2;
+  grid-row-start: 1;
+  grid-row-end: 2;
+}
+
+#chatButton {
+  grid-column-start: 2;
+  grid-column-end: 3;
+  grid-row-start: 1;
+  grid-row-end: 2;
+}
+
+#chatDescription {
+  grid-column-start: 1;
+  grid-row-start: 2;
+  grid-column-end: 3;
+}
+
+#nameInputLable {
+  grid-column-start: 1;
+  grid-row-start: 3;
+  grid-column-end: 2;
+}
+
+#nameInput {
+  grid-column-start: 1;
+  grid-row-start: 4;
+  grid-column-end: 3;
+}
+
+#selectChatInput {
+  color: rgb(244, 241, 208);
+  background: rgb(16, 16, 20);
+  grid-column-start: 2;
+  grid-row-start: 3;
+  grid-column-end: 3;
+}
+
+#chatPasswordInputLable {
+  grid-column-start: 1;
+  grid-row-start: 5;
+  grid-column-end: 2;
+}
+
+#chatPasswordInputLableConfirm {
+  grid-column-start: 2;
+  grid-row-start: 5;
+  grid-column-end: 3;
+}
+
+#confirmPasswordInput {
+  grid-column-start: 2;
+  grid-row-start: 6;
+  grid-column-end: 3;
+}
+
+#passwordInput {
+  grid-column-start: 1;
+  grid-row-start: 6;
+  grid-column-end: 2;
+}

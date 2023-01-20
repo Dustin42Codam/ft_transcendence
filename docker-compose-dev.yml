@@ -10,6 +10,8 @@ services:
       target: dev
     ports:
       - ${BACKEND_PORT}:${BACKEND_PORT}
+      - 3001:3001
+      - 3002:3002
     depends_on:
       postgres:
         condition: service_healthy

@@ -1,30 +1,28 @@
-import { Req, UseGuards, BadRequestException, Body, Controller, Get, Param, Post } from "@nestjs/common";
+import { Req, Query, UseGuards, BadRequestException, Body, Controller, Get, Param, Post } from "@nestjs/common";
 import { UserCreateDto } from "./dto/user-create.dto";
 import { UserUpdateDto } from "./dto/user-update.dto";
-import { User } from "./entity/user.entity";
 import { UserService } from "./user.service";
-import * as session from 'express-session';
-import express, { Request } from 'express';
 import { AuthGuard } from "src/auth/auth.guard";
 import { UserUpdateNameDto } from "./dto/user-update-name.dto";
+import { AuthService } from "src/auth/auth.service";
+import { Request } from "express-session";
 
-@Controller('user')
+// @UseGuards(AuthGuard) TODO turn on before handing in
+@Controller("users")
 export class UserController {
-    constructor(private readonly userService: UserService) {}
+  constructor(private readonly userService: UserService, private readonly authService: AuthService) {}
 
-    
-    @Get(':id')
-    async getUserById(
-        @Param('id') id : string
-    ) {
-        return this.userService.getUserById(Number(id));
-    }
-        
-    @Get()
-    async getUsers(@Req() request: Request) {
-        return await this.userService.getUsers();
-    }
+  @Get()
+  async all(@Query("page") page = 1) {
+    return this.userService.paginate(page);
+  }
 
+  @Get("id/:id")
+  async getUserById(@Param("id") id: string) {
+    return this.userService.getUserById(Number(id));
+  }
+
+	// TODO: delete before handing in
     @Post()
 	async create(
         @Body() body: UserCreateDto
@@ -34,26 +32,27 @@ export class UserController {
 			return user;
 		return await this.userService.createUser(body);
 	}
-
-    @Post('name')
-	async changeUsername(
-        @Body() body: UserUpdateNameDto,
-        @Req() request: Request
-    ) {
-		const user = await this.userService.getUserById(request.session.user_id);
-		if (user)
-			return user;
-        if (user.display_name === body.display_name)
-            throw new BadRequestException("You already have this displayname");
-		return await this.userService.updateUserName(user, body);
-	}
-    
-    @UseGuards(AuthGuard)
-    @Post(':id')
-    async update(
-        @Body() body: UserUpdateDto,
-        @Req() request: Request
-    ) {
-        this.userService.update(request.session.user_id, body);
-    }
+  
+  @Post('id/:id')
+  async update(
+      @Body() body: UserUpdateDto,
+      @Req() request: Request
+  ) {
+      const userId = await this.authService.userId(request);
+      const user = await this.userService.getUserById(userId);
+      if (body.display_name && body.display_name !== user.display_name) {
+        if (body.display_name === "") {
+          throw new BadRequestException("You can not have a empty string as a username");
+        }
+        await this.userService.isUserNameUnique(body.display_name);
+      }
+      if (body.avatar)
+      {
+        if (user.avatar.search("https://cdn.intra.42.fr") === -1) {
+          await this.userService.deleteAvatar(user);
+        }
+      }
+      await this.userService.update(userId, body);
+      return this.userService.getUserById(userId);
+  }
 }

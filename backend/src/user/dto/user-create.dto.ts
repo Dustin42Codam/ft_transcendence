@@ -1,10 +1,15 @@
-import { IsNotEmpty } from 'class-validator'
-import { UserStatus } from '../entity/user.entity';
+import { IsNotEmpty } from "class-validator";
+import { UserStatus } from "../entity/user.entity";
 export class UserCreateDto {
+  @IsNotEmpty()
+  display_name: string;
 
-	@IsNotEmpty()
-	display_name: string;
+  @IsNotEmpty()
+  intra_name: string;
 
-	@IsNotEmpty()
-	avatar: string;
+  @IsNotEmpty()
+  avatar: string;
+
+  @IsNotEmpty()
+  status: UserStatus;
 }

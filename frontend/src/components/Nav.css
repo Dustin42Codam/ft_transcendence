@@ -1,0 +1,18 @@
+.navBarContainer {
+  display: flex;
+  padding: 15px;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.nameProject {
+  margin-top: 10px;
+}
+.logoutButton {
+  margin-top: 10px;
+}
+
+.logOut {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}

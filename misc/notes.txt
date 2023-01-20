@@ -1,0 +1,108 @@
+
+todo:
+
+	-	create a component for dm chats
+	-	rewrite seperate wrapper in Chat component
+	-	check error handling in user edit
+	-	bug when splittin direct / group chats in navbar
+		into 2 seperate components ????
+	-	add toasts for every store/api event
+		-	to redux?
+	-	Redux store
+		-	add current_chat_member slices
+		-	sync with sockets?
+		-	place every manual fetch into redux slice
+	-	Chat
+		-	sync with redux?
+		-	add user to chat
+			+	authorized
+			+	unauthorized check
+			+	no empty name
+			+	no invalid name
+			-	check if user is already in a chat room
+		-	ban user
+		-	unban user
+		->	set others as admin
+			->	authorized
+			-	unauthorized
+		->	unset others as admin
+			->	authorized
+			-	unauthorized
+		-	mute user
+			-	minutes
+		-	unmute user
+		-	delete chat
+		-	ping pong invite
+		-	leave channel
+			-	set other user as channel owner
+			-	channel owner?
+			-	test each if statement
+				in controller with requests
+				from the frontend
+
+		-	remove user from chat ???
+			-	authorized
+			-	unauthorized
+			-	empty name
+			-	invalid name
+
+bugs:
+		-	joinable/groupchats redux bug
+		-	chatroom long list
+
+notes:
+	-	don't forget that also the name of the chatroom should be able to change
+		-	and maybe also the password for Protected chatrooms
+	
+	-	ChatLobby?
+	-	ChatCreate?
+	-	ChatTable?
+
+
+toasties:
+
+toast.(``, {
+	position: "top-center",
+	autoClose: 5000,
+	hideProgressBar: false,
+	closeOnClick: true,
+	pauseOnHover: true,
+	draggable: true,
+	progress: undefined,
+	theme: "colored",
+	});
+toast.warn(``, {
+	type: "success",
+	isLoading: false,
+	position: "top-right",
+	autoClose: 5000,
+	hideProgressBar: false,
+	closeOnClick: true,
+	pauseOnHover: true,
+	draggable: true,
+	progress: undefined,
+	theme: "colored",
+});
+toast.info(``, {
+	position: "top-right",
+	autoClose: 5000,
+	hideProgressBar: false,
+	closeOnClick: true,
+	pauseOnHover: true,
+	draggable: true,
+	progress: undefined,
+	theme: "colored",
+	});
+toast.update(id, {
+	render: `${newUserName} joined the chat!`,
+	type: "success",
+	isLoading: false,
+	position: "top-right",
+	autoClose: 5000,
+	hideProgressBar: false,
+	closeOnClick: true,
+	pauseOnHover: true,
+	draggable: true,
+	progress: undefined,
+	theme: "colored",
+}); 

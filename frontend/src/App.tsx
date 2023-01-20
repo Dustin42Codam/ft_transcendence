@@ -1,45 +1,80 @@
-//import React from "react";
 import "./App.css";
-import Users from "./pages/users/Users";
-import NotFound from "./pages/NotFound";
-import Dashboard from "./pages/users/Dashboard";
-import Authenticate from "./pages/Authenticate";
-import { Navigate, BrowserRouter, Routes, Route } from "react-router-dom";
-import Login from "./pages/users/Login";
 import Game from "./pages/Game";
-import Profile from "./pages/Profile";
+import NotFound from "./pages/NotFound";
+import Dashboard from "./pages/Dashboard";
+import Authenticate from "./pages/Authenticate";
+import UserEdit from "./pages/users/UserEdit";
+import { UserProfile } from "./pages/users/UserProfile";
 import Chat from "./pages/Chat";
-import axios from "axios";
-import { useEffect, useState } from "react";
-import { useAsync } from "react-async";
+import React, { useRef, useEffect, useCallback } from "react";
+import { io, Socket } from "socket.io-client";
+import { UserList } from "./pages/users/UserList";
+import { UserPage } from "./pages/users/UserPage";
+import { useAppDispatch, useAppSelector } from "./redux/hooks";
+import { Navigate, BrowserRouter, Routes, Route } from "react-router-dom";
+import TwoFactorAuthentication from "./pages/TwoFactorAuthentication";
+import { selectCurrentUser } from "./redux/slices/currentUserSlice";
+import type { Container, Engine } from "tsparticles-engine";
+import Particles from "react-tsparticles";
+import { loadFull } from "tsparticles";
+import ParticleBackground from "./components/ParticleBackground";
 
 function App() {
-  const [token, setToken] = useState(false);
+  const particlesInit = useCallback(async (engine: Engine) => {
+    console.log(engine);
 
-  useEffect(() => {
-    async function fetchDataCall() {
-      const response = await axios
-        .get("user")
-        .then((res) => {
-          setToken(true);
-        })
-        .catch((err) => {
-          setToken(false);
-        });
-    }
-    if (!token) {
-      fetchDataCall();
-    }
+    // you can initialize the tsParticles instance (engine) here, adding custom shapes or presets
+    // this loads the tsparticles package bundle, it's the easiest method for getting everything ready
+    // starting from v2 you can add only the features you need reducing the bundle size
+    await loadFull(engine);
   }, []);
 
-  if (!token) {
+  const particlesLoaded = useCallback(
+    async (container: Container | undefined) => {
+      await console.log(container);
+    },
+    []
+  );
+
+  const dispatch = useAppDispatch();
+  const socketStatus = useAppSelector((state) => state.socket.isConnected);
+  const userStatus = useAppSelector((state) => state.currentUser.status);
+  const currentUser = useAppSelector(selectCurrentUser);
+
+  //   console.log("🚀 ~ file: App.tsx:23 ~ App ~ currentUser", currentUser.tfa_secret.isAuthenticated);
+
+  //TODO do not load the server if socket is not socketStatus is not true
+  if (currentUser.id === -1) {
     return (
       <div className="App">
         <BrowserRouter>
           <Routes>
             <Route path={"/authenticate"} element={<Authenticate />} />
+            <Route path={"/particles"} element={<ParticleBackground />} />
             <Route path={"*"} element={<NotFound />} />
             <Route path="/" element={<Navigate to="./authenticate" />} />
+          </Routes>
+        </BrowserRouter>
+      </div>
+    );
+  } else if (userStatus === "loading") {
+    return <div className="App"></div>;
+  } else if (
+    currentUser.two_factor_auth === true &&
+    currentUser.tfa_secret.isAuthenticated === false
+  ) {
+    return (
+      <div className="App">
+        <BrowserRouter>
+          <Routes>
+            <Route path={"/authenticate"} element={<Authenticate />} />
+            <Route path={"/particles"} element={<ParticleBackground />} />
+            <Route path={"*"} element={<NotFound />} />
+            <Route path="/" element={<Navigate to="./authenticate" />} />
+            <Route
+              path={"/authenticate/2fa"}
+              element={<TwoFactorAuthentication />}
+            />
           </Routes>
         </BrowserRouter>
       </div>
@@ -49,14 +84,21 @@ function App() {
       <div className="App">
         <BrowserRouter>
           <Routes>
-            <Route path="/authenticate" element={<Navigate to="/" />} />
             <Route path={"/"} element={<Dashboard />} />
-            <Route path={"/users"} element={<Users />} />
-            <Route path={"/authenticate"} element={<Authenticate />} />
-            <Route path={"/login"} element={<Login />} />
-            <Route path={"/profile"} element={<Profile />} />
-            <Route path={"/chats"} element={<Chat />} />
+            <Route path="/authenticate" element={<Navigate to="/" />} />
+
+            <Route path={"/chats/:name"} element={<Chat />} />
+            <Route path={"/chats/dm/:id"} element={<Chat />} />
+            {/* <Route path={"/chats/dm/:name"} element={<ChatDM />} /> */}
+
+            <Route path={"/profile"} element={<UserProfile />} />
+            <Route path={"/profile/edit"} element={<UserEdit />} />
+
+            <Route path={"/users"} element={<UserList />} />
+            <Route path={"/users/:userId"} element={<UserPage />} />
+
             <Route path={"/games"} element={<Game />} />
+
             <Route path={"*"} element={<NotFound />} />
           </Routes>
         </BrowserRouter>
