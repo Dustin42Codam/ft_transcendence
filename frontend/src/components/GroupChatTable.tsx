@@ -17,6 +17,8 @@ import { selectCurrentChatroom } from "../redux/slices/socketSlice";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { selectCurrentUser } from "../redux/slices/currentUserSlice";
+import { ImportContacts } from "@mui/icons-material";
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
 export enum ChatroomType {
   PUBLIC = "public",
@@ -51,7 +53,7 @@ const GroupChatTable = () => {
 
   useEffect(() => {
 	fetchChatData();
-  }, [currentChatroom])
+  }, [currentChatroom, currentChatroom.type])
   
 
   async function handleClick(name: string, chatToJoinIndex: number) {
@@ -105,7 +107,9 @@ const GroupChatTable = () => {
       className="chatRow"
       onClick={() => handleClick(chat.name, index)}
     >
-      {chat.type === ChatroomType.PROTECTED ? <CastleIcon /> : <PublicIcon />}
+      {chat.type === ChatroomType.PROTECTED && <CastleIcon />}
+      {chat.type === ChatroomType.PUBLIC && <PublicIcon />}
+      {chat.type === ChatroomType.PRIVATE && <VisibilityOffIcon />}
       {chat.name}
     </div>
   ));
