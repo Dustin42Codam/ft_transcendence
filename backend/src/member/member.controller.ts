@@ -179,4 +179,18 @@ export class MemberController {
     sender.role = MemberRole.ADMIN;
     await this.memberService.update(sender.id, sender);
   }
+
+  @Post("remove/id/:id")
+  async removeUser(@Param("id") id: string, @Req() request: Request) {
+    const receiver = await this.memberService.getMemberById(Number(id));
+	  const userId = await this.authService.userId(request)
+    const user = await this.userServcie.getUserById(userId);
+    const sender = await this.memberService.getMemberByUserAndChatroom(user, receiver.chatroom);
+    if (sender.role !== MemberRole.OWNER) {
+		  throw new BadRequestException("You do not have the rights to remove a member.");
+	  }
+    receiver.status = MemberStatus.INACTIVE;
+    receiver.role = MemberRole.USER;
+    await this.memberService.update(receiver.id, receiver);
+  }
 }
