@@ -93,11 +93,13 @@ export class UserService extends AbstractService {
 		var fs = require('fs');
 		const filePath = user.avatar.replace("http://localhost:3000/api", ".");
 		console.log("deleting: " + filePath)
-		fs.unlink(filePath, (err) => {
-            if (err) {
-                throw new BadRequestException('Could not delete old avatar');
-            }
-        });
+		if (fs.existsSync(filePath)) {
+			fs.unlink(filePath, (err) => {
+				if (err) {
+					throw new BadRequestException('Could not delete old avatar');
+				}
+			});
+		}
     }
 
 
