@@ -52,6 +52,7 @@ export class MemberController {
 		  throw new BadRequestException("A OWNER of a chatroom can not leave a chatroom. Give someone else the OWNER role if you want to leave.");
 	  }
     member.status = MemberStatus.INACTIVE;
+    member.role = MemberRole.USER;
     await this.memberService.update(member.id, member);
   }
 
