@@ -5,6 +5,7 @@ todo:
 	+	name of chatroom should be able to change
 	+	password for Protected chatrooms should be changeable
 
+	-	owner can remove members
 	-	add user button pop ups with a user list
 
 	-	confirm window when delete channel
@@ -69,14 +70,10 @@ todo:
 
 		-	ping pong invite
 
-		-	remove user from chat ???
-			-	authorized
-			-	unauthorized
-			-	empty name
-			-	invalid name
+		-	admin leaves channel -> rejoins -> still admin
+		-	owner can remove user from chat
 
 bugs:
-		-	admin leaves channel -> rejoins -> still admin
 		
 	fixed:
 		+	joinable/groupchats bug

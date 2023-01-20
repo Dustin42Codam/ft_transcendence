@@ -581,7 +581,6 @@ async function changeChannelName() {
 	async function changeChannelType() {
 		console.log("🚀 ~ file: ChatUserList.tsx:506 ~ changeChannelType ~ currentChat", currentChat)
 		
-
 		const id = toast.loading(`Updating channel data...`);
 
 		if (chatType !== ChatroomType.PUBLIC && password?.length && password !== passwordConfirm) {
@@ -598,7 +597,6 @@ async function changeChannelName() {
 				progress: undefined,
 				theme: "colored",
 			  });
-			//   setChatType("");
 			return ;
 		}
 
@@ -621,9 +619,9 @@ async function changeChannelName() {
 			  dispatch(socketActions.updateChatName({
 					chatRoom: {
 						id: currentChat.id,
-						name: chatName,
+						name: currentChat.name,
 						userId: currentChat.userId,
-						type: currentChat.type,
+						type: chatType,
 					},
 				}));
 			})
@@ -643,7 +641,6 @@ async function changeChannelName() {
 				theme: "colored",
 			  });
 			});
-			
 			console.log("🚀 ~ file: ChatUserList.tsx:610 ~ changeChannelType ~ rerender", rerender)
 			setRerender(!rerender);
 			console.log("🚀 ~ file: ChatUserList.tsx:610 ~ changeChannelType ~ rerender", rerender)
