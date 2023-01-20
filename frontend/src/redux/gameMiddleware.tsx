@@ -4,9 +4,9 @@ import { gameSocketActions } from "./slices/gameSocketSlice";
 import GameEvent from "./gameEvent";
 
 interface JoinGameRoom {
-	UserName: string;
-	UserType: string;
-	GameRoomId: number;
+  UserName: string;
+  UserType: string;
+  GameRoomId: number;
 }
 
 const gameSocketMiddleware: Middleware = (store) => {
@@ -43,7 +43,7 @@ const gameSocketMiddleware: Middleware = (store) => {
         //Join the user to go to the game room
         //store.dispatch(gameSocketActions.joinRoomSuccess(spectateGame));
       });
-			/*
+      /*
       gameSocket.on(GameEvent.MessageToGameRoom, (messageToGameRoom: any) => {
         //TOAST a Message
         store.dispatch(gameSocketActions.joinRoomSuccess(messageToGameRoom));
@@ -52,7 +52,8 @@ const gameSocketMiddleware: Middleware = (store) => {
       gameSocket.on(GameEvent.JoinGameRoomSuccess, (payload: JoinGameRoom) => {
         store.dispatch(gameSocketActions.joinRoomSuccess(payload));
       });
-      gameSocket.on(GameEvent.MoveBatP2, (gameRoomId: number) => {
+			//TODO what data do we need in the backend
+      gameSocket.on(GameEvent.MoveBatP2, (gameRoomId: any) => {
         store.dispatch(gameSocketActions.moveBatP2(gameRoomId));
       });
       gameSocket.on(GameEvent.LeaveGameRoomSuccess, () => {
@@ -84,19 +85,6 @@ const gameSocketMiddleware: Middleware = (store) => {
       if (gameSocketActions.leaveRoom.match(action)) {
         gameSocket.emit(GameEvent.LeaveGameRoom, action.payload);
       }
-      /*if we want the client not to unsubscribe from stuff
-      if (gameSocketActions.refreshPage.match(action)) {
-        gameSocket.off("connect_failed");
-        gameSocket.off("connect");
-        gameSocket.off("disconnect");
-        //gameSocket.off(GameEvent.ReceiveMessage);//TODO receiv BAT position
-        //Receiv ball position
-        gameSocket.off(GameEvent.JoinGameRoomSuccess);
-        gameSocket.off(GameEvent.LeaveGameRoomSuccess);
-        gameSocket.disconnect();
-        store.dispatch(gameSocketActions.startConnecting());
-      }
-		 */
     }
     next(action);
   };

@@ -12,6 +12,12 @@ interface JoinGameRoom {
 	GameRoomId: number;
 }
 
+interface BatMove {
+	GameRoomId: string;
+	BatX: number;
+	BatY: number;
+}
+
 @WebSocketGateway(3002, {
   namespace: "game",
   cors: {
@@ -49,32 +55,49 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
     client.join(payload);
 		const len = (await this.io.in(payload).fetchSockets()).length;
 
+		const userId = await this.userService.getUserFromClient(client);
+		const user = await this.userService.getUserById(userId);
 		if (len == 1) {
-			//client.emit(GameroomEvents.JoinGameRoomSuccess, 12);
-			const userId = await this.userService.getUserFromClient(client);
-			const user = await this.userService.getUserById(userId);
 			this.io.to(payload).emit(GameroomEvents.JoinGameRoomSuccess, payload);
 			this.io.to(payload).emit(GameroomEvents.GameRoomNotification, `Player 1: ${user.display_name}`);
 		}
 		if (len == 2) {
-			client.to(payload).emit(GameroomEvents.JoinGameRoomSuccess, 2);
-			this.io.to(payload).emit(GameroomEvents.MessageToGameRoom, "Player 2 joined");
+			client.to(payload).emit(GameroomEvents.JoinGameRoomSuccess, payload);
+			this.io.to(payload).emit(GameroomEvents.GameRoomNotification, `Player 2: ${user.display_name}`);
 		}
   }
 
-	//payload needs to have display_name, GameRoomId
 	@UseGuards(SocketAuthGuard)
   @SubscribeMessage(GameroomEvents.SpectateGameRoom)
   async spectateRoom(client: Socket, payload: any): Promise<void> {
 
 		client.to(payload).emit(GameroomEvents.JoinGameRoomSuccess, 3)
-		this.io.to(payload).emit(GameroomEvents.MessageToGameRoom, `spectator ${payload.display_name} join`);
+		this.io.to(payload).emit(GameroomEvents.GameRoomNotification, `spectator ${payload.display_name} join`);
 
   }
 
 	@UseGuards(SocketAuthGuard)
-  @SubscribeMessage(GameroomEvents.MoveBatP1)
-  handleMoveBatP1(client: Socket, payload: any): void {
-		console.log("this is a the bat mooving ", payload, `${payload}`);
+  @SubscribeMessage(GameroomEvents.GetBatP2)
+  handleGetBatP2(client: Socket, payload: any): void {
+		this.io.to(payload.GameRoomId).emit(GameroomEvents.GetBatP2, 1);
   }
+
+	@UseGuards(SocketAuthGuard)
+  @SubscribeMessage(GameroomEvents.GetBatP1)
+  handleGetBatP1(client: Socket, payload: any): void {
+		this.io.to(payload.GameRoomId).emit(GameroomEvents.GetBatP1, 2);
+  }
+
+	@UseGuards(SocketAuthGuard)
+  @SubscribeMessage(GameroomEvents.MoveBatP2)
+  handleMoveBatP2(client: Socket, payload: any): void {
+		this.io.to(payload.GameRoomId).emit(GameroomEvents.MoveBatP2, 3);
+  }
+
+	@UseGuards(SocketAuthGuard)
+  @SubscribeMessage(GameroomEvents.GetBall)
+  handleMoveBatP1(client: Socket, payload: any): void {
+		this.io.to(payload.GameRoomId).emit(GameroomEvents.MoveBatP1, 4);
+  }
+
 }

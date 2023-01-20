@@ -28,24 +28,24 @@ function App() {
   const dispatch = useAppDispatch();
   const chatNotificatoin = useAppSelector((state) => state.socket.notificatoin);
   //const notificatoin = useAppSelector(selectCurrentNotification);
-	//const  = useAppSelector(selectChatNotification);
-	const gameNotificatoin = useAppSelector((state) => state.gameSocket.notificatoin);
+  //const  = useAppSelector(selectChatNotification);
+  const gameNotificatoin = useAppSelector(
+    (state) => state.gameSocket.notificatoin
+  );
 
-	useEffect(() => {
-		if (chatNotificatoin != "") {
-			toast(chatNotificatoin);
-			store.dispatch(socketActions.clearNotification());
-		}
-	}, [chatNotificatoin]);
+  useEffect(() => {
+    if (chatNotificatoin != "") {
+      toast(chatNotificatoin);
+      store.dispatch(socketActions.clearNotification());
+    }
+  }, [chatNotificatoin]);
 
-	useEffect(() => {
-		if (gameNotificatoin != "") {
-			toast(gameNotificatoin);
-			store.dispatch(gameSocketActions.clearNotification());
-		}
-	}, [gameNotificatoin]);
-
-  //   console.log("🚀 ~ file: App.tsx:23 ~ App ~ currentUser", currentUser.tfa_secret.isAuthenticated);
+  useEffect(() => {
+    if (gameNotificatoin != "") {
+      toast(gameNotificatoin);
+      store.dispatch(gameSocketActions.clearNotification());
+    }
+  }, [gameNotificatoin]);
 
   //TODO do not load the server if socket is not socketStatus is not true
   if (userStatus === "failed") {
@@ -83,11 +83,14 @@ function App() {
   } else {
     return (
       <div className="App">
-			<ToastContainer />
+        <ToastContainer />
         <BrowserRouter>
           <Routes>
             <Route path={"/dashboard"} element={<Dashboard />} />
-            <Route path="/authenticate" element={<Navigate to="/dashboard" />} />
+            <Route
+              path="/authenticate"
+              element={<Navigate to="/dashboard" />}
+            />
 
             <Route path={"/chats/:name"} element={<Chat />} />
 

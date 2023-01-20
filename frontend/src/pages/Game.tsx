@@ -312,16 +312,16 @@ const Game = (props: any) => {
   //const canvasRef = useRef();
   //const [gameState, setGameState] = useState<GameState | null>(null);
   const moveBatP1 = () => {
-    dispatch(gameSocketActions.moveBatP1({ gameRoomId: 42, direction: 1 }));
+    //dispatch(gameSocketActions.moveBatP1({ gameRoomId: 42, direction: 1 }));
     //inputRef.current!["messageInput"].value = "";
   };
 
   useEffect(() => {
     const canvas = document.getElementById("canvas") as HTMLCanvasElement;
     const gameState = new GameState(canvas);
-		//UserName
-		//UserType
-		//GameRoomId
+    //UserName
+    //UserType
+    //GameRoomId
     dispatch(gameSocketActions.joinRoom(42));
 
     canvas.addEventListener("keydown", function onKeyDown(e) {
@@ -337,11 +337,11 @@ const Game = (props: any) => {
       console.log(e, gameState);
 
       if (String.fromCharCode(keynum) == "(") {
-        moveBatP1();
         gameState.batP1.moveUp(10, 1);
+        //
       }
       if (String.fromCharCode(keynum) == "&") {
-        moveBatP1();
+        //
         gameState.batP1.moveUp(10, -1);
       }
     });
@@ -369,6 +369,13 @@ const Game = (props: any) => {
   }
  */
 
+/*
+ *	P1 -> listen -> P2Bat -> BALL -> SCORE
+ *	P2 -> listen -> P1Bat1 -> BALL -> SCORE
+ *
+ *	P1 -> emit -> P1Bat
+ *	P2 -> emit -> P2Bat
+ */
   return (
     <Wrapper>
       <canvas tabIndex={0} id="canvas" width="1300" height="700">

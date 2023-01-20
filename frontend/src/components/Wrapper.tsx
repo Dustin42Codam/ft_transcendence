@@ -17,7 +17,6 @@ const Wrapper = (props: any) => {
     }
   }, []);
 
-
   return (
     <div className="wrapper">
       <Nav className="header" />

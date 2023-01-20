@@ -28,9 +28,7 @@ const Menu = (props: any) => {
   const [joinChanel, setJoinChanel] = useState(false);
   const joinableChats = useAppSelector(selectJoinableChats);
 
-
-  const joinChats = () => {
-  };
+  const joinChats = () => {};
   return (
     <nav className={props.className}>
       <div className="sideNavContainer">
