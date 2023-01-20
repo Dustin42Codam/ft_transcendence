@@ -12,11 +12,9 @@ function GameLadder(props: { displayedUser: any }) {
   const navigate = useNavigate();
 
   async function fetchLadder() {
-    const response: any = await axios
-      .get(`game/ladder`)
-      .catch((err: any) => {
-        console.log("🚀 ~ file: GameLadder.tsx:11 ~ fetchLadder ~ err", err);
-      });
+    const response: any = await axios.get(`game/ladder`).catch((err: any) => {
+      console.log("🚀 ~ file: GameLadder.tsx:11 ~ fetchLadder ~ err", err);
+    });
     setLadder(response.data);
   }
 
