@@ -141,14 +141,13 @@ class Bat extends MoveableObject {
   powerUpActive: boolean;
   powerUpTimer: number;
 
-
   constructor(
     posX: number,
     fieldHeight: number,
     badHeight: number,
     powerUpBatHeight: number
   ) {
-		/*
+    /*
 		positionX: number;
 		positionY: number;
 		directionX: number;
@@ -326,27 +325,24 @@ const Game = (props: any) => {
   };
 
   useEffect(() => {
-
-		const theGameFrame = document.getElementById("content");
-		const savedTheGameFrame = theGameFrame!.innerHTML;
-		theGameFrame!.innerHTML = "<h1>Game is loading</h1>"
-		//console.log("this is game frame", theGameFrame, savedTheGameFrame);
-		//const statrStyle = theGameFrame!.style.background = "blue";
-		/*
+    const theGameFrame = document.getElementById("content");
+    const savedTheGameFrame = theGameFrame!.innerHTML;
+    theGameFrame!.innerHTML = "<h1>Game is loading</h1>";
+    /*
     posX: number,
     fieldHeight: number,
     badHeight: number,
     powerUpBatHeight: number
 	 */
-		//this.batP1 = new Bat(10, 160, 160, 200);
-		//this.batP2 = new Bat(canvas.width - 20, canvas.height, 160, 200);
-		//bot values will come from the backend!
-		//
-		//const BatP1 = new Bat(-1);
-		//const BatP2 = new Bat(-1);
+    //this.batP1 = new Bat(10, 160, 160, 200);
+    //this.batP2 = new Bat(canvas.width - 20, canvas.height, 160, 200);
+    //bot values will come from the backend!
+    //
+    //const BatP1 = new Bat(-1);
+    //const BatP2 = new Bat(-1);
     const waitForTheGameToStart = async () => {
       const dataNeedToStartTheGame = await new Promise((resolve, reject) => {
-				/*
+        /*
 			function isBatReady(bat: Bat): boolean {
 				if (bat.X != -1 && bat.Y != -1) {
 					return true;
@@ -356,13 +352,12 @@ const Game = (props: any) => {
 		 */
         (function loop() {
           setTimeout(() => {
-						
-						let gameState = store.getState().gameSocket;
-						if (gameState.BatP1.X != -1 && gameState.BatP1.Y != -1)
-            console.log("this is State:", gameState);
-            if (false) {
-              resolve(true);
-            }
+            let gameState = store.getState().gameSocket;
+
+            //if (gameState.BatP1.X != -1 && gameState.BatP1.Y != -1)
+              if (false) {
+                resolve(true);
+              }
             loop();
           }, 1000);
         })();
@@ -371,7 +366,7 @@ const Game = (props: any) => {
       console.log("bye there");
     };
     waitForTheGameToStart().then(() => {
-			theGameFrame!.innerHTML = savedTheGameFrame; 
+      theGameFrame!.innerHTML = savedTheGameFrame;
       const canvas = document.getElementById("canvas") as HTMLCanvasElement;
       //before this we need to have the data before we can build the game
       //how can we get the position for
@@ -437,11 +432,11 @@ const Game = (props: any) => {
    */
   return (
     <Wrapper>
-			<div id="canvasContainer">
-				<canvas tabIndex={0} id="canvas" width="1300" height="700">
-					Game is not supported for this borwser. Needs <b>cavas</b> support.
-				</canvas>
-			</div>
+      <div id="canvasContainer">
+        <canvas tabIndex={0} id="canvas" width="1300" height="700">
+          Game is not supported for this borwser. Needs <b>cavas</b> support.
+        </canvas>
+      </div>
     </Wrapper>
   );
 };

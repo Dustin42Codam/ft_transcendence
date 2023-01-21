@@ -14,25 +14,27 @@ interface BatMove {
 }
 
 interface Bat {
-	X: number;
-	Y: number;
+  X: number;
+  Y: number;
 }
 
 interface Ball {
-	X: number;
-	Y: number;
+  X: number;
+  Y: number;
+}
+
+interface Player {
+	displayName: string;
+	bat: Bat;
 }
 
 export interface GameState {
-  gameRoomId: number;
-  P1Name: string;
-  P2Name: string;
-  BatP1: Bat;
-  BatP2: Bat;
-  Ball: Ball;
   isEstablishingConnection: boolean;
   isConnected: boolean;
-  status: any;
+  gameRoomId: number;
+	p1: Player;
+	p2: Player;
+  ball: Ball;
   spectators: Array<string>;
   notificatoin: string;
 }
@@ -41,12 +43,9 @@ export const initialState: GameState = {
   isEstablishingConnection: false,
   isConnected: false,
   gameRoomId: -1,
-  P1Name: "",
-  P2Name: "",
-  BatP1: {X: -1, Y: -1},
-  BatP2: {X: -1, Y: -1},
-  Ball: {X: -1, Y: -1},
-  status: "",
+  p1: {displayName: "", bat: { X: -1, Y: -1 }},
+  p2: {displayName: "", bat: { X: -1, Y: -1 }},
+  ball: { X: -1, Y: -1 },
   spectators: [],
   notificatoin: "",
 };
