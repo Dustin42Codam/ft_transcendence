@@ -18,6 +18,11 @@ interface BatMove {
 	BatY: number;
 }
 
+interface Bat {
+	X: number;
+	Y: number;
+}
+
 @WebSocketGateway(3002, {
   namespace: "game",
   cors: {

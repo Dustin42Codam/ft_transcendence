@@ -52,7 +52,7 @@ const gameSocketMiddleware: Middleware = (store) => {
       gameSocket.on(GameEvent.JoinGameRoomSuccess, (payload: JoinGameRoom) => {
         store.dispatch(gameSocketActions.joinRoomSuccess(payload));
       });
-			//TODO what data do we need in the backend
+      //TODO what data do we need in the backend
       gameSocket.on(GameEvent.MoveBatP2, (gameRoomId: any) => {
         store.dispatch(gameSocketActions.moveBatP2(gameRoomId));
       });

@@ -136,22 +136,31 @@ class Ball extends MoveableObject {
 }
 
 class Bat extends MoveableObject {
-  normalBadHeight: number;
-  powerUpBadHeight: number;
+  normalBatHeight: number;
+  powerUpBatHeight: number;
   powerUpActive: boolean;
   powerUpTimer: number;
+
 
   constructor(
     posX: number,
     fieldHeight: number,
     badHeight: number,
-    powerUpBadHeight: number
+    powerUpBatHeight: number
   ) {
-    super(posX, fieldHeight / 2 - badHeight / 2, 0, 1, 10, badHeight);
+		/*
+		positionX: number;
+		positionY: number;
+		directionX: number;
+		directionY: number;
+		width: number;
+		height: number;
+	 */
+    super(posX, fieldHeight, 0, 1, 10, badHeight);
     this.powerUpTimer = 0;
     this.powerUpActive = false;
-    this.normalBadHeight = badHeight;
-    this.powerUpBadHeight = powerUpBadHeight;
+    this.normalBatHeight = badHeight;
+    this.powerUpBatHeight = powerUpBatHeight;
   }
 
   animate(ctx: CanvasRenderingContext2D) {
@@ -160,10 +169,10 @@ class Bat extends MoveableObject {
   }
 
   reset() {
-    this.height = this.normalBadHeight;
+    this.height = this.normalBatHeight;
     this.powerUpActive = false;
     this.positionY =
-      this.positionY + (this.powerUpBadHeight - this.normalBadHeight) / 2;
+      this.positionY + (this.powerUpBatHeight - this.normalBatHeight) / 2;
   }
 
   checkPowerUpTimer() {
@@ -177,15 +186,15 @@ class Bat extends MoveableObject {
     this.powerUpTimer = 600;
     this.powerUpActive = true;
     var newSize = 200;
-    if (this.positionY < (this.powerUpBadHeight - this.normalBadHeight) / 2)
+    if (this.positionY < (this.powerUpBatHeight - this.normalBatHeight) / 2)
       this.positionY = 0;
     else if (
       this.positionY + this.height >
-      fieldHeight - (this.powerUpBadHeight - this.normalBadHeight) / 2
+      fieldHeight - (this.powerUpBatHeight - this.normalBatHeight) / 2
     )
-      this.positionY = fieldHeight - this.powerUpBadHeight;
-    else this.positionY -= (this.powerUpBadHeight - this.normalBadHeight) / 2;
-    this.height = this.powerUpBadHeight;
+      this.positionY = fieldHeight - this.powerUpBatHeight;
+    else this.positionY -= (this.powerUpBatHeight - this.normalBatHeight) / 2;
+    this.height = this.powerUpBatHeight;
   }
 
   moveUp(speed: number, direction: number) {
@@ -317,63 +326,86 @@ const Game = (props: any) => {
   };
 
   useEffect(() => {
-		const waitForTheGameToStart = async () => {
-			const data = await new Promise((resolve, reject)  => {
-				(function loop() {
-					 setTimeout(() => {
-						console.log("hi there");
-						if (false) {
-							resolve(true);
-						}
-						loop();
-					}, 1000);
-				})();
-			})
-			const datas = await data;
-			console.log("bye there");
-			
-		}
-		waitForTheGameToStart().then(() => {
-			const canvas = document.getElementById("canvas") as HTMLCanvasElement;
-			//before this we need to have the data before we can build the game
-			//how can we get the position for
-			//we have to use a promise
-			const gameState = new GameState(canvas);
-			//UserName
-			//UserType
-			//GameRoomId
-			dispatch(gameSocketActions.joinRoom(42));
 
-			canvas.addEventListener("keydown", function onKeyDown(e) {
-				e.preventDefault();
-				let keynum: any;
-
-				if (window.event) {
-					keynum = e.keyCode;
-				} else if (e.which) {
-					keynum = e.which;
+		/*
+    posX: number,
+    fieldHeight: number,
+    badHeight: number,
+    powerUpBatHeight: number
+	 */
+		//this.batP1 = new Bat(10, 160, 160, 200);
+		//this.batP2 = new Bat(canvas.width - 20, canvas.height, 160, 200);
+		//bot values will come from the backend!
+		//
+		//const BatP1 = new Bat(-1);
+		//const BatP2 = new Bat(-1);
+    const waitForTheGameToStart = async () => {
+      const dataNeedToStartTheGame = await new Promise((resolve, reject) => {
+				/*
+			function isBatReady(bat: Bat): boolean {
+				if (bat.X != -1 && bat.Y != -1) {
+					return true;
 				}
+				return false;
+			}
+		 */
+        (function loop() {
+          setTimeout(() => {
+						
+						let gameState = store.getState().gameSocket;
+						if (gameState.BatP1.X != -1 && gameState.BatP1.Y != -1)
+            console.log("this is State:", gameState);
+            if (false) {
+              resolve(true);
+            }
+            loop();
+          }, 1000);
+        })();
+      });
+      const datas = await dataNeedToStartTheGame;
+      console.log("bye there");
+    };
+    waitForTheGameToStart().then(() => {
+      const canvas = document.getElementById("canvas") as HTMLCanvasElement;
+      //before this we need to have the data before we can build the game
+      //how can we get the position for
+      //we have to use a promise
+      const gameState = new GameState(canvas);
+      //UserName
+      //UserType
+      //GameRoomId
+      dispatch(gameSocketActions.joinRoom(42));
 
-				console.log(e, gameState);
+      canvas.addEventListener("keydown", function onKeyDown(e) {
+        e.preventDefault();
+        let keynum: any;
 
-				if (String.fromCharCode(keynum) == "(") {
-					gameState.batP1.moveUp(10, 1);
-					//
-				}
-				if (String.fromCharCode(keynum) == "&") {
-					//
-					gameState.batP1.moveUp(10, -1);
-				}
-			});
-			console.log(canvas);
-			const startAnimation = () => {
-				gameState.animation();
-				gameState.score();
-				gameState.frame += 1;
-				requestAnimationFrame(startAnimation);
-			};
-			startAnimation();
-		});
+        if (window.event) {
+          keynum = e.keyCode;
+        } else if (e.which) {
+          keynum = e.which;
+        }
+
+        console.log(e, gameState);
+
+        if (String.fromCharCode(keynum) == "(") {
+          gameState.batP1.moveUp(10, 1);
+          //
+        }
+        if (String.fromCharCode(keynum) == "&") {
+          //
+          gameState.batP1.moveUp(10, -1);
+        }
+      });
+      console.log(canvas);
+      const startAnimation = () => {
+        gameState.animation();
+        gameState.score();
+        gameState.frame += 1;
+        requestAnimationFrame(startAnimation);
+      };
+      startAnimation();
+    });
   }, []);
   /*
   function myKeyPress(e: any) {}
@@ -390,18 +422,20 @@ const Game = (props: any) => {
   }
  */
 
-/*
- *	P1 -> listen -> P2Bat -> BALL -> SCORE
- *	P2 -> listen -> P1Bat1 -> BALL -> SCORE
- *
- *	P1 -> emit -> P1Bat
- *	P2 -> emit -> P2Bat
- */
+  /*
+   *	P1 -> listen -> P2Bat -> BALL -> SCORE
+   *	P2 -> listen -> P1Bat1 -> BALL -> SCORE
+   *
+   *	P1 -> emit -> P1Bat
+   *	P2 -> emit -> P2Bat
+   */
   return (
     <Wrapper>
-      <canvas tabIndex={0} id="canvas" width="1300" height="700">
-        Game is not supported for this borwser. Needs <b>cavas</b> support.
-      </canvas>
+			<div className="canvasContainer">
+				<canvas tabIndex={0} id="canvas" width="1300" height="700">
+					Game is not supported for this borwser. Needs <b>cavas</b> support.
+				</canvas>
+			</div>
     </Wrapper>
   );
 };

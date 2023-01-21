@@ -13,16 +13,23 @@ interface BatMove {
   BatY: number;
 }
 
+interface Bat {
+	X: number;
+	Y: number;
+}
+
+interface Ball {
+	X: number;
+	Y: number;
+}
+
 export interface GameState {
   gameRoomId: number;
   P1Name: string;
   P2Name: string;
-  BatP1X: number;
-  BatP1Y: number;
-  BatP2X: number;
-  BatP2Y: number;
-  BallX: number;
-  BallY: number;
+  BatP1: Bat;
+  BatP2: Bat;
+  Ball: Ball;
   isEstablishingConnection: boolean;
   isConnected: boolean;
   status: any;
@@ -36,12 +43,9 @@ export const initialState: GameState = {
   gameRoomId: -1,
   P1Name: "",
   P2Name: "",
-  BatP1X: -1,
-  BatP1Y: -1,
-  BatP2X: -1,
-  BatP2Y: -1,
-  BallX: -1,
-  BallY: -1,
+  BatP1: {X: -1, Y: -1},
+  BatP2: {X: -1, Y: -1},
+  Ball: {X: -1, Y: -1},
   status: "",
   spectators: [],
   notificatoin: "",
@@ -102,24 +106,24 @@ const gameSocketSlice = createSlice({
     getBatP2: (state, action: PayloadAction<any>) => {
       return;
     },
-		getScore: (state, action: PayloadAction<any>) => {
-			return ;
-		},
-		getBall: (state, action: PayloadAction<any>) => {
-			return ;
-		},
-		serverStartedTheGame: (state, action: PayloadAction<any>) => {
-			return ;
-		},
-		clientWantsToStartGame: (state, action: PayloadAction<any>) => {
-			return ;
-		},
+    getScore: (state, action: PayloadAction<any>) => {
+      return;
+    },
+    getBall: (state, action: PayloadAction<any>) => {
+      return;
+    },
+    serverStartedTheGame: (state, action: PayloadAction<any>) => {
+      return;
+    },
+    clientWantsToStartGame: (state, action: PayloadAction<any>) => {
+      return;
+    },
   },
 });
 
 export const gameSocketActions = gameSocketSlice.actions;
 
-export const selectChatNotification = (state: any) =>
+export const selectGameNotification = (state: any) =>
   state.gameSocket.notificatoin;
 
 export default gameSocketSlice.reducer;
