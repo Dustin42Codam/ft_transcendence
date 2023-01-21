@@ -8,6 +8,8 @@ todo:
 	-	owner can remove members
 	-	add user button pop ups with a user list
 
+	-	check messages of inactive users
+
 	-	confirm window when delete channel
 	+	change ownership when owner leaves room
 	+	remove delete ban/mute from DMs
