@@ -22,7 +22,7 @@ const Wrapper = (props: any) => {
       <Nav className="header" />
       <div className="contentBody">
         <Menu className="sidenav" />
-        <div className="content">{props.children}</div>
+        <div id="content" className="content">{props.children}</div>
       </div>
       <div className="footer"></div>
     </div>

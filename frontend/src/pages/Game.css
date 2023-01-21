@@ -6,7 +6,7 @@ canvas {
 	max-width: 1300px;
 }
 
-.canvasContainer {
+#canvasContainer {
 		padding-top: 0;
 		padding-left: 0;
     padding-right: 0;

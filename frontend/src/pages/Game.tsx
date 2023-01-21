@@ -327,6 +327,11 @@ const Game = (props: any) => {
 
   useEffect(() => {
 
+		const theGameFrame = document.getElementById("content");
+		const savedTheGameFrame = theGameFrame!.innerHTML;
+		theGameFrame!.innerHTML = "<h1>Game is loading</h1>"
+		//console.log("this is game frame", theGameFrame, savedTheGameFrame);
+		//const statrStyle = theGameFrame!.style.background = "blue";
 		/*
     posX: number,
     fieldHeight: number,
@@ -366,6 +371,7 @@ const Game = (props: any) => {
       console.log("bye there");
     };
     waitForTheGameToStart().then(() => {
+			theGameFrame!.innerHTML = savedTheGameFrame; 
       const canvas = document.getElementById("canvas") as HTMLCanvasElement;
       //before this we need to have the data before we can build the game
       //how can we get the position for
@@ -431,7 +437,7 @@ const Game = (props: any) => {
    */
   return (
     <Wrapper>
-			<div className="canvasContainer">
+			<div id="canvasContainer">
 				<canvas tabIndex={0} id="canvas" width="1300" height="700">
 					Game is not supported for this borwser. Needs <b>cavas</b> support.
 				</canvas>
