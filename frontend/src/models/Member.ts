@@ -14,6 +14,7 @@ export enum MemberRole {
 }
 
 export type Member = {
+  id: number;
   role: MemberRole;
   muted_until: Date;
   banned: boolean;

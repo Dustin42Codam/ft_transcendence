@@ -3,16 +3,16 @@ import { useNavigate } from "react-router-dom";
 import CastleIcon from "@mui/icons-material/Castle";
 import PublicIcon from "@mui/icons-material/Public";
 import "./ChatTable.css";
-import { useAppDispatch, useAppSelector } from "../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import {
   selectDirectChats,
   selectGroupChats,
   selectJoinableChats,
-} from "../redux/slices/chatsSlice";
-import store from "../redux/store";
-import { selectCurrentUser } from "../redux/slices/currentUserSlice";
+} from "../../redux/slices/chatsSlice";
+import store from "../../redux/store";
+import { selectCurrentUser } from "../../redux/slices/currentUserSlice";
 import { toast } from "react-toastify";
-import { socketActions } from "../redux/slices/socketSlice";
+import { socketActions } from "../../redux/slices/socketSlice";
 import axios from "axios";
 
 export enum ChatroomType {

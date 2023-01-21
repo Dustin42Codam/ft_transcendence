@@ -3,12 +3,12 @@ import { useNavigate } from "react-router-dom";
 import CastleIcon from "@mui/icons-material/Castle";
 import PublicIcon from "@mui/icons-material/Public";
 import "./ChatTable.css";
-import { useAppSelector } from "../redux/hooks";
+import { useAppSelector } from "../../redux/hooks";
 import {
   selectDirectChats,
   selectGroupChats,
   selectJoinableChats,
-} from "../redux/slices/chatsSlice";
+} from "../../redux/slices/chatsSlice";
 import axios from "axios";
 
 export enum ChatroomType {

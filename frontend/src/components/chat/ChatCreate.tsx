@@ -1,16 +1,16 @@
 import React, { useState } from "react";
 import CloseIcon from "@mui/icons-material/Close";
-import Wrapper from "./Wrapper";
+import Wrapper from "../Wrapper";
 import "./ChatCreate.css";
 import TextInput from "./TextInput";
 import SelectInput from "./SelectInput";
-import { ChatroomType } from "../models/Chats";
-import { useAppDispatch, useAppSelector } from "../redux/hooks";
-import { selectCurrentUser } from "../redux/slices/currentUserSlice";
-import { addNewGroupChat } from "../redux/slices/chatsSlice";
-import ToastError from "./toasts/ToastError";
+import { ChatroomType } from "../../models/Chats";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { selectCurrentUser } from "../../redux/slices/currentUserSlice";
+import { addNewGroupChat } from "../../redux/slices/chatsSlice";
+import ToastError from "../toasts/ToastError";
 import { toast } from "react-toastify";
-import { RootState } from "../redux/store";
+import { RootState } from "../../redux/store";
 
 const ChatCreate = () => {
   const [name, setName] = useState("");

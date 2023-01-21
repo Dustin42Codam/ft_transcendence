@@ -1,6 +1,5 @@
 import { createAsyncThunk, PayloadAction, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { ChatroomType } from "../../models/Channel";
 
 export interface ChatRoom {
   id: number;
@@ -16,6 +15,7 @@ export interface ChatState {
   currentChatRoom: ChatRoom;
   status: any;
 }
+
 
 export const initialState: ChatState = {
   messages: [],

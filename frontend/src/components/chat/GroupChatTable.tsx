@@ -1,22 +1,22 @@
 import React, { useEffect, useState } from "react";
-import store from "../redux/store";
-import { useAppDispatch } from "../redux/hooks";
-import { socketActions } from "../redux/slices/socketSlice";
+import store from "../../redux/store";
+import { useAppDispatch } from "../../redux/hooks";
+import { socketActions } from "../../redux/slices/socketSlice";
 import { useNavigate } from "react-router-dom";
 import CastleIcon from "@mui/icons-material/Castle";
 import PublicIcon from "@mui/icons-material/Public";
 import "./ChatTable.css";
-import { useAppSelector } from "../redux/hooks";
+import { useAppSelector } from "../../redux/hooks";
 import {
   fetchGroupChats,
   selectDirectChats,
   selectGroupChats,
   selectJoinableChats,
-} from "../redux/slices/chatsSlice";
-import { selectCurrentChatroom } from "../redux/slices/socketSlice";
+} from "../../redux/slices/chatsSlice";
+import { selectCurrentChatroom } from "../../redux/slices/socketSlice";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { selectCurrentUser } from "../redux/slices/currentUserSlice";
+import { selectCurrentUser } from "../../redux/slices/currentUserSlice";
 import { ImportContacts } from "@mui/icons-material";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 

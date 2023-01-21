@@ -1,7 +1,7 @@
 import { useLocation } from "react-router-dom";
 import React, { useEffect, useRef, useState } from "react";
 import Wrapper from "../components/Wrapper";
-import Socket from "../components/Socket";
+import Socket from "../components/chat/Socket";
 import Message from "../components/Message";
 import { useAppSelector } from "../redux/hooks";
 import {
@@ -16,7 +16,7 @@ import { selectCurrentUser } from "../redux/slices/currentUserSlice";
 import "./Chat.css";
 import { Link } from "react-router-dom";
 import Popup from "reactjs-popup";
-import ChatUserList from "../components/ChatUserList";
+import ChatUserList from "../components/chat/ChatUserList";
 import { selectAllUsers } from "../redux/slices/usersSlice";
 
 interface ChatMessage {

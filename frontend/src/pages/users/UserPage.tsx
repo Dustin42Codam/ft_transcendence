@@ -20,7 +20,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import store from "../../redux/store";
 import GameLadder from "../../components/GameLadder";
-import { ChatroomType } from "../../components/ChatTable";
+import { ChatroomType } from "../../models/Channel";
 
 export const UserPage = () => {
   const { userId } = useParams();

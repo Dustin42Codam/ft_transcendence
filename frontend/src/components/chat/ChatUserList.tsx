@@ -2,16 +2,16 @@ import axios from "axios";
 import React, { SyntheticEvent, useEffect, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import Popup from "reactjs-popup";
-import { useAppDispatch, useAppSelector } from "../redux/hooks";
-import { selectCurrentUser } from "../redux/slices/currentUserSlice";
-import { selectAllUsers } from "../redux/slices/usersSlice";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { selectCurrentUser } from "../../redux/slices/currentUserSlice";
+import { selectAllUsers } from "../../redux/slices/usersSlice";
 import "./ChatUserList.css";
-import { deleteChat } from "../redux/slices/chatsSlice";
+import { deleteChat } from "../../redux/slices/chatsSlice";
 import { useNavigate } from "react-router-dom";
-import { ChatroomType } from "../models/Channel";
+import { ChatroomType } from "../../models/Channel";
 import ChatCreate from "./ChatCreate";
-import { socketActions } from "../redux/slices/socketSlice";
-import { Member } from "../models/Member";
+import { socketActions } from "../../redux/slices/socketSlice";
+import { Member } from "../../models/Member";
 
 function ChatUserList(props: any) {
   const currentChat = useAppSelector(
@@ -24,7 +24,7 @@ function ChatUserList(props: any) {
   );
   const [newUserName, setNewUserName] = useState("");
   const [rerender, setRerender] = useState(true);
-  const allUsers = useAppSelector(selectAllUsers); // delete???
+  const allMembers = useAppSelector(selectAllUsers);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const chatStatus = useAppSelector((state) => state.chats.status);
@@ -88,7 +88,7 @@ function ChatUserList(props: any) {
   async function addUserToChat(e: SyntheticEvent) {
     e.preventDefault();
 
-    const newUser = allUsers.find(
+    const newUser = allMembers.find(
       (user: any) => user.display_name === newUserName
     );
 
@@ -679,10 +679,10 @@ function ChatUserList(props: any) {
     );
 
     await axios
-      .post(`member/removeAdmin/id/${member.id}`)
+      .post(`member/remove/id/${member.id}`)
       .then(() => {
         toast.update(id, {
-          render: `${member.user.display_name} removed as admin!`,
+          render: `${member.user.display_name} removed from chat!`,
           type: "success",
           isLoading: false,
           position: "top-right",
@@ -712,7 +712,12 @@ function ChatUserList(props: any) {
         });
       });
     setRerender(!rerender);
-  } 
+  }
+
+  console.log(
+    "🚀 ~ file: ChatUserList.tsx:941 ~ ChatUserList ~ allMembers",
+    allMembers
+  );
 
   return (
     <Popup
@@ -728,41 +733,46 @@ function ChatUserList(props: any) {
 
           <button onClick={leaveChannel}>Leave Channel</button>
 
-          {currentMember?.role === "owner" && currentMember?.chatroom.type == ChatroomType.PROTECTED && (
-            <Popup
-              trigger={<button>Change Password</button>}
-            >
-              Change Password
-              <form>
-                New password
-                <input
-                  type="text"
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                />
-                Confirm new password
-                <input
-                  type="text"
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                />
-                <button
+          {currentMember?.role === "owner" &&
+            currentMember?.chatroom.type == ChatroomType.PROTECTED && (
+              <Popup trigger={<button>Change Password</button>}>
+                Change Password
+                <form>
+                  New password
+                  <input
+                    type="text"
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                  />
+                  Confirm new password
+                  <input
+                    type="text"
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                  />
+                  <button
                   // onClick={changePassword}
-                >
-                  Submit
-                </button>
-              </form>
-            </Popup>
-			    )}
+                  >
+                    Submit
+                  </button>
+                </form>
+              </Popup>
+            )}
 
           {currentMember?.role !== "user" && (
-            <button onClick={addUserToChat}>Add User</button>
+            <Popup trigger={<button onClick={addUserToChat}>Add User</button>}>
+              {allMembers.map((member: Member, index: number) => {
+                member?.chatroom?.id !== currentChat.id && (
+                  <div key={index}>{member?.user?.display_name}</div>
+                );
+              })}
+            </Popup>
           )}
-          <input
+          {/* <input
             type="text"
             onChange={(e) => setNewUserName(e.target.value)}
             required
-          />
+          /> */}
 
           {currentMember?.role === "owner" && (
             <Popup

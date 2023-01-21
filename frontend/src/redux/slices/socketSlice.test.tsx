@@ -6,7 +6,7 @@ import { fetchCurrentChatRoomMessages } from "./socketSlice";
 import { configureStore } from "@reduxjs/toolkit";
 import { combineReducers } from "redux";
 import axios from "axios";
-import { ChatroomType } from "../../components/ChatTable";
+import { ChatroomType } from "../../components/chat/ChatTable";
 
 jest.mock("axios");
 

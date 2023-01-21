@@ -1,10 +1,10 @@
 import React, { useRef, useState, useEffect } from "react";
-import store from "../redux/store";
+import store from "../../redux/store";
 import { useNavigate } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../redux/hooks";
-import { selectCurrentUser } from "../redux/slices/currentUserSlice";
-import { selectCurrentChatroom } from "../redux/slices/socketSlice";
-import { socketActions } from "../redux/slices/socketSlice";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { selectCurrentUser } from "../../redux/slices/currentUserSlice";
+import { selectCurrentChatroom } from "../../redux/slices/socketSlice";
+import { socketActions } from "../../redux/slices/socketSlice";
 import { io, Socket } from "socket.io-client";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";

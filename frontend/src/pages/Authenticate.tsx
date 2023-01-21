@@ -1,6 +1,6 @@
 import React from "react";
 import CallMadeIcon from "@mui/icons-material/CallMade";
-import ChatButton from "../components/ChatButton";
+import ChatButton from "../components/chat/ChatButton";
 import "../login.css";
 import ParticleBackground from "../components/ParticleBackground";
 import SignInButton from "../components/SignInButton";
