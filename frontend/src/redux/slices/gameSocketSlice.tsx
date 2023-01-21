@@ -1,7 +1,6 @@
 import { createAsyncThunk, PayloadAction, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
-
 interface BatMove {
   GameRoomId: number;
   BatX: number;
@@ -19,13 +18,16 @@ interface Ball {
 }
 
 interface userInRoom {
-	displayName: string;
-	bat?: Bat;
+  displayName: string;
+  bat?: Bat;
 }
 
-interface JoinGameRoom {
-  GameRoomId: number;
-	gamer: userInRoom;
+
+interface JoinGameRoomDTO {
+  gameRoomId: number;
+  player1?: userInRoom;
+  player2?: userInRoom;
+  spectator?: userInRoom;
 }
 
 export interface GameState {
@@ -33,9 +35,9 @@ export interface GameState {
   isConnected: boolean;
   gameRoomId: number;
   ball: Ball;
-	player1?: userInRoom;
-	player2?: userInRoom;
-	specatros: Array<userInRoom>;
+  player1?: userInRoom;
+  player2?: userInRoom;
+  spectator?: userInRoom;
   notificatoin: string;
 }
 
@@ -43,9 +45,9 @@ export const initialState: GameState = {
   isEstablishingConnection: false,
   isConnected: false,
   gameRoomId: -1,
-	player1: undefined,
- 	player2: undefined,
-	specatros: [],
+  player1: undefined,
+  player2: undefined,
+  spectator: undefined,
   ball: { X: -1, Y: -1 },
   notificatoin: "",
 };
@@ -80,18 +82,20 @@ const gameSocketSlice = createSlice({
       return;
     },
     joinRoom: (state, action: PayloadAction<number>) => {
-			alert(`${action.payload}`);
       return;
     },
-    joinRoomSuccess: (state, action: PayloadAction<JoinGameRoom>) => {
+    joinRoomSuccess: (state, action: PayloadAction<JoinGameRoomDTO>) => {
       //console.log("this is payload", action.payload);
-			console.log("Joined a room: ", action.payload);
-      state.gameRoomId = action.payload.GameRoomId;
-			if (state.player1 == undefined) {
-				state.player1 = action.payload.gamer;
+      console.log("Joined a room: ", action.payload, action.payload.player2 != undefined && state.player2 == undefined);
+      state.gameRoomId = action.payload.gameRoomId;
+      if (action.payload.player1 != undefined && state.player1 == undefined) {
+        state.player1 = action.payload.player1;
 			}
-			else if (state.player1 == undefined) {
-				state.player2 = action.payload.gamer;
+      if (action.payload.player2 != undefined && state.player2 == undefined) {
+        state.player2 = action.payload.player2;
+      }
+      if (action.payload.spectator != undefined) {
+        state.spectator = action.payload.spectator;
 			}
     },
     leaveRoom: (state, action: PayloadAction<number>) => {

@@ -325,7 +325,7 @@ const Game = (props: any) => {
   };
 
   useEffect(() => {
-		dispatch(gameSocketActions.joinRoom(42));
+    dispatch(gameSocketActions.joinRoom(1));
     const theGameFrame = document.getElementById("content");
     const savedTheGameFrame = theGameFrame!.innerHTML;
     theGameFrame!.innerHTML = "<h1>Game is loading</h1>";
@@ -355,13 +355,13 @@ const Game = (props: any) => {
           setTimeout(() => {
             let gameState = store.getState().gameSocket;
 
-						if (gameState.player1 != undefined) {
-							theGameFrame!.innerHTML = "<h1>Player 1 Joined</h1>";
-						}
-						if (false) {
-							resolve(true);
-						}
-						loop();
+            if (gameState.player1 != undefined) {
+              theGameFrame!.innerHTML = "<h1>Player 1 Joined</h1>";
+            }
+            if (false) {
+              resolve(true);
+            }
+            loop();
           }, 1000);
         })();
       });

@@ -5,7 +5,7 @@ import GameEvent from "./gameEvent";
 
 interface JoinGameRoom {
   GameRoomId: number;
-	gamer: userInRoom;
+  gamer: userInRoom;
 }
 
 interface Bat {
@@ -19,8 +19,15 @@ interface Ball {
 }
 
 interface userInRoom {
-	displayName: string;
-	bat?: Bat;
+  displayName: string;
+  bat?: Bat;
+}
+
+interface JoinGameRoomDTO {
+  gameRoomId: number;
+  player1?: userInRoom;
+  player2?: userInRoom;
+  spectator?: userInRoom;
 }
 
 const gameSocketMiddleware: Middleware = (store) => {
@@ -63,7 +70,7 @@ const gameSocketMiddleware: Middleware = (store) => {
         store.dispatch(gameSocketActions.joinRoomSuccess(messageToGameRoom));
       });
 		 */
-      gameSocket.on(GameEvent.JoinGameRoomSuccess, (payload: JoinGameRoom) => {
+      gameSocket.on(GameEvent.JoinGameRoomSuccess, (payload: JoinGameRoomDTO) => {
         store.dispatch(gameSocketActions.joinRoomSuccess(payload));
       });
       //TODO what data do we need in the backend
