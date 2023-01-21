@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { ChatroomType } from "../models/Channel";
 import ChatCreate from "./ChatCreate";
 import { socketActions } from "../redux/slices/socketSlice";
+import { Member } from "../models/Member";
 
 function ChatUserList(props: any) {
   const currentChat = useAppSelector(
@@ -33,8 +34,8 @@ function ChatUserList(props: any) {
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
   const [chatName, setChatName] = useState("");
-  
-  console.log('chatType:', chatType, ' = ', chatType == ChatroomType.PROTECTED)
+
+  console.log("chatType:", chatType, " = ", chatType == ChatroomType.PROTECTED);
   console.log(
     "🚀 ~ file: ChatUserList.tsx:24 ~ fetchChatUsers ~ currentChat",
     currentChat
@@ -47,10 +48,22 @@ function ChatUserList(props: any) {
     "🚀 ~ file: ChatUserList.tsx:19 ~ ChatUserList ~ currentMember",
     currentMember
   );
-  console.log("🚀 ~ file: ChatUserList.tsx:32 ~ ChatUserList ~ chatType", chatType)
-  console.log("🚀 ~ file: ChatUserList.tsx:33 ~ ChatUserList ~ password", password)
-  console.log("🚀 ~ file: ChatUserList.tsx:34 ~ ChatUserList ~ passwordConfirm", passwordConfirm)
-  console.log("🚀 ~ file: ChatUserList.tsx:35 ~ ChatUserList ~ chatName", chatName)
+  console.log(
+    "🚀 ~ file: ChatUserList.tsx:32 ~ ChatUserList ~ chatType",
+    chatType
+  );
+  console.log(
+    "🚀 ~ file: ChatUserList.tsx:33 ~ ChatUserList ~ password",
+    password
+  );
+  console.log(
+    "🚀 ~ file: ChatUserList.tsx:34 ~ ChatUserList ~ passwordConfirm",
+    passwordConfirm
+  );
+  console.log(
+    "🚀 ~ file: ChatUserList.tsx:35 ~ ChatUserList ~ chatName",
+    chatName
+  );
 
   async function fetchChatUsers(id: number) {
     const response = await axios.get(`member/chatroom/id/${currentChat.id}`);
@@ -66,7 +79,7 @@ function ChatUserList(props: any) {
   }
 
   useEffect(() => {
-	console.log('+++ rerendering +++')
+    console.log("+++ rerendering +++");
     if (currentChat.id !== -1) {
       fetchChatUsers(currentChat.id);
     }
@@ -154,27 +167,30 @@ function ChatUserList(props: any) {
     );
     const id = toast.loading(`Adding ${newUserName}...`);
 
-    console.log("🚀 ~ file: ChatUserList.tsx:92 ~ leaveChannel ~ member", member)
+    console.log(
+      "🚀 ~ file: ChatUserList.tsx:92 ~ leaveChannel ~ member",
+      member
+    );
     await axios
       .post(`member/leave/id/${member[0].id}`)
       .then(() => {
-		  toast.update(id, {
-			  render: `You left the chat!`,
-			  type: "success",
-			  isLoading: false,
-			  position: "top-right",
-			  autoClose: 3000,
-			  hideProgressBar: false,
+        toast.update(id, {
+          render: `You left the chat!`,
+          type: "success",
+          isLoading: false,
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
           closeOnClick: true,
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
           theme: "colored",
         });
-		setTimeout(() => {
-			console.log("Delayed for 1 second.");
-			navigate("/");  
-		  }, 3000)
+        setTimeout(() => {
+          console.log("Delayed for 1 second.");
+          navigate("/");
+        }, 3000);
       })
       .catch((error: any) => {
         console.log(error);
@@ -475,8 +491,7 @@ function ChatUserList(props: any) {
     setRerender(!rerender);
   }
 
-async function changeOwner(member: any) {
-	
+  async function changeOwner(member: any) {
     const id = toast.loading(`Changing channel ownership...`);
 
     await axios
@@ -513,255 +528,336 @@ async function changeOwner(member: any) {
         });
       });
     setRerender(!rerender);
-}
+  }
 
-async function changeChannelName() {
-	
-	const id = toast.loading(`Updating channel name...`);
+  async function changeChannelName() {
+    const id = toast.loading(`Updating channel name...`);
 
-	if (chatName.length) {
-		axios.post(`chatroom/name/id/${currentChat.id}`, {name: chatName})
-			.then(() => {
-			  toast.update(id, {
-				render: `Channel name updated!`,
-				type: "success",
-				isLoading: false,
-				position: "top-right",
-				autoClose: 5000,
-				hideProgressBar: false,
-				closeOnClick: true,
-				pauseOnHover: true,
-				draggable: true,
-				progress: undefined,
-				theme: "colored",
-			  });
-			  dispatch(socketActions.updateChatName({
-					chatRoom: {
-						id: currentChat.id,
-						name: chatName,
-						userId: currentChat.userId,
-						type: currentChat.type
-				  	},
-				}));
-			})
-			.catch((error: any) => {
-			  console.log(error);
-			  toast.update(id, {
-				render: `${error.response.data.message}`,
-				type: "error",
-				position: "top-right",
-				autoClose: 5000,
-				isLoading: false,
-				hideProgressBar: false,
-				closeOnClick: true,
-				pauseOnHover: true,
-				draggable: true,
-				progress: undefined,
-				theme: "colored",
-			  });
-			});
-		}
-		else {
-			toast.update(id, {
-			  render: `You can't give a chat an empty name!`,
-			  type: "error",
-			  position: "top-right",
-			  autoClose: 5000,
-			  isLoading: false,
-			  hideProgressBar: false,
-			  closeOnClick: true,
-			  pauseOnHover: true,
-			  draggable: true,
-			  progress: undefined,
-			  theme: "colored",
-			});
-		}
-	}
+    if (chatName.length) {
+      axios
+        .post(`chatroom/name/id/${currentChat.id}`, { name: chatName })
+        .then(() => {
+          toast.update(id, {
+            render: `Channel name updated!`,
+            type: "success",
+            isLoading: false,
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+          });
+          dispatch(
+            socketActions.updateChatName({
+              chatRoom: {
+                id: currentChat.id,
+                name: chatName,
+                userId: currentChat.userId,
+                type: currentChat.type,
+              },
+            })
+          );
+        })
+        .catch((error: any) => {
+          console.log(error);
+          toast.update(id, {
+            render: `${error.response.data.message}`,
+            type: "error",
+            position: "top-right",
+            autoClose: 5000,
+            isLoading: false,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+          });
+        });
+    } else {
+      toast.update(id, {
+        render: `You can't give a chat an empty name!`,
+        type: "error",
+        position: "top-right",
+        autoClose: 5000,
+        isLoading: false,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+    }
+  }
 
-	async function changeChannelType() {
-		console.log("🚀 ~ file: ChatUserList.tsx:506 ~ changeChannelType ~ currentChat", currentChat)
-		
-		const id = toast.loading(`Updating channel data...`);
+  async function changeChannelType() {
+    console.log(
+      "🚀 ~ file: ChatUserList.tsx:506 ~ changeChannelType ~ currentChat",
+      currentChat
+    );
 
-		if (chatType !== ChatroomType.PUBLIC && password?.length && password !== passwordConfirm) {
-			toast.update(id, {
-				render: `Passwords didn't match!`,
-				type: "error",
-				position: "top-right",
-				autoClose: 5000,
-				isLoading: false,
-				hideProgressBar: false,
-				closeOnClick: true,
-				pauseOnHover: true,
-				draggable: true,
-				progress: undefined,
-				theme: "colored",
-			  });
-			return ;
-		}
+    const id = toast.loading(`Updating channel data...`);
 
-		chatType.length &&
-		axios.post(`chatroom/type/id/${currentChat.id}`, {type: chatType, password: password})
-			.then(() => {
-			  toast.update(id, {
-				render: `Channel type updated!`,
-				type: "success",
-				isLoading: false,
-				position: "top-right",
-				autoClose: 5000,
-				hideProgressBar: false,
-				closeOnClick: true,
-				pauseOnHover: true,
-				draggable: true,
-				progress: undefined,
-				theme: "colored",
-			  });
-			  dispatch(socketActions.updateChatName({
-					chatRoom: {
-						id: currentChat.id,
-						name: currentChat.name,
-						userId: currentChat.userId,
-						type: chatType,
-					},
-				}));
-			})
-			.catch((error: any) => {
-			  console.log(error);
-			  toast.update(id, {
-				render: `${error.response.data.message}`,
-				type: "error",
-				position: "top-right",
-				autoClose: 5000,
-				isLoading: false,
-				hideProgressBar: false,
-				closeOnClick: true,
-				pauseOnHover: true,
-				draggable: true,
-				progress: undefined,
-				theme: "colored",
-			  });
-			});
-			console.log("🚀 ~ file: ChatUserList.tsx:610 ~ changeChannelType ~ rerender", rerender)
-			setRerender(!rerender);
-			console.log("🚀 ~ file: ChatUserList.tsx:610 ~ changeChannelType ~ rerender", rerender)
-	}
+    if (
+      chatType !== ChatroomType.PUBLIC &&
+      password?.length &&
+      password !== passwordConfirm
+    ) {
+      toast.update(id, {
+        render: `Passwords didn't match!`,
+        type: "error",
+        position: "top-right",
+        autoClose: 5000,
+        isLoading: false,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+      return;
+    }
 
-	// console.log("🚀 ~ file: ChatUserList.tsx:611 ~ ChatUserList ~ (chatType == ChatroomType.PROTECTED || currentMember.chatroom.type === ChatroomType.PROTECTED)", (chatType == ChatroomType.PROTECTED || currentMember.chatroom.type === ChatroomType.PROTECTED))
+    chatType.length &&
+      axios
+        .post(`chatroom/type/id/${currentChat.id}`, {
+          type: chatType,
+          password: password,
+        })
+        .then(() => {
+          toast.update(id, {
+            render: `Channel type updated!`,
+            type: "success",
+            isLoading: false,
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+          });
+          dispatch(
+            socketActions.updateChatName({
+              chatRoom: {
+                id: currentChat.id,
+                name: currentChat.name,
+                userId: currentChat.userId,
+                type: chatType,
+              },
+            })
+          );
+        })
+        .catch((error: any) => {
+          console.log(error);
+          toast.update(id, {
+            render: `${error.response.data.message}`,
+            type: "error",
+            position: "top-right",
+            autoClose: 5000,
+            isLoading: false,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+          });
+        });
+    setRerender(!rerender);
+  }
+
+  async function removeMember(member: Member) {
+    const id = toast.loading(
+      `Removing ${member.user.display_name} from this channel...`
+    );
+
+    await axios
+      .post(`member/removeAdmin/id/${member.id}`)
+      .then(() => {
+        toast.update(id, {
+          render: `${member.user.display_name} removed as admin!`,
+          type: "success",
+          isLoading: false,
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+      })
+      .catch((error: any) => {
+        console.log(error);
+        toast.update(id, {
+          render: `${error.response.data.message}`,
+          type: "error",
+          position: "top-right",
+          autoClose: 5000,
+          isLoading: false,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+      });
+    setRerender(!rerender);
+  } 
 
   return (
-    <Popup trigger={<button className="">{currentChat.name}</button>} modal nested>
+    <Popup
+      trigger={<button className="">{currentChat.name}</button>}
+      modal
+      nested
+    >
       {
         <div className="chat-bar-container">
           {currentMember?.role === "owner" && (
             <button onClick={deleteChannel}>Delete Channel</button>
           )}
 
-			<button onClick={leaveChannel}>Leave Channel</button>
-          
-			{/* {currentMember?.role === "owner" && currentMember?.chatroom.type === ChatroomType.PROTECTED && (
-				<button onClick={changePassword}>Change Password</button>
-			)} */}
+          <button onClick={leaveChannel}>Leave Channel</button>
 
-		  {currentMember?.role !== "user" && (
-            <button onClick={addUserToChat}>Add user</button>
+          {currentMember?.role === "owner" && currentMember?.chatroom.type == ChatroomType.PROTECTED && (
+            <Popup
+              trigger={<button>Change Password</button>}
+            >
+              Change Password
+              <form>
+                New password
+                <input
+                  type="text"
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+                Confirm new password
+                <input
+                  type="text"
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+                <button
+                  // onClick={changePassword}
+                >
+                  Submit
+                </button>
+              </form>
+            </Popup>
+			    )}
+
+          {currentMember?.role !== "user" && (
+            <button onClick={addUserToChat}>Add User</button>
           )}
           <input
             type="text"
             onChange={(e) => setNewUserName(e.target.value)}
             required
-    		/>
+          />
 
-		{currentMember?.role === "owner" && (
-			<Popup
-				trigger={<button onClick={changeChannelType}>Settings</button>}
-				// modal
-				nested
-			>
-				{(
-					<div className="modal-two">
-						{/* <button className="close" onClick={close}>
+          {currentMember?.role === "owner" && (
+            <Popup
+              trigger={<button onClick={changeChannelType}>Settings</button>}
+              // modal
+              nested
+            >
+              {
+                <div className="modal-two">
+                  {/* <button className="close" onClick={close}>
 							&times;
 	  					</button> */}
-						{/* <div className="header"> Change Channel Type</div> */}
+                  {/* <div className="header"> Change Channel Type</div> */}
 
-						{/* <ChatCreate /> */}
-						<form>
-							<label>Channel type</label>
-							<select
-								name="chat-type"
-								id="chat-type"
-								className="chat-type-form"
-								// defaultValue={currentChat.type}`
-								defaultValue={currentMember.chatroom.type}
-								onChange={(e: any) => {
-									console.log("🚀 ~ file: ChatUserList.tsx:664 ~ ChatUserList ~ chatType", chatType)
-									setChatType(e.target.value)}
-								}
-							>
-								<option value={ChatroomType.PRIVATE}>{ChatroomType.PRIVATE}</option>
-								<option value={ChatroomType.PROTECTED}>{ChatroomType.PROTECTED}</option>
-								<option value={ChatroomType.PUBLIC}>{ChatroomType.PUBLIC}</option>
-							</select>
-						</form>
+                  {/* <ChatCreate /> */}
+                  <form>
+                    <label>Channel type</label>
+                    <select
+                      name="chat-type"
+                      id="chat-type"
+                      className="chat-type-form"
+                      // defaultValue={currentChat.type}`
+                      defaultValue={currentMember.chatroom.type}
+                      onChange={(e: any) => {
+                        console.log(
+                          "🚀 ~ file: ChatUserList.tsx:664 ~ ChatUserList ~ chatType",
+                          chatType
+                        );
+                        setChatType(e.target.value);
+                      }}
+                    >
+                      <option value={ChatroomType.PRIVATE}>
+                        {ChatroomType.PRIVATE}
+                      </option>
+                      <option value={ChatroomType.PROTECTED}>
+                        {ChatroomType.PROTECTED}
+                      </option>
+                      <option value={ChatroomType.PUBLIC}>
+                        {ChatroomType.PUBLIC}
+                      </option>
+                    </select>
+                  </form>
 
-						{
-							// currentMember.chatroom.type == ChatroomType.PROTECTED
-							// || 
-							(chatType == ChatroomType.PROTECTED || currentMember.chatroom.type === ChatroomType.PROTECTED)
-							&& (
-								<form>
-								  <label>
-								    Password:
-								    <input
-										type="password"
-										name="password"
-										onChange={(e: any) => setPassword(e.target.value)}
-										/>
-								  </label>
-								  <label>
-								    Password confirm:
-								    <input
-										type="password"
-										name="password"
-										onChange={(e: any) => setPasswordConfirm(e.target.value)}
-									/>
-								  </label>
-								</form>
+                  {
+                    // currentMember.chatroom.type == ChatroomType.PROTECTED
+                    // ||
+                    (chatType == ChatroomType.PROTECTED ||
+                      currentMember.chatroom.type ===
+                        ChatroomType.PROTECTED) && (
+                      <form>
+                        <label>
+                          Password:
+                          <input
+                            type="password"
+                            name="password"
+                            onChange={(e: any) => setPassword(e.target.value)}
+                          />
+                        </label>
+                        <label>
+                          Password confirm:
+                          <input
+                            type="password"
+                            name="password"
+                            onChange={(e: any) =>
+                              setPasswordConfirm(e.target.value)
+                            }
+                          />
+                        </label>
+                      </form>
+                    )
+                  }
+                  <button className="button" onClick={changeChannelType}>
+                    Submit
+                  </button>
 
-							)
-						}
-						<button
-							className="button"
-							onClick={changeChannelType}
-						>
-							Submit
-						</button>
+                  <form>
+                    <label>
+                      Channel name:
+                      <input
+                        type="name"
+                        name="name"
+                        onChange={(e: any) => setChatName(e.target.value)}
+                      />
+                    </label>
+                  </form>
 
-						<form>
-						  <label>
-						    Channel name:
-						    <input
-								type="name"
-								name="name"
-								onChange={(e: any) => setChatName(e.target.value)}
-								/>
-						  </label>
-						</form>
-
-	  					<div className="actions">
-							<button
-							  className="button"
-							  onClick={changeChannelName}
-							>
-							  Change name
-							</button>
-	  					</div>
-
-					</div>
-				)}
-			</Popup>
-        )}
-
+                  <div className="actions">
+                    <button className="button" onClick={changeChannelName}>
+                      Change name
+                    </button>
+                  </div>
+                </div>
+              }
+            </Popup>
+          )}
 
           <div className="chat-user-list-grid">
             {chatMembers.map(
@@ -809,10 +905,16 @@ async function changeChannelName() {
                       )}
 
                     {currentMember?.role === "owner" && (
-                        <button onClick={() => changeOwner(member)}>
-                          grant channel ownership
-                        </button>
-                      )}
+                      <button onClick={() => removeMember(member)}>
+                        remove member
+                      </button>
+                    )}
+
+                    {currentMember?.role === "owner" && (
+                      <button onClick={() => changeOwner(member)}>
+                        grant channel ownership
+                      </button>
+                    )}
                   </div>
                 )
             )}

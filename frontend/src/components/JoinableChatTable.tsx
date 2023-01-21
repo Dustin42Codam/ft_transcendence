@@ -64,7 +64,7 @@ const JoinableChats = (props: any) => {
                 userId: user.id,
                 id: joinableChats[index].id,
                 name: joinableChats[index].name,
-				type: joinableChats[index].type
+                type: joinableChats[index].type,
               },
             })
           );

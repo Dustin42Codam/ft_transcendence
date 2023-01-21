@@ -68,7 +68,7 @@ const DirectChatTable = () => {
           id: directChats[i].id,
           userId: user.id,
           name: name,
-		  type: ChatroomType.DIRECT
+          type: ChatroomType.DIRECT,
         },
       })
     );

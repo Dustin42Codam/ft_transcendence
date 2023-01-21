@@ -68,7 +68,7 @@ const Chat = (props: any) => {
                 <img src={user.avatar} alt="avatar" className="msg-avatar" />
               </Link>
             )}
-            <ChatUserList currentChat={currentChat}/>
+            <ChatUserList currentChat={currentChat} />
           </div>
           {messages?.map((msg: any, index: number) =>
             msg.member.user.id === currentUser.id ? (

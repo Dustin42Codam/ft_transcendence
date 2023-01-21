@@ -12,8 +12,7 @@ const SelectInput = (props: {
   setChatType: any;
   setPassword: any;
 }) => {
- 
-	function changeChatType(e: any) {
+  function changeChatType(e: any) {
     if (e.target.value === ChatroomType.PRIVATE) {
       props.setPassword(undefined);
     }

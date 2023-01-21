@@ -28,7 +28,7 @@ export enum ChatroomType {
   PROTECTED = "protected",
   PRIVATE = "private",
   DIRECT = "direct",
-  NULL = ""
+  NULL = "",
 }
 
 type Messages = {

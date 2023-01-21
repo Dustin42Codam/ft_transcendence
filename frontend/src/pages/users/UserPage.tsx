@@ -121,7 +121,7 @@ export const UserPage = () => {
           userId: user.id,
           id: friendship.chatroom_id,
           name: user.display_name,
-		  type: ChatroomType.DIRECT
+          type: ChatroomType.DIRECT,
         },
       })
     );

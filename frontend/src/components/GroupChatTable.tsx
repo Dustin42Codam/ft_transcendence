@@ -8,7 +8,7 @@ import PublicIcon from "@mui/icons-material/Public";
 import "./ChatTable.css";
 import { useAppSelector } from "../redux/hooks";
 import {
-	fetchGroupChats,
+  fetchGroupChats,
   selectDirectChats,
   selectGroupChats,
   selectJoinableChats,
@@ -18,7 +18,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { selectCurrentUser } from "../redux/slices/currentUserSlice";
 import { ImportContacts } from "@mui/icons-material";
-import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 
 export enum ChatroomType {
   PUBLIC = "public",
@@ -45,16 +45,15 @@ const GroupChatTable = () => {
   const user = useAppSelector(selectCurrentUser);
   const navigate = useNavigate();
   let data = useAppSelector(selectGroupChats);
-  
+
   async function fetchChatData() {
-		dispatch(fetchGroupChats())
-		// setGroupChats()
-	}
+    dispatch(fetchGroupChats());
+    // setGroupChats()
+  }
 
   useEffect(() => {
-	fetchChatData();
-  }, [currentChatroom, currentChatroom.type])
-  
+    fetchChatData();
+  }, [currentChatroom, currentChatroom.type]);
 
   async function handleClick(name: string, chatToJoinIndex: number) {
     dispatch(
@@ -63,7 +62,7 @@ const GroupChatTable = () => {
           id: groupChats[chatToJoinIndex].id,
           userId: user.id,
           name: groupChats[chatToJoinIndex].name,
-		  type: groupChats[chatToJoinIndex].type
+          type: groupChats[chatToJoinIndex].type,
         },
       })
     );

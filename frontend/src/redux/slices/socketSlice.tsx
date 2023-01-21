@@ -22,11 +22,11 @@ export const initialState: ChatState = {
   isEstablishingConnection: false,
   isConnected: false,
   currentChatRoom: {
-		userId: -1,
-		id: -1,
-		name: "",
-		type: ""
-	},
+    userId: -1,
+    id: -1,
+    name: "",
+    type: "",
+  },
   status: "",
 };
 
@@ -49,9 +49,9 @@ const socketSlice = createSlice({
   name: "socket",
   initialState,
   reducers: {
-	updateChatName: (state, action: PayloadAction<{ chatRoom: ChatRoom }>) => {
-		state.currentChatRoom.name = action.payload.chatRoom.name;
-	},
+    updateChatName: (state, action: PayloadAction<{ chatRoom: ChatRoom }>) => {
+      state.currentChatRoom.name = action.payload.chatRoom.name;
+    },
     startConnecting: (state) => {
       state.isEstablishingConnection = true;
     },
