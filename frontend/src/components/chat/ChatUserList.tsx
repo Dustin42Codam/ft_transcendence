@@ -12,6 +12,7 @@ import { ChatroomType } from "../../models/Channel";
 import ChatCreate from "./ChatCreate";
 import { socketActions } from "../../redux/slices/socketSlice";
 import { Member } from "../../models/Member";
+import ChatAddMember from "./ChatAddMember";
 
 function ChatUserList(props: any) {
   const currentChat = useAppSelector(
@@ -24,7 +25,7 @@ function ChatUserList(props: any) {
   );
   const [newUserName, setNewUserName] = useState("");
   const [rerender, setRerender] = useState(true);
-  const allMembers = useAppSelector(selectAllUsers);
+  const allUsers = useAppSelector(selectAllUsers);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const chatStatus = useAppSelector((state) => state.chats.status);
@@ -35,47 +36,13 @@ function ChatUserList(props: any) {
   const [passwordConfirm, setPasswordConfirm] = useState("");
   const [chatName, setChatName] = useState("");
 
-  console.log("chatType:", chatType, " = ", chatType == ChatroomType.PROTECTED);
-  console.log(
-    "🚀 ~ file: ChatUserList.tsx:24 ~ fetchChatUsers ~ currentChat",
-    currentChat
-  );
-  console.log(
-    "🚀 ~ file: ChatUserList.tsx:16 ~ ChatUserList ~ chatMembers",
-    chatMembers
-  );
-  console.log(
-    "🚀 ~ file: ChatUserList.tsx:19 ~ ChatUserList ~ currentMember",
-    currentMember
-  );
-  console.log(
-    "🚀 ~ file: ChatUserList.tsx:32 ~ ChatUserList ~ chatType",
-    chatType
-  );
-  console.log(
-    "🚀 ~ file: ChatUserList.tsx:33 ~ ChatUserList ~ password",
-    password
-  );
-  console.log(
-    "🚀 ~ file: ChatUserList.tsx:34 ~ ChatUserList ~ passwordConfirm",
-    passwordConfirm
-  );
-  console.log(
-    "🚀 ~ file: ChatUserList.tsx:35 ~ ChatUserList ~ chatName",
-    chatName
-  );
-
   async function fetchChatUsers(id: number) {
-    const response = await axios.get(`member/chatroom/id/${currentChat.id}`);
+    const response = await axios.get(`member/chatroom/id/${id}`);
     setChatMembers(
       response.data.filter(
-        (member: any) => member.chatroom.id === currentChat.id
+        (member: Member) => member.chatroom.id === id
       )
-    );
-    console.log(
-      "🚀 ~ file: ChatUserList.tsx:12 ~ ChatUserList ~ chatMembers",
-      chatMembers
-    );
+      );
   }
 
   useEffect(() => {
@@ -85,76 +52,80 @@ function ChatUserList(props: any) {
     }
   }, [currentChat.id, rerender, chatType]);
 
-  async function addUserToChat(e: SyntheticEvent) {
-    e.preventDefault();
+  // async function addUserToChat(e: SyntheticEvent) {
+  //   e.preventDefault();
 
-    const newUser = allMembers.find(
-      (user: any) => user.display_name === newUserName
-    );
+  //   console.log('add user');
 
-    if (!newUser) {
-      toast.error(`You can\'t add the user '${newUserName}' to this chat!`, {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
-    } else if (
-      chatMembers.find((member: any) => member.user.id === newUser.id)
-    ) {
-      toast.error(`'${newUserName}' already is a member of this chat!`, {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
-    } else {
-      const id = toast.loading(`Adding ${newUserName}...`);
+  //   return ;
 
-      await axios
-        .post(`chatroom/add/id/${currentChat.id}`, { user_id: newUser.id })
-        .then(() => {
-          toast.update(id, {
-            render: `${newUserName} joined the chat!`,
-            type: "success",
-            isLoading: false,
-            position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "colored",
-          });
-        })
-        .catch((error: any) => {
-          console.log(error);
-          toast.update(id, {
-            render: `${error.response.data.message}...`,
-            type: "error",
-            position: "top-right",
-            autoClose: 5000,
-            isLoading: false,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "colored",
-          });
-        });
-      setRerender(!rerender);
-    }
-  }
+  //   const newUser = allUsers.find(
+  //     (user: any) => user.display_name === newUserName
+  //   );
+
+  //   if (!newUser) {
+  //     toast.error(`You can\'t add the user '${newUserName}' to this chat!`, {
+  //       position: "top-right",
+  //       autoClose: 5000,
+  //       hideProgressBar: false,
+  //       closeOnClick: true,
+  //       pauseOnHover: true,
+  //       draggable: true,
+  //       progress: undefined,
+  //       theme: "colored",
+  //     });
+  //   } else if (
+  //     chatMembers.find((member: any) => member.user.id === newUser.id)
+  //   ) {
+  //     toast.error(`'${newUserName}' already is a member of this chat!`, {
+  //       position: "top-right",
+  //       autoClose: 5000,
+  //       hideProgressBar: false,
+  //       closeOnClick: true,
+  //       pauseOnHover: true,
+  //       draggable: true,
+  //       progress: undefined,
+  //       theme: "colored",
+  //     });
+  //   } else {
+  //     const id = toast.loading(`Adding ${newUserName}...`);
+
+  //     await axios
+  //       .post(`chatroom/add/id/${currentChat.id}`, { user_id: newUser.id })
+  //       .then(() => {
+  //         toast.update(id, {
+  //           render: `${newUserName} joined the chat!`,
+  //           type: "success",
+  //           isLoading: false,
+  //           position: "top-right",
+  //           autoClose: 5000,
+  //           hideProgressBar: false,
+  //           closeOnClick: true,
+  //           pauseOnHover: true,
+  //           draggable: true,
+  //           progress: undefined,
+  //           theme: "colored",
+  //         });
+  //       })
+  //       .catch((error: any) => {
+  //         console.log(error);
+  //         toast.update(id, {
+  //           render: `${error.response.data.message}...`,
+  //           type: "error",
+  //           position: "top-right",
+  //           autoClose: 5000,
+  //           isLoading: false,
+  //           hideProgressBar: false,
+  //           closeOnClick: true,
+  //           pauseOnHover: true,
+  //           draggable: true,
+  //           progress: undefined,
+  //           theme: "colored",
+  //         });
+  //       });
+  //     setRerender(!rerender);
+  //   }
+  // }
 
   async function leaveChannel() {
     const member = chatMembers.filter(
@@ -715,8 +686,8 @@ function ChatUserList(props: any) {
   }
 
   console.log(
-    "🚀 ~ file: ChatUserList.tsx:941 ~ ChatUserList ~ allMembers",
-    allMembers
+    "🚀 ~ file: ChatUserList.tsx:941 ~ ChatUserList ~ allUsers",
+    allUsers
   );
 
   return (
@@ -759,15 +730,15 @@ function ChatUserList(props: any) {
               </Popup>
             )}
 
-          {currentMember?.role !== "user" && (
-            <Popup trigger={<button onClick={addUserToChat}>Add User</button>}>
-              {allMembers.map((member: Member, index: number) => {
-                member?.chatroom?.id !== currentChat.id && (
-                  <div key={index}>{member?.user?.display_name}</div>
-                );
-              })}
-            </Popup>
-          )}
+            {currentMember?.role !== "user"
+              && <ChatAddMember
+                    allUsers={allUsers}
+                    currentChat={currentChat}
+                    chatMembers={chatMembers}
+                    setRerender={setRerender}
+                    rerender={rerender}
+                  />}
+
           {/* <input
             type="text"
             onChange={(e) => setNewUserName(e.target.value)}

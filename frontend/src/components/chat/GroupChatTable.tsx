@@ -42,7 +42,7 @@ const GroupChatTable = () => {
   const groupChats = useAppSelector(selectGroupChats);
   let currentChatroom: any = store.getState().socket.currentChatRoom;
   const dispatch = useAppDispatch();
-  const user = useAppSelector(selectCurrentUser);
+  const currentUser = useAppSelector(selectCurrentUser);
   const navigate = useNavigate();
   let data = useAppSelector(selectGroupChats);
 
@@ -60,7 +60,7 @@ const GroupChatTable = () => {
       socketActions.joinARoom({
         chatRoom: {
           id: groupChats[chatToJoinIndex].id,
-          userId: user.id,
+          userId: currentUser.id,
           name: groupChats[chatToJoinIndex].name,
           type: groupChats[chatToJoinIndex].type,
         },
