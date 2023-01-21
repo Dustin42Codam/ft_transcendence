@@ -1,11 +1,6 @@
 import { createAsyncThunk, PayloadAction, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
-interface JoinGameRoom {
-  UserName: string;
-  UserType: string;
-  GameRoomId: number;
-}
 
 interface BatMove {
   GameRoomId: number;
@@ -23,19 +18,24 @@ interface Ball {
   Y: number;
 }
 
-interface Player {
+interface userInRoom {
 	displayName: string;
-	bat: Bat;
+	bat?: Bat;
+}
+
+interface JoinGameRoom {
+  GameRoomId: number;
+	gamer: userInRoom;
 }
 
 export interface GameState {
   isEstablishingConnection: boolean;
   isConnected: boolean;
   gameRoomId: number;
-	p1: Player;
-	p2: Player;
   ball: Ball;
-  spectators: Array<string>;
+	player1?: userInRoom;
+	player2?: userInRoom;
+	specatros: Array<userInRoom>;
   notificatoin: string;
 }
 
@@ -43,10 +43,10 @@ export const initialState: GameState = {
   isEstablishingConnection: false,
   isConnected: false,
   gameRoomId: -1,
-  p1: {displayName: "", bat: { X: -1, Y: -1 }},
-  p2: {displayName: "", bat: { X: -1, Y: -1 }},
+	player1: undefined,
+ 	player2: undefined,
+	specatros: [],
   ball: { X: -1, Y: -1 },
-  spectators: [],
   notificatoin: "",
 };
 
@@ -80,11 +80,14 @@ const gameSocketSlice = createSlice({
       return;
     },
     joinRoom: (state, action: PayloadAction<number>) => {
+			alert(`${action.payload}`);
       return;
     },
     joinRoomSuccess: (state, action: PayloadAction<JoinGameRoom>) => {
-      console.log("this is payload", action.payload);
+      //console.log("this is payload", action.payload);
+			console.log("Joined a room: ", action.payload);
       state.gameRoomId = action.payload.GameRoomId;
+      state.player1 = action.payload.gamer;
     },
     leaveRoom: (state, action: PayloadAction<number>) => {
       return;

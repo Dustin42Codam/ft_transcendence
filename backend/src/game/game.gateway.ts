@@ -23,6 +23,11 @@ interface Bat {
 	Y: number;
 }
 
+interface Player {
+	displayName: string;
+	bat?: Bat;
+}
+
 @WebSocketGateway(3002, {
   namespace: "game",
   cors: {
@@ -63,12 +68,19 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 		const userId = await this.userService.getUserFromClient(client);
 		const user = await this.userService.getUserById(userId);
 		if (len == 1) {
-			this.io.to(payload).emit(GameroomEvents.JoinGameRoomSuccess, payload);
+			//
+			const player1 = { gameRoomId: payload, gamer: { displayName: user.display_name, bat: {X: 200, Y:200}}};
+			this.io.to(payload).emit(GameroomEvents.JoinGameRoomSuccess, player1);
 			this.io.to(payload).emit(GameroomEvents.GameRoomNotification, `Player 1: ${user.display_name}`);
 		}
-		if (len == 2) {
-			client.to(payload).emit(GameroomEvents.JoinGameRoomSuccess, payload);
+		else if (len == 2) {
+			const player2 = { gameRoomId: payload, gamer: { displayName: user.display_name, bat: {X: 400, Y:400}}};
+			client.to(payload).emit(GameroomEvents.JoinGameRoomSuccess, player2);
 			this.io.to(payload).emit(GameroomEvents.GameRoomNotification, `Player 2: ${user.display_name}`);
+		}
+		else {
+			client.to(payload).emit(GameroomEvents.JoinGameRoomSuccess, {gameRoomId: payload, gamer: { displayName: user.display_name, bat: undefined}})
+			this.io.to(payload).emit(GameroomEvents.GameRoomNotification, `spectator ${user.display_name} join`);
 		}
   }
 

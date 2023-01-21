@@ -4,9 +4,23 @@ import { gameSocketActions } from "./slices/gameSocketSlice";
 import GameEvent from "./gameEvent";
 
 interface JoinGameRoom {
-  UserName: string;
-  UserType: string;
   GameRoomId: number;
+	gamer: userInRoom;
+}
+
+interface Bat {
+  X: number;
+  Y: number;
+}
+
+interface Ball {
+  X: number;
+  Y: number;
+}
+
+interface userInRoom {
+	displayName: string;
+	bat?: Bat;
 }
 
 const gameSocketMiddleware: Middleware = (store) => {
