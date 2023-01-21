@@ -87,7 +87,12 @@ const gameSocketSlice = createSlice({
       //console.log("this is payload", action.payload);
 			console.log("Joined a room: ", action.payload);
       state.gameRoomId = action.payload.GameRoomId;
-      state.player1 = action.payload.gamer;
+			if (state.player1 == undefined) {
+				state.player1 = action.payload.gamer;
+			}
+			else if (state.player1 == undefined) {
+				state.player2 = action.payload.gamer;
+			}
     },
     leaveRoom: (state, action: PayloadAction<number>) => {
       return;

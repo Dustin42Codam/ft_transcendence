@@ -1,6 +1,7 @@
 import { WebSocketServer, OnGatewayDisconnect, OnGatewayConnection, WsResponse, OnGatewayInit, MessageBody, SubscribeMessage, WebSocketGateway } from "@nestjs/websockets";
 import { UserService } from "src/user/user.service";
 import { SocketAuthGuard } from "../auth/auth.socket.guard";
+import { GameService } from "./game.service";
 import GameroomEvents from "./gameroomEvents";
 import { UseGuards } from "@nestjs/common";
 import { Namespace, Server, Socket } from "socket.io";
@@ -36,7 +37,10 @@ interface Player {
   },
 })
 export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
-  constructor(private readonly userService: UserService,) {};
+  constructor(
+		private readonly userService: UserService,
+		private readonly gameService: GameService,
+		) {};
 
   private logger: Logger = new Logger("AppGateway");
   @WebSocketServer() io: Namespace;
@@ -58,29 +62,33 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
   }
 
 	//payload needs to have display_name, GameRoomId
+	//we can also pass the player in here
 	@UseGuards(SocketAuthGuard)
   @SubscribeMessage(GameroomEvents.JoinGameRoom)
   async handelJoinRoom(client: Socket, payload: string): Promise<void> {
 
-    client.join(payload);
-		const len = (await this.io.in(payload).fetchSockets()).length;
+		const gameRoomId = payload;
+
+    client.join(gameRoomId);
+		const len = (await this.io.in(gameRoomId).fetchSockets()).length;
 
 		const userId = await this.userService.getUserFromClient(client);
 		const user = await this.userService.getUserById(userId);
-		if (len == 1) {
-			//
-			const player1 = { gameRoomId: payload, gamer: { displayName: user.display_name, bat: {X: 200, Y:200}}};
-			this.io.to(payload).emit(GameroomEvents.JoinGameRoomSuccess, player1);
-			this.io.to(payload).emit(GameroomEvents.GameRoomNotification, `Player 1: ${user.display_name}`);
+		const game = await this.gameService.getGameById(Number(gameRoomId));
+		if (game.player_1 == userId) {
+			const player1 = { gameRoomId: gameRoomId, gamer: { displayName: user.display_name, bat: {X: 200, Y:200}}};
+			this.io.to(gameRoomId).emit(GameroomEvents.JoinGameRoomSuccess, player1);
+			this.io.to(gameRoomId).emit(GameroomEvents.GameRoomNotification, `Player 1: ${user.display_name}`);
 		}
-		else if (len == 2) {
-			const player2 = { gameRoomId: payload, gamer: { displayName: user.display_name, bat: {X: 400, Y:400}}};
-			client.to(payload).emit(GameroomEvents.JoinGameRoomSuccess, player2);
-			this.io.to(payload).emit(GameroomEvents.GameRoomNotification, `Player 2: ${user.display_name}`);
-		}
-		else {
-			client.to(payload).emit(GameroomEvents.JoinGameRoomSuccess, {gameRoomId: payload, gamer: { displayName: user.display_name, bat: undefined}})
-			this.io.to(payload).emit(GameroomEvents.GameRoomNotification, `spectator ${user.display_name} join`);
+		else if (game.player_2 == userId) {
+			const user1 = await this.userService.getUserById(game.palyer_1);
+			const player1 = { gameRoomId: gameRoomId, gamer: { displayName: user1.display_name, bat: {X: 200, Y:200}}};
+			const player2 = { gameRoomId: gameRoomId, gamer: { displayName: user.display_name, bat: {X: 400, Y:400}}};
+			client.to(gameRoomId).emit(GameroomEvents.JoinGameRoomSuccess, player2);
+			this.io.to(gameRoomId).emit(GameroomEvents.GameRoomNotification, `Player 2: ${user.display_name}`);
+		} else {
+			client.to(gameRoomId).emit(GameroomEvents.JoinGameRoomSuccess, {gameRoomId: gameRoomId, gamer: { displayName: user.display_name, bat: undefined}})
+			this.io.to(gameRoomId).emit(GameroomEvents.GameRoomNotification, `spectator ${user.display_name} join`);
 		}
   }
 
