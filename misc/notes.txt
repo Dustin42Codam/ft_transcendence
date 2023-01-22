@@ -2,12 +2,10 @@
 todo:
 
 	->	Redux store
-		->	add current_chat_member slices
-		-	sync with sockets?
-		-	place every manual fetch into redux slice
-		-	update (current) chat
-			-	add update chat to redux slice
-		-	fetch current chat members
+		+	add current_chat_member slices
+		+	update (current) chat
+			+	add update chat to redux slice
+		+	fetch current chat members
 	-	confirm window when delete channel
 	-	check error handling in user edit
 	-	add toasts for every store/api event
@@ -86,6 +84,7 @@ notes:
 	-	ChatLobby?
 	-	ChatCreate?
 	-	ChatTable?
+	-	admins can ban and mute other admins
 
 
 toasties:

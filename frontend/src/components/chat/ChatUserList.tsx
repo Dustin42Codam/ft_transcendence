@@ -1,6 +1,6 @@
 import axios from "axios";
-import React, { SyntheticEvent, useEffect, useState } from "react";
-import { toast, ToastContainer } from "react-toastify";
+import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import Popup from "reactjs-popup";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { selectCurrentUser } from "../../redux/slices/currentUserSlice";
@@ -9,7 +9,6 @@ import "./ChatUserList.css";
 import { deleteChat } from "../../redux/slices/chatsSlice";
 import { useNavigate } from "react-router-dom";
 import { ChatroomType } from "../../models/Channel";
-import ChatCreate from "./ChatCreate";
 import { socketActions } from "../../redux/slices/socketSlice";
 import { Member } from "../../models/Member";
 import ChatAddMember from "./ChatAddMember";
@@ -41,26 +40,22 @@ function ChatUserList(props: any) {
   const allUsers = useAppSelector(selectAllUsers);
 
 	useEffect(() => {
-		dispatch(fetchUsers);
-	}, [chatMembers, rerender, chatType])
-
-	console.log("🚀 ~ file: ChatUserList.tsx:49 ~ ChatUserList ~ currentMember", currentMember)
+		dispatch(fetchChatMembers({
+			id: props.currentChat.id
+		  }));
+		dispatch(fetchUsers());
+		dispatch(fetchCurrentMember({
+			id: currentChat.id,
+		}));
+	}, [rerender, chatType])
 
   async function leaveChannel() {
     const member = chatMembers.filter(
       (m: any) => m.user.display_name === currentUser.display_name
     );
 
-    console.log(
-      "🚀 ~ file: ChatUserList.tsx:92 ~ leaveChannel ~ member",
-      member
-    );
     const id = toast.loading(`Adding ${newUserName}...`);
 
-    console.log(
-      "🚀 ~ file: ChatUserList.tsx:92 ~ leaveChannel ~ member",
-      member
-    );
     await axios
       .post(`member/leave/id/${member[0].id}`)
       .then(() => {
@@ -104,10 +99,6 @@ function ChatUserList(props: any) {
 
     dispatch(deleteChat(currentChat));
 
-    console.log(
-      "🚀 ~ file: ChatUserList.tsx:167 ~ deleteChannel ~ chatStatus",
-      chatStatus
-    );
     if (chatStatus === "failed") {
       console.log(chatError);
       toast.update(id, {
@@ -538,11 +529,6 @@ function ChatUserList(props: any) {
 	dispatch(fetchUsers());
     setRerender(!rerender);
   }
-
-  console.log(
-    "🚀 ~ file: ChatUserList.tsx:941 ~ ChatUserList ~ allUsers",
-    allUsers
-  );
 
   return (
     <Popup
