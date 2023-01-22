@@ -205,9 +205,9 @@ export class ChatroomController {
     }
     const receiverMember = await this.memberService.findOne({ user: receiver, chatroom: chatroom }, ["user", "chatroom"]);
     if (receiverMember) {
-      if (receiver.status === MemberStatus.INACTIVE) {
-        receiver.status = MemberStatus.ACTIVE
-        await this.memberService.update(receiver.id, receiver);
+      if (receiverMember.status === MemberStatus.INACTIVE) {
+        receiverMember.status = MemberStatus.ACTIVE
+        await this.memberService.update(receiverMember.id, receiverMember);
       }
 		  return receiverMember;
 	  }
