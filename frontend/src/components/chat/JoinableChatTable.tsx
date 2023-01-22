@@ -13,6 +13,7 @@ import axios from "axios";
 import PopUp from "../PopUp";
 import PasswordPrompt from "./PasswordPrompt";
 import { selectCurrentUser } from "../../redux/slices/currentUserSlice";
+import { fetchCurrentMember } from "../../redux/slices/currentMemberSlice";
 
 export enum ChatroomType {
   PUBLIC = "public",
@@ -68,6 +69,9 @@ const JoinableChats = (props: any) => {
               },
             })
           );
+		  dispatch(fetchCurrentMember({
+			id: joinableChats[index].id,
+		}));
           navigate("../chats/" + joinableChats[index].name, {
             replace: true,
             state: joinableChats[index],

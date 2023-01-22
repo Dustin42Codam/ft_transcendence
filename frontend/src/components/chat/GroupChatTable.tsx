@@ -19,6 +19,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { selectCurrentUser } from "../../redux/slices/currentUserSlice";
 import { ImportContacts } from "@mui/icons-material";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import { fetchCurrentMember } from "../../redux/slices/currentMemberSlice";
 
 export enum ChatroomType {
   PUBLIC = "public",
@@ -66,6 +67,9 @@ const GroupChatTable = () => {
         },
       })
     );
+	dispatch(fetchCurrentMember({
+		id: groupChats[chatToJoinIndex].id
+	}));
     const id = toast.loading(
       `joining room: ${groupChats[chatToJoinIndex].name}!`
     );

@@ -11,6 +11,6 @@ export class User {
     public two_factor_auth: boolean = false,
     public chatrooms: [],
     public send_blocks: [],
-    public received_blocks: [],
+    public received_blocks: []
   ) {}
 }

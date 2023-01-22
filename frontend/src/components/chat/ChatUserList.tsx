@@ -4,7 +4,7 @@ import { toast, ToastContainer } from "react-toastify";
 import Popup from "reactjs-popup";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { selectCurrentUser } from "../../redux/slices/currentUserSlice";
-import { selectAllUsers } from "../../redux/slices/usersSlice";
+import { fetchUsers, selectAllUsers } from "../../redux/slices/usersSlice";
 import "./ChatUserList.css";
 import { deleteChat } from "../../redux/slices/chatsSlice";
 import { useNavigate } from "react-router-dom";
@@ -13,119 +13,65 @@ import ChatCreate from "./ChatCreate";
 import { socketActions } from "../../redux/slices/socketSlice";
 import { Member } from "../../models/Member";
 import ChatAddMember from "./ChatAddMember";
+import { Link } from "react-router-dom";
+import { fetchCurrentMember, selectCurrentMember, updateCurrentChatType } from "../../redux/slices/currentMemberSlice";
+import { fetchChatMembers, selectAllChatMembers } from "../../redux/slices/chatMembersSlice";
 
 function ChatUserList(props: any) {
   const currentChat = useAppSelector(
     (state: any) => state.socket.currentChatRoom
   );
   const currentUser = useAppSelector(selectCurrentUser);
-  const [chatMembers, setChatMembers] = useState<any>([]);
+  const chatMembers = useAppSelector(selectAllChatMembers);
+//   const [chatMembers, setChatMembers] = useState<any>([]);
+  const [_currentMember, setCurrentMember] = useState<Member>();
   let currentMember = chatMembers.find(
-    (member: any) => member.user.id === currentUser.id
+	  (member: any) => member.user.id === currentUser.id
   );
   const [newUserName, setNewUserName] = useState("");
   const [rerender, setRerender] = useState(true);
-  const allUsers = useAppSelector(selectAllUsers);
+
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const chatStatus = useAppSelector((state) => state.chats.status);
   const chatError = useAppSelector((state) => state.chats.error);
-
+  
   const [chatType, setChatType] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
   const [chatName, setChatName] = useState("");
+  
+  const __currentMember = useAppSelector(selectCurrentMember);
 
-  async function fetchChatUsers(id: number) {
+  const allUsers = useAppSelector(selectAllUsers);
+
+  async function _fetchChatMembers(id: number) {
     const response = await axios.get(`member/chatroom/id/${id}`);
-    setChatMembers(
-      response.data.filter(
-        (member: Member) => member.chatroom.id === id
-      )
-      );
-  }
+    // setChatMembers(
+		// response.data.filter((member: Member) => member.chatroom.id === id)
+		// );
+	}
+	
+	useEffect(() => {
+		console.log("+++ rendering +++");
+    	if (currentChat.id !== -1) {
+			_fetchChatMembers(currentChat.id);
+    	}
+	}, [currentChat.id, rerender, chatType]);
 
-  useEffect(() => {
-    console.log("+++ rerendering +++");
-    if (currentChat.id !== -1) {
-      fetchChatUsers(currentChat.id);
-    }
-  }, [currentChat.id, rerender, chatType]);
-
-  // async function addUserToChat(e: SyntheticEvent) {
-  //   e.preventDefault();
-
-  //   console.log('add user');
-
-  //   return ;
-
-  //   const newUser = allUsers.find(
-  //     (user: any) => user.display_name === newUserName
-  //   );
-
-  //   if (!newUser) {
-  //     toast.error(`You can\'t add the user '${newUserName}' to this chat!`, {
-  //       position: "top-right",
-  //       autoClose: 5000,
-  //       hideProgressBar: false,
-  //       closeOnClick: true,
-  //       pauseOnHover: true,
-  //       draggable: true,
-  //       progress: undefined,
-  //       theme: "colored",
-  //     });
-  //   } else if (
-  //     chatMembers.find((member: any) => member.user.id === newUser.id)
-  //   ) {
-  //     toast.error(`'${newUserName}' already is a member of this chat!`, {
-  //       position: "top-right",
-  //       autoClose: 5000,
-  //       hideProgressBar: false,
-  //       closeOnClick: true,
-  //       pauseOnHover: true,
-  //       draggable: true,
-  //       progress: undefined,
-  //       theme: "colored",
-  //     });
-  //   } else {
-  //     const id = toast.loading(`Adding ${newUserName}...`);
-
-  //     await axios
-  //       .post(`chatroom/add/id/${currentChat.id}`, { user_id: newUser.id })
-  //       .then(() => {
-  //         toast.update(id, {
-  //           render: `${newUserName} joined the chat!`,
-  //           type: "success",
-  //           isLoading: false,
-  //           position: "top-right",
-  //           autoClose: 5000,
-  //           hideProgressBar: false,
-  //           closeOnClick: true,
-  //           pauseOnHover: true,
-  //           draggable: true,
-  //           progress: undefined,
-  //           theme: "colored",
-  //         });
-  //       })
-  //       .catch((error: any) => {
-  //         console.log(error);
-  //         toast.update(id, {
-  //           render: `${error.response.data.message}...`,
-  //           type: "error",
-  //           position: "top-right",
-  //           autoClose: 5000,
-  //           isLoading: false,
-  //           hideProgressBar: false,
-  //           closeOnClick: true,
-  //           pauseOnHover: true,
-  //           draggable: true,
-  //           progress: undefined,
-  //           theme: "colored",
-  //         });
-  //       });
-  //     setRerender(!rerender);
-  //   }
-  // }
+	useEffect(() => {
+		setCurrentMember(chatMembers.find(
+			(member: any) => member.user.id === currentUser.id
+		))
+		// dispatch(fetchCurrentMember({???
+		// 	id: currentChat.id
+		// }));
+		dispatch(fetchUsers);
+	}, [chatMembers, rerender, chatType])
+	
+	console.log("🚀 ~ file: ChatUserList.tsx:54 ~ useEffect ~ currentMember", currentMember)
+	console.log("🚀 ~ file: ChatUserList.tsx:25 ~ ChatUserList ~ _currentMember", _currentMember)
+	console.log("🚀 ~ file: ChatUserList.tsx:49 ~ ChatUserList ~ __currentMember", __currentMember)
 
   async function leaveChannel() {
     const member = chatMembers.filter(
@@ -159,7 +105,6 @@ function ChatUserList(props: any) {
           theme: "colored",
         });
         setTimeout(() => {
-          console.log("Delayed for 1 second.");
           navigate("/");
         }, 3000);
       })
@@ -528,6 +473,7 @@ function ChatUserList(props: any) {
                 name: chatName,
                 userId: currentChat.userId,
                 type: currentChat.type,
+				members: chatMembers
               },
             })
           );
@@ -565,84 +511,15 @@ function ChatUserList(props: any) {
     }
   }
 
-  async function changeChannelType() {
-    console.log(
-      "🚀 ~ file: ChatUserList.tsx:506 ~ changeChannelType ~ currentChat",
-      currentChat
-    );
-
-    const id = toast.loading(`Updating channel data...`);
-
-    if (
-      chatType !== ChatroomType.PUBLIC &&
-      password?.length &&
-      password !== passwordConfirm
-    ) {
-      toast.update(id, {
-        render: `Passwords didn't match!`,
-        type: "error",
-        position: "top-right",
-        autoClose: 5000,
-        isLoading: false,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
-      return;
-    }
-
-    chatType.length &&
-      axios
-        .post(`chatroom/type/id/${currentChat.id}`, {
-          type: chatType,
-          password: password,
-        })
-        .then(() => {
-          toast.update(id, {
-            render: `Channel type updated!`,
-            type: "success",
-            isLoading: false,
-            position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "colored",
-          });
-          dispatch(
-            socketActions.updateChatName({
-              chatRoom: {
-                id: currentChat.id,
-                name: currentChat.name,
-                userId: currentChat.userId,
-                type: chatType,
-              },
-            })
-          );
-        })
-        .catch((error: any) => {
-          console.log(error);
-          toast.update(id, {
-            render: `${error.response.data.message}`,
-            type: "error",
-            position: "top-right",
-            autoClose: 5000,
-            isLoading: false,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "colored",
-          });
-        });
-    setRerender(!rerender);
-  }
+  async function updateChannelTypeOrPassword() {
+	chatType.length &&
+	dispatch(updateCurrentChatType({
+		id: currentChat.id,
+		type: chatType,
+		password,
+		passwordConfirm
+	}))
+}
 
   async function removeMember(member: Member) {
     const id = toast.loading(
@@ -682,6 +559,10 @@ function ChatUserList(props: any) {
           theme: "colored",
         });
       });
+  	dispatch(fetchChatMembers({
+		id: currentChat.id
+  	}));
+	dispatch(fetchUsers());
     setRerender(!rerender);
   }
 
@@ -689,6 +570,8 @@ function ChatUserList(props: any) {
     "🚀 ~ file: ChatUserList.tsx:941 ~ ChatUserList ~ allUsers",
     allUsers
   );
+
+  console.log("🚀 ~ file: ChatUserList.tsx:741 ~ ChatUserList ~ _chatMembers", _chatMembers)
 
   return (
     <Popup
@@ -704,76 +587,32 @@ function ChatUserList(props: any) {
 
           <button onClick={leaveChannel}>Leave Channel</button>
 
-          {currentMember?.role === "owner" &&
-            currentMember?.chatroom.type == ChatroomType.PROTECTED && (
-              <Popup trigger={<button>Change Password</button>}>
-                Change Password
-                <form>
-                  New password
-                  <input
-                    type="text"
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                  />
-                  Confirm new password
-                  <input
-                    type="text"
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                  />
-                  <button
-                  // onClick={changePassword}
-                  >
-                    Submit
-                  </button>
-                </form>
-              </Popup>
-            )}
-
-            {currentMember?.role !== "user"
-              && <ChatAddMember
-                    allUsers={allUsers}
-                    currentChat={currentChat}
-                    chatMembers={chatMembers}
-                    setRerender={setRerender}
-                    rerender={rerender}
-                  />}
-
-          {/* <input
-            type="text"
-            onChange={(e) => setNewUserName(e.target.value)}
-            required
-          /> */}
+          {currentMember?.role !== "user" && (
+            <ChatAddMember
+              allUsers={allUsers}
+              currentChat={currentChat}
+              chatMembers={chatMembers}
+              setRerender={setRerender}
+              rerender={rerender}
+            />
+          )}
 
           {currentMember?.role === "owner" && (
             <Popup
-              trigger={<button onClick={changeChannelType}>Settings</button>}
+              trigger={<button>Settings</button>}
               // modal
               nested
             >
               {
                 <div className="modal-two">
-                  {/* <button className="close" onClick={close}>
-							&times;
-	  					</button> */}
-                  {/* <div className="header"> Change Channel Type</div> */}
-
-                  {/* <ChatCreate /> */}
                   <form>
                     <label>Channel type</label>
                     <select
                       name="chat-type"
                       id="chat-type"
                       className="chat-type-form"
-                      // defaultValue={currentChat.type}`
-                      defaultValue={currentMember.chatroom.type}
-                      onChange={(e: any) => {
-                        console.log(
-                          "🚀 ~ file: ChatUserList.tsx:664 ~ ChatUserList ~ chatType",
-                          chatType
-                        );
-                        setChatType(e.target.value);
-                      }}
+                      defaultValue={__currentMember.chatroom.type}
+                      onChange={(e: any) => setChatType(e.target.value)}
                     >
                       <option value={ChatroomType.PRIVATE}>
                         {ChatroomType.PRIVATE}
@@ -788,10 +627,8 @@ function ChatUserList(props: any) {
                   </form>
 
                   {
-                    // currentMember.chatroom.type == ChatroomType.PROTECTED
-                    // ||
                     (chatType == ChatroomType.PROTECTED ||
-                      currentMember.chatroom.type ===
+                      __currentMember.chatroom.type ===
                         ChatroomType.PROTECTED) && (
                       <form>
                         <label>
@@ -815,7 +652,7 @@ function ChatUserList(props: any) {
                       </form>
                     )
                   }
-                  <button className="button" onClick={changeChannelType}>
+                  <button className="button" onClick={updateChannelTypeOrPassword}>
                     Submit
                   </button>
 
@@ -841,12 +678,14 @@ function ChatUserList(props: any) {
           )}
 
           <div className="chat-user-list-grid">
-            {chatMembers.map(
+            {_chatMembers.map(
               (member: any, index: number) =>
                 member.user.id !== currentUser.id && (
                   <div className="pop-up-member" key={index}>
-                    {/* <img src={member.avatar}/> */}
-                    {member.user.display_name}
+					<Link className="member-link" to={`/users/${member.user.id}`}>
+                    	<img className="member-avatar" src={member.user.avatar}/>
+                    	{member.user.display_name}
+					</Link>
 
                     <button>send game invite</button>
 

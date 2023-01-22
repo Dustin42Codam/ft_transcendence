@@ -20,6 +20,17 @@ export class MemberController {
 	private authService: AuthService
 ) {}
 
+	@Get("me/id/:id")
+	async getCurrentMember(
+		@Param("id") id: string,
+		@Req() request: Request,
+	) {
+		const userId = await this.authService.userId(request);
+		const user = await this.userServcie.getUserById(userId);
+		const chatroom = await this.chatroomService.getChatroomById(Number(id));
+	  	return await this.memberService.getMemberByUserAndChatroom(user, chatroom);
+	}
+
   @Get("id/:id")
   async getMemberById(@Param("id") id: string) {
     return this.memberService.getMemberById(Number(id));

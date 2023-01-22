@@ -3,21 +3,23 @@ import React, { useEffect, useRef, useState } from "react";
 import Wrapper from "../components/Wrapper";
 import Socket from "../components/chat/Socket";
 import Message from "../components/Message";
-import { useAppSelector } from "../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import {
   selectCurrentChatroom,
   selectCurrentChatroomMessages,
 } from "../redux/slices/socketSlice";
-import "./Message.css";
 import { fetchMessages } from "../redux/slices/messagesSlice";
 import axios from "axios";
 import { selectCurrentUser } from "../redux/slices/currentUserSlice";
-
-import "./Chat.css";
 import { Link } from "react-router-dom";
 import Popup from "reactjs-popup";
 import ChatUserList from "../components/chat/ChatUserList";
 import { selectAllUsers } from "../redux/slices/usersSlice";
+import { ChatroomType } from "../models/Chats";
+import "./Message.css";
+import "./Chat.css";
+import { selectCurrentMember } from "../redux/slices/currentMemberSlice";
+import { fetchChatMembers } from "../redux/slices/chatMembersSlice";
 
 interface ChatMessage {
   chatRoomId: number;
@@ -33,7 +35,14 @@ const Chat = (props: any) => {
   const [messages, setMessages] = useState([]);
   const dummy = useRef<HTMLDivElement>(null);
   const users = useAppSelector(selectAllUsers);
+  const currentMember = useAppSelector(selectCurrentMember);
   let user;
+
+  const dispatch = useAppDispatch();
+    dispatch(fetchChatMembers({
+	id: currentChat.id
+  }));
+  
 
   if (currentChat.id !== -1) {
     user = users.find((user: any) => user.display_name === currentChat.name);
@@ -64,11 +73,16 @@ const Chat = (props: any) => {
         <div className="chat-body">
           <div className="chat-header">
             {user && (
-              <Link to={`/users/${user.id}`}>
-                <img src={user.avatar} alt="avatar" className="msg-avatar" />
+              <Link to={`/users/${user.id}`} className="member-link">
+				<div className="dm-avatar">
+                	<img src={user.avatar} alt="avatar" />
+				</div>
               </Link>
             )}
-            <ChatUserList currentChat={currentChat} />
+			
+			{currentChat.type !== ChatroomType.DIRECT
+            	&& <ChatUserList currentChat={currentChat} />
+			}
           </div>
           {messages?.map((msg: any, index: number) =>
             msg.member.user.id === currentUser.id ? (
@@ -98,7 +112,7 @@ const Chat = (props: any) => {
             )
           )}
 
-          <Socket location={location} /* dummy={dummy} */ />
+          <Socket location={location} />
         </div>
         <div ref={dummy}></div>
       </div>

@@ -1,11 +1,13 @@
 import { createAsyncThunk, PayloadAction, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { Member } from "../../models/Member";
 
 export interface ChatRoom {
   id: number;
   name: string;
   userId: number; // Added the userId so I can get it in the backend
   type: string;
+  members?: Member[];
 }
 
 export interface ChatState {
@@ -16,7 +18,6 @@ export interface ChatState {
   status: any;
 }
 
-
 export const initialState: ChatState = {
   messages: [],
   isEstablishingConnection: false,
@@ -26,6 +27,7 @@ export const initialState: ChatState = {
     id: -1,
     name: "",
     type: "",
+	members: []
   },
   status: "",
 };

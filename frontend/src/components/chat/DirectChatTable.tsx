@@ -14,6 +14,7 @@ import { selectCurrentUser } from "../../redux/slices/currentUserSlice";
 import { toast } from "react-toastify";
 import { socketActions } from "../../redux/slices/socketSlice";
 import axios from "axios";
+import { fetchCurrentMember } from "../../redux/slices/currentMemberSlice";
 
 export enum ChatroomType {
   PUBLIC = "public",
@@ -72,6 +73,9 @@ const DirectChatTable = () => {
         },
       })
     );
+	dispatch(fetchCurrentMember({
+		id: directChats[i].id,
+	}));
     // const id = toast.loading(`joining room: ${directChats[i].i}!`);
     await new Promise((resolve, reject) => {
       //will check evert seccond if the chat room is set
