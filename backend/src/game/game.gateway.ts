@@ -87,10 +87,10 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 					let joinGameDTO: JoinGameRoomDTO;
 
 					if (userId == game.player_1) {
-						player = { displayName: user.display_name, bat: {X: 200, Y:200}};
+						player = { displayName: user.display_name, bat: {X: 50, Y:270}};
 						joinGameDTO = { gameRoomId: gameRoomId, player1: player};
 					} else {
-						player = { displayName: user.display_name, bat: {X: 400, Y:400}};
+						player = { displayName: user.display_name, bat: {X: 1250, Y:270}};
 						joinGameDTO = { gameRoomId: gameRoomId, player2: player};
 					}	
 					console.log("sending:", joinGameDTO);
@@ -104,13 +104,13 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 						console.log(game.player_2)
 						const userAlreadyInGameRoom = await this.userService.getUserById(game.player_2);
 						console.log("1:", userAlreadyInGameRoom, user, game);
-						player1 = {displayName: user.display_name, bat: {X: 200, Y:200}};
-						player2 = {displayName: userAlreadyInGameRoom.display_name, bat: {X: 400, Y:400}};
+						player1 = {displayName: user.display_name, bat: {X: 50, Y:270}};
+						player2 = {displayName: userAlreadyInGameRoom.display_name, bat: {X: 1250, Y:270}};
 					} else {
 						const userAlreadyInGameRoom = await this.userService.getUserById(game.player_1);
 						console.log("2:", userAlreadyInGameRoom, user, game);
-						player1 = { displayName: userAlreadyInGameRoom.display_name, bat: {X: 200, Y:200}};
-						player2 = { displayName: user.display_name, bat: {X: 400, Y:400}};
+						player1 = { displayName: userAlreadyInGameRoom.display_name, bat: {X: 50, Y:270}};
+						player2 = { displayName: user.display_name, bat: {X: 1250, Y:270}};
 					}
 					const joinGameDTO = { gameRoomId: gameRoomId, player1: player1, player2: player2}
 					console.log("sending:", joinGameDTO);
@@ -121,8 +121,8 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 				console.log(3);
 				const user1 = await this.userService.getUserById(game.player_1);
 				const user2 = await this.userService.getUserById(game.player_2);
-				const player1 = { displayName: user1.display_name, bat: {X: 200, Y:200}};
-				const player2 = { displayName: user2.display_name, bat: {X: 400, Y:400}};
+				const player1 = { displayName: user1.display_name, bat: {X: 50, Y:270}};
+				const player2 = { displayName: user2.display_name, bat: {X: 1250, Y:270}};
 				const spectator = { displayName: user.displayName };
 				const joinGameDTO = { gameRoomId: gameRoomId, player1: player1, player2: player2, spectator: spectator }
 				client.to(gameRoomId).emit(GameroomEvents.JoinGameRoomSuccess, joinGameDTO)

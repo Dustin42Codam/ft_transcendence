@@ -22,7 +22,6 @@ interface userInRoom {
   bat?: Bat;
 }
 
-
 interface JoinGameRoomDTO {
   gameRoomId: number;
   player1?: userInRoom;
@@ -37,6 +36,8 @@ export interface GameState {
   ball: Ball;
   player1?: userInRoom;
   player2?: userInRoom;
+  scoreP1: number,
+  scoreP2: number,
   spectator?: userInRoom;
   notificatoin: string;
 }
@@ -47,6 +48,8 @@ export const initialState: GameState = {
   gameRoomId: -1,
   player1: undefined,
   player2: undefined,
+  scoreP1: 0,
+  scoreP2: 0,
   spectator: undefined,
   ball: { X: -1, Y: -1 },
   notificatoin: "",
@@ -86,17 +89,21 @@ const gameSocketSlice = createSlice({
     },
     joinRoomSuccess: (state, action: PayloadAction<JoinGameRoomDTO>) => {
       //console.log("this is payload", action.payload);
-      console.log("Joined a room: ", action.payload, action.payload.player2 != undefined && state.player2 == undefined);
+      console.log(
+        "Joined a room: ",
+        action.payload,
+        action.payload.player2 != undefined && state.player2 == undefined
+      );
       state.gameRoomId = action.payload.gameRoomId;
       if (action.payload.player1 != undefined && state.player1 == undefined) {
         state.player1 = action.payload.player1;
-			}
+      }
       if (action.payload.player2 != undefined && state.player2 == undefined) {
         state.player2 = action.payload.player2;
       }
       if (action.payload.spectator != undefined) {
         state.spectator = action.payload.spectator;
-			}
+      }
     },
     leaveRoom: (state, action: PayloadAction<number>) => {
       return;

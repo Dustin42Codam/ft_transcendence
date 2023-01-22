@@ -144,7 +144,7 @@ class Bat extends MoveableObject {
   constructor(
     posX: number,
     fieldHeight: number,
-    badHeight: number,
+    batHeight: number,
     powerUpBatHeight: number
   ) {
     /*
@@ -155,10 +155,10 @@ class Bat extends MoveableObject {
 		width: number;
 		height: number;
 	 */
-    super(posX, fieldHeight, 0, 1, 10, badHeight);
+    super(posX, fieldHeight, 0, 1, 10, batHeight);
     this.powerUpTimer = 0;
     this.powerUpActive = false;
-    this.normalBatHeight = badHeight;
+    this.normalBatHeight = batHeight;
     this.powerUpBatHeight = powerUpBatHeight;
   }
 
@@ -246,36 +246,21 @@ class GameState {
   BatP1up: boolean;
   BatP1down: boolean;
 
-  constructor(canvas?: HTMLCanvasElement | null, gameState?: GameState | null) {
-    if (gameState) {
-      this.scoreP1 = gameState.scoreP1;
-      this.scoreP2 = gameState.scoreP2;
-      this.frame = gameState.frame;
-      this.batP1 = gameState.batP1;
-      this.batP2 = gameState.batP2;
-      this.ball = gameState.ball;
-      this.powerUp = gameState.powerUp;
-      this.ctx = gameState.ctx;
-      this.width = gameState.width;
-      this.height = gameState.height;
-      this.BatP1up = gameState.BatP1up;
-      this.BatP1down = gameState.BatP1down;
-    } else {
-      if (!canvas || !canvas.getContext)
-        throw new Error("The Browser can not render the game");
-      this.scoreP1 = 0;
-      this.scoreP2 = 0;
-      this.frame = 0;
-      this.batP1 = new Bat(10, 160, 160, 200);
-      this.batP2 = new Bat(canvas.width - 20, canvas.height, 160, 200);
-      this.ball = new Ball(canvas.width, canvas.height, 2);
-      this.powerUp = new PowerUp(canvas.width, canvas.height, 600);
-      this.ctx = canvas.getContext("2d")!;
-      this.width = canvas.width;
-      this.height = canvas.height;
-      this.BatP1up = false;
-      this.BatP1down = false;
-    }
+  constructor(canvas: HTMLCanvasElement, gameState: any) {
+    if (!canvas || !canvas.getContext)
+      throw new Error("The Browser can not render the game");
+    this.scoreP1 = 0;
+    this.scoreP2 = 0;
+    this.frame = 0;
+    this.batP1 = new Bat(gameState.player1.bat.X, gameState.player1.bat.Y, 160, 200);
+    this.batP2 = new Bat(gameState.player2.bat.X, gameState.player2.bat.Y, 160, 200);
+    this.ball = new Ball(canvas.width, canvas.height, 2);
+    this.powerUp = new PowerUp(canvas.width, canvas.height, 600);
+    this.ctx = canvas.getContext("2d")!;
+    this.width = canvas.width;
+    this.height = canvas.height;
+    this.BatP1up = false;
+    this.BatP1down = false;
   }
 
   //backend
@@ -317,17 +302,15 @@ class GameState {
 
 const Game = (props: any) => {
   const dispatch = useAppDispatch();
-  //const canvasRef = useRef();
-  //const [gameState, setGameState] = useState<GameState | null>(null);
   const moveBatP1 = () => {
-    //dispatch(gameSocketActions.moveBatP1({ gameRoomId: 42, direction: 1 }));
-    //inputRef.current!["messageInput"].value = "";
   };
 
   useEffect(() => {
     dispatch(gameSocketActions.joinRoom(1));
     const theGameFrame = document.getElementById("content");
     const savedTheGameFrame = theGameFrame!.innerHTML;
+		let timer: any;
+		let gameState: any;
     theGameFrame!.innerHTML = "<h1>Game is loading</h1>";
     /*
     posX: number,
@@ -339,8 +322,6 @@ const Game = (props: any) => {
     //this.batP2 = new Bat(canvas.width - 20, canvas.height, 160, 200);
     //bot values will come from the backend!
     //
-    //const BatP1 = new Bat(-1);
-    //const BatP2 = new Bat(-1);
     const waitForTheGameToStart = async () => {
       const dataNeedToStartTheGame = await new Promise((resolve, reject) => {
         /*
@@ -352,14 +333,20 @@ const Game = (props: any) => {
 			}
 		 */
         (function loop() {
-          setTimeout(() => {
-            let gameState = store.getState().gameSocket;
+          timer = setTimeout(() => {
+            gameState = store.getState().gameSocket;
+						//const BatP1 = new Bat(-1);
+						//const BatP2 = new Bat(-1);
 
             if (gameState.player1 != undefined) {
               theGameFrame!.innerHTML = "<h1>Player 1 Joined</h1>";
             }
-            if (false) {
-              resolve(true);
+            if (gameState.player2 != undefined) {
+              theGameFrame!.innerHTML = "<h1>Player 2 Joined</h1>";
+            }
+            if (gameState.player2 != undefined && gameState.player1 != undefined) {
+              theGameFrame!.innerHTML = "<h1>Player 1 and 2 Joined</h1>";
+							resolve(true);
             }
             loop();
           }, 1000);
@@ -369,12 +356,13 @@ const Game = (props: any) => {
       console.log("bye there");
     };
     waitForTheGameToStart().then(() => {
+			clearTimeout(timer);
       theGameFrame!.innerHTML = savedTheGameFrame;
       const canvas = document.getElementById("canvas") as HTMLCanvasElement;
       //before this we need to have the data before we can build the game
       //how can we get the position for
       //we have to use a promise
-      const gameState = new GameState(canvas);
+      const game = new GameState(canvas, gameState);
       //UserName
       //UserType
       //GameRoomId
@@ -389,22 +377,21 @@ const Game = (props: any) => {
           keynum = e.which;
         }
 
-        console.log(e, gameState);
 
         if (String.fromCharCode(keynum) == "(") {
-          gameState.batP1.moveUp(10, 1);
+          game.batP1.moveUp(10, 1);
           //
         }
         if (String.fromCharCode(keynum) == "&") {
           //
-          gameState.batP1.moveUp(10, -1);
+          game.batP1.moveUp(10, -1);
         }
       });
       console.log(canvas);
       const startAnimation = () => {
-        gameState.animation();
-        gameState.score();
-        gameState.frame += 1;
+        game.animation();
+        game.score();
+        game.frame += 1;
         requestAnimationFrame(startAnimation);
       };
       startAnimation();
