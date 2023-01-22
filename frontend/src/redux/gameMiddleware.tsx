@@ -77,8 +77,11 @@ const gameSocketMiddleware: Middleware = (store) => {
         }
       );
       //TODO what data do we need in the backend
-      gameSocket.on(GameEvent.MoveBatP2, (gameRoomId: any) => {
-        store.dispatch(gameSocketActions.moveBatP2(gameRoomId));
+      gameSocket.on(GameEvent.GetBatP2, (payload: any) => {
+        store.dispatch(gameSocketActions.getBatP2(payload));
+      });
+      gameSocket.on(GameEvent.GetBatP1, (payload: any) => {
+        store.dispatch(gameSocketActions.getBatP1(payload));
       });
       gameSocket.on(GameEvent.LeaveGameRoomSuccess, () => {
         store.dispatch(gameSocketActions.leaveRoomSuccess());
@@ -105,6 +108,9 @@ const gameSocketMiddleware: Middleware = (store) => {
 		 */
       if (gameSocketActions.moveBatP1.match(action)) {
         gameSocket.emit(GameEvent.MoveBatP1, action.payload);
+      }
+      if (gameSocketActions.moveBatP2.match(action)) {
+        gameSocket.emit(GameEvent.MoveBatP2, action.payload);
       }
       if (gameSocketActions.leaveRoom.match(action)) {
         gameSocket.emit(GameEvent.LeaveGameRoom, action.payload);

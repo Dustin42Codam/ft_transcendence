@@ -252,8 +252,18 @@ class GameState {
     this.scoreP1 = 0;
     this.scoreP2 = 0;
     this.frame = 0;
-    this.batP1 = new Bat(gameState.player1.bat.X, gameState.player1.bat.Y, 160, 200);
-    this.batP2 = new Bat(gameState.player2.bat.X, gameState.player2.bat.Y, 160, 200);
+    this.batP1 = new Bat(
+      gameState.player1.bat.X,
+      gameState.player1.bat.Y,
+      160,
+      200
+    );
+    this.batP2 = new Bat(
+      gameState.player2.bat.X,
+      gameState.player2.bat.Y,
+      160,
+      200
+    );
     this.ball = new Ball(canvas.width, canvas.height, 2);
     this.powerUp = new PowerUp(canvas.width, canvas.height, 600);
     this.ctx = canvas.getContext("2d")!;
@@ -302,15 +312,14 @@ class GameState {
 
 const Game = (props: any) => {
   const dispatch = useAppDispatch();
-  const moveBatP1 = () => {
-  };
+  //const moveBatP1 = () => {};
 
   useEffect(() => {
     dispatch(gameSocketActions.joinRoom(1));
     const theGameFrame = document.getElementById("content");
     const savedTheGameFrame = theGameFrame!.innerHTML;
-		let timer: any;
-		let gameState: any;
+    let timer: any;
+    let gameState: any;
     theGameFrame!.innerHTML = "<h1>Game is loading</h1>";
     /*
     posX: number,
@@ -335,8 +344,8 @@ const Game = (props: any) => {
         (function loop() {
           timer = setTimeout(() => {
             gameState = store.getState().gameSocket;
-						//const BatP1 = new Bat(-1);
-						//const BatP2 = new Bat(-1);
+            //const BatP1 = new Bat(-1);
+            //const BatP2 = new Bat(-1);
 
             if (gameState.player1 != undefined) {
               theGameFrame!.innerHTML = "<h1>Player 1 Joined</h1>";
@@ -344,9 +353,12 @@ const Game = (props: any) => {
             if (gameState.player2 != undefined) {
               theGameFrame!.innerHTML = "<h1>Player 2 Joined</h1>";
             }
-            if (gameState.player2 != undefined && gameState.player1 != undefined) {
+            if (
+              gameState.player2 != undefined &&
+              gameState.player1 != undefined
+            ) {
               theGameFrame!.innerHTML = "<h1>Player 1 and 2 Joined</h1>";
-							resolve(true);
+              resolve(true);
             }
             loop();
           }, 1000);
@@ -356,8 +368,9 @@ const Game = (props: any) => {
       console.log("bye there");
     };
     waitForTheGameToStart().then(() => {
-			clearTimeout(timer);
+      clearTimeout(timer);
       theGameFrame!.innerHTML = savedTheGameFrame;
+      const currentUser = store.getState().currentUser;
       const canvas = document.getElementById("canvas") as HTMLCanvasElement;
       //before this we need to have the data before we can build the game
       //how can we get the position for
@@ -377,18 +390,61 @@ const Game = (props: any) => {
           keynum = e.which;
         }
 
-
+        //what player am I?
         if (String.fromCharCode(keynum) == "(") {
-          game.batP1.moveUp(10, 1);
+          //so here emit a evant
+          if (
+            currentUser.currentUser.display_name ==
+            gameState.player1.displayName
+          ) {
+            game.batP1.moveUp(10, 5);
+						dispatch(gameSocketActions.moveBatP1({gameRoomId: 1, direction: "up"}));
+          } else {
+            game.batP2.moveUp(10, 5);
+						dispatch(gameSocketActions.moveBatP2({gameRoomId: 1, direction: "up"}));
+          }
           //
         }
         if (String.fromCharCode(keynum) == "&") {
-          //
-          game.batP1.moveUp(10, -1);
+          //so here emit a evant
+          if (
+            currentUser.currentUser.display_name ==
+            gameState.player1.displayName
+          ) {
+						dispatch(gameSocketActions.moveBatP1(1));
+            game.batP1.moveUp(10, -5);
+						dispatch(gameSocketActions.moveBatP1({gameRoomId: 1, direction: "down"}));
+          } else {
+            game.batP2.moveUp(10, -5);
+						dispatch(gameSocketActions.moveBatP2({gameRoomId: 1, direction: "down"}));
+          }
         }
       });
       console.log(canvas);
       const startAnimation = () => {
+        //here we need to get other palyers bat position
+				gameState = store.getState().gameSocket;
+
+				if (gameState.player1.displayName != currentUser.currentUser.display_name) {
+					if (gameState.player1Moved == "up") {
+						dispatch(gameSocketActions.clearBatP1());
+            game.batP1.moveUp(10, 5);
+					} else if (gameState.player1Moved == "down") {
+						dispatch(gameSocketActions.clearBatP1());
+            game.batP1.moveUp(10, -5);
+					}
+				
+				} else if (gameState.player2.displayName != currentUser.currentUser.display_name) {
+					if (gameState.player2Moved == "up") {
+						dispatch(gameSocketActions.clearBatP2());
+            game.batP2.moveUp(10, 5);
+					
+					} else if (gameState.player2Moved == "down") {
+						dispatch(gameSocketActions.clearBatP2());
+            game.batP2.moveUp(10, -5);
+					}
+				}
+
         game.animation();
         game.score();
         game.frame += 1;

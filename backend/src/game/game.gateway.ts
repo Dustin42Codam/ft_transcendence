@@ -154,12 +154,17 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 	@UseGuards(SocketAuthGuard)
   @SubscribeMessage(GameroomEvents.MoveBatP1)
   handleMoveBatP1(client: Socket, payload: any): void {
-		//this.io.to(payload.GameRoomId).emit(GameroomEvents.GetBatP1, 2);
+		console.log(`BAT1 ${payload.gameRoomId} ${payload.direction}`);
+		console.log(payload);
+		this.io.to(`${payload.gameRoomId}`).emit(GameroomEvents.GetBatP1, payload.direction);
   }
 
 	@UseGuards(SocketAuthGuard)
   @SubscribeMessage(GameroomEvents.MoveBatP2)
   handleMoveBatP2(client: Socket, payload: any): void {
+		console.log(`BAT2 ${payload.gameRoomId} ${payload.direction}`);
+		console.log(payload, GameroomEvents.GetBatP2, payload.direction);
+		this.io.to(`${payload.gameRoomId}`).emit(GameroomEvents.GetBatP2, payload.direction);
 		//this.io.to(payload.GameRoomId).emit(GameroomEvents.MoveBatP2, 3);
   }
 

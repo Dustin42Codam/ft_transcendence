@@ -36,8 +36,10 @@ export interface GameState {
   ball: Ball;
   player1?: userInRoom;
   player2?: userInRoom;
-  scoreP1: number,
-  scoreP2: number,
+  scoreP1: number;
+  scoreP2: number;
+  player1Moved: string;
+  player2Moved: string;
   spectator?: userInRoom;
   notificatoin: string;
 }
@@ -50,6 +52,8 @@ export const initialState: GameState = {
   player2: undefined,
   scoreP1: 0,
   scoreP2: 0,
+	player1Moved: "",
+	player2Moved: "",
   spectator: undefined,
   ball: { X: -1, Y: -1 },
   notificatoin: "",
@@ -118,10 +122,20 @@ const gameSocketSlice = createSlice({
     moveBatP2: (state, action: PayloadAction<any>) => {
       return;
     },
+    clearBatP1: (state) => {
+			state.player1Moved = "";
+      return;
+    },
+    clearBatP2: (state) => {
+			state.player2Moved = "";
+      return;
+    },
     getBatP1: (state, action: PayloadAction<any>) => {
+			state.player1Moved = action.payload;
       return;
     },
     getBatP2: (state, action: PayloadAction<any>) => {
+			state.player2Moved = action.payload;
       return;
     },
     getScore: (state, action: PayloadAction<any>) => {
