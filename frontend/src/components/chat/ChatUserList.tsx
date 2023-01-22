@@ -23,11 +23,6 @@ function ChatUserList(props: any) {
   );
   const currentUser = useAppSelector(selectCurrentUser);
   const chatMembers = useAppSelector(selectAllChatMembers);
-//   const [chatMembers, setChatMembers] = useState<any>([]);
-  const [_currentMember, setCurrentMember] = useState<Member>();
-  let currentMember = chatMembers.find(
-	  (member: any) => member.user.id === currentUser.id
-  );
   const [newUserName, setNewUserName] = useState("");
   const [rerender, setRerender] = useState(true);
 
@@ -41,37 +36,15 @@ function ChatUserList(props: any) {
   const [passwordConfirm, setPasswordConfirm] = useState("");
   const [chatName, setChatName] = useState("");
   
-  const __currentMember = useAppSelector(selectCurrentMember);
+  const currentMember = useAppSelector(selectCurrentMember);
 
   const allUsers = useAppSelector(selectAllUsers);
 
-  async function _fetchChatMembers(id: number) {
-    const response = await axios.get(`member/chatroom/id/${id}`);
-    // setChatMembers(
-		// response.data.filter((member: Member) => member.chatroom.id === id)
-		// );
-	}
-	
 	useEffect(() => {
-		console.log("+++ rendering +++");
-    	if (currentChat.id !== -1) {
-			_fetchChatMembers(currentChat.id);
-    	}
-	}, [currentChat.id, rerender, chatType]);
-
-	useEffect(() => {
-		setCurrentMember(chatMembers.find(
-			(member: any) => member.user.id === currentUser.id
-		))
-		// dispatch(fetchCurrentMember({???
-		// 	id: currentChat.id
-		// }));
 		dispatch(fetchUsers);
 	}, [chatMembers, rerender, chatType])
-	
-	console.log("🚀 ~ file: ChatUserList.tsx:54 ~ useEffect ~ currentMember", currentMember)
-	console.log("🚀 ~ file: ChatUserList.tsx:25 ~ ChatUserList ~ _currentMember", _currentMember)
-	console.log("🚀 ~ file: ChatUserList.tsx:49 ~ ChatUserList ~ __currentMember", __currentMember)
+
+	console.log("🚀 ~ file: ChatUserList.tsx:49 ~ ChatUserList ~ currentMember", currentMember)
 
   async function leaveChannel() {
     const member = chatMembers.filter(
@@ -571,8 +544,6 @@ function ChatUserList(props: any) {
     allUsers
   );
 
-  console.log("🚀 ~ file: ChatUserList.tsx:741 ~ ChatUserList ~ _chatMembers", _chatMembers)
-
   return (
     <Popup
       trigger={<button className="">{currentChat.name}</button>}
@@ -611,7 +582,7 @@ function ChatUserList(props: any) {
                       name="chat-type"
                       id="chat-type"
                       className="chat-type-form"
-                      defaultValue={__currentMember.chatroom.type}
+                      defaultValue={currentMember.chatroom.type}
                       onChange={(e: any) => setChatType(e.target.value)}
                     >
                       <option value={ChatroomType.PRIVATE}>
@@ -628,7 +599,7 @@ function ChatUserList(props: any) {
 
                   {
                     (chatType == ChatroomType.PROTECTED ||
-                      __currentMember.chatroom.type ===
+                      currentMember.chatroom.type ===
                         ChatroomType.PROTECTED) && (
                       <form>
                         <label>
@@ -678,7 +649,7 @@ function ChatUserList(props: any) {
           )}
 
           <div className="chat-user-list-grid">
-            {_chatMembers.map(
+            {chatMembers.map(
               (member: any, index: number) =>
                 member.user.id !== currentUser.id && (
                   <div className="pop-up-member" key={index}>
