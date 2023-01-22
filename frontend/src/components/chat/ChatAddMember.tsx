@@ -1,14 +1,19 @@
 import axios from 'axios';
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { toast } from 'react-toastify';
 import Popup from 'reactjs-popup';
 import { User } from '../../models/User';
+import { useAppSelector } from '../../redux/hooks';
+import { selectCurrentUser } from '../../redux/slices/currentUserSlice';
 
 function ChatAddMember(props: any) {
+	const currentUser = useAppSelector(selectCurrentUser);
+	const [render, setRender] = useState(false)
 
 	useEffect(() => {
 		// props.setRerender(!props.rerender)
-	}, [props.rerender])
+		// setRender(!)
+	}, [render])
 
 	async function addUserToChat(user: User) {
 	
@@ -30,6 +35,7 @@ function ChatAddMember(props: any) {
 				progress: undefined,
 				theme: "colored",
 			  });
+			  setRender(!render);
 			})
 			.catch((error: any) => {
 			  console.log(error);
@@ -46,13 +52,16 @@ function ChatAddMember(props: any) {
 				progress: undefined,
 				theme: "colored",
 			  });
+			  setRender(!render);
 			});
+			setRender(!render);
 			props.setRerender(!props.rerender);
 		}
 
 	return (
 		<Popup trigger={<button>Add User</button>}>
 			{props.allUsers.map((user: User, index: number) =>
+				user.display_name !== currentUser.display_name &&
 				!user.chatrooms.find((member: any) =>
 					member.chatroom.id === props.currentChat.id &&
 					member.status !== "inactive")

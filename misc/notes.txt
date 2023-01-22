@@ -1,14 +1,18 @@
 
 todo:
 
-	-	chat type should be able to change
+	+	chat type should be able to change
 	+	name of chatroom should be able to change
 	+	password for Protected chatrooms should be changeable
 
-	-	owner can remove members
-	-	add user button pop ups with a user list
+	+	add user button pop ups with a user list
+		-	check invalid user add without protection
 
+	+	owner can remove members
 	-	check messages of inactive users
+	-	check member delete
+		-	when owner tries deleting
+			members from other chats
 
 	-	confirm window when delete channel
 	+	change ownership when owner leaves room
