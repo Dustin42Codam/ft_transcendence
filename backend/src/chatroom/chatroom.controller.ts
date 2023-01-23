@@ -67,10 +67,29 @@ export class ChatroomController {
     return this.chatroomService.getAllChatsFromUser(user);
   }
 
-  // Get() NOTE probably not needed, depends a bit on how dustin wants it
-  // async getJoinableFriendsForChatroom() {
-
-  // }
+  @Get("joinable/id/:id")
+  async getJoinableFriendsForChatroom(
+    @Param("id") id: string,
+    @Req() request: Request,
+  ) {
+    const userId = await this.authService.userId(request);
+    const user = await this.userService.getUserById(userId);
+    const chatroom = await this.chatroomService.getChatroomById(Number(id));
+    const friends = await this.friendService.getAllFriendshipsFromUser(user.id)
+    var allJoinableFriends: User[] = [];
+    for(const friend of friends) {
+      let alreadyInChat = false;
+      for(const member of chatroom.users) {
+        if (member.user.id == friend.id) {
+          alreadyInChat = true;
+        }
+      }
+      if (!alreadyInChat) {
+        allJoinableFriends.push(friend);
+      }
+    }
+    return allJoinableFriends;
+  }
 
   @Post("type/id/:id")
   async changeChatroomType(@Param("id") id: string, @Body() body: ChatroomChangeTypeDto, @Req() request: Request) {
@@ -118,6 +137,11 @@ export class ChatroomController {
 
   @Post("name/id/:id")
   async changeName(@Param("id") id: string, @Body() body: ChatroomChangeNameDto, @Req() request: Request) {
+    const sameNameChatroom = this.chatroomService.findOne({name: body.name})
+    if (sameNameChatroom)
+    {
+      throw new BadRequestException("There already exists a chatroom with this name.");
+    }
     const chatroom = await this.chatroomService.getChatroomById(Number(id));
     if (chatroom.type == ChatroomType.DIRECT) {
 		  throw new BadRequestException("The name of this chatroom can not be changed.");
@@ -235,6 +259,11 @@ export class ChatroomController {
 		else if (!body.password && body.type === ChatroomType.PROTECTED) {
 			throw new BadRequestException("PROTECTED chatrooms need to have a password.");
 		}
+    const chatroom = this.chatroomService.findOne({name: body.name})
+    if (chatroom)
+    {
+      throw new BadRequestException("There already exists a chatroom with this name.");
+    }
 		const {user_ids, ...createChatroom} = body;
     if (body.password && body.type === ChatroomType.PROTECTED){
       createChatroom.password = await this.chatroomService.hashPassword(body.password);

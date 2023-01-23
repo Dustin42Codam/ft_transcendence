@@ -82,7 +82,6 @@ export class ChatroomService extends AbstractService {
     return allChats;
   }
 
-
   async getAllOpenChatrooms() {
     return await this.chatroomRepository.find({
       where: [{ type: ChatroomType.PUBLIC }, { type: ChatroomType.PROTECTED }],
