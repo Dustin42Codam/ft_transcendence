@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { io, Socket } from "socket.io-client";
 import axios from "axios";
 import { User } from "../../models/User";
+import { toast } from "react-toastify";
 
 //here we need to think
 //maybe I can add some other option here
@@ -45,7 +46,38 @@ export const updateCurrentUser = createAsyncThunk(
   "currentUser/updateCurrentUser",
   async (user: any, { rejectWithValue }) => {
     try {
-      const response: any = await axios.post(`users/id/${user.id}`, user);
+		const id = toast.loading(`Updating user name...`);
+      const response: any = await axios.post(`users/id/${user.id}`, user)
+	//   .then(() => {
+    //     toast.update(id, {
+	// 		render: `User name successfully updated!`,
+	// 		type: "success",
+	// 		isLoading: false,
+	// 		position: "top-right",
+	// 		autoClose: 5000,
+	// 		hideProgressBar: false,
+	// 		closeOnClick: true,
+	// 		pauseOnHover: true,
+	// 		draggable: true,
+	// 		progress: undefined,
+	// 		theme: "colored",
+	//   })})
+	//   .catch((error: any) => {
+	// 	  console.log(error);
+	// 	  toast.update(id, {
+	// 		  render: `${error.response.data.message}...`,
+	// 		  type: "error",
+	// 		  position: "top-right",
+	// 		  autoClose: 5000,
+	// 		  isLoading: false,
+	// 		  hideProgressBar: false,
+	// 		  closeOnClick: true,
+	// 		  pauseOnHover: true,
+	// 		  draggable: true,
+	// 		  progress: undefined,
+	// 		  theme: "colored",
+	// 		});
+	//   });
       return response.data;
     } catch (error: any) {
       if (!error.response) {
@@ -88,6 +120,7 @@ const currentUserSlice = createSlice({
         (state: any, action: PayloadAction<IUser>) => {
           state.currentUser = action.payload;
           state.status = "succeeded";
+		  state.error = "";
         }
       )
       .addCase(updateCurrentUser.rejected, (state: any, action: any) => {
