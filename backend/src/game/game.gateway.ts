@@ -52,14 +52,14 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 
   async handleConnection(client): Promise<void> {
 		//tmp gurad
-    await this.userService.getUserFromClient(client);
-		console.log(`game client ${client.id} conected`);
+    // await this.userService.getUserFromClient(client);
+		// console.log(`game client ${client.id} conected`);
   }
 
   async handleDisconnect(client: any): Promise<void> {
 		//tmp gurad
-    await this.userService.getUserFromClient(client);
-		console.log(`game client ${client.id} disconected`);
+    // await this.userService.getUserFromClient(client);
+		// console.log(`game client ${client.id} disconected`);
   }
 
 	//payload needs to have display_name, GameRoomId

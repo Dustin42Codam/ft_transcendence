@@ -19,7 +19,7 @@ import { selectAllUsers } from "../../redux/slices/usersSlice";
 import { toast } from "react-toastify";
 
 const UserEdit = () => {
-	const currentUser = useAppSelector((state) => state.currentUser);
+  const currentUser = useAppSelector((state) => state.currentUser);
   const user = useAppSelector(selectCurrentUser);
   const users = useAppSelector(selectAllUsers);
   const [name, setName] = useState(user.display_name);
@@ -53,7 +53,7 @@ const UserEdit = () => {
   const infoSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
 
-	const id = toast.loading(`Updating user data...`);
+    const id = toast.loading(`Updating user data...`);
 
     for (const _user of users) {
       if (_user.display_name === name && name !== user.display_name) {
@@ -70,38 +70,40 @@ const UserEdit = () => {
         avatar,
       })
     );
-	console.log("🚀 ~ file: UserEdit.tsx:73 ~ infoSubmit ~ user", user)
-	if (currentUser.status === 'succeeded') {
-		console.log("🚀 ~ file: UserEdit.tsx:73 ~ infoSubmit ~ user.status", user.status)
-        toast.update(id, {
-			render: `Two Factor Authentication activated!`,
-			type: "success",
-			isLoading: false,
-			position: "top-right",
-			autoClose: 5000,
-			hideProgressBar: false,
-			closeOnClick: true,
-			pauseOnHover: true,
-			draggable: true,
-			progress: undefined,
-			theme: "colored",
-		})
-	}
-	else if (currentUser.status === 'failed') {
-		toast.update(id, {
-			render: `${user.error}`,
-			type: "error",
-			position: "top-right",
-			autoClose: 5000,
-			isLoading: false,
-			hideProgressBar: false,
-			closeOnClick: true,
-			pauseOnHover: true,
-			draggable: true,
-			progress: undefined,
-			theme: "colored",
-		  });
-	}
+    console.log("🚀 ~ file: UserEdit.tsx:73 ~ infoSubmit ~ user", user);
+    if (currentUser.status === "succeeded") {
+      console.log(
+        "🚀 ~ file: UserEdit.tsx:73 ~ infoSubmit ~ user.status",
+        user.status
+      );
+      toast.update(id, {
+        render: `Two Factor Authentication activated!`,
+        type: "success",
+        isLoading: false,
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+    } else if (currentUser.status === "failed") {
+      toast.update(id, {
+        render: `${user.error}`,
+        type: "error",
+        position: "top-right",
+        autoClose: 5000,
+        isLoading: false,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+    }
   };
 
   const updateImage = (url: string) => {
@@ -118,7 +120,7 @@ const UserEdit = () => {
   async function deactivate2FA(e: SyntheticEvent) {
     e.preventDefault();
 
-	const id = toast.loading(`Adding ${user.display_name}...`);
+    const id = toast.loading(`Adding ${user.display_name}...`);
 
     await axios
       .post("tfa/turn-off", {
@@ -127,49 +129,6 @@ const UserEdit = () => {
       .then(() => {
         setTwoFA(false);
         dispatch(update2FA({ twoFA: false }));
-        toast.update(id, {
-			render: `Two Factor Authentication activated!`,
-			type: "success",
-			isLoading: false,
-			position: "top-right",
-			autoClose: 5000,
-			hideProgressBar: false,
-			closeOnClick: true,
-			pauseOnHover: true,
-			draggable: true,
-			progress: undefined,
-			theme: "colored",
-	  })})
-	  .catch((error: any) => {
-		  console.log(error);
-		  toast.update(id, {
-			  render: `${error.response.data.message}...`,
-			  type: "error",
-			  position: "top-right",
-			  autoClose: 5000,
-			  isLoading: false,
-			  hideProgressBar: false,
-			  closeOnClick: true,
-			  pauseOnHover: true,
-			  draggable: true,
-			  progress: undefined,
-			  theme: "colored",
-			});
-	  });
-  }
-
-  async function activate2FA(e: SyntheticEvent) {
-    e.preventDefault();
-
-	const id = toast.loading(`Adding ${user.display_name}...`);
-
-    await axios
-      .post("tfa/turn-on", {
-        code: code,
-      })
-    .then(() => {
-    	setTwoFA(true);
-    	dispatch(update2FA({ twoFA: true, isAuthenticated: true }));
         toast.update(id, {
           render: `Two Factor Authentication activated!`,
           type: "success",
@@ -182,23 +141,68 @@ const UserEdit = () => {
           draggable: true,
           progress: undefined,
           theme: "colored",
-    })})
-	.catch((error: any) => {
-		console.log(error);
+        });
+      })
+      .catch((error: any) => {
+        console.log(error);
         toast.update(id, {
-			render: `${error.response.data.message}...`,
-			type: "error",
-			position: "top-right",
-			autoClose: 5000,
-			isLoading: false,
-			hideProgressBar: false,
-			closeOnClick: true,
-			pauseOnHover: true,
-			draggable: true,
-			progress: undefined,
-			theme: "colored",
-		  });
-	});
+          render: `${error.response.data.message}...`,
+          type: "error",
+          position: "top-right",
+          autoClose: 5000,
+          isLoading: false,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+      });
+  }
+
+  async function activate2FA(e: SyntheticEvent) {
+    e.preventDefault();
+
+    const id = toast.loading(`Adding ${user.display_name}...`);
+
+    await axios
+      .post("tfa/turn-on", {
+        code: code,
+      })
+      .then(() => {
+        setTwoFA(true);
+        dispatch(update2FA({ twoFA: true, isAuthenticated: true }));
+        toast.update(id, {
+          render: `Two Factor Authentication activated!`,
+          type: "success",
+          isLoading: false,
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+      })
+      .catch((error: any) => {
+        console.log(error);
+        toast.update(id, {
+          render: `${error.response.data.message}...`,
+          type: "error",
+          position: "top-right",
+          autoClose: 5000,
+          isLoading: false,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+      });
   }
 
   return (
@@ -206,9 +210,9 @@ const UserEdit = () => {
       <section id="content" className="container UserBody">
         <div className="page-heading">
           <form
-            // onSubmit={(e: SyntheticEvent) => {
-            //   infoSubmit(e);
-            // }}
+          // onSubmit={(e: SyntheticEvent) => {
+          //   infoSubmit(e);
+          // }}
           >
             <h3>Edit User Data</h3>
             <div className="mb-3">
@@ -239,7 +243,9 @@ const UserEdit = () => {
                 required
               />
             </div>
-            <Button type="submit" onClick={infoSubmit}>Save</Button>{" "}
+            <Button type="submit" onClick={infoSubmit}>
+              Save
+            </Button>{" "}
             <Button onClick={navigateBack}>Back</Button>
           </form>
           <div className="mb-3">

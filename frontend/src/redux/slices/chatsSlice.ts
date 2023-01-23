@@ -32,6 +32,7 @@ export const fetchGroupChats = createAsyncThunk(
   "chats/fetchGroupChats",
   async () => {
     const response = await axios.get("chatroom/group");
+    console.log("🚀 ~ file: chatsSlice.ts:35 ~ response", response)
     return response.data;
   }
 );
@@ -47,6 +48,7 @@ export const fetchDirectChats = createAsyncThunk(
 export const addNewGroupChat = createAsyncThunk(
   "chats/addNewGroupChat",
   async (data: any, { rejectWithValue }) => {
+  	console.log("🚀 ~ file: chatsSlice.ts:51 ~ data", data)
     try {
       const response: any = await axios.post(`chatroom/create`, data.chat);
       return response.data;
@@ -141,6 +143,7 @@ export const chatsSlice = createSlice({
       .addCase(addNewGroupChat.fulfilled, (state: any, action: any) => {
         state.status = "succeeded";
         state.group.push(action.payload);
+		state.error = '';
       })
       .addCase(addNewGroupChat.rejected, (state: any, action: any) => {
         state.status = "failed";

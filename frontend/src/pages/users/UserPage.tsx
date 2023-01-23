@@ -42,7 +42,6 @@ export const UserPage = () => {
       .then((res: any) => setBlocked(true))
       .catch((err: any) => {
         setBlocked(false);
-        // console.log("🚀 ~ file: UserPage.tsx:29 ~ fetchBlocked ~ err", err);
       });
   }
 
@@ -177,12 +176,6 @@ export const UserPage = () => {
                     <h5 className="mt-3">{user.display_name}</h5>
 
                     <div className="mt-2 buttons button-layout">
-                      {/* <FriendButton
-                        friends={friends}
-                        currentUser={currentUser}
-                        userId={Number(userId)}
-                        onClick={addFriend}
-                      ></FriendButton> */}
                       {friends.find(
                         (friend: any) => friend.id === currentUser.id
                       ) ? (

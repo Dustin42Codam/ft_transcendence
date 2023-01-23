@@ -486,7 +486,7 @@ const Game = (props: any) => {
   return (
     <Wrapper>
       <div id="canvasContainer">
-        <canvas tabIndex={0} id="canvas" width="1300" height="700">
+        <canvas tabIndex={0} id="gameCanvas" width="1300" height="700">
           Game is not supported for this borwser. Needs <b>cavas</b> support.
         </canvas>
       </div>

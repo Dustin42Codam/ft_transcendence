@@ -26,9 +26,9 @@ const initialState = {
     status: "",
     avatar: "",
     two_factor_auth: false,
-	tfa_secret: {
-		isAuthenticated: false
-	}
+    tfa_secret: {
+      isAuthenticated: false,
+    },
   },
   status: "idle",
   error: null,
@@ -46,38 +46,38 @@ export const updateCurrentUser = createAsyncThunk(
   "currentUser/updateCurrentUser",
   async (user: any, { rejectWithValue }) => {
     try {
-		const id = toast.loading(`Updating user name...`);
-      const response: any = await axios.post(`users/id/${user.id}`, user)
-	//   .then(() => {
-    //     toast.update(id, {
-	// 		render: `User name successfully updated!`,
-	// 		type: "success",
-	// 		isLoading: false,
-	// 		position: "top-right",
-	// 		autoClose: 5000,
-	// 		hideProgressBar: false,
-	// 		closeOnClick: true,
-	// 		pauseOnHover: true,
-	// 		draggable: true,
-	// 		progress: undefined,
-	// 		theme: "colored",
-	//   })})
-	//   .catch((error: any) => {
-	// 	  console.log(error);
-	// 	  toast.update(id, {
-	// 		  render: `${error.response.data.message}...`,
-	// 		  type: "error",
-	// 		  position: "top-right",
-	// 		  autoClose: 5000,
-	// 		  isLoading: false,
-	// 		  hideProgressBar: false,
-	// 		  closeOnClick: true,
-	// 		  pauseOnHover: true,
-	// 		  draggable: true,
-	// 		  progress: undefined,
-	// 		  theme: "colored",
-	// 		});
-	//   });
+      const id = toast.loading(`Updating user name...`);
+      const response: any = await axios.post(`users/id/${user.id}`, user);
+      //   .then(() => {
+      //     toast.update(id, {
+      // 		render: `User name successfully updated!`,
+      // 		type: "success",
+      // 		isLoading: false,
+      // 		position: "top-right",
+      // 		autoClose: 5000,
+      // 		hideProgressBar: false,
+      // 		closeOnClick: true,
+      // 		pauseOnHover: true,
+      // 		draggable: true,
+      // 		progress: undefined,
+      // 		theme: "colored",
+      //   })})
+      //   .catch((error: any) => {
+      // 	  console.log(error);
+      // 	  toast.update(id, {
+      // 		  render: `${error.response.data.message}...`,
+      // 		  type: "error",
+      // 		  position: "top-right",
+      // 		  autoClose: 5000,
+      // 		  isLoading: false,
+      // 		  hideProgressBar: false,
+      // 		  closeOnClick: true,
+      // 		  pauseOnHover: true,
+      // 		  draggable: true,
+      // 		  progress: undefined,
+      // 		  theme: "colored",
+      // 		});
+      //   });
       return response.data;
     } catch (error: any) {
       if (!error.response) {
@@ -120,7 +120,7 @@ const currentUserSlice = createSlice({
         (state: any, action: PayloadAction<IUser>) => {
           state.currentUser = action.payload;
           state.status = "succeeded";
-		  state.error = "";
+          state.error = "";
         }
       )
       .addCase(updateCurrentUser.rejected, (state: any, action: any) => {

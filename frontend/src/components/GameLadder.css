@@ -1,9 +1,9 @@
-
-td,th {
-	text-align: center;
-	vertical-align: middle;
-	overflow: hidden;
-	min-width: 3em; /* the normal 'fixed' width */
-	width: 3em; /* the normal 'fixed' width */
-	max-width: 3em; /* the normal 'fixed' width, to stop the cells expanding */
+td,
+th {
+  text-align: center;
+  vertical-align: middle;
+  overflow: hidden;
+  min-width: 3em; /* the normal 'fixed' width */
+  width: 3em; /* the normal 'fixed' width */
+  max-width: 3em; /* the normal 'fixed' width, to stop the cells expanding */
 }

@@ -39,7 +39,7 @@ export class FriendService extends AbstractService {
     async createFriendship(friendCreateDto: FriendCreateDto) {
         const user1 = await this.userService.getUserById(friendCreateDto.user_1_id);
         const user2 = await this.userService.getUserById(friendCreateDto.user_2_id);
-        const chatroomInfoDto : ChatroomInfoDto = {name: "", type: ChatroomType.DIRECT, password: null};
+        const chatroomInfoDto : ChatroomInfoDto = {name: user1.intra_name+"-"+user2.intra_name, type: ChatroomType.DIRECT, password: null};
         const newChatroom = await this.chatroomService.createChatroom([user1, user2], chatroomInfoDto, -1);
         const friendshipInfo = {chatroom_id: newChatroom.id, ...friendCreateDto};
         const friendship = await this.create(friendshipInfo)
