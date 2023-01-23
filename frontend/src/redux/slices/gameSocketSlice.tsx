@@ -52,8 +52,8 @@ export const initialState: GameState = {
   player2: undefined,
   scoreP1: 0,
   scoreP2: 0,
-	player1Moved: "",
-	player2Moved: "",
+  player1Moved: "",
+  player2Moved: "",
   spectator: undefined,
   ball: { X: -1, Y: -1 },
   notificatoin: "",
@@ -123,19 +123,19 @@ const gameSocketSlice = createSlice({
       return;
     },
     clearBatP1: (state) => {
-			state.player1Moved = "";
+      state.player1Moved = "";
       return;
     },
     clearBatP2: (state) => {
-			state.player2Moved = "";
+      state.player2Moved = "";
       return;
     },
     getBatP1: (state, action: PayloadAction<any>) => {
-			state.player1Moved = action.payload;
+      state.player1Moved = action.payload;
       return;
     },
     getBatP2: (state, action: PayloadAction<any>) => {
-			state.player2Moved = action.payload;
+      state.player2Moved = action.payload;
       return;
     },
     getScore: (state, action: PayloadAction<any>) => {

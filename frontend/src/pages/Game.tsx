@@ -197,7 +197,16 @@ class Bat extends MoveableObject {
   }
 
   moveUp(speed: number, direction: number) {
-    this.positionY += direction * speed;
+		console.log("UY:", this.positionY);
+		if (this.positionY < 570) {
+			this.positionY += direction * speed;
+		}
+  }
+  moveDown(speed: number, direction: number) {
+		console.log("DY:", this.positionY);
+    if (this.positionY > -30) {
+			this.positionY -= direction * speed;
+		}
   }
 }
 
@@ -398,10 +407,14 @@ const Game = (props: any) => {
             gameState.player1.displayName
           ) {
             game.batP1.moveUp(10, 5);
-						dispatch(gameSocketActions.moveBatP1({gameRoomId: 1, direction: "up"}));
+            dispatch(
+              gameSocketActions.moveBatP1({ gameRoomId: 1, direction: "up" })
+            );
           } else {
             game.batP2.moveUp(10, 5);
-						dispatch(gameSocketActions.moveBatP2({gameRoomId: 1, direction: "up"}));
+            dispatch(
+              gameSocketActions.moveBatP2({ gameRoomId: 1, direction: "up" })
+            );
           }
           //
         }
@@ -411,39 +424,45 @@ const Game = (props: any) => {
             currentUser.currentUser.display_name ==
             gameState.player1.displayName
           ) {
-						dispatch(gameSocketActions.moveBatP1(1));
-            game.batP1.moveUp(10, -5);
-						dispatch(gameSocketActions.moveBatP1({gameRoomId: 1, direction: "down"}));
+            dispatch(gameSocketActions.moveBatP1(1));
+            game.batP1.moveDown(10, 5);
+            dispatch(
+              gameSocketActions.moveBatP1({ gameRoomId: 1, direction: "down" })
+            );
           } else {
-            game.batP2.moveUp(10, -5);
-						dispatch(gameSocketActions.moveBatP2({gameRoomId: 1, direction: "down"}));
+            game.batP2.moveDown(10, 5);
+            dispatch(
+              gameSocketActions.moveBatP2({ gameRoomId: 1, direction: "down" })
+            );
           }
         }
       });
       console.log(canvas);
       const startAnimation = () => {
         //here we need to get other palyers bat position
-				gameState = store.getState().gameSocket;
+        gameState = store.getState().gameSocket;
 
-				if (gameState.player1.displayName != currentUser.currentUser.display_name) {
-					if (gameState.player1Moved == "up") {
-						dispatch(gameSocketActions.clearBatP1());
+        if (
+          gameState.player1.displayName != currentUser.currentUser.display_name
+        ) {
+          if (gameState.player1Moved == "up") {
+            dispatch(gameSocketActions.clearBatP1());
             game.batP1.moveUp(10, 5);
-					} else if (gameState.player1Moved == "down") {
-						dispatch(gameSocketActions.clearBatP1());
-            game.batP1.moveUp(10, -5);
-					}
-				
-				} else if (gameState.player2.displayName != currentUser.currentUser.display_name) {
-					if (gameState.player2Moved == "up") {
-						dispatch(gameSocketActions.clearBatP2());
+          } else if (gameState.player1Moved == "down") {
+            dispatch(gameSocketActions.clearBatP1());
+            game.batP1.moveDown(10, 5);
+          }
+        } else if (
+          gameState.player2.displayName != currentUser.currentUser.display_name
+        ) {
+          if (gameState.player2Moved == "up") {
+            dispatch(gameSocketActions.clearBatP2());
             game.batP2.moveUp(10, 5);
-					
-					} else if (gameState.player2Moved == "down") {
-						dispatch(gameSocketActions.clearBatP2());
-            game.batP2.moveUp(10, -5);
-					}
-				}
+          } else if (gameState.player2Moved == "down") {
+            dispatch(gameSocketActions.clearBatP2());
+            game.batP2.moveDown(10, 5);
+          }
+        }
 
         game.animation();
         game.score();
