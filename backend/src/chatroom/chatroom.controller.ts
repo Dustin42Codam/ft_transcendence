@@ -113,6 +113,11 @@ export class ChatroomController {
 
   @Post("name/id/:id")
   async changeName(@Param("id") id: string, @Body() body: ChatroomChangeNameDto, @Req() request: Request) {
+    const sameNameChatroom = this.chatroomService.findOne({name: body.name})
+    if (sameNameChatroom)
+    {
+      throw new BadRequestException("There already exists a chatroom with this name.");
+    }
     const chatroom = await this.chatroomService.getChatroomById(Number(id));
     if (chatroom.type == ChatroomType.DIRECT) {
 		  throw new BadRequestException("The name of this chatroom can not be changed.");
@@ -229,6 +234,11 @@ export class ChatroomController {
 		else if (!body.password && body.type === ChatroomType.PROTECTED) {
 			throw new BadRequestException("PROTECTED chatrooms need to have a password.");
 		}
+    const chatroom = this.chatroomService.findOne({name: body.name})
+    if (chatroom)
+    {
+      throw new BadRequestException("There already exists a chatroom with this name.");
+    }
 		const {user_ids, ...createChatroom} = body;
     if (body.password && body.type === ChatroomType.PROTECTED){
       createChatroom.password = await this.chatroomService.hashPassword(body.password);
