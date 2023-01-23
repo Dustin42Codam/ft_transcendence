@@ -13,7 +13,7 @@ export class Chatroom {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+	@Column({unique: true})
   name: string;
 
   @Column({ nullable: true }) // TODO should be hash and make sure that everything is protected

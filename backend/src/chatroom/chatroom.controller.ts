@@ -51,6 +51,11 @@ export class ChatroomController {
     return this.chatroomService.getChatroomById(Number(id));
   }
 
+  @Get("name/:name")
+  async getChatroomByName(@Param("name") name: string) {
+    return this.chatroomService.getChatroomByName(name);
+  }
+
   @Get("all")
   async getAllChatsFromUser(@Req() request: Request) {
     const user = await this.userService.getUserById(request.session.user_id);

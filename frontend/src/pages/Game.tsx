@@ -197,16 +197,14 @@ class Bat extends MoveableObject {
   }
 
   moveUp(speed: number, direction: number) {
-		console.log("UY:", this.positionY);
-		if (this.positionY < 570) {
-			this.positionY += direction * speed;
-		}
+    if (this.positionY < 570) {
+      this.positionY += direction * speed;
+    }
   }
   moveDown(speed: number, direction: number) {
-		console.log("DY:", this.positionY);
     if (this.positionY > -30) {
-			this.positionY -= direction * speed;
-		}
+      this.positionY -= direction * speed;
+    }
   }
 }
 
@@ -439,7 +437,6 @@ const Game = (props: any) => {
       });
       console.log(canvas);
       const startAnimation = () => {
-        //here we need to get other palyers bat position
         gameState = store.getState().gameSocket;
 
         if (
@@ -486,14 +483,6 @@ const Game = (props: any) => {
     }
   }
  */
-
-  /*
-   *	P1 -> listen -> P2Bat -> BALL -> SCORE
-   *	P2 -> listen -> P1Bat1 -> BALL -> SCORE
-   *
-   *	P1 -> emit -> P1Bat
-   *	P2 -> emit -> P2Bat
-   */
   return (
     <Wrapper>
       <div id="canvasContainer">

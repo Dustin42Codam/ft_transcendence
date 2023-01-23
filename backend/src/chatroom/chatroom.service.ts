@@ -25,6 +25,12 @@ export class ChatroomService extends AbstractService {
     return chatroom;
   }
 
+  async getChatroomByName(name: string) {
+    const chatroom = await this.findOne({ name }, ["users"]);
+    if (!chatroom) throw new BadRequestException("This chatroom does not exist");
+    return chatroom;
+  }
+
   async getDMsFromUser(user: User) {
     const membersFromUsers = await this.memberService.getAllMembersFromUser(user);
     var allDMsUser = [];

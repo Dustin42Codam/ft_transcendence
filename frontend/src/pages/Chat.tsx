@@ -1,8 +1,10 @@
 import { useLocation } from "react-router-dom";
-import React from "react";
+import React, { useEffect } from "react";
+import store from "../redux/store";
 import Wrapper from "../components/Wrapper";
 import Socket from "../components/Socket";
 import "./Chat.css";
+import { socketActions } from "../redux/slices/socketSlice";
 import { useAppSelector } from "../redux/hooks";
 import { selectCurrentChatroomMessages } from "../redux/slices/socketSlice";
 import "./Message.css";

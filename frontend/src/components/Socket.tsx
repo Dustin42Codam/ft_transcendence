@@ -9,6 +9,7 @@ import { io, Socket } from "socket.io-client";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./Socket.css";
+import axios from "axios";
 
 interface ChatMessage {
   chatRoomId: number;
@@ -26,43 +27,26 @@ const Snicel = (props: any) => {
 
   useEffect(() => {
     //TO prevent bug one
-    async function waitForIt() {
-      await new Promise((resolve, reject) => {
-        //will check evert seccond if the chat room is set
-        const interval = setInterval(function () {
-          currentChatroom = store.getState().socket.currentChatRoom;
-          if (currentChatroom.id == -1 && currentChatroom.name == "") {
-            resolve(null);
-            clearInterval(interval);
-          }
-        }, 100);
-      });
+    async function getChat() {
+      const chatName = props.location.pathname.substring(7);
+      const chat = await axios.get(`chatroom/name/${chatName}`);
+      return await chat;
     }
-    console.log(currentChatroom, props.location.state);
-    if (currentChatroom.id == -1 || currentChatroom.name == "") {
-      navigate("/", {
-        replace: true,
-      });
-      return;
-      if (window.performance) {
-        if (performance.navigation.type == 1) {
-          dispatch(
-            socketActions.leaveARoom({
-              chatRoom: {
-                userId: currentUser.id,
-                id: currentChatroom.id,
-                name: currentChatroom.name,
-              },
-            })
-          );
-          waitForIt();
-        } else {
-          alert("This page is not reloaded");
-        }
-      }
-    }
+    const chat = getChat();
+    chat.then((res) => {
+      dispatch(
+        socketActions.joinARoom({
+          chatRoom: {
+            userId: currentUser.id,
+            id: res.data.id,
+            name: res.data.name,
+          },
+        })
+      );
+    });
+  }, []);
 
-    /*
+  /*
     return function cleanup() {
       console.log("from [props] unmounting");
       dispatch(
@@ -76,7 +60,6 @@ const Snicel = (props: any) => {
       );
     };
 	 */
-  }, [props.location]);
   //const [lastPong, setLastPong] = useState<string | null>(null);
 
   /*
@@ -102,6 +85,8 @@ const Snicel = (props: any) => {
     inputRef.current!["messageInput"].value = "";
   };
 
+  //the is no chat room id then set the input to disabled
+  //once there is a chat room set it to enabled
   return (
     <div>
       <ToastContainer />

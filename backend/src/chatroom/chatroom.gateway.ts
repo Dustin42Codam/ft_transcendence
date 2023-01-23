@@ -56,7 +56,7 @@ export class ChatroomGateway implements OnGatewayInit, OnGatewayConnection, OnGa
   }
 
  async handleConnection(client: any): Promise<void> {
-		console.log(`client ${client.id} conected`);
+		console.log(`client ${client.id} conected, `);
     const userId = await this.userService.getUserFromClient(client);
 
 		if (userId) {
@@ -75,6 +75,7 @@ export class ChatroomGateway implements OnGatewayInit, OnGatewayConnection, OnGa
   @UseGuards(SocketAuthGuard)
   @SubscribeMessage(ChatroomEvents.JoinChatRoom)
   async handelJoinRoom(client: Socket, payload: ChatRoom): Promise<void> {
+		console.log("clienat trying to join:" ,client.id, payload);
     const chatroom = await this.chatroomService.getChatroomById(Number(payload.id));
     if (!chatroom) {
       throw new BadRequestException(`Chatroom with id ${payload.id} does not exist.`);

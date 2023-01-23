@@ -8,12 +8,8 @@ export class SocketAuthGuard implements CanActivate {
   constructor(private jwtService: JwtService,
 						 private readonly userService: UserService) {}
   canActivate(context: ExecutionContext) {
-		try {
+			console.log("THIS", context.getArgByIndex(0).client.sockets.entries().next().value[1]);
 			this.userService.getUserFromClient(context.getArgByIndex(0).client.sockets.entries().next().value[1]);
 			return true;
-		}
-		catch (e) {
-			return false;
-		}
   }
 }
