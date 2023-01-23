@@ -62,10 +62,29 @@ export class ChatroomController {
     return this.chatroomService.getAllChatsFromUser(user);
   }
 
-  // Get() NOTE probably not needed, depends a bit on how dustin wants it
-  // async getJoinableFriendsForChatroom() {
-
-  // }
+  @Get("joinable/id/:id")
+  async getJoinableFriendsForChatroom(
+    @Param("id") id: string,
+    @Req() request: Request,
+  ) {
+    const userId = await this.authService.userId(request);
+    const user = await this.userService.getUserById(userId);
+    const chatroom = await this.chatroomService.getChatroomById(Number(id));
+    const friends = await this.friendService.getAllFriendshipsFromUser(user.id)
+    var allJoinableFriends: User[] = [];
+    for(const friend of friends) {
+      let alreadyInChat = false;
+      for(const member of chatroom.users) {
+        if (member.user.id == friend.id) {
+          alreadyInChat = true;
+        }
+      }
+      if (!alreadyInChat) {
+        allJoinableFriends.push(friend);
+      }
+    }
+    return allJoinableFriends;
+  }
 
   @Post("type/id/:id")
   async changeChatroomType(@Param("id") id: string, @Body() body: ChatroomChangeTypeDto, @Req() request: Request) {
