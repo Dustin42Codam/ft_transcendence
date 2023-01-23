@@ -52,17 +52,17 @@ const ChatCreate = () => {
           },
           user_id: currentUser.id,
         })
-		);
-		toast.success('Channel successfully created!', {
-			position: "top-right",
-			autoClose: 5000,
-			hideProgressBar: false,
-			closeOnClick: true,
-			pauseOnHover: true,
-			draggable: true,
-			progress: undefined,
-			theme: "colored",
-			});
+      );
+      toast.success("Channel successfully created!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
       if (chatStatus === "failed") {
         toast.error(`${chatError}`, {
           position: "top-right",

@@ -13,8 +13,15 @@ import { socketActions } from "../../redux/slices/socketSlice";
 import { Member } from "../../models/Member";
 import ChatAddMember from "./ChatAddMember";
 import { Link } from "react-router-dom";
-import { fetchCurrentMember, selectCurrentMember, updateCurrentChatType } from "../../redux/slices/currentMemberSlice";
-import { fetchChatMembers, selectAllChatMembers } from "../../redux/slices/chatMembersSlice";
+import {
+  fetchCurrentMember,
+  selectCurrentMember,
+  updateCurrentChatType,
+} from "../../redux/slices/currentMemberSlice";
+import {
+  fetchChatMembers,
+  selectAllChatMembers,
+} from "../../redux/slices/chatMembersSlice";
 
 function ChatUserList(props: any) {
   const currentChat = useAppSelector(
@@ -29,25 +36,29 @@ function ChatUserList(props: any) {
   const navigate = useNavigate();
   const chatStatus = useAppSelector((state) => state.chats.status);
   const chatError = useAppSelector((state) => state.chats.error);
-  
+
   const [chatType, setChatType] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
   const [chatName, setChatName] = useState("");
-  
+
   const currentMember = useAppSelector(selectCurrentMember);
 
   const allUsers = useAppSelector(selectAllUsers);
 
-	useEffect(() => {
-		dispatch(fetchChatMembers({
-			id: props.currentChat.id
-		  }));
-		dispatch(fetchUsers());
-		dispatch(fetchCurrentMember({
-			id: currentChat.id,
-		}));
-	}, [rerender, chatType])
+  useEffect(() => {
+    dispatch(
+      fetchChatMembers({
+        id: props.currentChat.id,
+      })
+    );
+    dispatch(fetchUsers());
+    dispatch(
+      fetchCurrentMember({
+        id: currentChat.id,
+      })
+    );
+  }, [rerender, chatType]);
 
   async function leaveChannel() {
     const member = chatMembers.filter(
@@ -437,7 +448,7 @@ function ChatUserList(props: any) {
                 name: chatName,
                 userId: currentChat.userId,
                 type: currentChat.type,
-				members: chatMembers
+                members: chatMembers,
               },
             })
           );
@@ -476,14 +487,16 @@ function ChatUserList(props: any) {
   }
 
   async function updateChannelTypeOrPassword() {
-	chatType.length &&
-	dispatch(updateCurrentChatType({
-		id: currentChat.id,
-		type: chatType,
-		password,
-		passwordConfirm
-	}))
-}
+    chatType.length &&
+      dispatch(
+        updateCurrentChatType({
+          id: currentChat.id,
+          type: chatType,
+          password,
+          passwordConfirm,
+        })
+      );
+  }
 
   async function removeMember(member: Member) {
     const id = toast.loading(
@@ -523,10 +536,12 @@ function ChatUserList(props: any) {
           theme: "colored",
         });
       });
-  	dispatch(fetchChatMembers({
-		id: currentChat.id
-  	}));
-	dispatch(fetchUsers());
+    dispatch(
+      fetchChatMembers({
+        id: currentChat.id,
+      })
+    );
+    dispatch(fetchUsers());
     setRerender(!rerender);
   }
 
@@ -583,33 +598,33 @@ function ChatUserList(props: any) {
                     </select>
                   </form>
 
-                  {
-                    (chatType == ChatroomType.PROTECTED ||
-                      currentMember.chatroom.type ===
-                        ChatroomType.PROTECTED) && (
-                      <form>
-                        <label>
-                          Password:
-                          <input
-                            type="password"
-                            name="password"
-                            onChange={(e: any) => setPassword(e.target.value)}
-                          />
-                        </label>
-                        <label>
-                          Password confirm:
-                          <input
-                            type="password"
-                            name="password"
-                            onChange={(e: any) =>
-                              setPasswordConfirm(e.target.value)
-                            }
-                          />
-                        </label>
-                      </form>
-                    )
-                  }
-                  <button className="button" onClick={updateChannelTypeOrPassword}>
+                  {(chatType == ChatroomType.PROTECTED ||
+                    currentMember.chatroom.type === ChatroomType.PROTECTED) && (
+                    <form>
+                      <label>
+                        Password:
+                        <input
+                          type="password"
+                          name="password"
+                          onChange={(e: any) => setPassword(e.target.value)}
+                        />
+                      </label>
+                      <label>
+                        Password confirm:
+                        <input
+                          type="password"
+                          name="password"
+                          onChange={(e: any) =>
+                            setPasswordConfirm(e.target.value)
+                          }
+                        />
+                      </label>
+                    </form>
+                  )}
+                  <button
+                    className="button"
+                    onClick={updateChannelTypeOrPassword}
+                  >
                     Submit
                   </button>
 
@@ -639,10 +654,13 @@ function ChatUserList(props: any) {
               (member: any, index: number) =>
                 member.user.id !== currentUser.id && (
                   <div className="pop-up-member" key={index}>
-					<Link className="member-link" to={`/users/${member.user.id}`}>
-                    	<img className="member-avatar" src={member.user.avatar}/>
-                    	{member.user.display_name}
-					</Link>
+                    <Link
+                      className="member-link"
+                      to={`/users/${member.user.id}`}
+                    >
+                      <img className="member-avatar" src={member.user.avatar} />
+                      {member.user.display_name}
+                    </Link>
 
                     <button>send game invite</button>
 

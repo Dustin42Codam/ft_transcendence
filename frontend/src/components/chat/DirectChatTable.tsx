@@ -73,9 +73,11 @@ const DirectChatTable = () => {
         },
       })
     );
-	dispatch(fetchCurrentMember({
-		id: directChats[i].id,
-	}));
+    dispatch(
+      fetchCurrentMember({
+        id: directChats[i].id,
+      })
+    );
     // const id = toast.loading(`joining room: ${directChats[i].i}!`);
     await new Promise((resolve, reject) => {
       //will check evert seccond if the chat room is set

@@ -67,9 +67,11 @@ const GroupChatTable = () => {
         },
       })
     );
-	dispatch(fetchCurrentMember({
-		id: groupChats[chatToJoinIndex].id
-	}));
+    dispatch(
+      fetchCurrentMember({
+        id: groupChats[chatToJoinIndex].id,
+      })
+    );
     const id = toast.loading(
       `joining room: ${groupChats[chatToJoinIndex].name}!`
     );

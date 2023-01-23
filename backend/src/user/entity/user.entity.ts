@@ -55,7 +55,7 @@ export class User {
   @JoinColumn()
   tfa_secret: TFA
 
-  @OneToMany(() => Member, (member: Member) => member.user, {eager: true})
+  @OneToMany(() => Member, (member: Member) => member.user)
   chatrooms: Member[];
 
   @Column({

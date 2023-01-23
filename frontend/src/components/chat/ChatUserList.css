@@ -13,28 +13,28 @@
 }
 
 .member-avatar {
-	height: 5vh;
-	width: 5vh;
-	border-radius: 50%;
-	border-width: 3px;
-	border-style: solid;
-	border-color: rgb(78, 78, 78);
+  height: 5vh;
+  width: 5vh;
+  border-radius: 50%;
+  border-width: 3px;
+  border-style: solid;
+  border-color: rgb(78, 78, 78);
 }
 
 .member-link {
-	text-decoration: none;
-	color: black;
-	background-color: #cfcece;
-	align-self: center;
-	/* border: #cfcece solid 3px; */
+  text-decoration: none;
+  color: black;
+  background-color: #cfcece;
+  align-self: center;
+  /* border: #cfcece solid 3px; */
 }
 
 .member-link:hover {
-	color: blue;
+  color: blue;
 }
 
 .member-link:active {
-	color: royalblue;
+  color: royalblue;
 }
 
 .pop-up-member {

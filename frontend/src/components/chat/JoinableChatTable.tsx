@@ -69,9 +69,11 @@ const JoinableChats = (props: any) => {
               },
             })
           );
-		  dispatch(fetchCurrentMember({
-			id: joinableChats[index].id,
-		}));
+          dispatch(
+            fetchCurrentMember({
+              id: joinableChats[index].id,
+            })
+          );
           navigate("../chats/" + joinableChats[index].name, {
             replace: true,
             state: joinableChats[index],

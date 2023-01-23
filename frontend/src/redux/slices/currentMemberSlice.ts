@@ -13,93 +13,94 @@ import { ChatroomType } from "../../models/Chats";
 
 const initialState = {
   currentMember: {
-	id: 0,
-	role: "",
-	muted_until: "",
-	banned: false,
-	status: "",
-	user: {},
-	chatroom: {
-		id: 0,
-		name: "",
-		password: "",
-		type: "",
-	}
+    id: 0,
+    role: "",
+    muted_until: "",
+    banned: false,
+    status: "",
+    user: {},
+    chatroom: {
+      id: 0,
+      name: "",
+      password: "",
+      type: "",
+    },
   },
   status: "idle",
   error: null,
 };
 
 export const fetchCurrentMember = createAsyncThunk(
-	"currentMember/fetchCurrentMember",
-	async (data: any) => {
-		const response = await axios.get(`member/me/id/${data.id}`);
-  		console.log("🚀 ~ file: currentMemberSlice.ts:21 ~ response", response)
-  		return response.data;
-	}
+  "currentMember/fetchCurrentMember",
+  async (data: any) => {
+    const response = await axios.get(`member/me/id/${data.id}`);
+    console.log("🚀 ~ file: currentMemberSlice.ts:21 ~ response", response);
+    return response.data;
+  }
 );
 
 export const updateCurrentChatType = createAsyncThunk(
-	"currentMember/updateCurrentChatType",
-	async (data: any) => {
-		const toastId = toast.loading(`Updating channel data...`);
+  "currentMember/updateCurrentChatType",
+  async (data: any) => {
+    const toastId = toast.loading(`Updating channel data...`);
 
-		if (
-			data.type !== ChatroomType.PUBLIC &&
-			data.password?.length &&
-			data.password !== data.passwordConfirm
-		  ) {
-			toast.update(toastId, {
-			  render: `Passwords didn't match!`,
-			  type: "error",
-			  position: "top-right",
-			  autoClose: 5000,
-			  isLoading: false,
-			  hideProgressBar: false,
-			  closeOnClick: true,
-			  pauseOnHover: true,
-			  draggable: true,
-			  progress: undefined,
-			  theme: "colored",
-			});
-			return;
-		  }
-		await axios.post(`chatroom/type/id/${data.id}`, {
-			      type: data.type,
-			      password: data.password,
-		})
-		.then((ret) => {
-        	toast.update(toastId, {
-        	  render: `Channel data updated!`,
-        	  type: "success",
-        	  isLoading: false,
-        	  position: "top-right",
-        	  autoClose: 5000,
-        	  hideProgressBar: false,
-        	  closeOnClick: true,
-        	  pauseOnHover: true,
-        	  draggable: true,
-        	  progress: undefined,
-        	  theme: "colored",
-        	});
-		})
-        .catch((error: any) => {
-          toast.update(toastId, {
-            render: `${error.response.data.message}`,
-            type: "error",
-            position: "top-right",
-            autoClose: 5000,
-            isLoading: false,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "colored",
-          });
-		})
-  		return data.type;
-	}
+    if (
+      data.type !== ChatroomType.PUBLIC &&
+      data.password?.length &&
+      data.password !== data.passwordConfirm
+    ) {
+      toast.update(toastId, {
+        render: `Passwords didn't match!`,
+        type: "error",
+        position: "top-right",
+        autoClose: 5000,
+        isLoading: false,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+      return;
+    }
+    await axios
+      .post(`chatroom/type/id/${data.id}`, {
+        type: data.type,
+        password: data.password,
+      })
+      .then((ret) => {
+        toast.update(toastId, {
+          render: `Channel data updated!`,
+          type: "success",
+          isLoading: false,
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+      })
+      .catch((error: any) => {
+        toast.update(toastId, {
+          render: `${error.response.data.message}`,
+          type: "error",
+          position: "top-right",
+          autoClose: 5000,
+          isLoading: false,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+      });
+    return data.type;
+  }
 );
 
 const currentMemberSlice = createSlice({
@@ -112,7 +113,10 @@ const currentMemberSlice = createSlice({
         state.status = "loading";
       })
       .addCase(fetchCurrentMember.fulfilled, (state, action) => {
-        console.log("🚀 ~ file: currentMemberSlice.ts:35 ~ .addCase ~ action", action)
+        console.log(
+          "🚀 ~ file: currentMemberSlice.ts:35 ~ .addCase ~ action",
+          action
+        );
         state.status = "succeeded";
         state.currentMember = action.payload;
       })
@@ -124,7 +128,10 @@ const currentMemberSlice = createSlice({
         state.status = "loading";
       })
       .addCase(updateCurrentChatType.fulfilled, (state, action) => {
-        console.log("🚀 ~ file: currentMemberSlice.ts:35 ~ .addCase ~ action", action)
+        console.log(
+          "🚀 ~ file: currentMemberSlice.ts:35 ~ .addCase ~ action",
+          action
+        );
         state.status = "succeeded";
         state.currentMember.chatroom.type = action.payload;
       })
@@ -136,6 +143,7 @@ const currentMemberSlice = createSlice({
 });
 
 // selectors
-export const selectCurrentMember = (state: any) => state.currentMember.currentMember;
+export const selectCurrentMember = (state: any) =>
+  state.currentMember.currentMember;
 
 export default currentMemberSlice.reducer;

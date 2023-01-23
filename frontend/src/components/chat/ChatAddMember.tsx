@@ -47,10 +47,12 @@ function ChatAddMember(props: any) {
           theme: "colored",
         });
       });
-  	dispatch(fetchChatMembers({
-		id: props.currentChat.id
-  	}));
-	dispatch(fetchUsers());
+    dispatch(
+      fetchChatMembers({
+        id: props.currentChat.id,
+      })
+    );
+    dispatch(fetchUsers());
   }
 
   return (

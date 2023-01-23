@@ -39,10 +39,11 @@ const Chat = (props: any) => {
   let user;
 
   const dispatch = useAppDispatch();
-    dispatch(fetchChatMembers({
-	id: currentChat.id
-  }));
-  
+  dispatch(
+    fetchChatMembers({
+      id: currentChat.id,
+    })
+  );
 
   if (currentChat.id !== -1) {
     user = users.find((user: any) => user.display_name === currentChat.name);
@@ -74,15 +75,15 @@ const Chat = (props: any) => {
           <div className="chat-header">
             {user && (
               <Link to={`/users/${user.id}`} className="member-link">
-				<div className="dm-avatar">
-                	<img src={user.avatar} alt="avatar" />
-				</div>
+                <div className="dm-avatar">
+                  <img src={user.avatar} alt="avatar" />
+                </div>
               </Link>
             )}
-			
-			{currentChat.type !== ChatroomType.DIRECT
-            	&& <ChatUserList currentChat={currentChat} />
-			}
+
+            {currentChat.type !== ChatroomType.DIRECT && (
+              <ChatUserList currentChat={currentChat} />
+            )}
           </div>
           {messages?.map((msg: any, index: number) =>
             msg.member.user.id === currentUser.id ? (
