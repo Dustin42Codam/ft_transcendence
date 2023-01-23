@@ -66,33 +66,6 @@ const UserEdit = () => {
         avatar,
       })
     );
-    /* 
-    if (name === user.display_name && avatar) {
-      await dispatch(
-        updateCurrentUser({
-          id: user.id,
-          avatar,
-        })
-      )
-    } else if (name || avatar) {
-        for (const user of users) {
-          if (user.display_name === name) {
-            window.alert("A user with this name already exists!");
-            return ;
-          }
-        }
-
-        const response = await dispatch(
-          updateCurrentUser({
-            id: user.id,
-            display_name: name,
-            avatar,
-          }))
-          console.log("🚀 ~ file: UserEdit.tsx:71 ~ infoSubmit ~ response", response)
-      window.location.reload();
-      // if (response.meta.)
-
-    } */
   };
 
   const updateImage = (url: string) => {
@@ -127,11 +100,11 @@ const UserEdit = () => {
       .post("tfa/turn-on", {
         code: code,
       })
-      .then(() => {
+      .then((response: any) => {
         setTwoFA(true);
-        dispatch(update2FA({ twoFA: true }));
-      })
-      .catch(() => window.alert("Wrong code provided!"));
+        dispatch(update2FA({ twoFA: true, isAuthenticated: true }));
+	})
+	.catch(() => window.alert("Wrong code provided!"));
   }
 
   return (

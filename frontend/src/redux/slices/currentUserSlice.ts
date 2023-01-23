@@ -25,6 +25,9 @@ const initialState = {
     status: "",
     avatar: "",
     two_factor_auth: false,
+	tfa_secret: {
+		isAuthenticated: false
+	}
   },
   status: "idle",
   error: null,
@@ -58,8 +61,9 @@ const currentUserSlice = createSlice({
   initialState,
   reducers: {
     update2FA(state, action) {
-      const { twoFA } = action.payload;
+      const { twoFA, isAuthenticated } = action.payload;
       state.currentUser.two_factor_auth = twoFA;
+      state.currentUser.tfa_secret.isAuthenticated = isAuthenticated;
     },
   },
   // reducers for action creators which are declared outside of createSlice()

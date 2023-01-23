@@ -67,8 +67,11 @@ done:
 
 
 bugs:
-		
+
 	fixed:
+		+	2fa displays 404 after activating
+			->	redux store had to be updated so the frontend knows that
+				a user is authenticated
 		+	joinable/groupchats bug
 		+	chatroom long list
 		+	create a channel but not set as owner
