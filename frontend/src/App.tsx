@@ -19,6 +19,12 @@ import Particles from "react-tsparticles";
 import { loadFull } from "tsparticles";
 import ParticleBackground from "./components/ParticleBackground";
 
+import { socketActions } from "./redux/slices/socketSlice";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import store from "./redux/store";
+import { gameSocketActions } from "./redux/slices/gameSocketSlice";
+
 function App() {
   const particlesInit = useCallback(async (engine: Engine) => {
     console.log(engine);
@@ -36,12 +42,26 @@ function App() {
     []
   );
 
-  const dispatch = useAppDispatch();
-  const socketStatus = useAppSelector((state) => state.socket.isConnected);
   const userStatus = useAppSelector((state) => state.currentUser.status);
   const currentUser = useAppSelector(selectCurrentUser);
+  const chatNotificatoin = useAppSelector((state) => state.socket.notificatoin);
+  const gameNotificatoin = useAppSelector(
+    (state) => state.gameSocket.notificatoin
+  );
 
-  //   console.log("🚀 ~ file: App.tsx:23 ~ App ~ currentUser", currentUser.tfa_secret.isAuthenticated);
+  useEffect(() => {
+    if (chatNotificatoin != "") {
+      toast(chatNotificatoin);
+      store.dispatch(socketActions.clearNotification());
+    }
+  }, [chatNotificatoin]);
+
+  useEffect(() => {
+    if (gameNotificatoin != "") {
+      toast(gameNotificatoin);
+      store.dispatch(gameSocketActions.clearNotification());
+    }
+  }, [gameNotificatoin]);
 
   //TODO do not load the server if socket is not socketStatus is not true
   if (currentUser.id === -1) {
@@ -51,8 +71,8 @@ function App() {
           <Routes>
             <Route path={"/authenticate"} element={<Authenticate />} />
             <Route path={"/particles"} element={<ParticleBackground />} />
-            <Route path={"*"} element={<NotFound />} />
             <Route path="/" element={<Navigate to="./authenticate" />} />
+            <Route path={"*"} element={<NotFound />} />
           </Routes>
         </BrowserRouter>
       </div>
@@ -69,12 +89,12 @@ function App() {
           <Routes>
             <Route path={"/authenticate"} element={<Authenticate />} />
             <Route path={"/particles"} element={<ParticleBackground />} />
-            <Route path={"*"} element={<NotFound />} />
             <Route path="/" element={<Navigate to="./authenticate" />} />
             <Route
               path={"/authenticate/2fa"}
               element={<TwoFactorAuthentication />}
             />
+            <Route path={"*"} element={<NotFound />} />
           </Routes>
         </BrowserRouter>
       </div>
@@ -82,14 +102,17 @@ function App() {
   } else {
     return (
       <div className="App">
+        <ToastContainer />
         <BrowserRouter>
           <Routes>
-            <Route path={"/"} element={<Dashboard />} />
-            <Route path="/authenticate" element={<Navigate to="/" />} />
+            <Route path={"/dashboard"} element={<Dashboard />} />
+            <Route
+              path="/authenticate"
+              element={<Navigate to="/dashboard" />}
+            />
 
             <Route path={"/chats/:name"} element={<Chat />} />
             <Route path={"/chats/dm/:id"} element={<Chat />} />
-            {/* <Route path={"/chats/dm/:name"} element={<ChatDM />} /> */}
 
             <Route path={"/profile"} element={<UserProfile />} />
             <Route path={"/profile/edit"} element={<UserEdit />} />
@@ -99,6 +122,7 @@ function App() {
 
             <Route path={"/games"} element={<Game />} />
 
+            <Route path={"/authenticate"} element={<Dashboard />} />
             <Route path={"*"} element={<NotFound />} />
           </Routes>
         </BrowserRouter>

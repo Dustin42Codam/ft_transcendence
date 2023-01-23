@@ -72,9 +72,6 @@ const GroupChatTable = () => {
         id: groupChats[chatToJoinIndex].id,
       })
     );
-    const id = toast.loading(
-      `joining room: ${groupChats[chatToJoinIndex].name}!`
-    );
     await new Promise((resolve, reject) => {
       //will check evert seccond if the chat room is set
       const interval = setInterval(function () {
@@ -90,13 +87,6 @@ const GroupChatTable = () => {
         }
       }, 100);
     });
-    toast.update(id, {
-      render: `Switched to room: ${groupChats[chatToJoinIndex].name}!`,
-      autoClose: 1500,
-      type: "success",
-      isLoading: false,
-    });
-
     navigate("../chats/" + name, {
       replace: true,
       state: groupChats[chatToJoinIndex],

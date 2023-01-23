@@ -124,5 +124,5 @@ export class UserService extends AbstractService {
 			const decoded = await this.jwtService.verifyAsync(cookie.jwt);
 			return decoded.id;
 		}
-	  }
+	}
 }
