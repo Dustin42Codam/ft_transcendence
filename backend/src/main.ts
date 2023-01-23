@@ -5,6 +5,8 @@ import * as session from "express-session";
 import * as cookieParser from "cookie-parser";
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import * as dotenv from "dotenv";
+import { ConfigService } from '@nestjs/config';
+import { SocketIoAdapter } from './game/socketIoAdapter';
 
 const cors = require("cors");
 const express = require("express");
@@ -14,6 +16,7 @@ require("dotenv").config();
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+	const configService = app.get(ConfigService);
   app.use(
     session({
       secret: "session-secret",
@@ -26,6 +29,7 @@ async function bootstrap() {
   app.use(
     cors({ origin: "http://localhost:4242", allowedHeaders: ["Access-Control-Allow-Origin", "content-type", "Location", "Authorization", "origin", "accept"], credentials: true }),
   );
+	app.useWebSocketAdapter(new SocketIoAdapter(app, configService));
   app.use(express.json());
   app.use(cookieParser());
   app.use(
