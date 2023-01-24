@@ -378,7 +378,7 @@ const Game = (props: any) => {
       clearTimeout(timer);
       theGameFrame!.innerHTML = savedTheGameFrame;
       const currentUser = store.getState().currentUser;
-      const canvas = document.getElementById("canvas") as HTMLCanvasElement;
+      const canvas = document.getElementById("gameCanvas") as HTMLCanvasElement;
       //before this we need to have the data before we can build the game
       //how can we get the position for
       //we have to use a promise
