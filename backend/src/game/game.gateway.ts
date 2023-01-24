@@ -1,6 +1,5 @@
 import { WebSocketServer, OnGatewayDisconnect, OnGatewayConnection, WsResponse, OnGatewayInit, MessageBody, SubscribeMessage, WebSocketGateway } from "@nestjs/websockets";
 import { UserService } from "src/user/user.service";
-import { SocketAuthGuard } from "../auth/auth.socket.guard";
 import { GameService } from "./game.service";
 import GameroomEvents from "./gameroomEvents";
 import { UseGuards } from "@nestjs/common";
@@ -32,10 +31,6 @@ interface JoinGameRoomDTO {
 
 @WebSocketGateway(3002, {
   namespace: "game",
-  cors: {
-    origin: "http://localhost:4242",
-    credentials: true,
-  },
 })
 export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
   constructor(
@@ -51,12 +46,14 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
   }
 
   async handleConnection(client): Promise<void> {
+		this.logger.log(`clienet: ${client.id} connected`);
 		//tmp gurad
     // await this.userService.getUserFromClient(client);
 		// console.log(`game client ${client.id} conected`);
   }
 
   async handleDisconnect(client: any): Promise<void> {
+		this.logger.log(`clienet: ${client.id} disconnected`);
 		//tmp gurad
     // await this.userService.getUserFromClient(client);
 		// console.log(`game client ${client.id} disconected`);
@@ -64,7 +61,6 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 
 	//payload needs to have display_name, GameRoomId
 	//we can also pass the player in here
-	@UseGuards(SocketAuthGuard)
   @SubscribeMessage(GameroomEvents.JoinGameRoom)
   async handelJoinRoom(client: Socket, payload: string): Promise<void> {
 
@@ -77,9 +73,9 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 		const userId = await this.userService.getUserFromClient(client);
 		const user = await this.userService.getUserById(userId);
 		const game = await this.gameService.getGameById(Number(gameRoomId));
-		if (!game)
+		//if (!game)
 			//TODO throw
-		console.log(game, user);
+		//console.log(game, user);
 		if (game != null) {
 			if (game.player_1 != userId || game.player_2 != userId) {
 				if (clientInRoom == 1) {
@@ -131,7 +127,6 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 		}
 	}
 
-	@UseGuards(SocketAuthGuard)
   @SubscribeMessage(GameroomEvents.SpectateGameRoom)
   async spectateRoom(client: Socket, payload: any): Promise<void> {
 
@@ -140,7 +135,6 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 
   }
 
-	@UseGuards(SocketAuthGuard)
   @SubscribeMessage(GameroomEvents.ClientWantsToStartGame)
   handleStartGame(client: Socket, payload: any): void {
 		//payload needs to have game room id
@@ -151,7 +145,6 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 		this.io.to(payload.GameRoomId).emit(GameroomEvents.ServerStartedTheGame, 3);
   }
 
-	@UseGuards(SocketAuthGuard)
   @SubscribeMessage(GameroomEvents.MoveBatP1)
   handleMoveBatP1(client: Socket, payload: any): void {
 		console.log(`BAT1 ${payload.gameRoomId} ${payload.direction}`);
@@ -159,7 +152,6 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 		this.io.to(`${payload.gameRoomId}`).emit(GameroomEvents.GetBatP1, payload.direction);
   }
 
-	@UseGuards(SocketAuthGuard)
   @SubscribeMessage(GameroomEvents.MoveBatP2)
   handleMoveBatP2(client: Socket, payload: any): void {
 		console.log(`BAT2 ${payload.gameRoomId} ${payload.direction}`);

@@ -2,6 +2,9 @@ import { INestApplicationContext, Logger } from '@nestjs/common';
 import { IoAdapter } from '@nestjs/platform-socket.io';
 import { ServerOptions } from 'socket.io';
 import { ConfigService } from '@nestjs/config';
+import { JwtService } from  '@nestjs/jwt';
+import { Socket, Server } from "socket.io";
+import { parse } from "cookie";
 
 export class SocketIoAdapter extends IoAdapter {
 	private readonly logger = new Logger(SocketIoAdapter.name);
@@ -13,15 +16,40 @@ export class SocketIoAdapter extends IoAdapter {
 	}
 
 	createIOServer(port: number, options?: ServerOptions) {
-		port = this.configService.get<number>('SOCKETIO.SERVER.PORT');
-		const path = this.configService.get<string>('SOCKETIO.SERVER.PATH');
-		const origins = this.configService.get<string>(
-			'SOCKETIO.SERVER.CORS.ORIGIN',
-		);
-		const origin = origins.split(',');
-		options.path = path;
-		options.cors = { origin };
-		const server = super.createIOServer(port, options);
+		const cors = {
+			origin: [
+				`http://localhost:4242`,
+			],
+			credentials: true,
+		}
+		this.logger.log("configureing socketIO server with cutom CORS options", {
+			cors,
+		})
+		const optionsWithCors: ServerOptions = {
+			...options,
+			cors,
+		}
+		const jwtService = this.app.get(JwtService);
+		const server: Server = super.createIOServer(port, optionsWithCors);
+		server.of("game").use(createTokenMiddleware(jwtService, this.logger));
+		server.of("chat").use(createTokenMiddleware(jwtService, this.logger));
 		return server;
 	}
 }
+
+require("dotenv").config();
+
+const createTokenMiddleware = 
+	(jwtService: JwtService, logger: Logger) =>
+	(socket: Socket, next) => {
+		try {
+			const cookie = parse(socket.handshake.headers.cookie);
+			const token = cookie.jwt;
+			logger.debug(token);
+			const payload = jwtService.verify(token, {secret: process.env.JWT_SECRET});
+			next();
+		} catch {
+			logger.error("Frobiden to login");
+			next(new Error("FORBIDDEN"));
+		}
+	}

@@ -21,7 +21,6 @@ export class AuthController {
 
   @Post("register")
   async register(@Body() body: RegisterDto) {
-    console.log("registering...");
 
     const user = await this.userService.findOne({ display_name: body.display_name });
 
@@ -29,7 +28,6 @@ export class AuthController {
       throw new BadRequestException("User with this name already exists!");
     }
 
-    console.log("Body:", body);
 
     await this.userService.createUser({
       display_name: body.display_name,
@@ -50,12 +48,10 @@ export class AuthController {
     }
     const jwt = await this.jwtService.signAsync({ id: user.id });
     request.session.user_id = user.id;
-    console.log(user.id);
     request.session.logged_in = true;
 
     await this.userService.changeStatus(user.id, UserStatus.ONLINE);
     response.cookie("jwt", jwt, { httpOnly: true, sameSite: "strict" });
-    console.log("succesfully logged in");
     return user;
   }
 
@@ -85,8 +81,13 @@ export class AuthController {
 
   @UseGuards(AuthGuard)
   @Get("me")
-  async user(@Req() request: Request) {
+  async user(@Req() request: Request, @Res({ passthrough: true }) response: Response) {
+
     const id = await this.authService.userId(request);
+
+		const jwt = await this.jwtService.signAsync({ id: id });
+
+		response.set({ Authorization: "Bearer " + jwt, });
 
     return this.userService.findOne({ id });
   }
@@ -97,7 +98,6 @@ export class AuthController {
   async logout(@Res({ passthrough: true }) response: Response, @Req() request: Request) {
     const userId = await this.authService.userId(request);
 
-    console.log("🚀 ~ file: auth.controller.ts:101 ~ AuthController ~ logout ~ response", response)
     response.clearCookie("jwt");
     response.clearCookie("Authentication");
     response.clearCookie("connect.sid");

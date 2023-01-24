@@ -117,7 +117,9 @@ export class UserService extends AbstractService {
 		Object.assign(user, status);
 		await this.userRepository.save(user);
 		return user;
+
 	}
+
 	async getUserFromClient(client: Socket): Promise<number> {
 		if (client.handshake.headers.cookie) {
 			const cookie = parse(client.handshake.headers.cookie);

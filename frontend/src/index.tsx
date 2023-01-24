@@ -38,8 +38,8 @@ async function main() {
   store.dispatch(fetchDirectChats());
   store.dispatch(fetchJoinableChats());
   store.dispatch(fetchGroupChats());
-  //   store.dispatch(socketActions.startConnecting());
-  //   store.dispatch(gameSocketActions.startConnecting());
+  store.dispatch(socketActions.startConnecting());
+  store.dispatch(gameSocketActions.startConnecting());
 
   //TODO add authgurad
 

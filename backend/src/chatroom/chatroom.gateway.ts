@@ -33,10 +33,6 @@ export type ChatRoom = {
 //TODO add authguard
 @WebSocketGateway(3001, {
   namespace: "chat",
-  cors: {
-    origin: "http://localhost:4242",
-    credentials: true,
-  },
 })
 export class ChatroomGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
   constructor(private readonly userService: UserService,
@@ -73,7 +69,6 @@ export class ChatroomGateway implements OnGatewayInit, OnGatewayConnection, OnGa
 		}
   }
 
-  @UseGuards(SocketAuthGuard)
   @SubscribeMessage(ChatroomEvents.JoinChatRoom)
   async handelJoinRoom(client: Socket, payload: ChatRoom): Promise<void> {
 		console.log("clienat trying to join:" ,client.id, payload);
@@ -97,7 +92,6 @@ export class ChatroomGateway implements OnGatewayInit, OnGatewayConnection, OnGa
     client.emit(ChatroomEvents.JoinChatRoomSuccess, payload);
   }
 
-  @UseGuards(SocketAuthGuard)
   @SubscribeMessage(ChatroomEvents.LeaveChatRoom)
   leaveJoinRoom(client: Socket, payload: ChatRoom): void {
 		console.log("client leaving: ", payload);
@@ -105,20 +99,16 @@ export class ChatroomGateway implements OnGatewayInit, OnGatewayConnection, OnGa
     client.leave(`${payload.id}`);
   }
 
-  @UseGuards(SocketAuthGuard)
   @SubscribeMessage("ping")
   handlePong(client: Socket, payload: string): WsResponse<string> {
     return { event: "pong", data: null };
   }
 
-  @UseGuards(SocketAuthGuard)
   @SubscribeMessage("typing")
   handleTyping(client: Socket, payload: string): WsResponse<string> {
     return { event: "isTyping", data: payload };
   }
 
-  //TODO for me add socket id to DB
-  @UseGuards(SocketAuthGuard)
   @SubscribeMessage(ChatroomEvents.SendMessageToServer)
   async handleMessageToServer(client: Socket, payload: Message): Promise<void> {
     //client.broadcast
