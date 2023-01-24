@@ -29,6 +29,24 @@ interface JoinGameRoomDTO {
   spectator?: userInRoom;
 }
 
+function playGame() {
+	//BALL//
+	//HitWall
+	//HitBat
+	//reset
+	//HitPowerUp
+	//BAT
+	//checkpower up timer
+	//moveUp <- done
+	//moveDown <- done
+	//What is power up?
+	//
+	//
+	//
+	//events that can happen here we need to see if a socket disconnects then the winer is the playe who disconected last
+	//
+}
+
 @WebSocketGateway(3002, {
   namespace: "game",
 })
@@ -157,7 +175,6 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 		console.log(`BAT2 ${payload.gameRoomId} ${payload.direction}`);
 		console.log(payload, GameroomEvents.GetBatP2, payload.direction);
 		this.io.to(`${payload.gameRoomId}`).emit(GameroomEvents.GetBatP2, payload.direction);
-		//this.io.to(payload.GameRoomId).emit(GameroomEvents.MoveBatP2, 3);
   }
 
 }

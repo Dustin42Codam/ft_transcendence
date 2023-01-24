@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { gameSocketActions } from "../redux/slices/gameSocketSlice";
-import { useAppDispatch } from "../redux/hooks";
 import Wrapper from "../components/Wrapper";
 import axios from "axios";
 import Popup from "reactjs-popup";
 
+import { selectCurrentUser } from "../redux/slices/currentUserSlice";
+import { useAppDispatch, useAppSelector } from "../redux/hooks";
+
 const Dashboard = () => {
   const dispatch = useAppDispatch();
-  const [acitiveGames, setActiveGames] = useState<any>(null);
+  const [activeGames, setActiveGames] = useState<any>(null);
+  const currentUser = useAppSelector(selectCurrentUser);
 
   useEffect(() => {
     async function fetchAllActiveGames() {
@@ -27,10 +30,11 @@ const Dashboard = () => {
       .post("/game/classic", {})
       .then((resp) => console.log(resp))
       .catch((err) => console.log(err));
-    //dispatch(gameSocketActions.joinRoom(42));
   }
   async function spectateGame(gameIndex: number) {
-    console.log("I want to spectate the game gameIndex:", gameIndex);
+    console.log("I want to spectate the game gameIndex:", activeGames[gameIndex]);
+		//here we do a check that checks if the player joining is not the player whould made the game
+    dispatch(gameSocketActions.joinRoom(activeGames[gameIndex].id));
   }
 
   return (
@@ -39,7 +43,7 @@ const Dashboard = () => {
         <button onClick={joinGameRoom}> Regular Game</button>
         <button> Power up Game </button>
         <button> Send a game invite to some one </button>
-        {acitiveGames ? (
+        {activeGames ? (
           <React.Fragment>
             <table>
               <thead>
@@ -55,7 +59,7 @@ const Dashboard = () => {
                 </tr>
               </thead>
               <tbody>
-                {acitiveGames.map((games: any, index: number) => (
+                {activeGames.map((games: any, index: number) => (
                   <tr key={index}>
                     <td>{games.id}</td>
                     <td>{games.player_1}</td>
@@ -66,6 +70,8 @@ const Dashboard = () => {
                     <td>{games.timsstamp}</td>
                     <td>{games.type}</td>
                     <td>
+										{currentUser.id != games.player_1 && currentUser.id != games.player_2 ? (
+											<React.Fragment>
                       <button
                         onClick={(e) => {
                           spectateGame(index);
@@ -73,6 +79,8 @@ const Dashboard = () => {
                       >
                         Spectate
                       </button>
+											</React.Fragment>
+										) : (<React.Fragment></React.Fragment>)}
                     </td>
                   </tr>
                 ))}
