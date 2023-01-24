@@ -20,6 +20,7 @@ import { socketActions } from "../redux/slices/socketSlice";
 
 import { useAppDispatch } from "../redux/hooks";
 import store from "../redux/store";
+import { toast } from "react-toastify";
 
 const Menu = (props: any) => {
   const [activeDm, setActiveDm] = useState(false);
