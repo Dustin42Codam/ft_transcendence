@@ -41,8 +41,6 @@ async function main() {
   store.dispatch(socketActions.startConnecting());
   store.dispatch(gameSocketActions.startConnecting());
 
-  //TODO add authgurad
-
   root.render(
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>

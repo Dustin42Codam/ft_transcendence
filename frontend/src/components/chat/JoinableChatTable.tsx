@@ -32,7 +32,6 @@ type Chats = {
 const JoinableChats = (props: any) => {
   const dispatch = useAppDispatch();
   let navigate = useNavigate();
-  //   const joinableChats = useAppSelector(selectJoinableChats);
   const [joinableChats, setJoinableChats] = useState<any>([]);
   const [isPopUp, setIsPopUp] = useState(false);
   const [password, setPassword] = useState<string>("");

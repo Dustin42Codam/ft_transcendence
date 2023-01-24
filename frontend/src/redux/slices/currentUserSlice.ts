@@ -46,43 +46,36 @@ export const updateCurrentUser = createAsyncThunk(
   "currentUser/updateCurrentUser",
   async (user: any, { rejectWithValue }) => {
     try {
-      const id = toast.loading(`Updating user name...`);
-      const response: any = await axios.post(`users/id/${user.id}`, user);
-      //   .then(() => {
-      //     toast.update(id, {
-      // 		render: `User name successfully updated!`,
-      // 		type: "success",
-      // 		isLoading: false,
-      // 		position: "top-right",
-      // 		autoClose: 5000,
-      // 		hideProgressBar: false,
-      // 		closeOnClick: true,
-      // 		pauseOnHover: true,
-      // 		draggable: true,
-      // 		progress: undefined,
-      // 		theme: "colored",
-      //   })})
-      //   .catch((error: any) => {
-      // 	  console.log(error);
-      // 	  toast.update(id, {
-      // 		  render: `${error.response.data.message}...`,
-      // 		  type: "error",
-      // 		  position: "top-right",
-      // 		  autoClose: 5000,
-      // 		  isLoading: false,
-      // 		  hideProgressBar: false,
-      // 		  closeOnClick: true,
-      // 		  pauseOnHover: true,
-      // 		  draggable: true,
-      // 		  progress: undefined,
-      // 		  theme: "colored",
-      // 		});
-      //   });
+      const response: any = await axios
+        .post(`users/id/${user.id}`, user)
+        .then((response: any) => {
+          toast.success("User data successfully updated!", {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+          });
+          return response;
+        });
       return response.data;
     } catch (error: any) {
       if (!error.response) {
         throw error;
       }
+      toast.error(`${error.response.data.message}`, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
       return rejectWithValue(error.response.data);
     }
   }

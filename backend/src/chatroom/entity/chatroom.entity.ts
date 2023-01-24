@@ -13,7 +13,7 @@ export class Chatroom {
   @PrimaryGeneratedColumn()
   id: number;
 
-	@Column({unique: true})
+	@Column()
   name: string;
 
   @Column({ nullable: true })
