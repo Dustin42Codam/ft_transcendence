@@ -1,6 +1,13 @@
 
 todo:
 
+	-	join chat bug
+	-	leave chat toast bug
+	-	chat toast renders multiple times
+	-	2fa back button
+		-	2fa toasts
+		-	check if navigate really necessary
+
 	->	Redux store
 		+	add current_chat_member slices
 		+	update (current) chat
@@ -67,6 +74,10 @@ done:
 
 
 bugs:
+
+	-	user can create empty user names
+	-	users can upload any file sizes
+		-	old files are not deleted
 
 	fixed:
 		+	2fa displays 404 after activating

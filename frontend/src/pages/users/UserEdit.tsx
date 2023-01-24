@@ -51,59 +51,13 @@ const UserEdit = () => {
   }, []);
 
   const infoSubmit = async (e: SyntheticEvent) => {
-    e.preventDefault();
-
-    const id = toast.loading(`Updating user data...`);
-
-    for (const _user of users) {
-      if (_user.display_name === name && name !== user.display_name) {
-        window.alert("A user with this name already exists!");
-        setName(user.display_name);
-        return;
-      }
-    }
-
-    await dispatch(
+    dispatch(
       updateCurrentUser({
         id: user.id,
         display_name: name,
         avatar,
       })
     );
-    console.log("🚀 ~ file: UserEdit.tsx:73 ~ infoSubmit ~ user", user);
-    if (currentUser.status === "succeeded") {
-      console.log(
-        "🚀 ~ file: UserEdit.tsx:73 ~ infoSubmit ~ user.status",
-        user.status
-      );
-      toast.update(id, {
-        render: `Two Factor Authentication activated!`,
-        type: "success",
-        isLoading: false,
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
-    } else if (currentUser.status === "failed") {
-      toast.update(id, {
-        render: `${user.error}`,
-        type: "error",
-        position: "top-right",
-        autoClose: 5000,
-        isLoading: false,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
-    }
   };
 
   const updateImage = (url: string) => {
@@ -120,7 +74,7 @@ const UserEdit = () => {
   async function deactivate2FA(e: SyntheticEvent) {
     e.preventDefault();
 
-    const id = toast.loading(`Adding ${user.display_name}...`);
+    const toastId = toast.loading(`Deactivating 2FA...`);
 
     await axios
       .post("tfa/turn-off", {
@@ -129,8 +83,8 @@ const UserEdit = () => {
       .then(() => {
         setTwoFA(false);
         dispatch(update2FA({ twoFA: false }));
-        toast.update(id, {
-          render: `Two Factor Authentication activated!`,
+        toast.update(toastId, {
+          render: `Two Factor Authentication deactivated!`,
           type: "success",
           isLoading: false,
           position: "top-right",
@@ -145,7 +99,7 @@ const UserEdit = () => {
       })
       .catch((error: any) => {
         console.log(error);
-        toast.update(id, {
+        toast.update(toastId, {
           render: `${error.response.data.message}...`,
           type: "error",
           position: "top-right",
@@ -164,7 +118,7 @@ const UserEdit = () => {
   async function activate2FA(e: SyntheticEvent) {
     e.preventDefault();
 
-    const id = toast.loading(`Adding ${user.display_name}...`);
+    const id = toast.loading(`Activating 2FA...`);
 
     await axios
       .post("tfa/turn-on", {
@@ -209,45 +163,39 @@ const UserEdit = () => {
     <Wrapper>
       <section id="content" className="container UserBody">
         <div className="page-heading">
-          <form
-          // onSubmit={(e: SyntheticEvent) => {
-          //   infoSubmit(e);
-          // }}
-          >
-            <h3>Edit User Data</h3>
-            <div className="mb-3">
-              <Avatar
-                src={user.avatar}
-                sx={{ height: "150px", width: "150px" }}
-              ></Avatar>
+          <h3>Edit User Data</h3>
+          <div className="mb-3">
+            <Avatar
+              src={user.avatar}
+              sx={{ height: "150px", width: "150px" }}
+            ></Avatar>
 
-              <label>Avatar</label>
+            <label>Avatar</label>
 
-              <div>
-                <input
-                  ref={ref}
-                  className="form-control"
-                  value={user.avatar}
-                  onChange={(e) => setAvatar(e.target.value)}
-                  required
-                />
-                <ImageUpload uploaded={updateImage} />
-              </div>
-            </div>
-            <div className="mb-3">
-              <label> Name </label>
+            <div>
               <input
+                ref={ref}
                 className="form-control"
-                defaultValue={user.display_name}
-                onChange={(e) => setName(e.target.value)}
+                value={user.avatar}
+                onChange={(e) => setAvatar(e.target.value)}
                 required
               />
+              <ImageUpload uploaded={updateImage} />
             </div>
-            <Button type="submit" onClick={infoSubmit}>
-              Save
-            </Button>{" "}
-            <Button onClick={navigateBack}>Back</Button>
-          </form>
+          </div>
+          <div className="mb-3">
+            <label> Name </label>
+            <input
+              className="form-control"
+              defaultValue={user.display_name}
+              onChange={(e) => setName(e.target.value)}
+              required
+            />
+          </div>
+          <Button type="submit" onClick={infoSubmit}>
+            Save
+          </Button>{" "}
+          <Button onClick={navigateBack}>Back</Button>
           <div className="mb-3">
             Two Factor Authentication
             <div className="mb-5">

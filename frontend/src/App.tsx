@@ -26,22 +26,6 @@ import store from "./redux/store";
 import { gameSocketActions } from "./redux/slices/gameSocketSlice";
 
 function App() {
-  const particlesInit = useCallback(async (engine: Engine) => {
-    console.log(engine);
-
-    // you can initialize the tsParticles instance (engine) here, adding custom shapes or presets
-    // this loads the tsparticles package bundle, it's the easiest method for getting everything ready
-    // starting from v2 you can add only the features you need reducing the bundle size
-    await loadFull(engine);
-  }, []);
-
-  const particlesLoaded = useCallback(
-    async (container: Container | undefined) => {
-      await console.log(container);
-    },
-    []
-  );
-
   const userStatus = useAppSelector((state) => state.currentUser.status);
   const currentUser = useAppSelector(selectCurrentUser);
   const chatNotificatoin = useAppSelector((state) => state.socket.notificatoin);
@@ -123,6 +107,7 @@ function App() {
             <Route path={"/games"} element={<Game />} />
 
             <Route path={"/authenticate"} element={<Dashboard />} />
+            <Route path="/" element={<Navigate to="/dashboard" />} />
             <Route path={"*"} element={<NotFound />} />
           </Routes>
         </BrowserRouter>
