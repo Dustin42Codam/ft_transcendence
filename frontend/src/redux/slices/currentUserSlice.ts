@@ -1,14 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { io, Socket } from "socket.io-client";
 import axios from "axios";
-import { User } from "../../models/User";
 import { toast } from "react-toastify";
 
-//here we need to think
-//maybe I can add some other option here
-//like for example ->
-//useRef("");
-//
 type IUser = {
   chatSocketId?: string;
   gameSocketId?: string;

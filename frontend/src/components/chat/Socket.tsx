@@ -1,27 +1,18 @@
-import React, { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect } from "react";
 import store from "../../redux/store";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { selectCurrentUser } from "../../redux/slices/currentUserSlice";
-import { selectCurrentChatroom } from "../../redux/slices/socketSlice";
 import { socketActions } from "../../redux/slices/socketSlice";
-import { io, Socket } from "socket.io-client";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./Socket.css";
 import axios from "axios";
 
-interface ChatMessage {
-  chatRoomId: number;
-  content: string;
-  authorId: number;
-}
-
 const Snicel = (props: any) => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [chatMembers, setChatMembers] = useState<any>([]);
-  const [currentMember_, setCurrentMember_] = useState();
   const [message, setMessage] = useState("");
   const currentUser = useAppSelector(selectCurrentUser);
   const currentMember = chatMembers.find(
@@ -46,9 +37,6 @@ const Snicel = (props: any) => {
     if (currentChat.id !== -1) {
       fetchChatUsers();
     }
-    setCurrentMember_(
-      chatMembers.find((member: any) => member.user.id === currentUser.id)
-    );
   }, [currentChat.id, message]);
 
   useEffect(() => {
@@ -73,10 +61,6 @@ const Snicel = (props: any) => {
     e.preventDefault();
     console.log(currentChatroom);
 
-    console.log(
-      "🚀 ~ file: Socket.tsx:93 ~ sendMessage ~ currentMember.muted_until",
-      currentMember.muted_until
-    );
     if (currentMember.banned === true) {
       toast.error(`You are banned!`, {
         position: "top-right",

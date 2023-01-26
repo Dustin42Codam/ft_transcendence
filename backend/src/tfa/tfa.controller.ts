@@ -99,17 +99,6 @@ export class TFAController {
 	  if (!isCodeValid) {
 		  throw new UnauthorizedException('Wrong authentication code');
 		}
-   
-	  // old method:
-	//   const jwt = await this.jwtService.signAsync({ id: user.id });
-	//   await this.userService.changeStatus(user.id, UserStatus.ONLINE);
-	//   response.cookie("jwt", jwt, { httpOnly: true, sameSite: "strict" });
-	//   return user;
-
-	// new method to distinguish a 2FA cookie from a normal cookie
-	const accessTokenCookie = this.authService.getCookieWithJwtAccessToken(user.id, true);
- 
-    request.res.setHeader('Set-Cookie', [accessTokenCookie]);
  
 	this.tfaService.update(user.id, {isAuthenticated: true});
 

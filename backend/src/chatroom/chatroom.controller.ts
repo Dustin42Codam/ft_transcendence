@@ -80,7 +80,11 @@ export class ChatroomController {
     for(const friend of friends) {
       let alreadyInChat = false;
       for(const member of chatroom.users) {
-        if (member.user.id == friend.id) {
+		const fullMember = await this.memberService.findOne({ id: member.id }, ["user", "chatroom"]);
+		if (!fullMember || fullMember.status === MemberStatus.INACTIVE) {
+			continue ;
+		}
+        if (fullMember.user.id == friend.id) {
           alreadyInChat = true;
         }
       }
@@ -198,7 +202,10 @@ export class ChatroomController {
       if (!body.password) {
 		    throw new BadRequestException("You need password to join a PROTECTED chatroom.");
 	    }
-      const hashword = await this.chatroomService.hashPassword(body.password);
+		const hashword = await this.chatroomService.hashPassword(body.password);
+		console.log("🚀 ~ file: chatroom.controller.ts:206 ~ ChatroomController ~ joinChatroom ~ body.password", body.password)
+      console.log("🚀 ~ file: chatroom.controller.ts:207 ~ ChatroomController ~ joinChatroom ~ hashword", hashword)
+	  console.log("🚀 ~ file: chatroom.controller.ts:209 ~ ChatroomController ~ joinChatroom ~ chatroom.password", chatroom.password)
       if (hashword !== chatroom.password) {
 		    throw new BadRequestException("The password is incorrect");
 	    }
@@ -213,7 +220,6 @@ export class ChatroomController {
 
   @Post("add/id/:id")
   async addUserToChatroom(@Param("id") id: string, @Body() body: AddUserDto, @Req() request: Request) {
-    console.log("🚀 ~ file: chatroom.controller.ts:173 ~ ChatroomController ~ addUserToChatroom ~ body", body)
     const chatroom = await this.chatroomService.getChatroomById(Number(id));
     if (chatroom.type == ChatroomType.DIRECT) {
       throw new BadRequestException("You can not add a User to a DIRECT chatroom.");

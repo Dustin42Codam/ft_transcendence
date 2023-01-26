@@ -106,41 +106,7 @@ function ChatUserList(props: any) {
   }
 
   async function deleteChannel() {
-    const id = toast.loading(`Removing ${currentChat.name}...`);
-
     dispatch(deleteChat(currentChat));
-
-    if (chatStatus === "failed") {
-      console.log(chatError);
-      toast.update(id, {
-        render: `${chatError}`,
-        type: "error",
-        position: "top-right",
-        autoClose: 5000,
-        isLoading: false,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
-    } else if (chatStatus === "succeeded") {
-      toast.update(id, {
-        render: `Successfully deleted the channel!`,
-        type: "success",
-        isLoading: false,
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
-    }
-
     navigate("/");
   }
 
@@ -613,7 +579,7 @@ function ChatUserList(props: any) {
                         Password confirm:
                         <input
                           type="password"
-                          name="password"
+                          name="passwordConfirm"
                           onChange={(e: any) =>
                             setPasswordConfirm(e.target.value)
                           }

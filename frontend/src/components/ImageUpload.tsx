@@ -1,8 +1,11 @@
 import axios from "axios";
-import React from "react";
 import "../pages/users/UserEdit.css";
+import { useAppDispatch } from "../redux/hooks";
+import { updateCurrentUser } from "../redux/slices/currentUserSlice";
 
 const ImageUpload = (props: { uploaded: (url: string) => void }) => {
+  const dispatch = useAppDispatch();
+
   const upload = async (files: FileList | null) => {
     if (files === null) return;
 
@@ -13,6 +16,8 @@ const ImageUpload = (props: { uploaded: (url: string) => void }) => {
     const { data } = await axios.post("upload", formData);
 
     props.uploaded(data.url);
+
+    dispatch(updateCurrentUser({avatar: data.url}));
   };
 
   return (

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { selectUserById } from "../../redux/slices/usersSlice";
 import Wrapper from "../../components/Wrapper";
@@ -8,15 +8,11 @@ import UserFriends from "../../components/UserFriends";
 import axios from "axios";
 import "./UserPage.css";
 import { selectCurrentUser } from "../../redux/slices/currentUserSlice";
-import { FriendButton } from "../../components/FriendButton";
 import UserStats from "../../components/UserStats";
 import UserMatchHistory from "../../components/UserMatchHistory";
 import { socketActions } from "../../redux/slices/socketSlice";
-import {
-  addNewGroupChat,
-  selectDirectChats,
-} from "../../redux/slices/chatsSlice";
-import { ToastContainer, toast } from "react-toastify";
+import { selectDirectChats } from "../../redux/slices/chatsSlice";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import store from "../../redux/store";
 import GameLadder from "../../components/GameLadder";
@@ -30,17 +26,15 @@ export const UserPage = () => {
   const [friends, setFriends] = useState<any>([]);
   const currentUser: any = useAppSelector(selectCurrentUser);
   const dispatch = useAppDispatch();
-  const dm_id = useAppSelector(selectDirectChats);
   const navigate = useNavigate();
   let currentChatroom: any = store.getState().socket.currentChatRoom;
   const friendsAmount = "Friends (" + friends.length + ")";
 
   async function fetchBlocked() {
-    console.log("🚀 ~ file: UserPage.tsx:27 ~ UserPage ~ userId", userId);
-    const response: any = await axios
+    await axios
       .get(`block/receiverId/${userId}`)
-      .then((res: any) => setBlocked(true))
-      .catch((err: any) => {
+      .then(() => setBlocked(true))
+      .catch(() => {
         setBlocked(false);
       });
   }
@@ -57,16 +51,9 @@ export const UserPage = () => {
   async function fetchFriendship() {
     const response = await axios
       .get(`friend/user/id/${userId}`)
-      .then((response) => {
-        console.log(
-          "🚀 ~ file: UserPage.tsx:151 ~ joinDM ~ response",
-          response
-        );
-        return response.data;
-      })
+      .then((response) => { return response.data })
       .catch((error) => {
-        console.log("🚀 ~ file: UserPage.tsx:141 ~ joinDM ~ error", error);
-        return;
+        console.log("🚀 ~ file: UserPage.tsx:56 ~ joinDM ~ error", error);
       });
     setFriendship(response);
   }
@@ -130,7 +117,6 @@ export const UserPage = () => {
       const interval = setInterval(function () {
         currentChatroom = store.getState().socket.currentChatRoom;
         if (currentChatroom.id != -1) {
-          console.log("All goooed:", currentChatroom);
           resolve(null);
           clearInterval(interval);
         }

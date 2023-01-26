@@ -55,30 +55,6 @@ export class AuthController {
     return user;
   }
 
-  @HttpCode(200)
-  @UseGuards(AuthGuard)
-  @Post('log-in')
-  async logIn(@Req() request: Request) {
-	const userId = await this.authService.userId(request);
-	const user = await this.userService.getUserById(userId);
-    const accessTokenCookie = this.authService.getCookieWithJwtAccessToken(user.id);
-
-    const {
-      cookie: refreshTokenCookie,
-      token: refreshToken
-    } = this.authService.getCookieWithJwtRefreshToken(user.id);
- 
-    await this.userService.setCurrentRefreshToken(refreshToken, user.id);
- 
-    request.res.setHeader('Set-Cookie', [accessTokenCookie, refreshTokenCookie]);
- 
-    if (user.isTwoFactorAuthenticationEnabled) {
-      return;
-    }
-
-    return user;
-  }
-
   @UseGuards(AuthGuard)
   @Get("me")
   async user(@Req() request: Request, @Res({ passthrough: true }) response: Response) {

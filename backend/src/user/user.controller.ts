@@ -40,10 +40,10 @@ export class UserController {
   ) {
       const userId = await this.authService.userId(request);
       const user = await this.userService.getUserById(userId);
+	  if (body.display_name === "") {
+		throw new BadRequestException("You can not have a empty string as a username");
+	  }
       if (body.display_name && body.display_name !== user.display_name) {
-        if (body.display_name === "") {
-          throw new BadRequestException("You can not have a empty string as a username");
-        }
 		if (body.display_name.length  > 30) {
 			throw new BadRequestException("You can not have a username that is longer than 30 characters.");
 		  }

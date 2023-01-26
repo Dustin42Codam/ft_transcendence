@@ -42,8 +42,9 @@ export const fetchCurrentMember = createAsyncThunk(
 export const updateCurrentChatType = createAsyncThunk(
   "currentMember/updateCurrentChatType",
   async (data: any) => {
+    console.log("🚀 ~ file: currentMemberSlice.ts:45 ~ data", data)
     const toastId = toast.loading(`Updating channel data...`);
-
+	
     if (
       data.type !== ChatroomType.PUBLIC &&
       data.password?.length &&

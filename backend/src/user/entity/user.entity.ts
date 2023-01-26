@@ -57,10 +57,4 @@ export class User {
 
   @OneToMany(() => Member, (member: Member) => member.user)
   chatrooms: Member[];
-
-  @Column({
-    nullable: true,
-  })
-  @Exclude()
-  public currentHashedRefreshToken?: string;
 }

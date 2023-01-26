@@ -1,6 +1,9 @@
 
 todo:
 
+	-	enter protected channel bug
+	-	change channel password bug
+	+	remove chat bug
 	-	join chat bug
 	-	leave chat toast bug
 	-	chat toast renders multiple times

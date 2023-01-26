@@ -1,5 +1,6 @@
 import axios from "axios";
 import { toast } from "react-toastify";
+import { useEffect, useState } from "react";
 import Popup from "reactjs-popup";
 import { User } from "../../models/User";
 import { selectCurrentUser } from "../../redux/slices/currentUserSlice";
@@ -9,7 +10,24 @@ import { fetchUsers } from "../../redux/slices/usersSlice";
 
 function ChatAddMember(props: any) {
   const currentUser = useAppSelector(selectCurrentUser);
+  const currentChat = useAppSelector(
+    (state: any) => state.socket.currentChatRoom
+  );
   const dispatch = useAppDispatch();
+  const [joinableUsers, setJoinableUsers] = useState<any>([]);
+
+  async function fetchUsers() {
+    const response = await axios.get(`chatroom/joinable/id/${currentChat.id}`);
+    console.log(
+      "🚀 ~ file: ChatAddMember.tsx:20 ~ fetchUsers ~ response",
+      response
+    );
+    setJoinableUsers(response.data);
+  }
+
+  useEffect(() => {
+    fetchUsers();
+  }, []);
 
   async function addUserToChat(user: User) {
     const id = toast.loading(`Adding ${user.display_name}...`);
@@ -55,9 +73,22 @@ function ChatAddMember(props: any) {
     dispatch(fetchUsers());
   }
 
+  console.log(
+    "🚀 ~ file: ChatAddMember.tsx:14 ~ ChatAddMember ~ currentChat",
+    currentChat
+  );
+
   return (
     <Popup trigger={<button>Add User</button>}>
-      {props.allUsers.map(
+      {joinableUsers.map(
+        (user: User, index: number) =>
+          user && (
+            <button key={index} onClick={() => addUserToChat(user)}>
+              {user.display_name}
+            </button>
+          )
+      )}
+      {/* {props.allUsers.map(
         (user: User, index: number) =>
           user.display_name !== currentUser.display_name &&
           !user.chatrooms.find(
@@ -69,7 +100,7 @@ function ChatAddMember(props: any) {
               {user.display_name}
             </button>
           )
-      )}
+      )} */}
     </Popup>
   );
 }

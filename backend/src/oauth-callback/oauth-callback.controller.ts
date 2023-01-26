@@ -52,12 +52,12 @@ export class OauthCallbackController {
       if (!user) {
 		    user = await registerUser(resp.data, this.userService);
 		  }
+		const jwt = await this.jwtService.signAsync({ id: user.id });
+		response.cookie("jwt", jwt, { httpOnly: true, sameSite: "lax" });
 
       if (user.two_factor_auth === true) {
         response.redirect(`http://localhost:${process.env.FRONTEND_PORT}/authenticate/2fa`);
       } else {
-				const jwt = await this.jwtService.signAsync({ id: user.id });
-				response.cookie("jwt", jwt, { httpOnly: true, sameSite: "lax" });
         response.redirect(`http://localhost:${process.env.FRONTEND_PORT}`);
       }
     } catch (e) {

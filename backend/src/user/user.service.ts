@@ -41,13 +41,6 @@ export class UserService extends AbstractService {
     return user;
   }
 
-  async setCurrentRefreshToken(refreshToken: string, userId: number) {
-    const currentHashedRefreshToken: any = await bcrypt.hash(refreshToken, 10);
-    await this.userRepository.update(userId, {
-      currentHashedRefreshToken,
-    });
-  }
-
   async setTwoFactorAuthenticationSecret(secret: string, userId: number) {
 	  var user = await this.getUserById(userId, ["tfa_secret"]);
 	  user.tfa_secret.twoFactorAuthenticationSecret = secret;
@@ -83,7 +76,6 @@ export class UserService extends AbstractService {
 		const newUser = await this.create(newUserInfo)
 		console.log("🚀 ~ file: user.service.ts:70 ~ UserService ~ createUser ~ newUser", newUser)
 		await this.gameStatsService.createGameStats(newUser);
-		// await this.achievementService.createAllAchievements(newUser);
 		const tfa_user = await this.getUserById(newUser.id, ["tfa_secret"])
 		await this.TFAService.createTFA(tfa_user);
 		return await this.getUserById(newUser.id, ["game_stats"]);

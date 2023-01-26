@@ -14,17 +14,6 @@ function TwoFactorAuthentication() {
   const navigate = useNavigate();
   const currentUser = useAppSelector(selectCurrentUser);
 
-  toast.error("Please fill in all digits!", {
-    position: "top-right",
-    autoClose: 5000,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-    progress: undefined,
-    theme: "colored",
-  });
-
   async function submitCode(e: SyntheticEvent) {
     e.preventDefault();
 
