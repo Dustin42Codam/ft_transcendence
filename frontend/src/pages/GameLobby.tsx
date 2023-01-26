@@ -10,28 +10,33 @@ import { useAppDispatch, useAppSelector } from "../redux/hooks";
 
 import { useNavigate } from "react-router-dom";
 
-const GameLobby = (navigation:any) => {
+const GameLobby = (navigation: any) => {
   const dispatch = useAppDispatch();
   const [activeGames, setActiveGames] = useState<any>(null);
   const currentUser = useAppSelector(selectCurrentUser);
-	const navigate = useNavigate();
+  const navigate = useNavigate();
 
   useEffect(() => {
+		function navigateIfUserIsPartOfAlreadyActiveGame(tmpActiveGames: any): void {
+			tmpActiveGames.map((game: any, index: number) => {
+				if (game.player_1 == currentUser.id || game.player_2 == currentUser.id) {
+					navigate(`/game/${game.id}`);
+				}
+			});
+		}
     async function fetchAllActiveGames() {
       axios
         .get("/game/active")
         .then((resp) => {
-          console.log("active games:", resp.data);
-					//here I can see if the current user is part of a active game 
-					//if so connect the player to the game
-					//navigate
+					navigateIfUserIsPartOfAlreadyActiveGame(resp.data);
           setActiveGames(resp.data);
         })
         .catch((err) => console.log(err));
     }
     fetchAllActiveGames();
   }, []);
-		/*
+
+  /*
 	useEffect(() => {
 		async function getUserById(id: number): Promise<any> {
 				await axios.get(`/users/id/${id}`, {})
@@ -54,16 +59,18 @@ const GameLobby = (navigation:any) => {
 	}, [activeGames])
 	 */
 
-
   async function joinGameRoom() {
-		//here get all the clasic games
-		//get the max id plus 1
+    //here get all the clasic games
+    //get the max id plus 1
     axios
       .post("/game/classic", {})
       .then((resp) => {
-				const classicGame: any = resp.data;
-				navigation.navigate(`/game/${classicGame.id}`, {gameId: classicGame.id});
-			}).catch((err) => console.log(err));
+        const classicGame: any = resp.data;
+        navigation.navigate(`/game/${classicGame.id}`, {
+          gameId: classicGame.id,
+        });
+      })
+      .catch((err) => console.log(err));
   }
   async function joinPowerupGame() {
     axios
@@ -71,7 +78,7 @@ const GameLobby = (navigation:any) => {
       .then((resp) => console.log(resp))
       .catch((err) => console.log(err));
     //dispatch(gameSocketActions.joinRoom(activeGames[gameIndex].id));
-		//navigate(`/game/${activeGames[gameIndex].id}`);
+    //navigate(`/game/${activeGames[gameIndex].id}`);
   }
   async function sendGameInvite() {
     axios
@@ -86,9 +93,9 @@ const GameLobby = (navigation:any) => {
     );
     //here we do a check that checks if the player joining is not the player whould made the game
     dispatch(gameSocketActions.joinRoom(activeGames[gameIndex].id));
-		navigate(`/game/${activeGames[gameIndex].id}`);
+    navigate(`/game/${activeGames[gameIndex].id}`);
 
-		//navigate me to the game
+    //navigate me to the game
     //here we need to render to page and disable joining a new game if a user is already part of a game
   }
 
@@ -121,7 +128,9 @@ const GameLobby = (navigation:any) => {
                     <td className="activeGameColumn">{games.id}</td>
                     <td className="activeGameColumn">{games.player_1}</td>
                     <td className="activeGameColumn">{games.player_2}</td>
-                    <td className="activeGameColumn">{games.score_player_1} : {games.score_player_2}</td>
+                    <td className="activeGameColumn">
+                      {games.score_player_1} : {games.score_player_2}
+                    </td>
                     <td className="activeGameColumn">{games.active}</td>
                     <td className="activeGameColumn">{games.timsstamp}</td>
                     <td className="activeGameColumn">{games.type}</td>

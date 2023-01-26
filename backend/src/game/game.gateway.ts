@@ -18,8 +18,8 @@ interface Bat {
 }
 
 interface Ball {
-  X: number;
-  Y: number;
+  positionX: number;
+  positionY: number;
 	directionX: number;
 	directionY: number;
 	width: number;
@@ -110,11 +110,8 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 		const userId = await this.userService.getUserFromClient(client);
 		const user = await this.userService.getUserById(userId);
 		const game = await this.gameService.getGameById(Number(gameRoomId));
-		let ball = {X: 650 , Y: 350};
+		let ball = {positionX: 650 , positionY: 350, directionX: 1, directionY: -1, width: 50, height: 50, speed: 50};
 
-		//if (!game)
-			//TODO throw
-		//console.log(game, user);
 		if (game != null) {
 			if (game.player_1 != userId || game.player_2 != userId) {
 				if (clientInRoom == 1) {

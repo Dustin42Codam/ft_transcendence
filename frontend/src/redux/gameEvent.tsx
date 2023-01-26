@@ -6,6 +6,7 @@ enum GameroomEvents {
   GetBatP2 = "get_bat_p2",
   GetScore = "get_score",
   GetBall = "get_ball",
+	ResetBall = "reset_ball",
   JoinGameRoom = "join_game_room",
   JoinGameRoomSuccess = "join_game_room_success",
   LeaveGameRoom = "leave_game_room",
@@ -14,7 +15,5 @@ enum GameroomEvents {
   GameRoomNotification = "game_room_notification",
   ClientWantsToStartGame = "client_want_to_start_game",
   ServerStartedTheGame = "server_start_the_game",
-  //GameRoomFull = "join_game_room_fail",
-  //MessageToGameRoom = "message_to_game_room",
 }
 export default GameroomEvents;

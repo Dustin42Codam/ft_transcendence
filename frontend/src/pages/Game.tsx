@@ -7,7 +7,6 @@ import store from "../redux/store";
 
 import { useLocation } from "react-router-dom";
 
-
 class MoveableObject {
   positionX: number;
   positionY: number;
@@ -66,16 +65,16 @@ class Ball extends MoveableObject {
   }
 
   reset(fieldWidth: number, fieldHeight: number) {
-    this.positionX = fieldWidth / 2 - this.width / 2;//this.width backend
-    this.positionY = fieldHeight / 2 - this.height / 2;//this.width backend
-    this.directionX = Math.random() < 0.5 ? 1 : -1;//Math.radom back end
+    this.positionX = fieldWidth / 2 - this.width / 2; //this.width backend
+    this.positionY = fieldHeight / 2 - this.height / 2; //this.width backend
+    this.directionX = Math.random() < 0.5 ? 1 : -1; //Math.radom back end
     this.directionY = Math.floor(Math.random() * 5) - 2;
   }
 
   hitWall(fieldHeight: number) {
-		//1300 700
-		//send the it hit a wall
-		//that its direction hash chagned
+    //1300 700
+    //send the it hit a wall
+    //that its direction hash chagned
     if (this.positionY < 0 || this.positionY + this.height > fieldHeight)
       this.directionY = -this.directionY;
   }
@@ -245,6 +244,11 @@ class PowerUp extends MoveableObject {
   }
 }
 
+//**->	getGame
+//canvas width
+//ball width and hieght
+//**->	
+
 class GameState {
   scoreP1: number;
   scoreP2: number;
@@ -287,6 +291,7 @@ class GameState {
   }
 
   //backend
+	//
   score() {
     if (this.ball.positionX + this.ball.width < 0) {
       this.scoreP2 += 1;
@@ -302,8 +307,9 @@ class GameState {
   }
 
   animation() {
-    this.ctx.clearRect(0, 0, this.width, this.height);
-    this.powerUp.animate(this.ctx);
+		//canvas width hights
+    this.ctx.clearRect(0, 0, this.width, this.height);//this from the backend
+    this.powerUp.animate(this.ctx);//this from the backend
     this.batP1.animate(this.ctx); //send this to p2 + this.width + this.height
     this.batP2.animate(this.ctx); //send this to p1 + this.width + this.height
     this.ball.animate(
@@ -325,14 +331,13 @@ class GameState {
 
 const Game = (props: any) => {
   const dispatch = useAppDispatch();
-	const location = useLocation();
+  const location = useLocation();
   //const moveBatP1 = () => {};
 
   useEffect(() => {
     //get game Id by url
 
-
-		const url: Array<string> = location.pathname.split('/');
+    const url: Array<string> = location.pathname.split("/");
     const theGameFrame = document.getElementById("content");
     const savedTheGameFrame = theGameFrame!.innerHTML;
     let timer: any;
@@ -349,7 +354,6 @@ const Game = (props: any) => {
     //bot values will come from the backend!
     //
     const waitForTheGameToStart = async () => {
-
       const dataNeedToStartTheGame = await new Promise((resolve, reject) => {
         /*
 			function isBatReady(bat: Bat): boolean {
@@ -362,33 +366,36 @@ const Game = (props: any) => {
         (function loop() {
           timer = setTimeout(() => {
             gameState = store.getState().gameSocket;
-						console.log("looping");
-						if (!gameState.isConnected) {
-							theGameFrame!.innerHTML = "<h1>Waiting for connection to game server</h1>";
-						}
-						else {
-							if (gameState.gameRoomId == "-1") {
-								if (!gameState.isJoning) {
-									dispatch(gameSocketActions.joinRoom(Number(url[url.length -1])));
-								}
-								theGameFrame!.innerHTML = "<h1>Waiting connect to the game</h1>";
-							} else {
-								if (gameState.player1 != undefined) {
-									theGameFrame!.innerHTML = "<h1>Player 1 Joined</h1>";
-								}
-								if (gameState.player2 != undefined) {
-									theGameFrame!.innerHTML = "<h1>Player 2 Joined</h1>";
-								}
-								if (
-									gameState.player2 != undefined &&
-									gameState.player1 != undefined
-								) {
-									theGameFrame!.innerHTML = "<h1>Player 1 and 2 Joined</h1>";
-									resolve(true);
-								}
-							}
-						}
-						loop();
+            console.log("looping");
+            if (!gameState.isConnected) {
+              theGameFrame!.innerHTML =
+                "<h1>Waiting for connection to game server</h1>";
+            } else {
+              if (gameState.gameRoomId == "-1") {
+                if (!gameState.isJoning) {
+                  dispatch(
+                    gameSocketActions.joinRoom(Number(url[url.length - 1]))
+                  );
+                }
+                theGameFrame!.innerHTML =
+                  "<h1>Waiting connect to the game</h1>";
+              } else {
+                if (gameState.player1 != undefined) {
+                  theGameFrame!.innerHTML = "<h1>Player 1 Joined</h1>";
+                }
+                if (gameState.player2 != undefined) {
+                  theGameFrame!.innerHTML = "<h1>Player 2 Joined</h1>";
+                }
+                if (
+                  gameState.player2 != undefined &&
+                  gameState.player1 != undefined
+                ) {
+                  theGameFrame!.innerHTML = "<h1>Player 1 and 2 Joined</h1>";
+                  resolve(true);
+                }
+              }
+            }
+            loop();
           }, 1000);
         })();
       });
@@ -400,7 +407,7 @@ const Game = (props: any) => {
       theGameFrame!.innerHTML = savedTheGameFrame;
       const currentUser = store.getState().currentUser;
       const canvas = document.getElementById("gameCanvas") as HTMLCanvasElement;
-			//here I create the game
+      //here I create the game
       const game = new GameState(canvas, gameState);
       //UserName
       //UserType
@@ -425,12 +432,18 @@ const Game = (props: any) => {
           ) {
             game.batP1.moveUp(10, 5);
             dispatch(
-              gameSocketActions.moveBatP1({ gameRoomId: gameState.gameRoomId, direction: "up" })
+              gameSocketActions.moveBatP1({
+                gameRoomId: gameState.gameRoomId,
+                direction: "up",
+              })
             );
           } else {
             game.batP2.moveUp(10, 5);
             dispatch(
-              gameSocketActions.moveBatP2({ gameRoomId: gameState.gameRoomId, direction: "up" })
+              gameSocketActions.moveBatP2({
+                gameRoomId: gameState.gameRoomId,
+                direction: "up",
+              })
             );
           }
           //
@@ -444,23 +457,28 @@ const Game = (props: any) => {
             dispatch(gameSocketActions.moveBatP1(1));
             game.batP1.moveDown(10, 5);
             dispatch(
-              gameSocketActions.moveBatP1({ gameRoomId: gameState.gameRoomId, direction: "down" })
+              gameSocketActions.moveBatP1({
+                gameRoomId: gameState.gameRoomId,
+                direction: "down",
+              })
             );
           } else {
             game.batP2.moveDown(10, 5);
             dispatch(
-              gameSocketActions.moveBatP2({ gameRoomId: gameState.gameRoomId, direction: "down" })
+              gameSocketActions.moveBatP2({
+                gameRoomId: gameState.gameRoomId,
+                direction: "down",
+              })
             );
           }
         }
       });
-			//maybe here we can send to the back end start game
-			//3 2 1
-			console.log("balls x and Y",game.ball);
-			game.ball.positionX = gameState.ball.X;
-			game.ball.positionY = gameState.ball.Y;
+      //maybe here we can send to the back end start game
+      //3 2 1
+      console.log("balls x and Y", game.ball);
+      //game.ball = gameState.ball;
       const startAnimation = () => {
-				//function that gets the current bat positions, ball, score
+        //function that gets the current bat positions, ball, score
         gameState = store.getState().gameSocket;
 
         if (

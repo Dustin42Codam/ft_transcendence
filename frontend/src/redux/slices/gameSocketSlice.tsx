@@ -13,8 +13,8 @@ interface Bat {
 }
 
 interface Ball {
-  X: number;
-  Y: number;
+  positionX: number;
+  positionY: number;
 	directionX: number;
 	directionY: number;
 	width: number;
@@ -29,7 +29,7 @@ interface userInRoom {
 
 interface JoinGameRoomDTO {
   gameRoomId: number;
-	ball: Ball;
+  ball: Ball;
   player1?: userInRoom;
   player2?: userInRoom;
   spectator?: userInRoom;
@@ -63,7 +63,15 @@ export const initialState: GameState = {
   player1Moved: "",
   player2Moved: "",
   spectator: undefined,
-  ball: { X: -1, Y: -1, directionX: 1, directionY: 0, width: 20, height: 20, speed: 2 },
+  ball: {
+    positionX: -1,
+    positionY: -1,
+    directionX: 1,
+    directionY: 0,
+    width: 20,
+    height: 20,
+    speed: 2,
+  },
   notificatoin: "",
 };
 
