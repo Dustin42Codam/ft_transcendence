@@ -77,6 +77,14 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 		// console.log(`game client ${client.id} disconected`);
   }
 
+	/*
+  @SubscribeMessage(GameroomEvents.StartGame) 
+  async handelJoinRoom(client: Socket, payload: string): Promise<void> {
+		//the whoel game here ?
+		//while (1)
+	}
+ */
+
 	//payload needs to have display_name, GameRoomId
 	//we can also pass the player in here
   @SubscribeMessage(GameroomEvents.JoinGameRoom)
@@ -99,6 +107,7 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 				if (clientInRoom == 1) {
 					let player: userInRoom;
 					let joinGameDTO: JoinGameRoomDTO;
+					//ball = {X: Y:}
 
 					if (userId == game.player_1) {
 						player = { displayName: user.display_name, bat: {X: 50, Y:270}};
@@ -107,7 +116,7 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 						player = { displayName: user.display_name, bat: {X: 1250, Y:270}};
 						joinGameDTO = { gameRoomId: gameRoomId, player2: player};
 					}	
-					console.log("sending:", joinGameDTO);
+					console.log("1 sending:", joinGameDTO);
 					this.io.to(gameRoomId).emit(GameroomEvents.JoinGameRoomSuccess, joinGameDTO);
 					this.io.to(gameRoomId).emit(GameroomEvents.GameRoomNotification, `Player 1: ${user.display_name}`);
 				} else if (clientInRoom == 2) {
@@ -127,7 +136,7 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 						player2 = { displayName: user.display_name, bat: {X: 1250, Y:270}};
 					}
 					const joinGameDTO = { gameRoomId: gameRoomId, player1: player1, player2: player2}
-					console.log("sending:", joinGameDTO);
+					console.log("2 sending:", joinGameDTO);
 					this.io.to(gameRoomId).emit(GameroomEvents.JoinGameRoomSuccess, joinGameDTO);
 					this.io.to(gameRoomId).emit(GameroomEvents.GameRoomNotification, `Player 2: ${user.display_name}`);
 				}

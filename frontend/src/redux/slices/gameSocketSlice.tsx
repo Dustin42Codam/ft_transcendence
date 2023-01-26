@@ -31,6 +31,7 @@ interface JoinGameRoomDTO {
 
 export interface GameState {
   isEstablishingConnection: boolean;
+  isJoning: boolean;
   isConnected: boolean;
   gameRoomId: number;
   ball: Ball;
@@ -46,6 +47,7 @@ export interface GameState {
 
 export const initialState: GameState = {
   isEstablishingConnection: false,
+  isJoning: false,
   isConnected: false,
   gameRoomId: -1,
   player1: undefined,
@@ -89,6 +91,7 @@ const gameSocketSlice = createSlice({
       return;
     },
     joinRoom: (state, action: PayloadAction<number>) => {
+      state.isJoning = true;
       return;
     },
     joinRoomSuccess: (state, action: PayloadAction<JoinGameRoomDTO>) => {
