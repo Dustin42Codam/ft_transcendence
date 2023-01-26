@@ -70,6 +70,12 @@ const gameSocketMiddleware: Middleware = (store) => {
         //Join the user to go to the game room
         //store.dispatch(gameSocketActions.joinRoomSuccess(spectateGame));
       });
+      gameSocket.on(GameEvent.ResetBall, (ball: Ball) => {
+        store.dispatch(gameSocketActions.resetBall(ball));
+      });
+      gameSocket.on(GameEvent.HitWall, (direction: number) => {
+        store.dispatch(gameSocketActions.hitWall(direction));
+      });
       /*
       gameSocket.on(GameEvent.MessageToGameRoom, (messageToGameRoom: any) => {
         //TOAST a Message

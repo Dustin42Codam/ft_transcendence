@@ -75,17 +75,6 @@ export const initialState: GameState = {
   notificatoin: "",
 };
 
-/*
-export const fetchCurrentGameRoomMessages = createAsyncThunk(
-  "socket/fetchCurrentGameRoomMessages",
-  async (gameroomId: number) => {
-    const response = await axios.get(`message/chatroom/id/${chatroomId}`);
-
-    return response.data;
-  }
-);
-*/
-
 const gameSocketSlice = createSlice({
   name: "gameSocket",
   initialState,
@@ -165,6 +154,15 @@ const gameSocketSlice = createSlice({
       return;
     },
     clientWantsToStartGame: (state, action: PayloadAction<any>) => {
+      return;
+    },
+    resetBall: (state, action: PayloadAction<any>) => {
+			state.ball = action.payload;
+      return;
+    },
+    hitWall: (state, action: PayloadAction<number>) => {
+			//TODO change the direction of the ball
+			//state.ball = action.payload;
       return;
     },
   },
