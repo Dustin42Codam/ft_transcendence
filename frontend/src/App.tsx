@@ -1,5 +1,6 @@
 import "./App.css";
 import Game from "./pages/Game";
+import GameLobby from "./pages/GameLobby";
 import NotFound from "./pages/NotFound";
 import Dashboard from "./pages/Dashboard";
 import Authenticate from "./pages/Authenticate";
@@ -104,7 +105,8 @@ function App() {
             <Route path={"/users"} element={<UserList />} />
             <Route path={"/users/:userId"} element={<UserPage />} />
 
-            <Route path={"/games"} element={<Game />} />
+            <Route path={"/game"} element={<GameLobby />} />
+            <Route path={"/game/:gameId"} element={<Game />} />
 
             <Route path={"/authenticate"} element={<Dashboard />} />
             <Route path="/" element={<Navigate to="/dashboard" />} />

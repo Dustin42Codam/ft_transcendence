@@ -322,6 +322,7 @@ const Game = (props: any) => {
   //const moveBatP1 = () => {};
 
   useEffect(() => {
+    //get game Id by url
     dispatch(gameSocketActions.joinRoom(1));
     const theGameFrame = document.getElementById("content");
     const savedTheGameFrame = theGameFrame!.innerHTML;
