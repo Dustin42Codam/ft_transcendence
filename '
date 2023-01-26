@@ -17,16 +17,6 @@ interface Bat {
 	Y: number;
 }
 
-interface Ball {
-  X: number;
-  Y: number;
-	directionX: number;
-	directionY: number;
-	width: number;
-	height: number;
-	speed: number;
-}
-
 interface userInRoom {
 	displayName: string;
 	bat?: Bat;
@@ -34,7 +24,6 @@ interface userInRoom {
 
 interface JoinGameRoomDTO {
   gameRoomId: string;
-	ball: Ball;
   player1?: userInRoom;
   player2?: userInRoom;
   spectator?: userInRoom;
@@ -67,7 +56,7 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 		private readonly gameService: GameService,
 		) {};
 
-  private logger: Logger = new Logger("GameGatway");
+  private logger: Logger = new Logger("AppGateway");
   @WebSocketServer() io: Namespace;
 
   afterInit(server: Server) {
@@ -110,57 +99,55 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 		const userId = await this.userService.getUserFromClient(client);
 		const user = await this.userService.getUserById(userId);
 		const game = await this.gameService.getGameById(Number(gameRoomId));
-		let ball = {X: 650 , Y: 350};
-
 		//if (!game)
 			//TODO throw
 		//console.log(game, user);
 		if (game != null) {
 			if (game.player_1 != userId || game.player_2 != userId) {
 				if (clientInRoom == 1) {
-					this.logger.log(`player 1 ${client.id} wants to join game`);
 					let player: userInRoom;
 					let joinGameDTO: JoinGameRoomDTO;
+					//let ball = {X: Y:};
 
-					joinGameDTO = {...joinGameDTO, ball: ball};
 					if (userId == game.player_1) {
 						player = { displayName: user.display_name, bat: {X: 50, Y:270}};
-						joinGameDTO = {...joinGameDTO, gameRoomId: gameRoomId, player1: player};
+						joinGameDTO = { gameRoomId: gameRoomId, player1: player};
 					} else {
 						player = { displayName: user.display_name, bat: {X: 1250, Y:270}};
-						joinGameDTO = {...joinGameDTO, gameRoomId: gameRoomId, player2: player};
+						joinGameDTO = { gameRoomId: gameRoomId, player2: player};
 					}	
-					this.logger.debug("this is sent to player 1",joinGameDTO);
+					console.log("1 sending:", joinGameDTO);
 					this.io.to(gameRoomId).emit(GameroomEvents.JoinGameRoomSuccess, joinGameDTO);
 					this.io.to(gameRoomId).emit(GameroomEvents.GameRoomNotification, `Player 1: ${user.display_name}`);
 				} else if (clientInRoom == 2) {
-					this.logger.log(`player 2 ${client.id} wants to join game`);
 					let player1: userInRoom;
 					let player2: userInRoom;
 
 					if (userId == game.player_1) {
+						console.log(game.player_2)
 						const userAlreadyInGameRoom = await this.userService.getUserById(game.player_2);
+						console.log("1:", userAlreadyInGameRoom, user, game);
 						player1 = {displayName: user.display_name, bat: {X: 50, Y:270}};
 						player2 = {displayName: userAlreadyInGameRoom.display_name, bat: {X: 1250, Y:270}};
 					} else {
 						const userAlreadyInGameRoom = await this.userService.getUserById(game.player_1);
+						console.log("2:", userAlreadyInGameRoom, user, game);
 						player1 = { displayName: userAlreadyInGameRoom.display_name, bat: {X: 50, Y:270}};
 						player2 = { displayName: user.display_name, bat: {X: 1250, Y:270}};
 					}
-					const joinGameDTO = {ball: ball, gameRoomId: gameRoomId, player1: player1, player2: player2}
-					this.logger.debug("this is sent to player 2",joinGameDTO);
+					const joinGameDTO = { gameRoomId: gameRoomId, player1: player1, player2: player2}
+					console.log("2 sending:", joinGameDTO);
 					this.io.to(gameRoomId).emit(GameroomEvents.JoinGameRoomSuccess, joinGameDTO);
 					this.io.to(gameRoomId).emit(GameroomEvents.GameRoomNotification, `Player 2: ${user.display_name}`);
 				}
 			} else {
-				this.logger.log(`${client.id} wants to spectate the game`);
+				console.log(3);//here check if private
 				const user1 = await this.userService.getUserById(game.player_1);
 				const user2 = await this.userService.getUserById(game.player_2);
 				const player1 = { displayName: user1.display_name, bat: {X: 50, Y:270}};
 				const player2 = { displayName: user2.display_name, bat: {X: 1250, Y:270}};
 				const spectator = { displayName: user.displayName };
-				const joinGameDTO = { ball: ball, gameRoomId: gameRoomId, player1: player1, player2: player2, spectator: spectator }
-				this.logger.debug("this is sent to player 3",joinGameDTO);
+				const joinGameDTO = { gameRoomId: gameRoomId, player1: player1, player2: player2, spectator: spectator }
 				client.to(gameRoomId).emit(GameroomEvents.JoinGameRoomSuccess, joinGameDTO)
 				this.io.to(gameRoomId).emit(GameroomEvents.GameRoomNotification, `spectator ${user.display_name} join`);
 			}

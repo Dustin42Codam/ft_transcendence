@@ -66,9 +66,9 @@ class Ball extends MoveableObject {
   }
 
   reset(fieldWidth: number, fieldHeight: number) {
-    this.positionX = fieldWidth / 2 - this.width / 2;
-    this.positionY = fieldHeight / 2 - this.height / 2;
-    this.directionX = Math.random() < 0.5 ? 1 : -1;
+    this.positionX = fieldWidth / 2 - this.width / 2;//this.width backend
+    this.positionY = fieldHeight / 2 - this.height / 2;//this.width backend
+    this.directionX = Math.random() < 0.5 ? 1 : -1;//Math.radom back end
     this.directionY = Math.floor(Math.random() * 5) - 2;
   }
 
@@ -400,9 +400,7 @@ const Game = (props: any) => {
       theGameFrame!.innerHTML = savedTheGameFrame;
       const currentUser = store.getState().currentUser;
       const canvas = document.getElementById("gameCanvas") as HTMLCanvasElement;
-      //before this we need to have the data before we can build the game
-      //how can we get the position for
-      //we have to use a promise
+			//here I create the game
       const game = new GameState(canvas, gameState);
       //UserName
       //UserType
@@ -458,6 +456,9 @@ const Game = (props: any) => {
       });
 			//maybe here we can send to the back end start game
 			//3 2 1
+			console.log("balls x and Y",game.ball);
+			game.ball.positionX = gameState.ball.X;
+			game.ball.positionY = gameState.ball.Y;
       const startAnimation = () => {
 				//function that gets the current bat positions, ball, score
         gameState = store.getState().gameSocket;

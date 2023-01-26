@@ -16,6 +16,11 @@ interface Bat {
 interface Ball {
   X: number;
   Y: number;
+	directionX: number;
+	directionY: number;
+	width: number;
+	height: number;
+	speed: number;
 }
 
 interface userInRoom {
@@ -25,6 +30,7 @@ interface userInRoom {
 
 interface JoinGameRoomDTO {
   gameRoomId: number;
+	ball: Ball;
   player1?: userInRoom;
   player2?: userInRoom;
   spectator?: userInRoom;
