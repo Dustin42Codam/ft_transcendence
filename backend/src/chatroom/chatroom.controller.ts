@@ -206,9 +206,14 @@ export class ChatroomController {
 		console.log("🚀 ~ file: chatroom.controller.ts:206 ~ ChatroomController ~ joinChatroom ~ body.password", body.password)
       console.log("🚀 ~ file: chatroom.controller.ts:207 ~ ChatroomController ~ joinChatroom ~ hashword", hashword)
 	  console.log("🚀 ~ file: chatroom.controller.ts:209 ~ ChatroomController ~ joinChatroom ~ chatroom.password", chatroom.password)
-      if (hashword !== chatroom.password) {
-		    throw new BadRequestException("The password is incorrect");
-	    }
+	  bcrypt.compare(chatroom.password, hashword, (error, result) => {
+		if (error || !result) throw new BadRequestException("The password is incorrect");
+	  console.log("🚀 ~ file: chatroom.controller.ts:211 ~ ChatroomController ~ bcrypt.compare ~ result", result)
+	  console.log("🚀 ~ file: chatroom.controller.ts:211 ~ ChatroomController ~ bcrypt.compare ~ result", typeof(result))
+	  })
+    //   if (hashword !== chatroom.password) {
+		    // throw new BadRequestException("The password is incorrect");
+	    // }
     }
     if (member) {
       member.status = MemberStatus.ACTIVE

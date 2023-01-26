@@ -17,7 +17,7 @@ const ImageUpload = (props: { uploaded: (url: string) => void }) => {
 
     props.uploaded(data.url);
 
-    dispatch(updateCurrentUser({avatar: data.url}));
+    dispatch(updateCurrentUser({ avatar: data.url }));
   };
 
   return (

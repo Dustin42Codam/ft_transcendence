@@ -51,7 +51,9 @@ export const UserPage = () => {
   async function fetchFriendship() {
     const response = await axios
       .get(`friend/user/id/${userId}`)
-      .then((response) => { return response.data })
+      .then((response) => {
+        return response.data;
+      })
       .catch((error) => {
         console.log("🚀 ~ file: UserPage.tsx:56 ~ joinDM ~ error", error);
       });

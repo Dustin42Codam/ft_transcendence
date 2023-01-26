@@ -64,31 +64,31 @@ export const deleteChat = createAsyncThunk(
   async (chat: any, { rejectWithValue }) => {
     try {
       await axios.post(`chatroom/remove/id/${chat.id}`);
-	  toast.success("Channel successfully created!", {
-		position: "top-right",
-		autoClose: 5000,
-		hideProgressBar: false,
-		closeOnClick: true,
-		pauseOnHover: true,
-		draggable: true,
-		progress: undefined,
-		theme: "colored",
-	  });
+      toast.success("Channel successfully created!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
       return chat;
     } catch (error: any) {
       if (!error.response) {
         throw error;
       }
-	  toast.error(`${error.response.data}`, {
-		position: "top-right",
-		autoClose: 5000,
-		hideProgressBar: false,
-		closeOnClick: true,
-		pauseOnHover: true,
-		draggable: true,
-		progress: undefined,
-		theme: "colored",
-	  });
+      toast.error(`${error.response.data}`, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
       return rejectWithValue(error.response.data);
     }
   }
