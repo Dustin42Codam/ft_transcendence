@@ -23,40 +23,32 @@ function ChatAddMember(props: any) {
   }, []);
 
   async function addUserToChat(user: User) {
-    const id = toast.loading(`Adding ${user.display_name}...`);
-
     await axios
       .post(`chatroom/add/id/${props.currentChat.id}`, { user_id: user.id })
-      .then(() => {
-        toast.update(id, {
-          render: `${user.display_name} joined the chat!`,
-          type: "success",
-          isLoading: false,
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        });
+	.then(() => {
+		toast.success(`You added ${user.display_name} the chat!`, {
+			position: "top-right",
+			autoClose: 5000,
+			hideProgressBar: false,
+			closeOnClick: true,
+			pauseOnHover: true,
+			draggable: true,
+			progress: undefined,
+			theme: "colored",
+		  });
       })
       .catch((error: any) => {
         console.log(error);
-        toast.update(id, {
-          render: `${error.response.data.message}...`,
-          type: "error",
-          position: "top-right",
-          autoClose: 5000,
-          isLoading: false,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        });
+		toast.error(`${error.response.data.message}`, {
+			position: "top-right",
+			autoClose: 5000,
+			hideProgressBar: false,
+			closeOnClick: true,
+			pauseOnHover: true,
+			draggable: true,
+			progress: undefined,
+			theme: "colored",
+		  });
       });
     dispatch(
       fetchChatMembers({

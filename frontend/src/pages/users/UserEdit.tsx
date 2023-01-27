@@ -13,7 +13,6 @@ import "./UserEdit.css";
 import "../../components/UserFriends.css";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { selectAllUsers } from "../../redux/slices/usersSlice";
 import { toast } from "react-toastify";
 
 const UserEdit = () => {

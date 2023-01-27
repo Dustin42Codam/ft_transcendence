@@ -59,43 +59,33 @@ function ChatUserList(props: any) {
       (m: any) => m.user.display_name === currentUser.display_name
     );
 
-    const id = toast.loading(`Leaving channel...`);
-
     await axios
       .post(`member/leave/id/${member[0].id}`)
-      .then(() => {
-        toast.update(id, {
-          render: `You left the chat!`,
-          type: "success",
-          isLoading: false,
-          position: "top-right",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        });
-        setTimeout(() => {
-          navigate("/");
-        }, 3000);
+      .then((ret) => {
+		toast.success(`You left the chat!`, {
+			position: "top-right",
+			autoClose: 5000,
+			hideProgressBar: false,
+			closeOnClick: true,
+			pauseOnHover: true,
+			draggable: true,
+			progress: undefined,
+			theme: "colored",
+		  });
+		  navigate("/");
       })
       .catch((error: any) => {
         console.log(error);
-        toast.update(id, {
-          render: `${error.response.data.message}...`,
-          type: "error",
-          position: "top-right",
-          autoClose: 5000,
-          isLoading: false,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        });
+		toast.error(`${error.response.data.message}`, {
+			position: "top-right",
+			autoClose: 5000,
+			hideProgressBar: false,
+			closeOnClick: true,
+			pauseOnHover: true,
+			draggable: true,
+			progress: undefined,
+			theme: "colored",
+		  });
       });
   }
 
@@ -411,42 +401,32 @@ function ChatUserList(props: any) {
   }
 
   async function removeMember(member: Member) {
-    const id = toast.loading(
-      `Removing ${member.user.display_name} from this channel...`
-    );
-
     await axios
       .post(`member/remove/id/${member.id}`)
       .then(() => {
-        toast.update(id, {
-          render: `${member.user.display_name} removed from chat!`,
-          type: "success",
-          isLoading: false,
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        });
+		toast.success(`You removed ${member.user.display_name} from chat!`, {
+			position: "top-right",
+			autoClose: 5000,
+			hideProgressBar: false,
+			closeOnClick: true,
+			pauseOnHover: true,
+			draggable: true,
+			progress: undefined,
+			theme: "colored",
+		  });
       })
       .catch((error: any) => {
         console.log(error);
-        toast.update(id, {
-          render: `${error.response.data.message}`,
-          type: "error",
-          position: "top-right",
-          autoClose: 5000,
-          isLoading: false,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        });
+		toast.error(`${error.response.data.message}`, {
+			position: "top-right",
+			autoClose: 5000,
+			hideProgressBar: false,
+			closeOnClick: true,
+			pauseOnHover: true,
+			draggable: true,
+			progress: undefined,
+			theme: "colored",
+		  });
       });
     dispatch(
       fetchChatMembers({
