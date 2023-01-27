@@ -97,12 +97,10 @@ bugs:
 		+	Leave channel bug
 		+	admin leaves channel -> rejoins -> still admin
 
-notes:
-	
+notes:	
 	-	ChatLobby?
 	-	ChatCreate?
 	-	ChatTable?
-	-	admins can ban and mute other admins
 
 
 toasties:
