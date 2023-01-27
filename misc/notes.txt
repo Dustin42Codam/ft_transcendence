@@ -1,16 +1,14 @@
 
 todo:
-
-	-	rm friendrequest slice
-	-	add toasts to user page
 	-	create protected chat without password bug
-	+	change channel password bug
-	+	enter protected channel bug
-		->	use bcrypt.compare() instead of directly compare hashed passwords
-	+	remove chat bug
+
+	-	add toasts to user page
+
+	-	double rendering toasts in chat ui
+
 	-	join chat bug
 	-	leave chat toast bug
-	-	chat toast renders multiple times
+
 	-	2fa back button
 		-	2fa toasts
 		-	check if navigate really necessary
@@ -22,9 +20,6 @@ todo:
 		+	fetch current chat members
 	-	confirm window when delete channel
 	-	check error handling in user edit
-	-	add toasts for every store/api event
-		-	add to redux
-			-	chat delete
 
 	-	Chat
 		-	ping pong invite
@@ -32,6 +27,7 @@ todo:
 
 
 done:
+	+	rm friendrequest slice
 	+	Chat
 		+	it shouldn't be possible to leave a DM
 		+	check messages of inactive users
@@ -82,11 +78,15 @@ done:
 
 bugs:
 
-	-	user can create empty user names
 	-	users can upload any file sizes
-		-	old files are not deleted
 
 	fixed:
+		+	old files are not deleted
+		+	user can create empty user names
+		+	change channel password bug
+		+	enter protected channel bug
+			->	use bcrypt.compare() instead of directly compare hashed passwords
+		+	remove chat bug
 		+	2fa displays 404 after activating
 			->	redux store had to be updated so the frontend knows that
 				a user is authenticated

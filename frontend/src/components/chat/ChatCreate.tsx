@@ -22,10 +22,19 @@ const ChatCreate = () => {
 
   async function createChat() {
     if (!name) {
-      window.alert("Name can't be empty!");
+		toast.error("Name cannot be empty!", {
+			position: "top-right",
+			autoClose: 5000,
+			hideProgressBar: false,
+			closeOnClick: true,
+			pauseOnHover: true,
+			draggable: true,
+			progress: undefined,
+			theme: "colored",
+		  });
     } else if (
-      chatType === ChatroomType.PROTECTED &&
-      password !== passwordConfrim
+		chatType === ChatroomType.PROTECTED &&
+		password !== passwordConfrim
     ) {
       toast.error("Passwords did not match!", {
         position: "top-right",
@@ -49,29 +58,29 @@ const ChatCreate = () => {
           user_id: currentUser.id,
         })
       );
-      if (chatStatus === "succeeded") {
-        toast.success("Channel successfully created!", {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        });
-      } else if (chatStatus === "failed") {
-        toast.error(`${chatError}`, {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        });
-      }
+    //   if (chatStatus === "succeeded") {
+    //     toast.success("Channel successfully created!", {
+    //       position: "top-right",
+    //       autoClose: 5000,
+    //       hideProgressBar: false,
+    //       closeOnClick: true,
+    //       pauseOnHover: true,
+    //       draggable: true,
+    //       progress: undefined,
+    //       theme: "colored",
+    //     });
+    //   } else if (chatStatus === "failed") {
+    //     toast.error(`${chatError}`, {
+    //       position: "top-right",
+    //       autoClose: 5000,
+    //       hideProgressBar: false,
+    //       closeOnClick: true,
+    //       pauseOnHover: true,
+    //       draggable: true,
+    //       progress: undefined,
+    //       theme: "colored",
+    //     });
+    //   }
     }
   }
 

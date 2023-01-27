@@ -13,7 +13,6 @@ import { Link } from "react-router-dom";
 import ChatUserList from "../components/chat/ChatUserList";
 import { selectAllUsers } from "../redux/slices/usersSlice";
 import { ChatroomType } from "../models/Chats";
-import "./Chat.css";
 import "./Message.css";
 import "./Chat.css";
 import { fetchChatMembers } from "../redux/slices/chatMembersSlice";
@@ -64,8 +63,8 @@ const Chat = () => {
           <div className="chat-header">
             {user && (
               <Link to={`/users/${user.id}`} className="member-link">
-                <div className="dm-avatar">
-                  <img src={user.avatar} alt="avatar" />
+                <div>
+                  <img className="dm-avatar" src={user.avatar} alt="avatar" />
                 </div>
               </Link>
             )}

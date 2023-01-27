@@ -1,5 +1,9 @@
 /* @import url("https://fonts.cdnfonts.com/css/studio-sans"); */
 
+.dm-avatar {
+	height: 100px;
+}
+
 .chat-bar-container {
   /* display: flex; */
   padding: 15px;

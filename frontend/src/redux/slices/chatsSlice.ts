@@ -40,11 +40,31 @@ export const addNewGroupChat = createAsyncThunk(
   async (data: any, { rejectWithValue }) => {
     try {
       const response: any = await axios.post(`chatroom/create`, data.chat);
-      return response.data;
+      toast.success("Channel successfully created!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+      return data;
     } catch (error: any) {
       if (!error.response) {
         throw error;
       }
+      toast.error(`${error.response.data.message}`, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
       return rejectWithValue(error.response.data);
     }
   }
@@ -55,7 +75,7 @@ export const deleteChat = createAsyncThunk(
   async (chat: any, { rejectWithValue }) => {
     try {
       await axios.post(`chatroom/remove/id/${chat.id}`);
-      toast.success("Channel successfully created!", {
+      toast.success("Channel successfully deleted!", {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
