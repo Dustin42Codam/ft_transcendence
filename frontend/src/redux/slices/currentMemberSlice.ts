@@ -37,29 +37,21 @@ export const fetchCurrentMember = createAsyncThunk(
 export const updateCurrentChatType = createAsyncThunk(
   "currentMember/updateCurrentChatType",
   async (data: any) => {
-    console.log("🚀 ~ file: currentMemberSlice.ts:45 ~ data", data);
-    const toastId = toast.loading(`Updating channel data...`);
-
-	
-
     if (
       data.type === ChatroomType.PROTECTED &&
       data.password?.length &&
       data.password !== data.passwordConfirm
     ) {
-      toast.update(toastId, {
-        render: `Passwords didn't match!`,
-        type: "error",
-        position: "top-right",
-        autoClose: 5000,
-        isLoading: false,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
+		toast.error(`Passwords didn't match!`, {
+			position: "top-right",
+			autoClose: 5000,
+			hideProgressBar: false,
+			closeOnClick: true,
+			pauseOnHover: true,
+			draggable: true,
+			progress: undefined,
+			theme: "colored",
+		});
       return;
     }
     await axios
@@ -68,34 +60,28 @@ export const updateCurrentChatType = createAsyncThunk(
         password: data.password,
       })
       .then((ret) => {
-        toast.update(toastId, {
-          render: `Channel data updated!`,
-          type: "success",
-          isLoading: false,
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        });
+		toast.success(`Channel type changed to ${data.type}!`, {
+			position: "top-right",
+			autoClose: 5000,
+			hideProgressBar: false,
+			closeOnClick: true,
+			pauseOnHover: true,
+			draggable: true,
+			progress: undefined,
+			theme: "colored",
+		  });
       })
       .catch((error: any) => {
-        toast.update(toastId, {
-          render: `${error.response.data.message}`,
-          type: "error",
-          position: "top-right",
-          autoClose: 5000,
-          isLoading: false,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        });
+		toast.error(`${error.response.data.message}`, {
+			position: "top-right",
+			autoClose: 5000,
+			hideProgressBar: false,
+			closeOnClick: true,
+			pauseOnHover: true,
+			draggable: true,
+			progress: undefined,
+			theme: "colored",
+		  });
       });
     return data.type;
   }
@@ -104,61 +90,52 @@ export const updateCurrentChatType = createAsyncThunk(
 export const updateCurrentChatPassword = createAsyncThunk(
   "currentMember/updateCurrentChatPassword",
   async (data: any) => {
-    const toastId = toast.loading(`Updating channel data...`);
+    // const toastId = toast.loading(`Updating channel data...`);
 
     if (
       data.type === ChatroomType.PROTECTED &&
       data.password?.length &&
       data.password !== data.passwordConfirm
     ) {
-      toast.update(toastId, {
-        render: `Passwords didn't match!`,
-        type: "error",
-        position: "top-right",
-        autoClose: 5000,
-        isLoading: false,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
+		toast.error(`Passwords didn't match!`, {
+			position: "top-right",
+			autoClose: 5000,
+			hideProgressBar: false,
+			closeOnClick: true,
+			pauseOnHover: true,
+			draggable: true,
+			progress: undefined,
+			theme: "colored",
+		});
       return;
     }
     await axios
       .post(`chatroom/password/id/${data.id}`, {
         password: data.password,
       })
-      .then((ret) => {
-        toast.update(toastId, {
-          render: `Channel password updated!`,
-          type: "success",
-          isLoading: false,
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        });
+      .then(() => {
+		toast.success(`Channel password updated!`, {
+			position: "top-right",
+			autoClose: 5000,
+			hideProgressBar: false,
+			closeOnClick: true,
+			pauseOnHover: true,
+			draggable: true,
+			progress: undefined,
+			theme: "colored",
+		  });
       })
       .catch((error: any) => {
-        toast.update(toastId, {
-          render: `${error.response.data.message}`,
-          type: "error",
-          position: "top-right",
-          autoClose: 5000,
-          isLoading: false,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        });
+		toast.error(`${error.response.data.message}`, {
+			position: "top-right",
+			autoClose: 5000,
+			hideProgressBar: false,
+			closeOnClick: true,
+			pauseOnHover: true,
+			draggable: true,
+			progress: undefined,
+			theme: "colored",
+		  });
       });
     return data.type;
   }

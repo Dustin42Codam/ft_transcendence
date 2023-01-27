@@ -56,6 +56,9 @@ const socketSlice = createSlice({
     updateChatName: (state, action: PayloadAction<{ chatRoom: ChatRoom }>) => {
       state.currentChatRoom.name = action.payload.chatRoom.name;
     },
+    updateChatType: (state, action: PayloadAction<{ chatRoom: ChatRoom }>) => {
+      state.currentChatRoom.type = action.payload.chatRoom.type;
+    },
     startConnecting: (state) => {
       state.isEstablishingConnection = true;
     },
