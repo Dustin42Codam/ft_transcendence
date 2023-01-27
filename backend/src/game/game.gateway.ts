@@ -58,10 +58,15 @@ function playGame() {
 	//
 }
 
+
 @WebSocketGateway(3002, {
   namespace: "game",
 })
 export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
+	//one would be pshycics timer
+	//one would be server timer
+	//loop over every client
+	//borads case messages to every connected clinet?
   constructor(
 		private readonly userService: UserService,
 		private readonly gameService: GameService,
@@ -83,9 +88,8 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 
   async handleDisconnect(client: any): Promise<void> {
 		this.logger.log(`clienet: ${client.id} disconnected`);
-		//tmp gurad
-    // await this.userService.getUserFromClient(client);
-		// console.log(`game client ${client.id} disconected`);
+		//check active games if user is part of active game they loos
+		//if we do this then we do not have to worry about storing the ball
   }
 
 	/*
@@ -95,11 +99,20 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 		//while (1)
 	}
  */
+	//sned the position of the ball because we can check for errors
+	//one client balls is out of sync then we can sync it back
+	//
+	//we can check for wall colitoin and say where the ball is going to next
+	//
+	//if dissconect then the check lose
+	//
+	//
 
 	//payload needs to have display_name, GameRoomId
 	//we can also pass the player in here
   @SubscribeMessage(GameroomEvents.JoinGameRoom)
   async handelJoinRoom(client: Socket, payload: string): Promise<void> {
+		//while (1) {}
 
 		const gameRoomId = payload;
 
@@ -110,7 +123,7 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 		const userId = await this.userService.getUserFromClient(client);
 		const user = await this.userService.getUserById(userId);
 		const game = await this.gameService.getGameById(Number(gameRoomId));
-		let ball = {positionX: 650 , positionY: 350, directionX: 1, directionY: -1, width: 50, height: 50, speed: 50};
+		let ball = {positionX: 650 , positionY: 350, directionX: 1, directionY: -1, width: 50, height: 50, speed: 1};
 
 		if (game != null) {
 			if (game.player_1 != userId || game.player_2 != userId) {

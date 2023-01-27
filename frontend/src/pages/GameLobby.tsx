@@ -17,18 +17,23 @@ const GameLobby = (navigation: any) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-		function navigateIfUserIsPartOfAlreadyActiveGame(tmpActiveGames: any): void {
-			tmpActiveGames.map((game: any, index: number) => {
-				if (game.player_1 == currentUser.id || game.player_2 == currentUser.id) {
-					navigate(`/game/${game.id}`);
-				}
-			});
-		}
+    function navigateIfUserIsPartOfAlreadyActiveGame(
+      tmpActiveGames: any
+    ): void {
+      tmpActiveGames.map((game: any, index: number) => {
+        if (
+          game.player_1 == currentUser.id ||
+          game.player_2 == currentUser.id
+        ) {
+          navigate(`/game/${game.id}`);
+        }
+      });
+    }
     async function fetchAllActiveGames() {
       axios
         .get("/game/active")
         .then((resp) => {
-					navigateIfUserIsPartOfAlreadyActiveGame(resp.data);
+          navigateIfUserIsPartOfAlreadyActiveGame(resp.data);
           setActiveGames(resp.data);
         })
         .catch((err) => console.log(err));

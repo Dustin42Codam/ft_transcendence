@@ -58,17 +58,27 @@ class MoveableObject {
 class Ball extends MoveableObject {
   speed: number;
 
-  constructor(fieldWidth: number, fieldHeight: number, speed: number) {
-    super(0, 0, 0, 0, 20, 20);
-    this.speed = speed;
-    this.reset(fieldWidth, fieldHeight);
+  //make a new consrtctor BAll struct from the backend
+  constructor(ballState: any) {
+    super(
+      ballState.positionX,
+      ballState.positionY,
+      ballState.directionX,
+      ballState.directionY,
+      ballState.height,
+      ballState.width
+    );
+    this.speed = ballState.speed;
+    //this.reset(fieldWidth, fieldHeight, direction);
   }
 
-  reset(fieldWidth: number, fieldHeight: number) {
-    this.positionX = fieldWidth / 2 - this.width / 2; //this.width backend
-    this.positionY = fieldHeight / 2 - this.height / 2; //this.width backend
-    this.directionX = Math.random() < 0.5 ? 1 : -1; //Math.radom back end
-    this.directionY = Math.floor(Math.random() * 5) - 2;
+  //this needs to be tirgered once score and once game starts
+  //(canvasX, canvasY, direction value
+  reset(fieldWidth: number, fieldHeight: number, directionValue: number) {
+    this.positionX = fieldWidth - this.width / 2;
+    this.positionY = fieldHeight - this.height / 2;
+    this.directionX = directionValue;
+    this.directionY = 0;
   }
 
   hitWall(fieldHeight: number) {
@@ -247,7 +257,7 @@ class PowerUp extends MoveableObject {
 //**->	getGame
 //canvas width
 //ball width and hieght
-//**->	
+//**->
 
 class GameState {
   scoreP1: number;
@@ -281,7 +291,8 @@ class GameState {
       160,
       200
     );
-    this.ball = new Ball(canvas.width, canvas.height, 2);
+    //the date comes from here
+    this.ball = new Ball(gameState.ball); //TODO set from backend
     this.powerUp = new PowerUp(canvas.width, canvas.height, 600);
     this.ctx = canvas.getContext("2d")!;
     this.width = canvas.width;
@@ -290,16 +301,16 @@ class GameState {
     this.BatP1down = false;
   }
 
+  //TODO
   //backend
-	//
   score() {
     if (this.ball.positionX + this.ball.width < 0) {
       this.scoreP2 += 1;
-      this.ball.reset(this.width, this.height);
+      this.ball.reset(this.width, this.height, -1);
       console.log();
     } else if (this.ball.positionX > this.width) {
       this.scoreP1 += 1;
-      this.ball.reset(this.width, this.height);
+      this.ball.reset(this.width, this.height, 1);
       console.log(
         "P1 Scored\nP1 " + this.scoreP1 + " - " + this.scoreP2 + " P2\n\n"
       );
@@ -307,9 +318,9 @@ class GameState {
   }
 
   animation() {
-		//canvas width hights
-    this.ctx.clearRect(0, 0, this.width, this.height);//this from the backend
-    this.powerUp.animate(this.ctx);//this from the backend
+    //canvas width hights
+    this.ctx.clearRect(0, 0, this.width, this.height); //this from the backend
+    this.powerUp.animate(this.ctx); //this from the backend
     this.batP1.animate(this.ctx); //send this to p2 + this.width + this.height
     this.batP2.animate(this.ctx); //send this to p1 + this.width + this.height
     this.ball.animate(
@@ -408,13 +419,14 @@ const Game = (props: any) => {
       const currentUser = store.getState().currentUser;
       const canvas = document.getElementById("gameCanvas") as HTMLCanvasElement;
       //here I create the game
+      //how can we get the rest ball data here we don't need to because boths palyers have the ball state the same
+      //here we would pass ball
       const game = new GameState(canvas, gameState);
       //UserName
       //UserType
       //GameRoomId
 
       canvas.addEventListener("keydown", function onKeyDown(e) {
-        e.preventDefault();
         let keynum: any;
 
         if (window.event) {
@@ -425,6 +437,7 @@ const Game = (props: any) => {
 
         //what player am I?
         if (String.fromCharCode(keynum) == "(") {
+          e.preventDefault();
           //so here emit a evant
           if (
             currentUser.currentUser.display_name ==
@@ -449,6 +462,7 @@ const Game = (props: any) => {
           //
         }
         if (String.fromCharCode(keynum) == "&") {
+          e.preventDefault();
           //so here emit a evant
           if (
             currentUser.currentUser.display_name ==
@@ -503,6 +517,7 @@ const Game = (props: any) => {
           }
         }
 
+        //getBall();
         game.animation();
         game.score();
         game.frame += 1;
@@ -511,20 +526,6 @@ const Game = (props: any) => {
       startAnimation();
     });
   }, []);
-  /*
-  function myKeyPress(e: any) {}
-
-  function myKeyRelese(e: any) {
-    if (String.fromCharCode(keynum) == "(") {
-      e.preventDefault();
-      //gameState.batP1.positionY += 1;
-    }
-    if (String.fromCharCode(keynum) == "&") {
-      e.preventDefault();
-      //gameState.batP1.positionY -= 1;
-    }
-  }
- */
   return (
     <Wrapper>
       <div id="canvasContainer">

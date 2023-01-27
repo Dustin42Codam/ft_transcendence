@@ -1,6 +1,12 @@
 import { createAsyncThunk, PayloadAction, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
+interface resetBallDto {
+  fieldWidth: number;
+  fieldHeight: number;
+  direction: number;
+}
+
 interface BatMove {
   GameRoomId: number;
   BatX: number;
@@ -15,11 +21,11 @@ interface Bat {
 interface Ball {
   positionX: number;
   positionY: number;
-	directionX: number;
-	directionY: number;
-	width: number;
-	height: number;
-	speed: number;
+  directionX: number;
+  directionY: number;
+  width: number;
+  height: number;
+  speed: number;
 }
 
 interface userInRoom {
@@ -99,6 +105,7 @@ const gameSocketSlice = createSlice({
     },
     joinRoomSuccess: (state, action: PayloadAction<JoinGameRoomDTO>) => {
       //console.log("this is payload", action.payload);
+      state.ball = action.payload.ball;
       console.log(
         "Joined a room: ",
         action.payload,
@@ -156,13 +163,15 @@ const gameSocketSlice = createSlice({
     clientWantsToStartGame: (state, action: PayloadAction<any>) => {
       return;
     },
-    resetBall: (state, action: PayloadAction<any>) => {
-			state.ball = action.payload;
+    resetBall: (state, action: PayloadAction<resetBallDto>) => {
+      state.ball.directionX = action.payload.direction;
+      state.ball.positionX = action.payload.fieldWidth;
+      state.ball.positionY = action.payload.fieldHeight;
       return;
     },
     hitWall: (state, action: PayloadAction<number>) => {
-			//TODO change the direction of the ball
-			//state.ball = action.payload;
+      //TODO change the direction of the ball
+      //state.ball = action.payload;
       return;
     },
   },

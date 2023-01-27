@@ -13,14 +13,20 @@ interface Bat {
   Y: number;
 }
 
+interface resetBallDto {
+  fieldWidth: number;
+  fieldHeight: number;
+  direction: number;
+}
+
 interface Ball {
   positionX: number;
   positionY: number;
-	directionX: number;
-	directionY: number;
-	width: number;
-	height: number;
-	speed: number;
+  directionX: number;
+  directionY: number;
+  width: number;
+  height: number;
+  speed: number;
 }
 
 interface userInRoom {
@@ -70,8 +76,9 @@ const gameSocketMiddleware: Middleware = (store) => {
         //Join the user to go to the game room
         //store.dispatch(gameSocketActions.joinRoomSuccess(spectateGame));
       });
-      gameSocket.on(GameEvent.ResetBall, (ball: Ball) => {
-        store.dispatch(gameSocketActions.resetBall(ball));
+      gameSocket.on(GameEvent.ResetBall, (payload: resetBallDto) => {
+        //this resets the ball
+        store.dispatch(gameSocketActions.resetBall(payload));
       });
       gameSocket.on(GameEvent.HitWall, (direction: number) => {
         store.dispatch(gameSocketActions.hitWall(direction));
