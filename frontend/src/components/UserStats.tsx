@@ -1,5 +1,3 @@
-import React from "react";
-
 function UserStats(props: { userStats: any }) {
   return (
     <div className="text-center">

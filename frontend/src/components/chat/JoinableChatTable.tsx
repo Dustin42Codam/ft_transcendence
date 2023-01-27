@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { socketActions } from "../../redux/slices/socketSlice";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { useNavigate } from "react-router-dom";
@@ -6,7 +6,6 @@ import CastleIcon from "@mui/icons-material/Castle";
 import PublicIcon from "@mui/icons-material/Public";
 import "./ChatTable.css";
 import {
-  selectJoinableChats,
   removeChatFromJoinable,
 } from "../../redux/slices/chatsSlice";
 import axios from "axios";

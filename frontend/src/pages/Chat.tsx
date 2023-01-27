@@ -1,36 +1,24 @@
 import { useLocation } from "react-router-dom";
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Wrapper from "../components/Wrapper";
 import Socket from "../components/chat/Socket";
-import Message from "../components/Message";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import {
   selectCurrentChatroom,
   selectCurrentChatroomMessages,
 } from "../redux/slices/socketSlice";
-import { fetchMessages } from "../redux/slices/messagesSlice";
 import axios from "axios";
 import { selectCurrentUser } from "../redux/slices/currentUserSlice";
 import { Link } from "react-router-dom";
-import Popup from "reactjs-popup";
 import ChatUserList from "../components/chat/ChatUserList";
 import { selectAllUsers } from "../redux/slices/usersSlice";
 import { ChatroomType } from "../models/Chats";
-import store from "../redux/store";
 import "./Chat.css";
-import { socketActions } from "../redux/slices/socketSlice";
 import "./Message.css";
 import "./Chat.css";
-import { selectCurrentMember } from "../redux/slices/currentMemberSlice";
 import { fetchChatMembers } from "../redux/slices/chatMembersSlice";
 
-interface ChatMessage {
-  chatRoomId: number;
-  content: string;
-  authorId: number;
-}
-
-const Chat = (props: any) => {
+const Chat = () => {
   const location = useLocation();
   const currentChat = useAppSelector(selectCurrentChatroom);
   const currentChatMessages = useAppSelector(selectCurrentChatroomMessages);
@@ -38,7 +26,6 @@ const Chat = (props: any) => {
   const [messages, setMessages] = useState([]);
   const dummy = useRef<HTMLDivElement>(null);
   const users = useAppSelector(selectAllUsers);
-  const currentMember = useAppSelector(selectCurrentMember);
   let user;
 
   const dispatch = useAppDispatch();

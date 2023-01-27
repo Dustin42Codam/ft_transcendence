@@ -1,6 +1,4 @@
-import TextInput from "./TextInput";
-import React, { useRef, useState, useEffect } from "react";
-import axios from "axios";
+import { useRef } from "react";
 import "./PasswordPrompt.css";
 
 const PasswordPrompt = (props: any) => {

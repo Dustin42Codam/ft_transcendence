@@ -16,10 +16,6 @@ import { useAppSelector } from "../redux/hooks";
 import { selectJoinableChats } from "../redux/slices/chatsSlice";
 import PopUp from "./PopUp";
 import "./Menu.css";
-import { socketActions } from "../redux/slices/socketSlice";
-
-import { useAppDispatch } from "../redux/hooks";
-import store from "../redux/store";
 import { toast } from "react-toastify";
 
 const Menu = (props: any) => {
@@ -33,7 +29,7 @@ const Menu = (props: any) => {
     if (joinableChats.length > 0) {
       setJoinChanel(!joinChanel);
     } else {
-      toast("🦄 You do not have any chats to join MENU thingiy", {
+      toast("🦄 You do not have any chats to join!", {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,

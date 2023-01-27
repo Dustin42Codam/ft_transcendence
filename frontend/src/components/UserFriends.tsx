@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useAppSelector } from "../redux/hooks";
 import { selectCurrentUser } from "../redux/slices/currentUserSlice";

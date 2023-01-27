@@ -1,7 +1,8 @@
 
 todo:
 
-	-	change channel password bug
+	-	create protected chat without password bug
+	+	change channel password bug
 	+	enter protected channel bug
 		->	use bcrypt.compare() instead of directly compare hashed passwords
 	+	remove chat bug

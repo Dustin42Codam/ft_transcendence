@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect } from "react";
 import store from "../../redux/store";
 import { useAppDispatch } from "../../redux/hooks";
 import { socketActions } from "../../redux/slices/socketSlice";
@@ -9,15 +9,10 @@ import "./ChatTable.css";
 import { useAppSelector } from "../../redux/hooks";
 import {
   fetchGroupChats,
-  selectDirectChats,
   selectGroupChats,
-  selectJoinableChats,
 } from "../../redux/slices/chatsSlice";
-import { selectCurrentChatroom } from "../../redux/slices/socketSlice";
-import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { selectCurrentUser } from "../../redux/slices/currentUserSlice";
-import { ImportContacts } from "@mui/icons-material";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { fetchCurrentMember } from "../../redux/slices/currentMemberSlice";
 
@@ -49,7 +44,6 @@ const GroupChatTable = () => {
 
   async function fetchChatData() {
     dispatch(fetchGroupChats());
-    // setGroupChats()
   }
 
   useEffect(() => {
@@ -76,7 +70,6 @@ const GroupChatTable = () => {
       //will check evert seccond if the chat room is set
       const interval = setInterval(function () {
         currentChatroom = store.getState().socket.currentChatRoom;
-        // if (currentChatroom.id != -1 && currentChatroom.name != "") {
         if (
           currentChatroom.id == groupChats[chatToJoinIndex].id &&
           currentChatroom.name == groupChats[chatToJoinIndex].name

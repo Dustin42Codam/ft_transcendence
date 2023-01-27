@@ -1,7 +1,5 @@
 import Nav from "./Nav";
-import React, { useEffect } from "react";
 import Menu from "./Menu";
-import store from "../redux/store";
 
 const Wrapper = (props: any) => {
   return (

@@ -1,6 +1,6 @@
 import { Avatar } from "@mui/material";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useAppSelector } from "../redux/hooks";
 import { selectCurrentUser } from "../redux/slices/currentUserSlice";
 import { useNavigate } from "react-router-dom";

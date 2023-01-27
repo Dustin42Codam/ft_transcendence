@@ -1,5 +1,3 @@
-import React from "react";
-
 const Paginator = (props: {
   lastPage: number;
   pageChanged: (page: number) => void;

@@ -1,4 +1,3 @@
-import React from "react";
 import "./PopUp.css";
 import CloseIcon from "@mui/icons-material/Close";
 
