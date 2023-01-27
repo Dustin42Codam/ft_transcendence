@@ -17,8 +17,6 @@ const ChatCreate = () => {
   );
   const dispatch = useAppDispatch();
   const currentUser = useAppSelector(selectCurrentUser);
-  const chatStatus = useAppSelector((state) => state.chats.status);
-  const chatError = useAppSelector((state) => state.chats.error);
 
   async function createChat() {
     if (!name) {

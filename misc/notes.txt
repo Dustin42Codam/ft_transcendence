@@ -1,33 +1,22 @@
 
 todo:
-	+	create protected chat without password bug
 
 	-	double rendering toasts in chat ui
 
-	-	add toasts to user page
-
-	-	join chat bug
-
 	-	leave chat toast bug
-
-	-	2fa back button
-		-	2fa toasts
-		-	check if navigate really necessary
-
-	->	Redux store
-		+	add current_chat_member slices
-		+	update (current) chat
-			+	add update chat to redux slice
-		+	fetch current chat members
-	-	confirm window when delete channel
-	-	check error handling in user edit
 
 	-	Chat
 		-	ping pong invite
 
 
-
 done:
+	+	add toasts to user page
+	+	create protected chat without password bug
+	+	Redux store
+		+	add current_chat_member slices
+		+	update (current) chat
+			+	add update chat to redux slice
+		+	fetch current chat members
 	+	rm friendrequest slice
 	+	Chat
 		+	it shouldn't be possible to leave a DM

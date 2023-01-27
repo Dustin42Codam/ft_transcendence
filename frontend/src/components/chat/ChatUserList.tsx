@@ -31,17 +31,13 @@ function ChatUserList(props: any) {
   const currentUser = useAppSelector(selectCurrentUser);
   const chatMembers = useAppSelector(selectAllChatMembers);
   const [rerender, setRerender] = useState(true);
-
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-
   const [chatType, setChatType] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
   const [chatName, setChatName] = useState("");
-
   const currentMember = useAppSelector(selectCurrentMember);
-
   const allUsers = useAppSelector(selectAllUsers);
 
   useEffect(() => {
@@ -56,7 +52,6 @@ function ChatUserList(props: any) {
         id: currentChat.id,
       })
     );
-//   }, [chatType]);
   }, [rerender, chatType]);
 
   async function leaveChannel() {

@@ -39,7 +39,7 @@ export const addNewGroupChat = createAsyncThunk(
   "chats/addNewGroupChat",
   async (data: any, { rejectWithValue }) => {
     try {
-      const response: any = await axios.post(`chatroom/create`, data.chat);
+      await axios.post(`chatroom/create`, data.chat);
       toast.success("Channel successfully created!", {
         position: "top-right",
         autoClose: 5000,
