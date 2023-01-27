@@ -1,16 +1,7 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { User } from "../../models/User";
 import { ChatroomType } from "../../models/Chats";
-import { Message } from "../../models/Message";
 import { toast } from "react-toastify";
-
-type Chat = {
-  name?: string;
-  password?: string;
-  user_ids: [];
-  type: ChatroomType;
-};
 
 const initialState = {
   joinable: [],

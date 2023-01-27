@@ -1,14 +1,9 @@
 import {
   createSlice,
   createAsyncThunk,
-  createSelector,
-  createEntityAdapter,
 } from "@reduxjs/toolkit";
 import axios from "axios";
-import { Member } from "../../models/Member";
 import { toast } from "react-toastify";
-import { useAppDispatch } from "../hooks";
-import { socketActions } from "./socketSlice";
 import { ChatroomType } from "../../models/Chats";
 
 const initialState = {
@@ -179,10 +174,6 @@ const currentMemberSlice = createSlice({
         state.status = "loading";
       })
       .addCase(fetchCurrentMember.fulfilled, (state, action) => {
-        console.log(
-          "🚀 ~ file: currentMemberSlice.ts:35 ~ .addCase ~ action",
-          action
-        );
         state.status = "succeeded";
         state.currentMember = action.payload;
       })
@@ -194,10 +185,6 @@ const currentMemberSlice = createSlice({
         state.status = "loading";
       })
       .addCase(updateCurrentChatType.fulfilled, (state, action) => {
-        console.log(
-          "🚀 ~ file: currentMemberSlice.ts:35 ~ .addCase ~ action",
-          action
-        );
         state.status = "succeeded";
         state.currentMember.chatroom.type = action.payload;
       })
@@ -209,12 +196,7 @@ const currentMemberSlice = createSlice({
         state.status = "loading";
       })
       .addCase(updateCurrentChatPassword.fulfilled, (state, action) => {
-        console.log(
-          "🚀 ~ file: currentMemberSlice.ts:214 ~ .addCase ~ action",
-          action
-        );
         state.status = "succeeded";
-        // state.currentMember.chatroom.password = action.payload;
       })
       .addCase(updateCurrentChatPassword.rejected, (state: any, action) => {
         state.status = "failed";

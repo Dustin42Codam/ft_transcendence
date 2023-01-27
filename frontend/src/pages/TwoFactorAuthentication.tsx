@@ -1,4 +1,4 @@
-import React, { SyntheticEvent, useState } from "react";
+import { SyntheticEvent, useState } from "react";
 import { useAppSelector } from "../redux/hooks";
 import { selectCurrentUser } from "../redux/slices/currentUserSlice";
 import axios from "axios";
@@ -7,7 +7,6 @@ import "./TwoFactorAuthentication.css";
 import ParticleBackground from "../components/ParticleBackground";
 import PinInput from "react-pin-input";
 import ArrowCircleLeftIcon from "@mui/icons-material/ArrowCircleLeft";
-import { toast } from "react-toastify";
 
 function TwoFactorAuthentication() {
   const [code, setCode] = useState("");

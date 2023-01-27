@@ -1,5 +1,5 @@
 import { Avatar } from "@mui/material";
-import React, { SyntheticEvent, useEffect, useRef, useState } from "react";
+import { SyntheticEvent, useEffect, useRef, useState } from "react";
 import ImageUpload from "../../components/ImageUpload";
 import Wrapper from "../../components/Wrapper";
 import { useAppSelector, useAppDispatch } from "../../redux/hooks";
@@ -8,20 +8,16 @@ import {
   update2FA,
   updateCurrentUser,
 } from "../../redux/slices/currentUserSlice";
-import { UserStatus } from "../../models/Channel";
-import { Button, Form } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import "./UserEdit.css";
 import "../../components/UserFriends.css";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { User } from "../../models/User";
 import { selectAllUsers } from "../../redux/slices/usersSlice";
 import { toast } from "react-toastify";
 
 const UserEdit = () => {
-  const currentUser = useAppSelector((state) => state.currentUser);
   const user = useAppSelector(selectCurrentUser);
-  const users = useAppSelector(selectAllUsers);
   const [name, setName] = useState(user.display_name);
   const [avatar, setAvatar] = useState(user.avatar);
   const [twoFA, setTwoFA] = useState(user.two_factor_auth);

@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import { Component } from "react";
 import "../login.css";
 
 export class NotFound extends Component {

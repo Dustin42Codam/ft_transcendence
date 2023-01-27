@@ -1,13 +1,12 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Wrapper from "../../components/Wrapper";
 import {
-  fetchCurrentUser,
   selectCurrentUser,
 } from "../../redux/slices/currentUserSlice";
 import { Avatar } from "@mui/material";
 import UserFriends from "../../components/UserFriends";
-import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { useAppSelector } from "../../redux/hooks";
 import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
 import UserMatchHistory from "../../components/UserMatchHistory";
@@ -18,8 +17,6 @@ import axios from "axios";
 
 export const UserProfile = () => {
   const currentUser = useAppSelector(selectCurrentUser);
-  const currentUserStatus = useAppSelector((state) => state.currentUser.status);
-  const dispatch = useAppDispatch();
   const [friends, setFriends] = useState<any>([]);
   const friendsAmount = "Friends (" + friends.length + ")";
 

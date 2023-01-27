@@ -2,10 +2,8 @@ import {
   createSlice,
   createAsyncThunk,
   createSelector,
-  createEntityAdapter,
 } from "@reduxjs/toolkit";
 import axios from "axios";
-import { User } from "../../models/User";
 
 const initialState = {
   users: [],
@@ -15,10 +13,6 @@ const initialState = {
 
 export const fetchUsers = createAsyncThunk("users/fetchUsers", async () => {
   const response = await axios.get("users");
-  console.log(
-    "🚀 ~ file: usersSlice.ts:18 ~ fetchUsers ~ response",
-    response.data.data
-  );
   return response.data.data;
 });
 

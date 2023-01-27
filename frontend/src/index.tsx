@@ -1,4 +1,3 @@
-import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
@@ -13,13 +12,10 @@ import {
   fetchJoinableChats,
 } from "./redux/slices/chatsSlice";
 import { fetchCurrentUser } from "./redux/slices/currentUserSlice";
-import { fetchMessages } from "./redux/slices/messagesSlice";
 import { PersistGate } from "redux-persist/integration/react";
 import { persistStore } from "redux-persist";
-import { fetchFriendRequests, fetchFriends } from "./redux/slices/friendsSlice";
 import { socketActions } from "./redux/slices/socketSlice";
 import { gameSocketActions } from "./redux/slices/gameSocketSlice";
-import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 axios.defaults.baseURL = "http://localhost:3000/api/";
@@ -33,7 +29,6 @@ let persistor = persistStore(store);
 
 async function main() {
   store.dispatch(fetchCurrentUser());
-  // store.dispatch(fetchMessages());
   store.dispatch(fetchUsers());
   store.dispatch(fetchDirectChats());
   store.dispatch(fetchJoinableChats());

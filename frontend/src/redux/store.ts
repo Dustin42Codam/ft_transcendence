@@ -5,12 +5,9 @@ import chatsReducer from "./slices/chatsSlice";
 import currentUserReducer from "./slices/currentUserSlice";
 import currentMemberReducer from "./slices/currentMemberSlice";
 import messagesReducer from "./slices/messagesSlice";
-import friendRequestsReducer from "./slices/friendRequestsSlice";
-import friendsReducer from "./slices/friendsSlice";
 import socketReducer from "./slices/socketSlice";
 import gameSocketReducer from "./slices/gameSocketSlice";
 import chatMembersReducer from "./slices/chatMembersSlice";
-import loggerMiddleware from "./loggerMiddleware";
 import { persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import socketMiddleware from "./socketMiddleware";
@@ -24,8 +21,6 @@ const appReducer = combineReducers({
   currentMember: currentMemberReducer,
   chatMembers: chatMembersReducer,
   messages: messagesReducer,
-  friendRequests: friendRequestsReducer,
-  friends: friendsReducer,
   socket: socketReducer,
   gameSocket: gameSocketReducer,
 });

@@ -1,12 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { gameSocketActions } from "../redux/slices/gameSocketSlice";
-import { useAppDispatch } from "../redux/hooks";
 import Wrapper from "../components/Wrapper";
 import axios from "axios";
-import Popup from "reactjs-popup";
 
 const Dashboard = () => {
-  const dispatch = useAppDispatch();
   const [acitiveGames, setActiveGames] = useState<any>(null);
 
   useEffect(() => {
@@ -27,7 +23,6 @@ const Dashboard = () => {
       .post("/game/classic", {})
       .then((resp) => console.log(resp))
       .catch((err) => console.log(err));
-    //dispatch(gameSocketActions.joinRoom(42));
   }
   async function spectateGame(gameIndex: number) {
     console.log("I want to spectate the game gameIndex:", gameIndex);

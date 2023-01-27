@@ -1,4 +1,3 @@
-import React from "react";
 import { useAppSelector } from "../../redux/hooks";
 import Wrapper from "../../components/Wrapper";
 import { selectCurrentUser } from "../../redux/slices/currentUserSlice";

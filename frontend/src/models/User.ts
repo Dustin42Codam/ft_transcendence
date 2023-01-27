@@ -1,4 +1,3 @@
-import { io, Socket } from "socket.io-client";
 export class User {
   constructor(
     public chatSocketId: string,

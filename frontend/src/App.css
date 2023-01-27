@@ -63,12 +63,3 @@ p {
 .footer {
   flex: 0 0 50px;
 }
-/*
-h2 {
-  font-weight: bold;
-  display: grid;
-  font-family: "Studio Sans", sans-serif;
-  background-color: rgb(16, 16, 20);
-  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-}
-*/

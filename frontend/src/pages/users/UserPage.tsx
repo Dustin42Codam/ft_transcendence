@@ -11,7 +11,6 @@ import { selectCurrentUser } from "../../redux/slices/currentUserSlice";
 import UserStats from "../../components/UserStats";
 import UserMatchHistory from "../../components/UserMatchHistory";
 import { socketActions } from "../../redux/slices/socketSlice";
-import { selectDirectChats } from "../../redux/slices/chatsSlice";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import store from "../../redux/store";

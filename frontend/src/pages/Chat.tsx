@@ -50,7 +50,6 @@ const Chat = () => {
 
   useEffect(() => {
     fetchMessages();
-    // divRef.scrollIntoView({ behavior: 'smooth' });
     dummy?.current?.scrollIntoView({
       behavior: "smooth",
       block: "end",

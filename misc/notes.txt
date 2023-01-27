@@ -1,6 +1,8 @@
 
 todo:
 
+	-	rm friendrequest slice
+	-	add toasts to user page
 	-	create protected chat without password bug
 	+	change channel password bug
 	+	enter protected channel bug
