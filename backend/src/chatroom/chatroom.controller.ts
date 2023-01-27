@@ -202,18 +202,10 @@ export class ChatroomController {
       if (!body.password) {
 		    throw new BadRequestException("You need password to join a PROTECTED chatroom.");
 	    }
-		const hashword = await this.chatroomService.hashPassword(body.password);
-		console.log("🚀 ~ file: chatroom.controller.ts:206 ~ ChatroomController ~ joinChatroom ~ body.password", body.password)
-      console.log("🚀 ~ file: chatroom.controller.ts:207 ~ ChatroomController ~ joinChatroom ~ hashword", hashword)
-	  console.log("🚀 ~ file: chatroom.controller.ts:209 ~ ChatroomController ~ joinChatroom ~ chatroom.password", chatroom.password)
-	  bcrypt.compare(chatroom.password, hashword, (error, result) => {
-		if (error || !result) throw new BadRequestException("The password is incorrect");
-	  console.log("🚀 ~ file: chatroom.controller.ts:211 ~ ChatroomController ~ bcrypt.compare ~ result", result)
-	  console.log("🚀 ~ file: chatroom.controller.ts:211 ~ ChatroomController ~ bcrypt.compare ~ result", typeof(result))
-	  })
-    //   if (hashword !== chatroom.password) {
-		    // throw new BadRequestException("The password is incorrect");
-	    // }
+	  const isPasswordMatching = await bcrypt.compare(body.password, chatroom.password);
+	  if (!isPasswordMatching) {
+		  throw new BadRequestException("The password is incorrect");
+	  }
     }
     if (member) {
       member.status = MemberStatus.ACTIVE
