@@ -1,12 +1,13 @@
 
 todo:
-	-	create protected chat without password bug
-
-	-	add toasts to user page
+	+	create protected chat without password bug
 
 	-	double rendering toasts in chat ui
 
+	-	add toasts to user page
+
 	-	join chat bug
+
 	-	leave chat toast bug
 
 	-	2fa back button

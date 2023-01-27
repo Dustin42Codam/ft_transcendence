@@ -56,6 +56,7 @@ function ChatUserList(props: any) {
         id: currentChat.id,
       })
     );
+//   }, [chatType]);
   }, [rerender, chatType]);
 
   async function leaveChannel() {

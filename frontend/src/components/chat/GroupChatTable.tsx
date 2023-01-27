@@ -91,7 +91,7 @@ const GroupChatTable = () => {
   */
   const renderedChats = groupChats.map((chat: Chats, index: number) => (
     <div
-      key={chat.id}
+      key={index}
       className="chatRow"
       onClick={() => handleClick(chat.name, index)}
     >
