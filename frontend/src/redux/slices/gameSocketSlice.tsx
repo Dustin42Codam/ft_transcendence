@@ -55,6 +55,7 @@ export interface GameState {
   player2Moved: string;
   spectator?: userInRoom;
   notificatoin: string;
+	pending: boolean;
 }
 
 export const initialState: GameState = {
@@ -79,6 +80,7 @@ export const initialState: GameState = {
     speed: 2,
   },
   notificatoin: "",
+	pending: false,
 };
 
 const gameSocketSlice = createSlice({
@@ -167,6 +169,10 @@ const gameSocketSlice = createSlice({
       state.ball.directionX = action.payload.direction;
       state.ball.positionX = action.payload.fieldWidth;
       state.ball.positionY = action.payload.fieldHeight;
+      return;
+    },
+    requestBallReset: (state, action: PayloadAction<any>) => {
+			state.pending = true;
       return;
     },
     hitWall: (state, action: PayloadAction<number>) => {

@@ -40,24 +40,9 @@ interface JoinGameRoomDTO {
   spectator?: userInRoom;
 }
 
-function playGame() {
-	//BALL//
-	//HitWall
-	//HitBat
-	//reset
-	//HitPowerUp
-	//BAT
-	//checkpower up timer
-	//moveUp <- done
-	//moveDown <- done
-	//What is power up?
-	//
-	//
-	//
-	//events that can happen here we need to see if a socket disconnects then the winer is the playe who disconected last
-	//
-}
 
+const activeGames: any = [];//every time the is a new active game I am going to add it here
+//loop over this
 
 @WebSocketGateway(3002, {
   namespace: "game",
@@ -112,7 +97,6 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 	//we can also pass the player in here
   @SubscribeMessage(GameroomEvents.JoinGameRoom)
   async handelJoinRoom(client: Socket, payload: string): Promise<void> {
-		//while (1) {}
 
 		const gameRoomId = payload;
 
@@ -123,7 +107,7 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 		const userId = await this.userService.getUserFromClient(client);
 		const user = await this.userService.getUserById(userId);
 		const game = await this.gameService.getGameById(Number(gameRoomId));
-		let ball = {positionX: 650 , positionY: 350, directionX: 1, directionY: -1, width: 50, height: 50, speed: 1};
+		let ball = {positionX: 650 , positionY: 350, directionX: 1, directionY: -1, width: 20, height: 20, speed: 1};
 
 		if (game != null) {
 			if (game.player_1 != userId || game.player_2 != userId) {
@@ -144,6 +128,7 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 					this.io.to(gameRoomId).emit(GameroomEvents.JoinGameRoomSuccess, joinGameDTO);
 					this.io.to(gameRoomId).emit(GameroomEvents.GameRoomNotification, `Player 1: ${user.display_name}`);
 				} else if (clientInRoom == 2) {
+					this.logger.log(`active games: ${activeGames.length} `);
 					this.logger.log(`player 2 ${client.id} wants to join game`);
 					let player1: userInRoom;
 					let player2: userInRoom;

@@ -7,6 +7,7 @@ enum GameroomEvents {
   GetScore = "get_score",
   GetBall = "get_ball",
   ResetBall = "reset_ball",
+  RequestBallReset = "request_ball_reset",
   HitWall = "hit_wall",
   JoinGameRoom = "join_game_room",
   JoinGameRoomSuccess = "join_game_room_success",

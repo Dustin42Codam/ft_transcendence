@@ -75,6 +75,9 @@ class Ball extends MoveableObject {
   //this needs to be tirgered once score and once game starts
   //(canvasX, canvasY, direction value
   reset(fieldWidth: number, fieldHeight: number, directionValue: number) {
+		//maybe dispatch and make a promise?
+		//
+
     this.positionX = fieldWidth - this.width / 2;
     this.positionY = fieldHeight - this.height / 2;
     this.directionX = directionValue;
@@ -135,7 +138,9 @@ class Ball extends MoveableObject {
     ctx: CanvasRenderingContext2D,
     batP1: Bat,
     batP2: Bat,
-    powerUp: PowerUp
+    powerUp: PowerUp,
+		dt: any,
+		fps: any,
   ) {
     this.hitWall(fieldHeight);
     if (this.directionX < 0) {
@@ -145,7 +150,7 @@ class Ball extends MoveableObject {
       this.hitPowerUp(powerUp, batP1, fieldWidth, fieldHeight);
       this.hitBat(batP2);
     }
-    this.move(this.speed);
+		this.move(this.speed * dt);
     this.draw(ctx);
   }
 }
@@ -199,7 +204,7 @@ class Bat extends MoveableObject {
   startPowerUp(fieldHeight: number) {
     this.powerUpTimer = 600;
     this.powerUpActive = true;
-    var newSize = 200;
+    let newSize = 200;
     if (this.positionY < (this.powerUpBatHeight - this.normalBatHeight) / 2)
       this.positionY = 0;
     else if (
@@ -235,8 +240,8 @@ class PowerUp extends MoveableObject {
   }
 
   setPosistion(fieldWidth: number, fieldHeight: number) {
-    var posY = Math.floor(Math.random() * fieldHeight - this.height);
-    var posX = Math.floor(
+    let posY = Math.floor(Math.random() * fieldHeight - this.height);
+    let posX = Math.floor(
       ((Math.random() * fieldWidth) / 3) * 2 + (1 / 6) * fieldWidth
     );
     this.positionX = posX;
@@ -254,11 +259,6 @@ class PowerUp extends MoveableObject {
   }
 }
 
-//**->	getGame
-//canvas width
-//ball width and hieght
-//**->
-
 class GameState {
   scoreP1: number;
   scoreP2: number;
@@ -272,6 +272,9 @@ class GameState {
   height: number;
   BatP1up: boolean;
   BatP1down: boolean;
+	reduxInteralState: any;
+	dt: any;
+	fps: any;
 
   constructor(canvas: HTMLCanvasElement, gameState: any) {
     if (!canvas || !canvas.getContext)
@@ -279,6 +282,7 @@ class GameState {
     this.scoreP1 = 0;
     this.scoreP2 = 0;
     this.frame = 0;
+		this.reduxInteralState = gameState;
     this.batP1 = new Bat(
       gameState.player1.bat.X,
       gameState.player1.bat.Y,
@@ -301,16 +305,13 @@ class GameState {
     this.BatP1down = false;
   }
 
-  //TODO
-  //backend
   score() {
     if (this.ball.positionX + this.ball.width < 0) {
       this.scoreP2 += 1;
-      this.ball.reset(this.width, this.height, -1);
-      console.log();
+			this.ball = new Ball(this.reduxInteralState.ball);
     } else if (this.ball.positionX > this.width) {
       this.scoreP1 += 1;
-      this.ball.reset(this.width, this.height, 1);
+			this.ball = new Ball(this.reduxInteralState.ball);
       console.log(
         "P1 Scored\nP1 " + this.scoreP1 + " - " + this.scoreP2 + " P2\n\n"
       );
@@ -329,7 +330,9 @@ class GameState {
       this.ctx,
       this.batP1,
       this.batP2,
-      this.powerUp
+      this.powerUp,
+			this.dt,
+			this.fps
     ); //send to to spect
   }
   listeScoer() {
@@ -377,7 +380,6 @@ const Game = (props: any) => {
         (function loop() {
           timer = setTimeout(() => {
             gameState = store.getState().gameSocket;
-            console.log("looping");
             if (!gameState.isConnected) {
               theGameFrame!.innerHTML =
                 "<h1>Waiting for connection to game server</h1>";
@@ -411,7 +413,6 @@ const Game = (props: any) => {
         })();
       });
       const datas = await dataNeedToStartTheGame;
-      console.log("bye there");
     };
     waitForTheGameToStart().then(() => {
       clearTimeout(timer);
@@ -489,8 +490,8 @@ const Game = (props: any) => {
       });
       //maybe here we can send to the back end start game
       //3 2 1
-      console.log("balls x and Y", game.ball);
       //game.ball = gameState.ball;
+				let lastLoop:any = new Date();
       const startAnimation = () => {
         //function that gets the current bat positions, ball, score
         gameState = store.getState().gameSocket;
@@ -517,6 +518,12 @@ const Game = (props: any) => {
           }
         }
 
+				let thisLoop:any = new Date();
+				let fps:any = 1000 / (thisLoop - lastLoop);
+				let dt:any = 150 / fps;
+				lastLoop = thisLoop;
+				game.dt = dt;
+				game.fps = fps;
         //getBall();
         game.animation();
         game.score();

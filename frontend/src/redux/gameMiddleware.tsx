@@ -134,6 +134,9 @@ const gameSocketMiddleware: Middleware = (store) => {
       if (gameSocketActions.leaveRoom.match(action)) {
         gameSocket.emit(GameEvent.LeaveGameRoom, action.payload);
       }
+      if (gameSocketActions.requestBallReset.match(action)) {
+        gameSocket.emit(GameEvent.RequestBallReset, action.payload);
+      }
     }
     next(action);
   };
