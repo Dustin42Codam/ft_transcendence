@@ -16,6 +16,7 @@ import { Link } from "react-router-dom";
 import {
   fetchCurrentMember,
   selectCurrentMember,
+  updateCurrentChatPassword,
   updateCurrentChatType,
 } from "../../redux/slices/currentMemberSlice";
 import {
@@ -34,8 +35,6 @@ function ChatUserList(props: any) {
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const chatStatus = useAppSelector((state) => state.chats.status);
-  const chatError = useAppSelector((state) => state.chats.error);
 
   const [chatType, setChatType] = useState("");
   const [password, setPassword] = useState("");
@@ -453,13 +452,21 @@ function ChatUserList(props: any) {
   }
 
   async function updateChannelTypeOrPassword() {
-    chatType.length &&
+    if (chatType !== currentChat.type) {
+		dispatch(
+			updateCurrentChatType({
+				id: currentChat.id,
+				type: chatType,
+			})
+		);
+	}
+
+    password.length &&
       dispatch(
-        updateCurrentChatType({
+        updateCurrentChatPassword({
           id: currentChat.id,
-          type: chatType,
-          password,
-          passwordConfirm,
+          password: password,
+          passwordConfirm: passwordConfirm,
         })
       );
   }

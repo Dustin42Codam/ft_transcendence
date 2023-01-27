@@ -45,8 +45,10 @@ export const updateCurrentChatType = createAsyncThunk(
     console.log("🚀 ~ file: currentMemberSlice.ts:45 ~ data", data);
     const toastId = toast.loading(`Updating channel data...`);
 
+	
+
     if (
-      data.type !== ChatroomType.PUBLIC &&
+      data.type === ChatroomType.PROTECTED &&
       data.password?.length &&
       data.password !== data.passwordConfirm
     ) {
@@ -73,6 +75,69 @@ export const updateCurrentChatType = createAsyncThunk(
       .then((ret) => {
         toast.update(toastId, {
           render: `Channel data updated!`,
+          type: "success",
+          isLoading: false,
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+      })
+      .catch((error: any) => {
+        toast.update(toastId, {
+          render: `${error.response.data.message}`,
+          type: "error",
+          position: "top-right",
+          autoClose: 5000,
+          isLoading: false,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+      });
+    return data.type;
+  }
+);
+
+export const updateCurrentChatPassword = createAsyncThunk(
+  "currentMember/updateCurrentChatPassword",
+  async (data: any) => {
+    const toastId = toast.loading(`Updating channel data...`);
+
+    if (
+      data.type === ChatroomType.PROTECTED &&
+      data.password?.length &&
+      data.password !== data.passwordConfirm
+    ) {
+      toast.update(toastId, {
+        render: `Passwords didn't match!`,
+        type: "error",
+        position: "top-right",
+        autoClose: 5000,
+        isLoading: false,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+      return;
+    }
+    await axios
+      .post(`chatroom/password/id/${data.id}`, {
+        password: data.password,
+      })
+      .then((ret) => {
+        toast.update(toastId, {
+          render: `Channel password updated!`,
           type: "success",
           isLoading: false,
           position: "top-right",
@@ -137,6 +202,21 @@ const currentMemberSlice = createSlice({
         state.currentMember.chatroom.type = action.payload;
       })
       .addCase(updateCurrentChatType.rejected, (state: any, action) => {
+        state.status = "failed";
+        state.error = action.error.message;
+      })
+      .addCase(updateCurrentChatPassword.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(updateCurrentChatPassword.fulfilled, (state, action) => {
+        console.log(
+          "🚀 ~ file: currentMemberSlice.ts:214 ~ .addCase ~ action",
+          action
+        );
+        state.status = "succeeded";
+        // state.currentMember.chatroom.password = action.payload;
+      })
+      .addCase(updateCurrentChatPassword.rejected, (state: any, action) => {
         state.status = "failed";
         state.error = action.error.message;
       });

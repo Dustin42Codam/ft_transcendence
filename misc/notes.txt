@@ -1,8 +1,9 @@
 
 todo:
 
-	-	enter protected channel bug
 	-	change channel password bug
+	+	enter protected channel bug
+		->	use bcrypt.compare() instead of directly compare hashed passwords
 	+	remove chat bug
 	-	join chat bug
 	-	leave chat toast bug
