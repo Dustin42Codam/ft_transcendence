@@ -1,17 +1,3 @@
-.chat-user-list-grid {
-  /* display: grid; */
-  /* grid-template-columns: 20%; */
-  /* grid-template-rows: 20%; */
-  /* grid-template-rows: 20% 20% 20% 20% 20%; */
-  /* width: 1000px; */
-  /* align-items: end; */
-  /* justify-content: space-between; */
-}
-
-.chat-user-list-box :first-child {
-  /* align-self: center; */
-}
-
 .member-avatar {
   height: 5vh;
   width: 5vh;
@@ -26,7 +12,6 @@
   color: black;
   background-color: #cfcece;
   align-self: center;
-  /* border: #cfcece solid 3px; */
 }
 
 .member-link:hover {
@@ -53,7 +38,6 @@
 .popup-content {
   margin: auto;
   background: rgb(255, 255, 255);
-  /* width: 80%; */
   width: 600px;
   height: 500px;
   padding: 5px;

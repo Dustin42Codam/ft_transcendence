@@ -1,4 +1,3 @@
-import React from "react";
 import { useNavigate } from "react-router-dom";
 import CastleIcon from "@mui/icons-material/Castle";
 import PublicIcon from "@mui/icons-material/Public";

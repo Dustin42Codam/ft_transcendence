@@ -30,7 +30,6 @@ function ChatUserList(props: any) {
   );
   const currentUser = useAppSelector(selectCurrentUser);
   const chatMembers = useAppSelector(selectAllChatMembers);
-  const [newUserName, setNewUserName] = useState("");
   const [rerender, setRerender] = useState(true);
 
   const dispatch = useAppDispatch();
@@ -64,7 +63,7 @@ function ChatUserList(props: any) {
       (m: any) => m.user.display_name === currentUser.display_name
     );
 
-    const id = toast.loading(`Adding ${newUserName}...`);
+    const id = toast.loading(`Leaving channel...`);
 
     await axios
       .post(`member/leave/id/${member[0].id}`)
@@ -545,7 +544,6 @@ function ChatUserList(props: any) {
           {currentMember?.role === "owner" && (
             <Popup
               trigger={<button>Settings</button>}
-              // modal
               nested
             >
               {

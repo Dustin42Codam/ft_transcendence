@@ -105,8 +105,6 @@ const ChatCreate = () => {
             Password
           </label>
 
-          {/* <TextInput id="passwordInput" type="password" setter={setPassword} /> */}
-
           <input
             type="password"
             id="passwordInput"
