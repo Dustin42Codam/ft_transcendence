@@ -6,15 +6,19 @@ import { UseGuards } from "@nestjs/common";
 import { Namespace, Server, Socket } from "socket.io";
 import { Logger, Req } from "@nestjs/common";
 
-interface BatMove {
-	gameRoomId: string;
-	BatX: number;
-	BatY: number;
-}
-
 interface Bat {
 	X: number;
 	Y: number;
+}
+
+interface BatMove {
+	gameRoomId: string;
+	bat: Bat;
+}
+
+interface Player {
+	displayName: string;
+	bat: Bat;
 }
 
 interface Ball {
@@ -27,40 +31,47 @@ interface Ball {
 	speed: number;
 }
 
-interface userInRoom {
-	displayName: string;
-	bat?: Bat;
-}
-
-interface JoinGameRoomDTO {
-  gameRoomId: string;
-	ball: Ball;
-  player1?: userInRoom;
-  player2?: userInRoom;
-  spectator?: userInRoom;
-}
-
-
 interface GamePhysics {
 	ball: Ball;
-	bat1: Bat;
-	bat2: Bat;
+	player1: Player;
+	player2: Player;
 	score: Array<number>;
-	status: string;
-}
-
-interface Players {
-	displayName: string;
-	bat: Bat;
 }
 
 interface GameRoom {
-	gameRoomId: number;
+	gameRoomId: string;
 	gamePhysics: GamePhysics;
-	visibility: string;
-	players: Array<Players>;
-	spectators: Array<string>;
 }
+
+const defaultGame: GameRoom = {
+	gameRoomId: "-1",
+	gamePhysics: {
+		ball: {
+			positionX: -1,
+			positionY: -1,
+			directionX: -1,
+			directionY: -1,
+			width: -1,
+			height: -1,
+			speed: -1,
+		},
+		player1: {
+			displayName: "",
+			bat: {
+				X: -1,	
+				Y: -1,	
+			},
+		},
+		player2: {
+			displayName: "",
+			bat: {
+				X: -1,	
+				Y: -1,	
+			},
+		},
+		score: [0, 0],
+	}
+};
 
 const activeGames: Array<GameRoom> = [];
 
@@ -79,11 +90,11 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 
   afterInit(server: Server) {
     this.logger.log("Game gateway: game namespace socket server is running");
+		this.physicLoop(this.logger, this.io);
   }
 
   async handleConnection(client): Promise<void> {
 		this.logger.log(`clienet: ${client.id} connected`);
-		this.physicLoop(this.logger, this.io);
 		//tmp gurad
     // await this.userService.getUserFromClient(client);
 		// console.log(`game client ${client.id} conected`);
@@ -97,14 +108,11 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 
 	//physic loop
 	async physicLoop(logger: any, io: any): Promise<void>  {
-		//15ms loop to all the clinets to update their state
 		function test() {
-			//logger.log(`active game count: ${activeGames.length}`);
 			setTimeout(() => {
-				for (let i = 0; i > activeGames.length; i++) {
-					logger.log(`sending state to ${activeGames.length}`);
-					io.emit("ping", "hi");
-				}
+				activeGames.map((game: GameRoom) => {
+					io.to(game.gameRoomId).emit(GameroomEvents.PhysicsLoop, game.gamePhysics);
+				});
 				test();
 			}, 15);
 		}
@@ -117,37 +125,41 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 		const gameRoomId = payload;
 
     client.join(gameRoomId);
-		const len = (await this.io.in(gameRoomId).fetchSockets()).length;
-		const clientInRoom = (await this.io.in(gameRoomId).fetchSockets()).length;
+		const clientsInRoom = (await this.io.in(gameRoomId).fetchSockets()).length;
 
 		const userId = await this.userService.getUserFromClient(client);
 		const user = await this.userService.getUserById(userId);
 		const game = await this.gameService.getGameById(Number(gameRoomId));
-		let ball = {positionX: 650 , positionY: 350, directionX: 1, directionY: -1, width: 20, height: 20, speed: 1};
+		//here we could push to game state if a game of this id does not exists in the localState
+		if (activeGames.length == 0) {
+			activeGames.push();
+		}
 
+		/*
 		if (game != null) {
 			if (game.player_1 != userId || game.player_2 != userId) {
-				if (clientInRoom == 1) {
+				if (clientsInRoom == 1) {
 					this.logger.log(`player 1 ${client.id} wants to join game`);
-					let player: userInRoom;
+					let player: string;
 					let joinGameDTO: JoinGameRoomDTO;
 
-					joinGameDTO = {...joinGameDTO, ball: ball};
+					joinGameDTO = {gameRoomId: gameRoomId};
 					if (userId == game.player_1) {
+						//change The game state
 						player = { displayName: user.display_name, bat: {X: 50, Y:270}};
-						joinGameDTO = {...joinGameDTO, gameRoomId: gameRoomId, player1: player};
+						joinGameDTO = {...joinGameDTO, player1: player};
 					} else {
 						player = { displayName: user.display_name, bat: {X: 1250, Y:270}};
-						joinGameDTO = {...joinGameDTO, gameRoomId: gameRoomId, player2: player};
+						joinGameDTO = {...joinGameDTO, player2: player};
 					}	
 					this.logger.debug("this is sent to player 1",joinGameDTO);
 					this.io.to(gameRoomId).emit(GameroomEvents.JoinGameRoomSuccess, joinGameDTO);
 					this.io.to(gameRoomId).emit(GameroomEvents.GameRoomNotification, `Player 1: ${user.display_name}`);
-				} else if (clientInRoom == 2) {
+				} else if (clientsInRoom == 2) {
 					this.logger.log(`active games: ${activeGames.length} `);
 					this.logger.log(`player 2 ${client.id} wants to join game`);
-					let player1: userInRoom;
-					let player2: userInRoom;
+					let player1: string;
+					let player2: string;
 
 					if (userId == game.player_1) {
 						const userAlreadyInGameRoom = await this.userService.getUserById(game.player_2);
@@ -158,23 +170,16 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 						player1 = { displayName: userAlreadyInGameRoom.display_name, bat: {X: 50, Y:270}};
 						player2 = { displayName: user.display_name, bat: {X: 1250, Y:270}};
 					}
-					const joinGameDTO = {ball: ball, gameRoomId: gameRoomId, player1: player1, player2: player2}
-					/*
-interface gameState {
-	ball: Ball;
-	bat1: Bat;
-	bat2: Bat;
-	score: Array<number>;
-	status: string;
-}
-					*/
+					const joinGameDTO = {gameRoomId: gameRoomId, player1: player1, player2: player2}
 					//push the game to active games here!
+					//add the game to our memory varible
 					//activeGames.push({ball: ball, bat1:});
 					this.logger.debug("this is sent to player 2",joinGameDTO);
 					this.io.to(gameRoomId).emit(GameroomEvents.JoinGameRoomSuccess, joinGameDTO);
 					this.io.to(gameRoomId).emit(GameroomEvents.GameRoomNotification, `Player 2: ${user.display_name}`);
 				}
 			} else {
+				//wait for the game to start
 				this.logger.log(`${client.id} wants to spectate the game`);
 				const user1 = await this.userService.getUserById(game.player_1);
 				const user2 = await this.userService.getUserById(game.player_2);
@@ -187,6 +192,7 @@ interface gameState {
 				this.io.to(gameRoomId).emit(GameroomEvents.GameRoomNotification, `spectator ${user.display_name} join`);
 			}
 		}
+		*/
 	}
 
 	//TODO make these change the gameState from the gameRoomId In active games

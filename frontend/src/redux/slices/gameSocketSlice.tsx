@@ -1,74 +1,71 @@
 import { createAsyncThunk, PayloadAction, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
-interface resetBallDto {
-  fieldWidth: number;
-  fieldHeight: number;
-  direction: number;
-}
-
-interface BatMove {
-  GameRoomId: number;
-  BatX: number;
-  BatY: number;
-}
-
 interface Bat {
-  X: number;
-  Y: number;
+	X: number;
+	Y: number;
 }
 
 interface Ball {
   positionX: number;
   positionY: number;
-  directionX: number;
-  directionY: number;
-  width: number;
-  height: number;
-  speed: number;
+	directionX: number;
+	directionY: number;
+	width: number;
+	height: number;
+	speed: number;
 }
 
-interface userInRoom {
-  displayName: string;
-  bat?: Bat;
+interface Player {
+	displayName: string;
+	bat: Bat;
 }
 
 interface JoinGameRoomDTO {
-  gameRoomId: number;
-  ball: Ball;
-  player1?: userInRoom;
-  player2?: userInRoom;
-  spectator?: userInRoom;
+  gameRoomId: string;
+  player1?: Player;
+  player2?: Player;
+}
+
+interface GamePhysics {
+	ball: Ball;
+	bat1: Bat;
+	bat2: Bat;
+	score: Array<number>;
+	status: string;
+}
+
+interface GameRoom {
+	gameRoomId: number;
+	gamePhysics: GamePhysics;
+	visibility: string;
+	players1: Player;
+	players2: Player;
 }
 
 export interface GameState {
   isEstablishingConnection: boolean;
-  isJoning: boolean;
   isConnected: boolean;
-  gameRoomId: number;
+  isJoning: boolean;
+  gameRoomId: string;
   ball: Ball;
-  player1?: userInRoom;
-  player2?: userInRoom;
+  player1?: Player;
+  player2?: Player;
   scoreP1: number;
   scoreP2: number;
-  player1Moved: string;
-  player2Moved: string;
-  spectator?: userInRoom;
+  spectator?: string;
   notificatoin: string;
-  pending: boolean;
 }
 
 export const initialState: GameState = {
   isEstablishingConnection: false,
-  isJoning: false,
   isConnected: false,
-  gameRoomId: -1,
+  isJoning: false,
+  gameRoomId: "-1",
   player1: undefined,
   player2: undefined,
   scoreP1: 0,
   scoreP2: 0,
-  player1Moved: "",
-  player2Moved: "",
   spectator: undefined,
   ball: {
     positionX: -1,
@@ -80,7 +77,6 @@ export const initialState: GameState = {
     speed: 2,
   },
   notificatoin: "",
-  pending: false,
 };
 
 const gameSocketSlice = createSlice({
@@ -106,8 +102,6 @@ const gameSocketSlice = createSlice({
       return;
     },
     joinRoomSuccess: (state, action: PayloadAction<JoinGameRoomDTO>) => {
-      //console.log("this is payload", action.payload);
-      state.ball = action.payload.ball;
       console.log(
         "Joined a room: ",
         action.payload,
@@ -119,9 +113,6 @@ const gameSocketSlice = createSlice({
       }
       if (action.payload.player2 != undefined && state.player2 == undefined) {
         state.player2 = action.payload.player2;
-      }
-      if (action.payload.spectator != undefined) {
-        state.spectator = action.payload.spectator;
       }
     },
     leaveRoom: (state, action: PayloadAction<number>) => {
@@ -137,47 +128,21 @@ const gameSocketSlice = createSlice({
     moveBatP2: (state, action: PayloadAction<any>) => {
       return;
     },
-    clearBatP1: (state) => {
-      state.player1Moved = "";
-      return;
-    },
-    clearBatP2: (state) => {
-      state.player2Moved = "";
-      return;
-    },
-    getBatP1: (state, action: PayloadAction<any>) => {
-      state.player1Moved = action.payload;
-      return;
-    },
-    getBatP2: (state, action: PayloadAction<any>) => {
-      state.player2Moved = action.payload;
-      return;
-    },
-    getScore: (state, action: PayloadAction<any>) => {
-      return;
-    },
-    getBall: (state, action: PayloadAction<any>) => {
-      return;
-    },
-    serverStartedTheGame: (state, action: PayloadAction<any>) => {
-      return;
-    },
-    clientWantsToStartGame: (state, action: PayloadAction<any>) => {
-      return;
-    },
-    resetBall: (state, action: PayloadAction<resetBallDto>) => {
-      state.ball.directionX = action.payload.direction;
-      state.ball.positionX = action.payload.fieldWidth;
-      state.ball.positionY = action.payload.fieldHeight;
-      return;
-    },
-    requestBallReset: (state, action: PayloadAction<any>) => {
-      state.pending = true;
-      return;
-    },
-    hitWall: (state, action: PayloadAction<number>) => {
-      //TODO change the direction of the ball
-      //state.ball = action.payload;
+
+		/*
+	gameRoomId: number;
+	gamePhysics: GamePhysics;
+	visibility: string;
+	players1: Player;
+	players2: Player;
+ */
+		//TODO do not start if both players are not in the room
+    physicsLoop: (state, action: PayloadAction<GamePhysics>) => {
+      state.ball = action.payload.ball;
+      state.player1!.bat = action.payload.bat1;
+      state.player2!.bat = action.payload.bat2;
+      state.scoreP1 = action.payload.score[0];
+      state.scoreP2 = action.payload.score[1];
       return;
     },
     ping: (state, action: PayloadAction<number>) => {

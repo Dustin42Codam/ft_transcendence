@@ -3,43 +3,60 @@ import { io, Socket } from "socket.io-client";
 import { gameSocketActions } from "./slices/gameSocketSlice";
 import GameEvent from "./gameEvent";
 
-interface JoinGameRoom {
-  GameRoomId: number;
-  gamer: userInRoom;
-}
-
 interface Bat {
-  X: number;
-  Y: number;
-}
-
-interface resetBallDto {
-  fieldWidth: number;
-  fieldHeight: number;
-  direction: number;
+	X: number;
+	Y: number;
 }
 
 interface Ball {
   positionX: number;
   positionY: number;
-  directionX: number;
-  directionY: number;
-  width: number;
-  height: number;
-  speed: number;
+	directionX: number;
+	directionY: number;
+	width: number;
+	height: number;
+	speed: number;
 }
 
-interface userInRoom {
-  displayName: string;
-  bat?: Bat;
+interface Player {
+	displayName: string;
+	bat: Bat;
 }
 
 interface JoinGameRoomDTO {
-  gameRoomId: number;
+  gameRoomId: string;
+  player1?: Player;
+  player2?: Player;
+}
+
+interface GamePhysics {
+	ball: Ball;
+	bat1: Bat;
+	bat2: Bat;
+	score: Array<number>;
+	status: string;
+}
+
+interface GameRoom {
+	gameRoomId: number;
+	gamePhysics: GamePhysics;
+	visibility: string;
+	players1: Player;
+	players2: Player;
+}
+
+export interface GameState {
+  isEstablishingConnection: boolean;
+  isConnected: boolean;
+  isJoning: boolean;
+  gameRoomId: string;
   ball: Ball;
-  player1?: userInRoom;
-  player2?: userInRoom;
-  spectator?: userInRoom;
+  player1?: Player;
+  player2?: Player;
+  scoreP1: number;
+  scoreP2: number;
+  spectator?: string;
+  notificatoin: string;
 }
 
 const gameSocketMiddleware: Middleware = (store) => {
@@ -65,23 +82,10 @@ const gameSocketMiddleware: Middleware = (store) => {
         store.dispatch(gameSocketActions.connectionEstablished());
         //gameSocket.emit(GameEvent.RequestAllMessages);
       });
-      /*
-			//TODO send bat position 
-      gameSocket.on(GameEvent.ReceiveMessage, (chatMessage: GameMessage) => {
-        store.dispatch(gameSocketActions.receiveMessage({ chatMessage }));
-      });
-		 */
       gameSocket.on(GameEvent.SpectateGameRoom, (spectateGame: any) => {
         //TOAST a Message
         //Join the user to go to the game room
         //store.dispatch(gameSocketActions.joinRoomSuccess(spectateGame));
-      });
-      gameSocket.on(GameEvent.ResetBall, (payload: resetBallDto) => {
-        //this resets the ball
-        store.dispatch(gameSocketActions.resetBall(payload));
-      });
-      gameSocket.on(GameEvent.HitWall, (direction: number) => {
-        store.dispatch(gameSocketActions.hitWall(direction));
       });
       /*
       gameSocket.on(GameEvent.MessageToGameRoom, (messageToGameRoom: any) => {
@@ -96,12 +100,6 @@ const gameSocketMiddleware: Middleware = (store) => {
         }
       );
       //TODO what data do we need in the backend
-      gameSocket.on(GameEvent.GetBatP2, (payload: any) => {
-        store.dispatch(gameSocketActions.getBatP2(payload));
-      });
-      gameSocket.on(GameEvent.GetBatP1, (payload: any) => {
-        store.dispatch(gameSocketActions.getBatP1(payload));
-      });
       gameSocket.on(GameEvent.LeaveGameRoomSuccess, () => {
         store.dispatch(gameSocketActions.leaveRoomSuccess());
       });
@@ -136,9 +134,6 @@ const gameSocketMiddleware: Middleware = (store) => {
       }
       if (gameSocketActions.leaveRoom.match(action)) {
         gameSocket.emit(GameEvent.LeaveGameRoom, action.payload);
-      }
-      if (gameSocketActions.requestBallReset.match(action)) {
-        gameSocket.emit(GameEvent.RequestBallReset, action.payload);
       }
     }
     next(action);

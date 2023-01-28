@@ -15,5 +15,6 @@ enum GameroomEvents {
   ServerStartedTheGame = "server_start_the_game",
   //GameRoomFull = "join_game_room_fail",
   //MessageToGameRoom = "message_to_game_room",
+	PhysicsLoop = "physics_loop",
 }
 export default GameroomEvents;

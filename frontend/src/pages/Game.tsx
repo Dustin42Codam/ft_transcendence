@@ -496,24 +496,21 @@ const Game = (props: any) => {
         //function that gets the current bat positions, ball, score
         gameState = store.getState().gameSocket;
 
+				//TODO replace up and down with just rendering the game state
         if (
           gameState.player1.displayName != currentUser.currentUser.display_name
         ) {
           if (gameState.player1Moved == "up") {
-            dispatch(gameSocketActions.clearBatP1());
             game.batP1.moveUp(10, 5);
           } else if (gameState.player1Moved == "down") {
-            dispatch(gameSocketActions.clearBatP1());
             game.batP1.moveDown(10, 5);
           }
         } else if (
           gameState.player2.displayName != currentUser.currentUser.display_name
         ) {
           if (gameState.player2Moved == "up") {
-            dispatch(gameSocketActions.clearBatP2());
             game.batP2.moveUp(10, 5);
           } else if (gameState.player2Moved == "down") {
-            dispatch(gameSocketActions.clearBatP2());
             game.batP2.moveDown(10, 5);
           }
         }
