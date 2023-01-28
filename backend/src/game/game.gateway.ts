@@ -67,7 +67,7 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 
   async handleConnection(client): Promise<void> {
 		this.logger.log(`clienet: ${client.id} connected`);
-		this.doThis(this.logger, this.io);
+		this.physicLoop(this.logger, this.io);
 		//tmp gurad
     // await this.userService.getUserFromClient(client);
 		// console.log(`game client ${client.id} conected`);
@@ -79,16 +79,18 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 		//if we do this then we do not have to worry about storing the ball
   }
 
-	async doThis(logger: any, io: any): Promise<void>  {
-		//forloop over active games
-		//then emit to every room the game state 
-		//every room has the players and possible spectators
+	//physic loop
+	async physicLoop(logger: any, io: any): Promise<void>  {
+		//15ms loop to all the clinets to update their state
 		function test() {
-			logger.log(`Ping`);
+			logger.log(`active game count: ${activeGames.length}`);
 			setTimeout(() => {
-				io.emit("ping", "hi");
+				for (let i = 0; i > activeGames.length; i++) {
+					logger.log(`sending state to ${activeGames.length}`);
+					io.emit("ping", "hi");
+				}
 				test();
-			}, 1000)
+			}, 15);
 		}
 		test();
 	}
