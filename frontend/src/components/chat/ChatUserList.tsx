@@ -62,30 +62,30 @@ function ChatUserList(props: any) {
     await axios
       .post(`member/leave/id/${member[0].id}`)
       .then((ret) => {
-		toast.success(`You left the chat!`, {
-			position: "top-right",
-			autoClose: 5000,
-			hideProgressBar: false,
-			closeOnClick: true,
-			pauseOnHover: true,
-			draggable: true,
-			progress: undefined,
-			theme: "colored",
-		  });
-		  navigate("/");
+        toast.success(`You left the chat!`, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+        navigate("/");
       })
       .catch((error: any) => {
         console.log(error);
-		toast.error(`${error.response.data.message}`, {
-			position: "top-right",
-			autoClose: 5000,
-			hideProgressBar: false,
-			closeOnClick: true,
-			pauseOnHover: true,
-			draggable: true,
-			progress: undefined,
-			theme: "colored",
-		  });
+        toast.error(`${error.response.data.message}`, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
       });
   }
 
@@ -98,29 +98,29 @@ function ChatUserList(props: any) {
     await axios
       .post(`member/ban/id/${member.id}`)
       .then(() => {
-		toast.success(`${member.user.display_name} banned!`, {
-			position: "top-right",
-			autoClose: 5000,
-			hideProgressBar: false,
-			closeOnClick: true,
-			pauseOnHover: true,
-			draggable: true,
-			progress: undefined,
-			theme: "colored",
-		  });
+        toast.success(`${member.user.display_name} banned!`, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
       })
       .catch((error: any) => {
         console.log(error);
-		toast.error(`${error.response.data.message}`, {
-			position: "top-right",
-			autoClose: 5000,
-			hideProgressBar: false,
-			closeOnClick: true,
-			pauseOnHover: true,
-			draggable: true,
-			progress: undefined,
-			theme: "colored",
-		  });
+        toast.error(`${error.response.data.message}`, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
       });
     setRerender(!rerender);
   }
@@ -129,60 +129,60 @@ function ChatUserList(props: any) {
     await axios
       .post(`member/unban/id/${member.id}`)
       .then(() => {
-		toast.success(`${member.user.display_name} unbanned!`, {
-			position: "top-right",
-			autoClose: 5000,
-			hideProgressBar: false,
-			closeOnClick: true,
-			pauseOnHover: true,
-			draggable: true,
-			progress: undefined,
-			theme: "colored",
-		  });
+        toast.success(`${member.user.display_name} unbanned!`, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
       })
       .catch((error: any) => {
         console.log(error);
-		toast.error(`${error.response.data.message}`, {
-			position: "top-right",
-			autoClose: 5000,
-			hideProgressBar: false,
-			closeOnClick: true,
-			pauseOnHover: true,
-			draggable: true,
-			progress: undefined,
-			theme: "colored",
-		  });
+        toast.error(`${error.response.data.message}`, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
       });
     setRerender(!rerender);
   }
 
   async function makeAdmin(member: any) {
     await axios
-      	.post(`member/makeAdmin/id/${member.id}`)
-		.then(() => {
-		toast.success(`${member.user.display_name} set as admin!`, {
-			position: "top-right",
-			autoClose: 5000,
-			hideProgressBar: false,
-			closeOnClick: true,
-			pauseOnHover: true,
-			draggable: true,
-			progress: undefined,
-			theme: "colored",
-		  });
-    	})
+      .post(`member/makeAdmin/id/${member.id}`)
+      .then(() => {
+        toast.success(`${member.user.display_name} set as admin!`, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+      })
       .catch((error: any) => {
         console.log(error);
-		toast.error(`${error.response.data.message}`, {
-			position: "top-right",
-			autoClose: 5000,
-			hideProgressBar: false,
-			closeOnClick: true,
-			pauseOnHover: true,
-			draggable: true,
-			progress: undefined,
-			theme: "colored",
-		  });
+        toast.error(`${error.response.data.message}`, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
       });
     setRerender(!rerender);
   }
@@ -190,30 +190,30 @@ function ChatUserList(props: any) {
   async function removeAdmin(member: any) {
     await axios
       .post(`member/removeAdmin/id/${member.id}`)
-	  .then(() => {
-		toast.success(`${member.user.display_name} removed as admin!`, {
-			position: "top-right",
-			autoClose: 5000,
-			hideProgressBar: false,
-			closeOnClick: true,
-			pauseOnHover: true,
-			draggable: true,
-			progress: undefined,
-			theme: "colored",
-		  });
-    	})
+      .then(() => {
+        toast.success(`${member.user.display_name} removed as admin!`, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+      })
       .catch((error: any) => {
         console.log(error);
-		toast.error(`${error.response.data.message}`, {
-			position: "top-right",
-			autoClose: 5000,
-			hideProgressBar: false,
-			closeOnClick: true,
-			pauseOnHover: true,
-			draggable: true,
-			progress: undefined,
-			theme: "colored",
-		  });
+        toast.error(`${error.response.data.message}`, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
       });
     setRerender(!rerender);
   }
@@ -221,30 +221,30 @@ function ChatUserList(props: any) {
   async function muteUser(member: any) {
     await axios
       .post(`member/mute/id/${member.id}`)
-	.then(() => {
-		toast.success(`${member.user.display_name} muted!`, {
-			position: "top-right",
-			autoClose: 5000,
-			hideProgressBar: false,
-			closeOnClick: true,
-			pauseOnHover: true,
-			draggable: true,
-			progress: undefined,
-			theme: "colored",
-		  });
-    	})
+      .then(() => {
+        toast.success(`${member.user.display_name} muted!`, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+      })
       .catch((error: any) => {
         console.log(error);
-		toast.error(`${error.response.data.message}`, {
-			position: "top-right",
-			autoClose: 5000,
-			hideProgressBar: false,
-			closeOnClick: true,
-			pauseOnHover: true,
-			draggable: true,
-			progress: undefined,
-			theme: "colored",
-		  });
+        toast.error(`${error.response.data.message}`, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
       });
     setRerender(!rerender);
   }
@@ -252,30 +252,30 @@ function ChatUserList(props: any) {
   async function unmuteUser(member: any) {
     await axios
       .post(`member/unmute/id/${member.id}`)
-	  .then(() => {
-		toast.success(`${member.user.display_name} unmuted!`, {
-			position: "top-right",
-			autoClose: 5000,
-			hideProgressBar: false,
-			closeOnClick: true,
-			pauseOnHover: true,
-			draggable: true,
-			progress: undefined,
-			theme: "colored",
-		  });
-    	})
+      .then(() => {
+        toast.success(`${member.user.display_name} unmuted!`, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+      })
       .catch((error: any) => {
         console.log(error);
-		toast.error(`${error.response.data.message}`, {
-			position: "top-right",
-			autoClose: 5000,
-			hideProgressBar: false,
-			closeOnClick: true,
-			pauseOnHover: true,
-			draggable: true,
-			progress: undefined,
-			theme: "colored",
-		  });
+        toast.error(`${error.response.data.message}`, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
       });
     setRerender(!rerender);
   }
@@ -283,30 +283,30 @@ function ChatUserList(props: any) {
   async function changeOwner(member: any) {
     await axios
       .post(`member/owner/id/${member.id}`)
-	.then(() => {
-		toast.success(`${member.user.display_name} is the new channel owner!`, {
-			position: "top-right",
-			autoClose: 5000,
-			hideProgressBar: false,
-			closeOnClick: true,
-			pauseOnHover: true,
-			draggable: true,
-			progress: undefined,
-			theme: "colored",
-		  });
-    	})
+      .then(() => {
+        toast.success(`${member.user.display_name} is the new channel owner!`, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+      })
       .catch((error: any) => {
         console.log(error);
-		toast.error(`${error.response.data.message}`, {
-			position: "top-right",
-			autoClose: 5000,
-			hideProgressBar: false,
-			closeOnClick: true,
-			pauseOnHover: true,
-			draggable: true,
-			progress: undefined,
-			theme: "colored",
-		  });
+        toast.error(`${error.response.data.message}`, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
       });
     setRerender(!rerender);
   }
@@ -316,117 +316,123 @@ function ChatUserList(props: any) {
       axios
         .post(`chatroom/name/id/${currentChat.id}`, { name: chatName })
         .then(() => {
-			toast.success(`Channel name updated!`, {
-				position: "top-right",
-				autoClose: 5000,
-				hideProgressBar: false,
-				closeOnClick: true,
-				pauseOnHover: true,
-				draggable: true,
-				progress: undefined,
-				theme: "colored",
-			  });
-        	  dispatch(
-        	    socketActions.updateChatName({
-        	      chatRoom: {
-        	        id: currentChat.id,
-        	        name: chatName,
-        	        userId: currentChat.userId,
-        	        type: currentMember.chatroom.type,
-        	        members: chatMembers,
-        	      },
-        		})
-        	);
+          toast.success(`Channel name updated!`, {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+          });
+          dispatch(
+            socketActions.updateChatName({
+              chatRoom: {
+                id: currentChat.id,
+                name: chatName,
+                userId: currentChat.userId,
+                type: currentMember.chatroom.type,
+                members: chatMembers,
+              },
+            })
+          );
         })
         .catch((error: any) => {
           console.log(error);
-		  toast.error(`${error.response.data.message}`, {
-			position: "top-right",
-			autoClose: 5000,
-			hideProgressBar: false,
-			closeOnClick: true,
-			pauseOnHover: true,
-			draggable: true,
-			progress: undefined,
-			theme: "colored",
-		  });
+          toast.error(`${error.response.data.message}`, {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+          });
         });
     } else {
-		toast.error(`You can't give a chat an empty name!`, {
-			position: "top-right",
-			autoClose: 5000,
-			hideProgressBar: false,
-			closeOnClick: true,
-			pauseOnHover: true,
-			draggable: true,
-			progress: undefined,
-			theme: "colored",
-		});
-	}
+      toast.error(`You can't give a chat an empty name!`, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+    }
   }
 
   async function updateChannelTypeOrPassword() {
-	  if (chatType !== 'protected') {
-		  setPassword("");
-		  setPasswordConfirm("");
-		}
+    if (chatType !== "protected") {
+      setPassword("");
+      setPasswordConfirm("");
+    }
     if (chatType !== currentMember.chatroom.type) {
-		dispatch(
-			updateCurrentChatType({
-				id: currentChat.id,
-				password: password,
-				passwordConfirm: passwordConfirm,
-				type: chatType,
-			})
-		);
-		dispatch(socketActions.updateChatType({
-			chatRoom: {
-				id: currentChat.id,
-				name: currentChat.name,
-				userId: currentChat.userId,
-				type: chatType,
-				members: chatMembers,
-			  },
-		}));
-	}
-    if ((chatType === "protected" || currentMember.chatroom.type === 'protected') && password.length) {
-		dispatch(
-			updateCurrentChatPassword({
-				id: currentChat.id,
-				password: password,
-				passwordConfirm: passwordConfirm,
-			})
-			);
-		}
+      dispatch(
+        updateCurrentChatType({
+          id: currentChat.id,
+          password: password,
+          passwordConfirm: passwordConfirm,
+          type: chatType,
+        })
+      );
+      dispatch(
+        socketActions.updateChatType({
+          chatRoom: {
+            id: currentChat.id,
+            name: currentChat.name,
+            userId: currentChat.userId,
+            type: chatType,
+            members: chatMembers,
+          },
+        })
+      );
+    }
+    if (
+      (chatType === "protected" ||
+        currentMember.chatroom.type === "protected") &&
+      password.length
+    ) {
+      dispatch(
+        updateCurrentChatPassword({
+          id: currentChat.id,
+          password: password,
+          passwordConfirm: passwordConfirm,
+        })
+      );
+    }
   }
 
   async function removeMember(member: Member) {
     await axios
       .post(`member/remove/id/${member.id}`)
       .then(() => {
-		toast.success(`You removed ${member.user.display_name} from chat!`, {
-			position: "top-right",
-			autoClose: 5000,
-			hideProgressBar: false,
-			closeOnClick: true,
-			pauseOnHover: true,
-			draggable: true,
-			progress: undefined,
-			theme: "colored",
-		  });
+        toast.success(`You removed ${member.user.display_name} from chat!`, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
       })
       .catch((error: any) => {
         console.log(error);
-		toast.error(`${error.response.data.message}`, {
-			position: "top-right",
-			autoClose: 5000,
-			hideProgressBar: false,
-			closeOnClick: true,
-			pauseOnHover: true,
-			draggable: true,
-			progress: undefined,
-			theme: "colored",
-		  });
+        toast.error(`${error.response.data.message}`, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
       });
     dispatch(
       fetchChatMembers({
@@ -462,10 +468,7 @@ function ChatUserList(props: any) {
           )}
 
           {currentMember?.role === "owner" && (
-            <Popup
-              trigger={<button>Settings</button>}
-              nested
-            >
+            <Popup trigger={<button>Settings</button>} nested>
               {
                 <div className="modal-two">
                   <form>

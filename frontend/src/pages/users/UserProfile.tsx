@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Wrapper from "../../components/Wrapper";
-import {
-  selectCurrentUser,
-} from "../../redux/slices/currentUserSlice";
+import { selectCurrentUser } from "../../redux/slices/currentUserSlice";
 import { Avatar } from "@mui/material";
 import UserFriends from "../../components/UserFriends";
 import { useAppSelector } from "../../redux/hooks";

@@ -69,92 +69,95 @@ export const UserPage = () => {
   }, [userId, friends.length]);
 
   async function addFriend() {
-    await axios.post(`friend/add/id/${userId}`)
-	.then(() => {
-		toast.success(`Added ${user.display_name} as friend!`, {
-			position: "top-right",
-			autoClose: 5000,
-			hideProgressBar: false,
-			closeOnClick: true,
-			pauseOnHover: true,
-			draggable: true,
-			progress: undefined,
-			theme: "colored",
-		  });
-	})
-	.catch((error: any) => {
-		toast.error(`Error: Failed to add ${user.display_name} as friend!`, {
-			position: "top-right",
-			autoClose: 5000,
-			hideProgressBar: false,
-			closeOnClick: true,
-			pauseOnHover: true,
-			draggable: true,
-			progress: undefined,
-			theme: "colored",
-		});
-		console.log("🚀 ~ file: UserPage.tsx ~ addFriend ~ error", error)
-    });
+    await axios
+      .post(`friend/add/id/${userId}`)
+      .then(() => {
+        toast.success(`Added ${user.display_name} as friend!`, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+      })
+      .catch((error: any) => {
+        toast.error(`Error: Failed to add ${user.display_name} as friend!`, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+        console.log("🚀 ~ file: UserPage.tsx ~ addFriend ~ error", error);
+      });
     fetchFriends();
   }
 
   async function removeFriend() {
-    await axios.post(`friend/remove/id/${userId}`)
-	.then(() => {
-		toast.success(`Removed ${user.display_name} as friend!`, {
-			position: "top-right",
-			autoClose: 5000,
-			hideProgressBar: false,
-			closeOnClick: true,
-			pauseOnHover: true,
-			draggable: true,
-			progress: undefined,
-			theme: "colored",
-		  });
-	})
-	.catch((error: any) => {
-		toast.error(`Error: Failed to remove ${user.display_name} as friend!`, {
-			position: "top-right",
-			autoClose: 5000,
-			hideProgressBar: false,
-			closeOnClick: true,
-			pauseOnHover: true,
-			draggable: true,
-			progress: undefined,
-			theme: "colored",
-		});
-		console.log("🚀 ~ file: UserPage.tsx ~ removeFriend ~ error", error)
-    });
+    await axios
+      .post(`friend/remove/id/${userId}`)
+      .then(() => {
+        toast.success(`Removed ${user.display_name} as friend!`, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+      })
+      .catch((error: any) => {
+        toast.error(`Error: Failed to remove ${user.display_name} as friend!`, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+        console.log("🚀 ~ file: UserPage.tsx ~ removeFriend ~ error", error);
+      });
     fetchFriends();
   }
 
   async function blockUser() {
-    await axios.post(`block/add/receiverId/${userId}`)
-	.then(() => {
-		toast.success(`Blocked ${user.display_name}!`, {
-			position: "top-right",
-			autoClose: 5000,
-			hideProgressBar: false,
-			closeOnClick: true,
-			pauseOnHover: true,
-			draggable: true,
-			progress: undefined,
-			theme: "colored",
-		  });
-	})
-	.catch((error: any) => {
-		toast.error(`Error: Failed to block ${user.display_name}!`, {
-			position: "top-right",
-			autoClose: 5000,
-			hideProgressBar: false,
-			closeOnClick: true,
-			pauseOnHover: true,
-			draggable: true,
-			progress: undefined,
-			theme: "colored",
-		});
-		console.log("🚀 ~ file: UserPage.tsx ~ blockUser ~ error", error)
-    });
+    await axios
+      .post(`block/add/receiverId/${userId}`)
+      .then(() => {
+        toast.success(`Blocked ${user.display_name}!`, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+      })
+      .catch((error: any) => {
+        toast.error(`Error: Failed to block ${user.display_name}!`, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+        console.log("🚀 ~ file: UserPage.tsx ~ blockUser ~ error", error);
+      });
     fetchFriends();
     setBlocked(true);
   }
@@ -162,31 +165,31 @@ export const UserPage = () => {
   async function unblockUser() {
     await axios
       .post(`block/remove/receiverId/${userId}`)
-	  .then(() => {
-		toast.success(`Unblocked ${user.display_name}!`, {
-			position: "top-right",
-			autoClose: 5000,
-			hideProgressBar: false,
-			closeOnClick: true,
-			pauseOnHover: true,
-			draggable: true,
-			progress: undefined,
-			theme: "colored",
-		  });
-	})
-	.catch((error: any) => {
-		toast.error(`Error: Failed to unblock ${user.display_name}!`, {
-			position: "top-right",
-			autoClose: 5000,
-			hideProgressBar: false,
-			closeOnClick: true,
-			pauseOnHover: true,
-			draggable: true,
-			progress: undefined,
-			theme: "colored",
-		});
-		console.log("🚀 ~ file: UserPage.tsx ~ unblockUser ~ error", error)
-    });
+      .then(() => {
+        toast.success(`Unblocked ${user.display_name}!`, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+      })
+      .catch((error: any) => {
+        toast.error(`Error: Failed to unblock ${user.display_name}!`, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+        console.log("🚀 ~ file: UserPage.tsx ~ unblockUser ~ error", error);
+      });
     fetchFriends();
     setBlocked(false);
   }
