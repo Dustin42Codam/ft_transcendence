@@ -41,17 +41,33 @@ interface JoinGameRoomDTO {
 }
 
 
-const activeGames: any = [];//every time the is a new active game I am going to add it here
-//loop over this
+interface GamePhysics {
+	ball: Ball;
+	bat1: Bat;
+	bat2: Bat;
+	score: Array<number>;
+	status: string;
+}
+
+interface Players {
+	displayName: string;
+	bat: Bat;
+}
+
+interface GameRoom {
+	gameRoomId: number;
+	gamePhysics: GamePhysics;
+	visibility: string;
+	players: Array<Players>;
+	spectators: Array<string>;
+}
+
+const activeGames: Array<GameRoom> = [];
 
 @WebSocketGateway(3002, {
   namespace: "game",
 })
 export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
-	//one would be pshycics timer
-	//one would be server timer
-	//loop over every client
-	//borads case messages to every connected clinet?
   constructor(
 		private readonly userService: UserService,
 		private readonly gameService: GameService,
@@ -83,7 +99,7 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 	async physicLoop(logger: any, io: any): Promise<void>  {
 		//15ms loop to all the clinets to update their state
 		function test() {
-			logger.log(`active game count: ${activeGames.length}`);
+			//logger.log(`active game count: ${activeGames.length}`);
 			setTimeout(() => {
 				for (let i = 0; i > activeGames.length; i++) {
 					logger.log(`sending state to ${activeGames.length}`);
@@ -95,24 +111,6 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 		test();
 	}
 
-	/*
-  @SubscribeMessage(GameroomEvents.StartGame) 
-  async handelJoinRoom(client: Socket, payload: string): Promise<void> {
-		//the whoel game here ?
-		//while (1)
-	}
- */
-	//sned the position of the ball because we can check for errors
-	//one client balls is out of sync then we can sync it back
-	//
-	//we can check for wall colitoin and say where the ball is going to next
-	//
-	//if dissconect then the check lose
-	//
-	//
-
-	//payload needs to have display_name, GameRoomId
-	//we can also pass the player in here
   @SubscribeMessage(GameroomEvents.JoinGameRoom)
   async handelJoinRoom(client: Socket, payload: string): Promise<void> {
 
@@ -161,6 +159,17 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 						player2 = { displayName: user.display_name, bat: {X: 1250, Y:270}};
 					}
 					const joinGameDTO = {ball: ball, gameRoomId: gameRoomId, player1: player1, player2: player2}
+					/*
+interface gameState {
+	ball: Ball;
+	bat1: Bat;
+	bat2: Bat;
+	score: Array<number>;
+	status: string;
+}
+					*/
+					//push the game to active games here!
+					//activeGames.push({ball: ball, bat1:});
 					this.logger.debug("this is sent to player 2",joinGameDTO);
 					this.io.to(gameRoomId).emit(GameroomEvents.JoinGameRoomSuccess, joinGameDTO);
 					this.io.to(gameRoomId).emit(GameroomEvents.GameRoomNotification, `Player 2: ${user.display_name}`);
@@ -180,24 +189,7 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 		}
 	}
 
-  @SubscribeMessage(GameroomEvents.SpectateGameRoom)
-  async spectateRoom(client: Socket, payload: any): Promise<void> {
-
-		client.to(payload).emit(GameroomEvents.JoinGameRoomSuccess, 3)
-		this.io.to(payload).emit(GameroomEvents.GameRoomNotification, `spectator ${payload.display_name} join`);
-
-  }
-
-  @SubscribeMessage(GameroomEvents.ClientWantsToStartGame)
-  handleStartGame(client: Socket, payload: any): void {
-		//payload needs to have game room id
-		//payload needs to have ball XV YV
-		//payload needs to have P1Bat
-		//payload needs to have P2Bat
-		//thats it
-		this.io.to(payload.GameRoomId).emit(GameroomEvents.ServerStartedTheGame, 3);
-  }
-
+	//TODO make these change the gameState from the gameRoomId In active games
   @SubscribeMessage(GameroomEvents.MoveBatP1)
   handleMoveBatP1(client: Socket, payload: any): void {
 		console.log(`BAT1 ${payload.gameRoomId} ${payload.direction}`);
@@ -211,5 +203,4 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 		console.log(payload, GameroomEvents.GetBatP2, payload.direction);
 		this.io.to(`${payload.gameRoomId}`).emit(GameroomEvents.GetBatP2, payload.direction);
   }
-
 }
