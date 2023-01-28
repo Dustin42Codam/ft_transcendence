@@ -108,6 +108,9 @@ const gameSocketMiddleware: Middleware = (store) => {
       gameSocket.on(GameEvent.GameRoomNotification, (notification: string) => {
         store.dispatch(gameSocketActions.getNotificatoin(notification));
       });
+      gameSocket.on(GameEvent.Ping, (payload: any) => {
+				console.log("Ping from server");
+      });
     }
     if (isConnectionEstablished) {
       console.log(

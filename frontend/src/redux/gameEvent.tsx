@@ -17,5 +17,6 @@ enum GameroomEvents {
   GameRoomNotification = "game_room_notification",
   ClientWantsToStartGame = "client_want_to_start_game",
   ServerStartedTheGame = "server_start_the_game",
+  Ping = "ping",
 }
 export default GameroomEvents;

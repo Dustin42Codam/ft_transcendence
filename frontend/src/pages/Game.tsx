@@ -75,8 +75,8 @@ class Ball extends MoveableObject {
   //this needs to be tirgered once score and once game starts
   //(canvasX, canvasY, direction value
   reset(fieldWidth: number, fieldHeight: number, directionValue: number) {
-		//maybe dispatch and make a promise?
-		//
+    //maybe dispatch and make a promise?
+    //
 
     this.positionX = fieldWidth - this.width / 2;
     this.positionY = fieldHeight - this.height / 2;
@@ -139,8 +139,8 @@ class Ball extends MoveableObject {
     batP1: Bat,
     batP2: Bat,
     powerUp: PowerUp,
-		dt: any,
-		fps: any,
+    dt: any,
+    fps: any
   ) {
     this.hitWall(fieldHeight);
     if (this.directionX < 0) {
@@ -150,7 +150,7 @@ class Ball extends MoveableObject {
       this.hitPowerUp(powerUp, batP1, fieldWidth, fieldHeight);
       this.hitBat(batP2);
     }
-		this.move(this.speed * dt);
+    this.move(this.speed * dt);
     this.draw(ctx);
   }
 }
@@ -272,9 +272,9 @@ class GameState {
   height: number;
   BatP1up: boolean;
   BatP1down: boolean;
-	reduxInteralState: any;
-	dt: any;
-	fps: any;
+  reduxInteralState: any;
+  dt: any;
+  fps: any;
 
   constructor(canvas: HTMLCanvasElement, gameState: any) {
     if (!canvas || !canvas.getContext)
@@ -282,7 +282,7 @@ class GameState {
     this.scoreP1 = 0;
     this.scoreP2 = 0;
     this.frame = 0;
-		this.reduxInteralState = gameState;
+    this.reduxInteralState = gameState;
     this.batP1 = new Bat(
       gameState.player1.bat.X,
       gameState.player1.bat.Y,
@@ -308,10 +308,10 @@ class GameState {
   score() {
     if (this.ball.positionX + this.ball.width < 0) {
       this.scoreP2 += 1;
-			this.ball = new Ball(this.reduxInteralState.ball);
+      this.ball = new Ball(this.reduxInteralState.ball);
     } else if (this.ball.positionX > this.width) {
       this.scoreP1 += 1;
-			this.ball = new Ball(this.reduxInteralState.ball);
+      this.ball = new Ball(this.reduxInteralState.ball);
       console.log(
         "P1 Scored\nP1 " + this.scoreP1 + " - " + this.scoreP2 + " P2\n\n"
       );
@@ -331,8 +331,8 @@ class GameState {
       this.batP1,
       this.batP2,
       this.powerUp,
-			this.dt,
-			this.fps
+      this.dt,
+      this.fps
     ); //send to to spect
   }
   listeScoer() {
@@ -491,7 +491,7 @@ const Game = (props: any) => {
       //maybe here we can send to the back end start game
       //3 2 1
       //game.ball = gameState.ball;
-				let lastLoop:any = new Date();
+      let lastLoop: any = new Date();
       const startAnimation = () => {
         //function that gets the current bat positions, ball, score
         gameState = store.getState().gameSocket;
@@ -518,12 +518,12 @@ const Game = (props: any) => {
           }
         }
 
-				let thisLoop:any = new Date();
-				let fps:any = 1000 / (thisLoop - lastLoop);
-				let dt:any = 150 / fps;
-				lastLoop = thisLoop;
-				game.dt = dt;
-				game.fps = fps;
+        let thisLoop: any = new Date();
+        let fps: any = 1000 / (thisLoop - lastLoop);
+        let dt: any = 150 / fps;
+        lastLoop = thisLoop;
+        game.dt = dt;
+        game.fps = fps;
         //getBall();
         game.animation();
         game.score();

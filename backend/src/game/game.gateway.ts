@@ -55,7 +55,8 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
   constructor(
 		private readonly userService: UserService,
 		private readonly gameService: GameService,
-		) {};
+		) {
+		};
 
   private logger: Logger = new Logger("GameGatway");
   @WebSocketServer() io: Namespace;
@@ -66,6 +67,7 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 
   async handleConnection(client): Promise<void> {
 		this.logger.log(`clienet: ${client.id} connected`);
+		this.doThis(this.logger, this.io);
 		//tmp gurad
     // await this.userService.getUserFromClient(client);
 		// console.log(`game client ${client.id} conected`);
@@ -76,6 +78,20 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 		//check active games if user is part of active game they loos
 		//if we do this then we do not have to worry about storing the ball
   }
+
+	async doThis(logger: any, io: any): Promise<void>  {
+		//forloop over active games
+		//then emit to every room the game state 
+		//every room has the players and possible spectators
+		function test() {
+			logger.log(`Ping`);
+			setTimeout(() => {
+				io.emit("ping", "hi");
+				test();
+			}, 1000)
+		}
+		test();
+	}
 
 	/*
   @SubscribeMessage(GameroomEvents.StartGame) 
