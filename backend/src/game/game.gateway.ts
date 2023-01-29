@@ -169,7 +169,7 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 				game.gamePhysics.score[1] += 1;
 				game.gamePhysics.ball = getRandomPosition();
 				return true;
-			} else if (game.gamePhysics.ball.positionX > game.gamePhysics.ball.width) {
+			} else if (game.gamePhysics.ball.positionX > game.gamePhysics.canvasWidth) {
 				game.gamePhysics.score[0] += 1;
 				game.gamePhysics.ball = getRandomPosition();
 				return true;
@@ -243,13 +243,16 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 							"P1 Scored\nP1 " + game.gamePhysics.score[0] + " - " + game.gamePhysics.score[1] + " P2\n\n"
 						);
 					}
-					ballHitWall(game);
-					checkBallHitBat(game);
 					moveBall(game.gamePhysics.ball);
+					ballHitWall(game);
+					/*
+					if (gameIsStarted()) {}
+					checkBallHitBat(game);
 					io.to(game.gameRoomId).emit(GameroomEvents.PhysicsLoop, game.gamePhysics);
+				 */
 				});
 				test();
-			}, 5000);
+			}, 100);
 		}
 		test();
 	}
