@@ -1,6 +1,6 @@
 import Wrapper from "../components/Wrapper";
 import "./NewChat.css";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import Socket from "../components/chat/Socket";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
@@ -12,7 +12,7 @@ import axios from "axios";
 import { selectCurrentUser } from "../redux/slices/currentUserSlice";
 import { Link } from "react-router-dom";
 import ChatUserList from "../components/chat/ChatUserList";
-import { selectAllUsers } from "../redux/slices/usersSlice";
+import { fetchUsers, selectAllUsers } from "../redux/slices/usersSlice";
 import { ChatroomType } from "../models/Chats";
 import "./Message.css";
 import "./Chat.css";
@@ -22,6 +22,10 @@ import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import { Member } from "../models/Member";
 import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions';
 import InsertEmoticonIcon from '@mui/icons-material/InsertEmoticon';
+import ChannelSettings from "../components/chat/ChannelSettings";
+import ChannelSettingsSlide from "../components/chat/ChannelSettingsSlide";
+import { fetchCurrentMember, selectCurrentMember } from "../redux/slices/currentMemberSlice";
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 
 const NewChat = () => {
   const currentUser = useAppSelector(selectCurrentUser);
@@ -31,12 +35,13 @@ const NewChat = () => {
 	const [messages, setMessages] = useState([]);
 	const dummy = useRef<HTMLDivElement>(null);
 	const users = useAppSelector(selectAllUsers);
-	// const [chatMembers, setChatMembers] = useState<any>([]);
 	const chatMembers = useAppSelector(selectAllChatMembers);
-	console.log("🚀 ~ file: NewChat.tsx:33 ~ NewChat ~ chatMembers", chatMembers)
+	const currentMember = useAppSelector(selectCurrentMember);
+	const allUsers = useAppSelector(selectAllUsers);
+	const [rerender, setRerender] = useState(true);
+	const dispatch = useAppDispatch();
+	const navigate = useNavigate();
 	let user;
-
-  	const dispatch = useAppDispatch();
   
 	async function fetchMessages() {
 	  if (currentChat.id !== -1) {
@@ -47,6 +52,7 @@ const NewChat = () => {
 	  }
 	}
   
+
 	useEffect(() => {
 		if (currentChat.id !== -1) {
 		dispatch(
@@ -55,7 +61,15 @@ const NewChat = () => {
 			})
 		);
 	}
+	}, [currentChat])
 
+	useEffect(() => {
+    	dispatch(fetchUsers());
+    	dispatch(
+    	  fetchCurrentMember({
+    	    id: currentChat.id,
+    	  })
+    	);
 	  fetchMessages();
 	  dummy?.current?.scrollIntoView({
 		behavior: "smooth",
@@ -96,7 +110,14 @@ const NewChat = () => {
 
             	<ul className="navIcons">
             	    {/* <li><ChatBubbleOutlineIcon /></li> */}
-            	    <li><MoreVertIcon /></li>
+            	    {/* <li><MoreVertIcon /></li> */}
+            	    <li><ChannelSettings
+						currentChat={currentChat}
+						currentMember={currentMember}
+						chatMembers={chatMembers}
+					/>
+					</li>
+            	    {/* <li><ChannelSettingsSlide currentChat currentMember chatMembers/></li> */}
             	</ul>
 			</div>
 
@@ -265,6 +286,7 @@ const NewChat = () => {
               </div>
               <ul className="navIcons">
                 {/* <li><ChatBubbleOutlineIcon /></li> */}
+                <li><ExitToAppIcon /></li>
                 <li><MoreVertIcon /></li>
               </ul>
             </div>

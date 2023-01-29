@@ -45,7 +45,8 @@ p {
   display: flex;
   flex-direction: row;
   overflow: auto;
-  background-color: rgb(100, 100, 100);
+  /* background-color: rgb(100, 100, 100); */
+  background-color: rgb(16, 16, 20);
 }
 
 .contentBody .sidenav {

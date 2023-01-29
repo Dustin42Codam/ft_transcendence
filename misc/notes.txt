@@ -1,6 +1,11 @@
 
 todo:
-
+	-	change contentBody in user list, user profile, user page?
+	-	remove header
+	-	new side bar
+		-	move project name to top of sidebar
+		-	move sign out button to side bar
+	-	remove footer
 	-	New side bar
 		-	new colors
 		-	new side dropdown DM render
@@ -11,6 +16,14 @@ todo:
 
 	-	New Chat UI
 		+	add status to user list
+		->	channel settings modal heading
+			+	modal
+			+	change name
+			+	change type
+			+	change password
+			+	delete channel
+			->	leave channel
+				-	overlay hover button right
 		->	add smileys
 			->	smiley button
 			-	smiley dropdown

@@ -86,7 +86,7 @@ export class ChatroomGateway implements OnGatewayInit, OnGatewayConnection, OnGa
     }
 		console.log("clienat jointed:" ,client.id, payload);
     client.join(`${payload.id}`);
-    this.io.to(`${payload.id}`).emit(ChatroomEvents.ChatRoomNotification, `${member.user.display_name} joined the room`);
+    // this.io.to(`${payload.id}`).emit(ChatroomEvents.ChatRoomNotification, `${member.user.display_name} joined the room`);
     client.emit(ChatroomEvents.JoinChatRoomSuccess, payload);
   }
 
