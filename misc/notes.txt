@@ -22,6 +22,9 @@ todo:
 			+	change type
 			+	change password
 			+	delete channel
+			-	add "you need to be admin to change settings"
+				when user tries to click on settings dropdown
+			+	disable channel settings menu for unauthorized users
 			->	leave channel
 				-	overlay hover button right
 		->	add smileys

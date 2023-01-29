@@ -26,6 +26,7 @@ import ChannelSettings from "../components/chat/ChannelSettings";
 import ChannelSettingsSlide from "../components/chat/ChannelSettingsSlide";
 import { fetchCurrentMember, selectCurrentMember } from "../redux/slices/currentMemberSlice";
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import { UserRole } from "../models/Channel";
 
 const NewChat = () => {
   const currentUser = useAppSelector(selectCurrentUser);
@@ -111,12 +112,18 @@ const NewChat = () => {
             	<ul className="navIcons">
             	    {/* <li><ChatBubbleOutlineIcon /></li> */}
             	    {/* <li><MoreVertIcon /></li> */}
-            	    <li><ChannelSettings
-						currentChat={currentChat}
-						currentMember={currentMember}
+            	    
+					{
+						currentMember.role === UserRole.OWNER && (
+
+							<li><ChannelSettings
+							currentChat={currentChat}
+							currentMember={currentMember}
 						chatMembers={chatMembers}
-					/>
-					</li>
+							/>
+						</li>
+						)
+					}
             	    {/* <li><ChannelSettingsSlide currentChat currentMember chatMembers/></li> */}
             	</ul>
 			</div>
@@ -286,8 +293,8 @@ const NewChat = () => {
               </div>
               <ul className="navIcons">
                 {/* <li><ChatBubbleOutlineIcon /></li> */}
-                <li><ExitToAppIcon /></li>
                 <li><MoreVertIcon /></li>
+                <li><ExitToAppIcon /></li>
               </ul>
             </div>
 
