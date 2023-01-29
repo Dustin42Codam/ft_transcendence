@@ -32,6 +32,8 @@ interface Ball {
 }
 
 interface GamePhysics {
+	canvasWidth: number;
+	canvasHeight: number;
 	ball: Ball;
 	player1: Player;
 	player2: Player;
@@ -46,6 +48,8 @@ interface GameRoom {
 const defaultGame: GameRoom = {
 	gameRoomId: "-1",
 	gamePhysics: {
+		canvasWidth: 1300,
+		canvasHeight: 700,
 		ball: {
 			positionX: -1,
 			positionY: -1,
@@ -140,14 +144,29 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 			logger.debug("balls are equeal:", deepEqual(ball, defaultGame.gamePhysics.ball));
 			return !deepEqual(ball, defaultGame.gamePhysics.ball);
 		}
+		function checkIfScore(game: GameRoom): boolean {
+			if (game.gamePhysics.ball.positionX + game.gamePhysics.ball.width < 0) {
+				game.gamePhysics.score[1] += 1;
+				game.gamePhysics.ball = getRandomPosition();
+				return true;
+			} else if (game.gamePhysics.ball.positionX > game.gamePhysics.ball.width) {
+				game.gamePhysics.score[0] += 1;
+				game.gamePhysics.ball = getRandomPosition();
+				return true;
+			}
+			return false;
+		}
 		function test() {
 			setTimeout(() => {
 				activeGames.map((game: GameRoom, index: number) => {
 					logger.debug(`GAME[${index}]:`, game);
 					if (!isBallSet(game.gamePhysics.ball)) {
-						let ball: Ball = getRandomPosition();
-						game.gamePhysics.ball = ball;
-
+						game.gamePhysics.ball = getRandomPosition();
+					}
+					if (checkIfScore(game)) {
+						console.log(
+							"P1 Scored\nP1 " + game.gamePhysics.score[0] + " - " + game.gamePhysics.score[1] + " P2\n\n"
+						);
 					}
 					io.to(game.gameRoomId).emit(GameroomEvents.PhysicsLoop, game.gamePhysics);
 				});
