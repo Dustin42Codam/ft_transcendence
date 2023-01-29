@@ -9,8 +9,6 @@ import { Logger, Req } from "@nestjs/common";
 interface MoveableObject {
   positionX: number;
   positionY: number;
-  directionX?: number;
-  directionY?: number;
   width: number;
   height: number;
 }
@@ -29,6 +27,8 @@ interface Player {
 }
 
 interface Ball extends MoveableObject {
+  directionX: number;
+  directionY: number;
 	speed: number;
 }
 
@@ -61,6 +61,16 @@ const rightBat: Bat = {
 	width: 160, 
 }
 
+const defaultPlyaer: Player = {
+	displayName: "",
+	bat: {
+		positionX: -1,	
+		positionY: -1,	
+		height: -1,
+		width: -1,
+	},
+}
+
 const defaultGame: GameRoom = {
 	gameRoomId: "-1",
 	gamePhysics: {
@@ -75,26 +85,10 @@ const defaultGame: GameRoom = {
 			height: -1,
 			speed: -1,
 		},
-		player1: {
-			displayName: "",
-			bat: {
-				positionX: -1,	
-				positionY: -1,	
-				height: -1,
-				width: -1,
-			},
-		},
-		player2: {
-			displayName: "",
-			bat: {
-				positionX: -1,	
-				positionY: -1,	
-				height: -1,
-				width: -1,
-			},
-		},
+		player1: JSON.parse(JSON.stringify({...defaultPlyaer})),
+		player2: JSON.parse(JSON.stringify({...defaultPlyaer})),
 		score: [0, 0],
-	}
+	},
 };
 
 @WebSocketGateway(3002, {
@@ -132,23 +126,6 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 
 	//physic loop
 	async physicLoop(activeGames: Array<GameRoom>, logger: any, io: any): Promise<void>  {
-		function deepEqual(object1: any, object2: any) {
-			const keys1 = Object.keys(object1);
-			const keys2 = Object.keys(object2);
-			if (keys1.length !== keys2.length) {
-				return false;
-			}
-			for (const key of keys1) {
-				const val1 = object1[key];
-				const val2 = object2[key];
-				if (
-					!deepEqual(val1, val2) || val1 !== val2
-				) {
-					return false;
-				}
-			}
-			return true;
-		}
 		function getRandomPosition(): Ball {
 			return {
 				positionX: 650,
@@ -161,8 +138,8 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 			};
 		}
 		function isBallSet(ball: Ball): boolean {
-			logger.debug("balls are equeal:", deepEqual(ball, defaultGame.gamePhysics.ball));
-			return !deepEqual(ball, defaultGame.gamePhysics.ball);
+			//logger.debug("balls are equeal:", JSON.stringify(ball) == JSON.stringify(defaultGame.gamePhysics.ball));
+			return JSON.stringify(ball) != JSON.stringify(defaultGame.gamePhysics.ball);
 		}
 		function checkIfScore(game: GameRoom): boolean {
 			if (game.gamePhysics.ball.positionX + game.gamePhysics.ball.width < 0) {
@@ -231,51 +208,58 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 			ball.positionX += ball.directionX * ball.speed;
 			ball.positionY += ball.directionY * ball.speed;
 		}
+		function gameHasStarted(game: GamePhysics): boolean {
+			//logger.debug("player2", game.player2, "default", defaultPlyaer, JSON.stringify(game.player1) != JSON.stringify(defaultPlyaer), JSON.stringify(game.player2) != JSON.stringify(defaultPlyaer));
+			if ((JSON.stringify(game.player1) != JSON.stringify(defaultPlyaer)) && JSON.stringify(game.player2) != JSON.stringify(defaultPlyaer)) {
+				return true;
+			}
+			return false;
+		}
 		function test() {
 			setTimeout(() => {
 				activeGames.map((game: GameRoom, index: number) => {
 					logger.debug(`GAME[${index}]:`, game);
-					if (!isBallSet(game.gamePhysics.ball)) {
-						game.gamePhysics.ball = getRandomPosition();
+					if (gameHasStarted(game.gamePhysics)) {
+						if (!isBallSet(game.gamePhysics.ball)) {
+							game.gamePhysics.ball = getRandomPosition();
+						}
+						checkBallHitBat(game);
+						if (checkIfScore(game)) {
+							console.log(
+								"P1 Scored\nP1 " + game.gamePhysics.score[0] + " - " + game.gamePhysics.score[1] + " P2\n\n"
+							);
+						}
+						moveBall(game.gamePhysics.ball);
+						ballHitWall(game);
+						io.to(game.gameRoomId).emit(GameroomEvents.PhysicsLoop, game.gamePhysics);
 					}
-					if (checkIfScore(game)) {
-						console.log(
-							"P1 Scored\nP1 " + game.gamePhysics.score[0] + " - " + game.gamePhysics.score[1] + " P2\n\n"
-						);
-					}
-					moveBall(game.gamePhysics.ball);
-					ballHitWall(game);
-					/*
-					if (gameIsStarted()) {}
-					checkBallHitBat(game);
-					io.to(game.gameRoomId).emit(GameroomEvents.PhysicsLoop, game.gamePhysics);
-				 */
 				});
 				test();
-			}, 100);
+			}, 1000);
 		}
 		test();
 	}
 
-	getActiveGameByGameRoomId(gameRoomId: string): GameRoom | undefined {
-		let gameRoom: GameRoom | undefined = undefined;
+	getActiveGameByGameRoomId(gameRoomId: string): GameRoom {
+		let gameRoomIndex: number = 0;
 
 		this.activeGames.map((game: GameRoom, index: number) => {
 			//this.logger.debug(game, gameRoomId, game.gameRoomId == gameRoomId);
 			if (game.gameRoomId == gameRoomId) {
-				gameRoom = game;
+				gameRoomIndex = index;
 			}
 		})
-		return gameRoom;
+		return this.activeGames[gameRoomIndex];
 	}
 
 	isGameInPhysicsLoop(gameRoomId: string): boolean {
+		let isGameInLoop: boolean = false;
 		this.activeGames.map((game: GameRoom) => {
 			if (game.gameRoomId == gameRoomId) {
-				return true;
+				isGameInLoop = true;
 			}
 		})
-		return false;
+		return isGameInLoop;
 	}
 
   @SubscribeMessage(GameroomEvents.JoinGameRoom)
@@ -295,7 +279,7 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 			let newGame: GameRoom = JSON.parse(JSON.stringify({...defaultGame}));//create a deep copy
 			this.activeGames.push({...newGame, gameRoomId: gameRoomId});
 		}
-		let currentActiveGame: GameRoom = this.getActiveGameByGameRoomId(gameRoomId);
+		const currentActiveGame: GameRoom = this.getActiveGameByGameRoomId(gameRoomId);
 		if (!currentActiveGame)
 			throw ("server side error");
 		//check if palyer joining is one of the players
