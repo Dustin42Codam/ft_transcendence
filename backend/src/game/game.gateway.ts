@@ -231,8 +231,8 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 						}
 						moveBall(game.gamePhysics.ball);
 						ballHitWall(game);
-						io.to(game.gameRoomId).emit(GameroomEvents.PhysicsLoop, game.gamePhysics);
 					}
+					io.to(game.gameRoomId).emit(GameroomEvents.PhysicsUpdate, game.gamePhysics);
 				});
 				test();
 			}, 1000);
@@ -320,7 +320,7 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
   @SubscribeMessage(GameroomEvents.MoveBatP2)
   handleMoveBatP2(client: Socket, payload: any): void {
 		console.log(`BAT2 ${payload.gameRoomId} ${payload.direction}`);
-		console.log(payload, GameroomEvents.GetBatP2, payload.direction);
+		//console.log(payload, GameroomEvents.GetBatP2, payload.direction);
 		//this.io.to(`${payload.gameRoomId}`).emit(GameroomEvents.GetBatP2, payload.direction);
   }
 }

@@ -3,62 +3,40 @@ import { io, Socket } from "socket.io-client";
 import { gameSocketActions } from "./slices/gameSocketSlice";
 import GameEvent from "./gameEvent";
 
-interface Bat {
-  X: number;
-  Y: number;
-}
-
-interface Ball {
+interface MoveableObject {
   positionX: number;
   positionY: number;
-  directionX: number;
-  directionY: number;
   width: number;
   height: number;
-  speed: number;
+}
+
+interface Bat extends MoveableObject {
+}
+
+interface BatMove {
+	gameRoomId: string;
+	bat: Bat;
 }
 
 interface Player {
-  displayName: string;
-  bat: Bat;
+	displayName: string;
+	bat: Bat;
 }
 
-interface JoinGameRoomDTO {
-  gameRoomId: string;
-  player1?: Player;
-  player2?: Player;
+interface Ball extends MoveableObject {
+  directionX: number;
+  directionY: number;
+	speed: number;
 }
 
 interface GamePhysics {
-  ball: Ball;
-  bat1: Bat;
-  bat2: Bat;
-  score: Array<number>;
-  status: string;
+	canvasWidth: number;
+	canvasHeight: number;
+	ball: Ball;
+	player1: Player;
+	player2: Player;
+	score: Array<number>;
 }
-
-interface GameRoom {
-  gameRoomId: number;
-  gamePhysics: GamePhysics;
-  visibility: string;
-  players1: Player;
-  players2: Player;
-}
-
-export interface GameState {
-  isEstablishingConnection: boolean;
-  isConnected: boolean;
-  isJoning: boolean;
-  gameRoomId: string;
-  ball: Ball;
-  player1?: Player;
-  player2?: Player;
-  scoreP1: number;
-  scoreP2: number;
-  spectator?: string;
-  notificatoin: string;
-}
-
 const gameSocketMiddleware: Middleware = (store) => {
   let gameSocket: Socket = io("ws://localhost:3002/game", {
     autoConnect: false,
@@ -82,31 +60,21 @@ const gameSocketMiddleware: Middleware = (store) => {
         store.dispatch(gameSocketActions.connectionEstablished());
         //gameSocket.emit(GameEvent.RequestAllMessages);
       });
-      gameSocket.on(GameEvent.SpectateGameRoom, (spectateGame: any) => {
-      });
       gameSocket.on(GameEvent.GameRoomNotification, (notification: string) => {
         store.dispatch(gameSocketActions.getNotificatoin(notification));
+      });
+      gameSocket.on(GameEvent.PhysicsUpdate, (gamePhysics: GamePhysics) => {
+        store.dispatch(gameSocketActions.physicsLoop(gamePhysics));
       });
       gameSocket.on(GameEvent.Ping, (payload: any) => {
         console.log("Ping from server");
       });
     }
     if (isConnectionEstablished) {
-      console.log(
-        "trying to join",
-        gameSocketActions.joinRoom.match(action),
-        action
-      );
       if (gameSocketActions.joinRoom.match(action)) {
         console.log("we are in", GameEvent.JoinGameRoom, action.payload);
         gameSocket.emit(GameEvent.JoinGameRoom, String(action.payload));
       }
-      /*
-			 * TODO think how to send data from gameSocket to gameSocket
-      if (gameSocketActions.sendMessage.match(action)) {
-        gameSocket.emit(GameEvent.SendMessage, action.payload.chatMessage);
-      }
-		 */
       if (gameSocketActions.moveBatP1.match(action)) {
         gameSocket.emit(GameEvent.MoveBatP1, action.payload);
       }
