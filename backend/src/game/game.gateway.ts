@@ -227,6 +227,10 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 				ballHitsBat(game.gamePhysics.ball, game.gamePhysics.player2.bat);
 			}
 		}
+		function moveBall(ball: Ball): void {
+			ball.positionX += ball.directionX * ball.speed;
+			ball.positionY += ball.directionY * ball.speed;
+		}
 		function test() {
 			setTimeout(() => {
 				activeGames.map((game: GameRoom, index: number) => {
@@ -241,6 +245,7 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 					}
 					ballHitWall(game);
 					checkBallHitBat(game);
+					moveBall(game.gamePhysics.ball);
 					io.to(game.gameRoomId).emit(GameroomEvents.PhysicsLoop, game.gamePhysics);
 				});
 				test();
