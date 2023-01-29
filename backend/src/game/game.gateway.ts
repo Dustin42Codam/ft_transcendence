@@ -235,7 +235,7 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 					}
 				});
 				test();
-			}, 1000);
+			}, 15);
 		}
 		test();
 	}
@@ -307,23 +307,6 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 				this.io.to(gameRoomId).emit(GameroomEvents.GameRoomNotification, `Player 2: ${user.display_name}`);
 			}
 		}
-		/*
-		}
-		/*
-			} else {
-				//wait for the game to start
-				this.logger.log(`${client.id} wants to spectate the game`);
-				const user1 = await this.userService.getUserById(game.player_1);
-				const user2 = await this.userService.getUserById(game.player_2);
-				const player1 = { displayName: user1.display_name, bat: {X: 50, Y:270}};
-				const player2 = { displayName: user2.display_name, bat: {X: 1250, Y:270}};
-				const spectator = { displayName: user.displayName };
-				const joinGameDTO = { ball: ball, gameRoomId: gameRoomId, player1: player1, player2: player2, spectator: spectator }
-				this.logger.debug("this is sent to player 3",joinGameDTO);
-				client.to(gameRoomId).emit(GameroomEvents.JoinGameRoomSuccess, joinGameDTO)
-				this.io.to(gameRoomId).emit(GameroomEvents.GameRoomNotification, `spectator ${user.display_name} join`);
-			}
-		*/
 	}
 
 	//TODO make these change the gameState from the gameRoomId In active games
@@ -331,13 +314,13 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
   handleMoveBatP1(client: Socket, payload: any): void {
 		console.log(`BAT1 ${payload.gameRoomId} ${payload.direction}`);
 		console.log(payload);
-		this.io.to(`${payload.gameRoomId}`).emit(GameroomEvents.GetBatP1, payload.direction);
+		//this.io.to(`${payload.gameRoomId}`).emit(GameroomEvents.GetBatP1, payload.direction);
   }
 
   @SubscribeMessage(GameroomEvents.MoveBatP2)
   handleMoveBatP2(client: Socket, payload: any): void {
 		console.log(`BAT2 ${payload.gameRoomId} ${payload.direction}`);
 		console.log(payload, GameroomEvents.GetBatP2, payload.direction);
-		this.io.to(`${payload.gameRoomId}`).emit(GameroomEvents.GetBatP2, payload.direction);
+		//this.io.to(`${payload.gameRoomId}`).emit(GameroomEvents.GetBatP2, payload.direction);
   }
 }
