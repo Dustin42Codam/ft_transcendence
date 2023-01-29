@@ -78,7 +78,7 @@ const Chat = () => {
               <p className="message message_right" key={index}>
                 {msg.message}
                 {""} {""}
-                <Link to={`/users/${msg.member.user.id}`}>
+                <Link to={`/profile`}>
                   <img
                     src={msg.member.user.avatar}
                     alt="avatar"
