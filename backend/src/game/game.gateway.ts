@@ -108,10 +108,47 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 
 	//physic loop
 	async physicLoop(activeGames: Array<GameRoom>, logger: any, io: any): Promise<void>  {
+		function deepEqual(object1: any, object2: any) {
+			const keys1 = Object.keys(object1);
+			const keys2 = Object.keys(object2);
+			if (keys1.length !== keys2.length) {
+				return false;
+			}
+			for (const key of keys1) {
+				const val1 = object1[key];
+				const val2 = object2[key];
+				if (
+					!deepEqual(val1, val2) || val1 !== val2
+				) {
+					return false;
+				}
+			}
+			return true;
+		}
+		function getRandomPosition(): Ball {
+			return {
+				positionX: 650,
+				positionY: 350,
+				directionX: Math.random() < 0.5 ? 1 : -1,
+				directionY: Math.floor(Math.random() * 5) - 2,
+				speed: 1,
+				width: 20,
+				height: 20,
+			};
+		}
+		function isBallSet(ball: Ball): boolean {
+			logger.debug("balls are equeal:", deepEqual(ball, defaultGame.gamePhysics.ball));
+			return !deepEqual(ball, defaultGame.gamePhysics.ball);
+		}
 		function test() {
 			setTimeout(() => {
 				activeGames.map((game: GameRoom, index: number) => {
 					logger.debug(`GAME[${index}]:`, game);
+					if (!isBallSet(game.gamePhysics.ball)) {
+						let ball: Ball = getRandomPosition();
+						game.gamePhysics.ball = ball;
+
+					}
 					io.to(game.gameRoomId).emit(GameroomEvents.PhysicsLoop, game.gamePhysics);
 				});
 				test();
@@ -135,7 +172,6 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 	isGameInPhysicsLoop(gameRoomId: string): boolean {
 		this.activeGames.map((game: GameRoom) => {
 			if (game.gameRoomId == gameRoomId) {
-
 				return true;
 			}
 		})
@@ -143,13 +179,10 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 	}
 
   @SubscribeMessage(GameroomEvents.JoinGameRoom)
-  async handelJoinRoom(client: Socket, payload: string): Promise<void> {
-
-		const gameRoomId: string = payload;
+  async handelJoinRoom(client: Socket, gameRoomId: string): Promise<void> {
 
     client.join(gameRoomId);
 		const clientsInRoom = (await this.io.in(gameRoomId).fetchSockets()).length;
-
 		const userId: number = await this.userService.getUserFromClient(client);
 		if (!userId)
 			throw ("user not found");
@@ -159,16 +192,16 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 			throw ("game with id not found");
 		//check if a game is already in the pyhisic loop
 		if (!this.isGameInPhysicsLoop(gameRoomId)) {
-			this.activeGames.push({...defaultGame, gameRoomId: gameRoomId});
+			let newGame: GameRoom = JSON.parse(JSON.stringify({...defaultGame}));//create a deep copy
+			this.activeGames.push({...newGame, gameRoomId: gameRoomId});
 		}
 		let currentActiveGame: GameRoom = this.getActiveGameByGameRoomId(gameRoomId);
+		if (!currentActiveGame)
+			throw ("server side error");
 		//check if palyer joining is one of the players
 		if (gameFromDb.player_1 != userId || gameFromDb.player_2 != userId) {
 			if (clientsInRoom == 1) {
 				let player1: Player;
-
-				if (!currentActiveGame)
-					throw ("server side error");
 
 				if (userId == gameFromDb.player_1) {
 					player1 = { displayName: user.display_name, bat: {X: 50, Y:270}};
