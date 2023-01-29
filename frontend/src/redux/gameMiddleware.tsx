@@ -4,23 +4,23 @@ import { gameSocketActions } from "./slices/gameSocketSlice";
 import GameEvent from "./gameEvent";
 
 interface Bat {
-	X: number;
-	Y: number;
+  X: number;
+  Y: number;
 }
 
 interface Ball {
   positionX: number;
   positionY: number;
-	directionX: number;
-	directionY: number;
-	width: number;
-	height: number;
-	speed: number;
+  directionX: number;
+  directionY: number;
+  width: number;
+  height: number;
+  speed: number;
 }
 
 interface Player {
-	displayName: string;
-	bat: Bat;
+  displayName: string;
+  bat: Bat;
 }
 
 interface JoinGameRoomDTO {
@@ -30,19 +30,19 @@ interface JoinGameRoomDTO {
 }
 
 interface GamePhysics {
-	ball: Ball;
-	bat1: Bat;
-	bat2: Bat;
-	score: Array<number>;
-	status: string;
+  ball: Ball;
+  bat1: Bat;
+  bat2: Bat;
+  score: Array<number>;
+  status: string;
 }
 
 interface GameRoom {
-	gameRoomId: number;
-	gamePhysics: GamePhysics;
-	visibility: string;
-	players1: Player;
-	players2: Player;
+  gameRoomId: number;
+  gamePhysics: GamePhysics;
+  visibility: string;
+  players1: Player;
+  players2: Player;
 }
 
 export interface GameState {

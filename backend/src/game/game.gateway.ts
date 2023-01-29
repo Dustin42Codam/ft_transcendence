@@ -73,8 +73,6 @@ const defaultGame: GameRoom = {
 	}
 };
 
-const activeGames: Array<GameRoom> = [];
-
 @WebSocketGateway(3002, {
   namespace: "game",
 })
@@ -86,11 +84,13 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 		};
 
   private logger: Logger = new Logger("GameGatway");
+	private activeGames: Array<GameRoom> = [];
+
   @WebSocketServer() io: Namespace;
 
   afterInit(server: Server) {
     this.logger.log("Game gateway: game namespace socket server is running");
-		this.physicLoop(this.logger, this.io);
+		this.physicLoop(this.activeGames, this.logger, this.io);
   }
 
   async handleConnection(client): Promise<void> {
@@ -107,77 +107,92 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
   }
 
 	//physic loop
-	async physicLoop(logger: any, io: any): Promise<void>  {
+	async physicLoop(activeGames: Array<GameRoom>, logger: any, io: any): Promise<void>  {
 		function test() {
 			setTimeout(() => {
-				activeGames.map((game: GameRoom) => {
+				activeGames.map((game: GameRoom, index: number) => {
+					logger.debug(`GAME[${index}]:`, game);
 					io.to(game.gameRoomId).emit(GameroomEvents.PhysicsLoop, game.gamePhysics);
 				});
 				test();
-			}, 15);
+			}, 5000);
 		}
 		test();
+	}
+
+	getActiveGameByGameRoomId(gameRoomId: string): GameRoom | undefined {
+		let gameRoom: GameRoom | undefined = undefined;
+
+		this.activeGames.map((game: GameRoom, index: number) => {
+			//this.logger.debug(game, gameRoomId, game.gameRoomId == gameRoomId);
+			if (game.gameRoomId == gameRoomId) {
+				gameRoom = game;
+			}
+		})
+		return gameRoom;
+	}
+
+	isGameInPhysicsLoop(gameRoomId: string): boolean {
+		this.activeGames.map((game: GameRoom) => {
+			if (game.gameRoomId == gameRoomId) {
+
+				return true;
+			}
+		})
+		return false;
 	}
 
   @SubscribeMessage(GameroomEvents.JoinGameRoom)
   async handelJoinRoom(client: Socket, payload: string): Promise<void> {
 
-		const gameRoomId = payload;
+		const gameRoomId: string = payload;
 
     client.join(gameRoomId);
 		const clientsInRoom = (await this.io.in(gameRoomId).fetchSockets()).length;
 
-		const userId = await this.userService.getUserFromClient(client);
+		const userId: number = await this.userService.getUserFromClient(client);
+		if (!userId)
+			throw ("user not found");
 		const user = await this.userService.getUserById(userId);
-		const game = await this.gameService.getGameById(Number(gameRoomId));
-		//here we could push to game state if a game of this id does not exists in the localState
-		if (activeGames.length == 0) {
-			activeGames.push();
+		const gameFromDb = await this.gameService.getGameById(Number(gameRoomId));
+		if (!gameFromDb)
+			throw ("game with id not found");
+		//check if a game is already in the pyhisic loop
+		if (!this.isGameInPhysicsLoop(gameRoomId)) {
+			this.activeGames.push({...defaultGame, gameRoomId: gameRoomId});
 		}
+		let currentActiveGame: GameRoom = this.getActiveGameByGameRoomId(gameRoomId);
+		//check if palyer joining is one of the players
+		if (gameFromDb.player_1 != userId || gameFromDb.player_2 != userId) {
+			if (clientsInRoom == 1) {
+				let player1: Player;
 
+				if (!currentActiveGame)
+					throw ("server side error");
+
+				if (userId == gameFromDb.player_1) {
+					player1 = { displayName: user.display_name, bat: {X: 50, Y:270}};
+				} else {
+					player1 = { displayName: user.display_name, bat: {X: 1250, Y:270}};
+				}	
+				currentActiveGame.gamePhysics.player1 = player1;
+				this.io.to(gameRoomId).emit(GameroomEvents.GameRoomNotification, `Player 1: ${user.display_name}`);
+			} else if (clientsInRoom == 2) {
+				let player2: Player;
+
+				if (userId == gameFromDb.player_1) {
+					player2 = { displayName: user.display_name, bat: {X: 50, Y:270}};
+				} else {
+					player2 = { displayName: user.display_name, bat: {X: 1250, Y:270}};
+				}	
+				currentActiveGame.gamePhysics.player2 = player2;
+
+				this.io.to(gameRoomId).emit(GameroomEvents.GameRoomNotification, `Player 2: ${user.display_name}`);
+			}
+		}
 		/*
-		if (game != null) {
-			if (game.player_1 != userId || game.player_2 != userId) {
-				if (clientsInRoom == 1) {
-					this.logger.log(`player 1 ${client.id} wants to join game`);
-					let player: string;
-					let joinGameDTO: JoinGameRoomDTO;
-
-					joinGameDTO = {gameRoomId: gameRoomId};
-					if (userId == game.player_1) {
-						//change The game state
-						player = { displayName: user.display_name, bat: {X: 50, Y:270}};
-						joinGameDTO = {...joinGameDTO, player1: player};
-					} else {
-						player = { displayName: user.display_name, bat: {X: 1250, Y:270}};
-						joinGameDTO = {...joinGameDTO, player2: player};
-					}	
-					this.logger.debug("this is sent to player 1",joinGameDTO);
-					this.io.to(gameRoomId).emit(GameroomEvents.JoinGameRoomSuccess, joinGameDTO);
-					this.io.to(gameRoomId).emit(GameroomEvents.GameRoomNotification, `Player 1: ${user.display_name}`);
-				} else if (clientsInRoom == 2) {
-					this.logger.log(`active games: ${activeGames.length} `);
-					this.logger.log(`player 2 ${client.id} wants to join game`);
-					let player1: string;
-					let player2: string;
-
-					if (userId == game.player_1) {
-						const userAlreadyInGameRoom = await this.userService.getUserById(game.player_2);
-						player1 = {displayName: user.display_name, bat: {X: 50, Y:270}};
-						player2 = {displayName: userAlreadyInGameRoom.display_name, bat: {X: 1250, Y:270}};
-					} else {
-						const userAlreadyInGameRoom = await this.userService.getUserById(game.player_1);
-						player1 = { displayName: userAlreadyInGameRoom.display_name, bat: {X: 50, Y:270}};
-						player2 = { displayName: user.display_name, bat: {X: 1250, Y:270}};
-					}
-					const joinGameDTO = {gameRoomId: gameRoomId, player1: player1, player2: player2}
-					//push the game to active games here!
-					//add the game to our memory varible
-					//activeGames.push({ball: ball, bat1:});
-					this.logger.debug("this is sent to player 2",joinGameDTO);
-					this.io.to(gameRoomId).emit(GameroomEvents.JoinGameRoomSuccess, joinGameDTO);
-					this.io.to(gameRoomId).emit(GameroomEvents.GameRoomNotification, `Player 2: ${user.display_name}`);
-				}
+		}
+		/*
 			} else {
 				//wait for the game to start
 				this.logger.log(`${client.id} wants to spectate the game`);
@@ -191,7 +206,6 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 				client.to(gameRoomId).emit(GameroomEvents.JoinGameRoomSuccess, joinGameDTO)
 				this.io.to(gameRoomId).emit(GameroomEvents.GameRoomNotification, `spectator ${user.display_name} join`);
 			}
-		}
 		*/
 	}
 

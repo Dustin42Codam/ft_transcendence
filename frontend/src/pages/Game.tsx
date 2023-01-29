@@ -496,7 +496,7 @@ const Game = (props: any) => {
         //function that gets the current bat positions, ball, score
         gameState = store.getState().gameSocket;
 
-				//TODO replace up and down with just rendering the game state
+        //TODO replace up and down with just rendering the game state
         if (
           gameState.player1.displayName != currentUser.currentUser.display_name
         ) {
