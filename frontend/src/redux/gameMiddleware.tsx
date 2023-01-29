@@ -83,25 +83,6 @@ const gameSocketMiddleware: Middleware = (store) => {
         //gameSocket.emit(GameEvent.RequestAllMessages);
       });
       gameSocket.on(GameEvent.SpectateGameRoom, (spectateGame: any) => {
-        //TOAST a Message
-        //Join the user to go to the game room
-        //store.dispatch(gameSocketActions.joinRoomSuccess(spectateGame));
-      });
-      /*
-      gameSocket.on(GameEvent.MessageToGameRoom, (messageToGameRoom: any) => {
-        //TOAST a Message
-        store.dispatch(gameSocketActions.joinRoomSuccess(messageToGameRoom));
-      });
-		 */
-      gameSocket.on(
-        GameEvent.JoinGameRoomSuccess,
-        (payload: JoinGameRoomDTO) => {
-          store.dispatch(gameSocketActions.joinRoomSuccess(payload));
-        }
-      );
-      //TODO what data do we need in the backend
-      gameSocket.on(GameEvent.LeaveGameRoomSuccess, () => {
-        store.dispatch(gameSocketActions.leaveRoomSuccess());
       });
       gameSocket.on(GameEvent.GameRoomNotification, (notification: string) => {
         store.dispatch(gameSocketActions.getNotificatoin(notification));

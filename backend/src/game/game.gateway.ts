@@ -85,8 +85,8 @@ const defaultGame: GameRoom = {
 			height: -1,
 			speed: -1,
 		},
-		player1: JSON.parse(JSON.stringify({...defaultPlyaer})),
-		player2: JSON.parse(JSON.stringify({...defaultPlyaer})),
+		player1: defaultPlyaer,
+		player2: defaultPlyaer,
 		score: [0, 0],
 	},
 };
@@ -235,7 +235,7 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 					}
 				});
 				test();
-			}, 15);
+			}, 1000);
 		}
 		test();
 	}
