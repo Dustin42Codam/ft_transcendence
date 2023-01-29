@@ -19,6 +19,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import store from "./redux/store";
 import { gameSocketActions } from "./redux/slices/gameSocketSlice";
+import NewChat from "./pages/NewChat";
 
 function App() {
   const userStatus = useAppSelector((state) => state.currentUser.status);
@@ -90,7 +91,8 @@ function App() {
               element={<Navigate to="/dashboard" />}
             />
 
-            <Route path={"/chats/:name"} element={<Chat />} />
+            <Route path={"/chats/:name"} element={<NewChat />} />
+            {/* <Route path={"/chats/:name"} element={<Chat />} /> */}
             <Route path={"/chats/dm/:id"} element={<Chat />} />
 
             <Route path={"/profile"} element={<UserProfile />} />

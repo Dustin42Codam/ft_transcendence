@@ -1,11 +1,32 @@
 
 todo:
 
-	-	double rendering toasts in chat ui
+	-	New side bar
+		-	new colors
+		-	new side dropdown DM render
+			-	render user blocks
+			-	add time?
+			-	add status?
+			-	show last message (message_p)
 
-	-	leave chat toast bug
+	-	New Chat UI
+		+	add status to user list
+		->	add smileys
+			->	smiley button
+			-	smiley dropdown
+		-	add drop down when click on user
+			-	visit profile
+			-	ban
+			-	unban
+			-	mute
+			-	unmute
+			-	make admin
+			-	remove admin
+			-	grant ownership
+			-	remove
 
 	-	Chat
+		-	mark messages as read/unread ?
 		-	ping pong invite
 
 
@@ -71,6 +92,8 @@ bugs:
 	-	users can upload any file sizes
 
 	fixed:
+		+	leave chat toast bug
+		+	double rendering toasts in chat ui
 		+	old files are not deleted
 		+	user can create empty user names
 		+	change channel password bug

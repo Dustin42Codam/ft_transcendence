@@ -34,7 +34,7 @@ const Chat = () => {
     })
   );
 
-  if (currentChat.id !== -1) {
+  if (currentChat.id !== -1 && currentChat.type === ChatroomType.DIRECT) {
     user = users.find((user: any) => user.display_name === currentChat.name);
   }
 
@@ -78,7 +78,7 @@ const Chat = () => {
               <p className="message message_right" key={index}>
                 {msg.message}
                 {""} {""}
-                <Link to={`/users/${msg.member.user.id}`}>
+                <Link to={`/profile`}>
                   <img
                     src={msg.member.user.avatar}
                     alt="avatar"

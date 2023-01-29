@@ -1,11 +1,13 @@
 import { Chat } from "./Chats";
+import { User } from "./User";
 
-type User = {
-  display_name: string;
-  status: string;
-  avatar: string;
-  two_factor_auth: boolean;
-};
+// type User = {
+//   id: number
+//   display_name: string;
+//   status: string;
+//   avatar: string;
+//   two_factor_auth: boolean;
+// };
 
 export enum MemberRole {
   OWNER = "owner",
