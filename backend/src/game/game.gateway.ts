@@ -6,9 +6,16 @@ import { UseGuards } from "@nestjs/common";
 import { Namespace, Server, Socket } from "socket.io";
 import { Logger, Req } from "@nestjs/common";
 
-interface Bat {
-	X: number;
-	Y: number;
+interface MoveableObject {
+  positionX: number;
+  positionY: number;
+  directionX?: number;
+  directionY?: number;
+  width: number;
+  height: number;
+}
+
+interface Bat extends MoveableObject {
 }
 
 interface BatMove {
@@ -21,13 +28,7 @@ interface Player {
 	bat: Bat;
 }
 
-interface Ball {
-  positionX: number;
-  positionY: number;
-	directionX: number;
-	directionY: number;
-	width: number;
-	height: number;
+interface Ball extends MoveableObject {
 	speed: number;
 }
 
@@ -43,6 +44,21 @@ interface GamePhysics {
 interface GameRoom {
 	gameRoomId: string;
 	gamePhysics: GamePhysics;
+}
+
+//player2 = { displayName: user.display_name, bat: {positionX: 1250, positionY:270}};
+const leftBat: Bat = {
+	positionX: 1250,	
+	positionY: 270,	
+	height: 200,
+	width: 160, 
+}
+
+const rightBat: Bat = {
+	positionX: 50,	
+	positionY: 270,	
+	height: 200,
+	width: 160, 
 }
 
 const defaultGame: GameRoom = {
@@ -62,15 +78,19 @@ const defaultGame: GameRoom = {
 		player1: {
 			displayName: "",
 			bat: {
-				X: -1,	
-				Y: -1,	
+				positionX: -1,	
+				positionY: -1,	
+				height: -1,
+				width: -1,
 			},
 		},
 		player2: {
 			displayName: "",
 			bat: {
-				X: -1,	
-				Y: -1,	
+				positionX: -1,	
+				positionY: -1,	
+				height: -1,
+				width: -1,
 			},
 		},
 		score: [0, 0],
@@ -156,6 +176,57 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 			}
 			return false;
 		}
+		function ballHitWall(game: GameRoom) {
+			if (game.gamePhysics.ball.positionY < 0 || game.gamePhysics.ball.positionY + game.gamePhysics.ball.height > game.gamePhysics.canvasHeight) {
+				game.gamePhysics.ball.directionY = -game.gamePhysics.ball.directionY;
+			}
+		}
+		function doesOverlapWith(ball: Ball, obj: any) {
+			if (
+				ball.positionX > obj.positionX + obj.width ||
+				obj.positionX > ball.positionX + ball.width
+			)
+				return false;
+			if (
+				ball.positionY + ball.height < obj.positionY ||
+				obj.positionY + obj.height < ball.positionY
+			)
+				return false;
+			return true;
+		}
+		function ballHitsBat(ball: Ball, bat: Bat) {
+			if (ball.directionX < 0) {
+				if (ball.positionX == bat.positionX + bat.width) {
+					ball.directionY =
+						Math.floor(
+							(ball.positionY + ball.height / 2 - bat.positionY) /
+								(bat.height / 5)
+						) - 2;
+					ball.directionX = -ball.directionX;
+					return;
+				}
+			} else {
+				if (ball.positionX + ball.width == bat.positionX) {
+					ball.directionY =
+						Math.floor(
+							(ball.positionY + ball.height / 2 - bat.positionY) /
+								(bat.height / 5)
+						) - 2;
+					ball.directionX = -ball.directionX;
+					return;
+				}
+			}
+			ball.directionY = -ball.directionY;
+		}
+		function checkBallHitBat(game: GameRoom) {
+			//const new_dir: Array<number> = [-3, -2, -1, 0, 1, 2, 3];
+			if (doesOverlapWith(game.gamePhysics.ball, game.gamePhysics.player1.bat)) {
+				ballHitsBat(game.gamePhysics.ball, game.gamePhysics.player1.bat);
+			}
+			if (doesOverlapWith(game.gamePhysics.ball, game.gamePhysics.player2.bat)) {
+				ballHitsBat(game.gamePhysics.ball, game.gamePhysics.player2.bat);
+			}
+		}
 		function test() {
 			setTimeout(() => {
 				activeGames.map((game: GameRoom, index: number) => {
@@ -168,6 +239,8 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 							"P1 Scored\nP1 " + game.gamePhysics.score[0] + " - " + game.gamePhysics.score[1] + " P2\n\n"
 						);
 					}
+					ballHitWall(game);
+					checkBallHitBat(game);
 					io.to(game.gameRoomId).emit(GameroomEvents.PhysicsLoop, game.gamePhysics);
 				});
 				test();
@@ -223,9 +296,9 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 				let player1: Player;
 
 				if (userId == gameFromDb.player_1) {
-					player1 = { displayName: user.display_name, bat: {X: 50, Y:270}};
+					player1 = { displayName: user.display_name, bat: JSON.parse(JSON.stringify({...leftBat}))};
 				} else {
-					player1 = { displayName: user.display_name, bat: {X: 1250, Y:270}};
+					player1 = { displayName: user.display_name, bat: JSON.parse(JSON.stringify({...rightBat}))};
 				}	
 				currentActiveGame.gamePhysics.player1 = player1;
 				this.io.to(gameRoomId).emit(GameroomEvents.GameRoomNotification, `Player 1: ${user.display_name}`);
@@ -233,9 +306,9 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 				let player2: Player;
 
 				if (userId == gameFromDb.player_1) {
-					player2 = { displayName: user.display_name, bat: {X: 50, Y:270}};
+					player2 = { displayName: user.display_name, bat: JSON.parse(JSON.stringify({...leftBat}))};
 				} else {
-					player2 = { displayName: user.display_name, bat: {X: 1250, Y:270}};
+					player2 = { displayName: user.display_name, bat: JSON.parse(JSON.stringify({...rightBat}))};
 				}	
 				currentActiveGame.gamePhysics.player2 = player2;
 
