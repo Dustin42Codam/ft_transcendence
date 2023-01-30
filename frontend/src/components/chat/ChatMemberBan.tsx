@@ -3,7 +3,7 @@ import { toast } from 'react-toastify';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { fetchChatMembers } from '../../redux/slices/chatMembersSlice';
 
-function ChatBanMember(props: any) {
+function ChatMemberBan(props: any) {
 	const dispatch = useAppDispatch();
 	const currentChat = useAppSelector(
 		(state: any) => state.socket.currentChatRoom
@@ -90,4 +90,4 @@ function ChatBanMember(props: any) {
   )
 }
 
-export default ChatBanMember
+export default ChatMemberBan

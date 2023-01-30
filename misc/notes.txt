@@ -45,9 +45,11 @@ todo:
 				-	and drop down?
 			+	ban
 			+	unban
+				-	check un/ban with text input
 
-			->	mute
-			->	unmute
+			+	mute
+			+	unmute
+				-	check un/mute with text input
 
 			-	make admin
 				-	
@@ -60,6 +62,7 @@ todo:
 			-	remove
 				-	FaUserMinus
 			-	send game invite
+
 
 		+	add user to channel modal
 		-	seperate DM page
