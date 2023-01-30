@@ -24,6 +24,7 @@ import {
 } from "../../redux/slices/chatMembersSlice";
 import { deleteChat } from "../../redux/slices/chatsSlice";
 import { useNavigate } from "react-router-dom";
+import PersonAddIcon from "@mui/icons-material/PersonAdd";
 
 const ChannelSettings = (props: any) => {
   const currentChat = useAppSelector(selectCurrentChatroom);
@@ -122,8 +123,8 @@ const ChannelSettings = (props: any) => {
         })
       );
     } else if (
-      (chatType == ChatroomType.PROTECTED ||
-        currentMember.chatroom.type === ChatroomType.PROTECTED)
+      chatType == ChatroomType.PROTECTED ||
+      currentMember.chatroom.type === ChatroomType.PROTECTED
     ) {
       dispatch(
         updateCurrentChatPassword({
@@ -174,7 +175,6 @@ const ChannelSettings = (props: any) => {
   return (
     <>
       <MoreVertIcon onClick={handleShow} />
-
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Channel Settings</Modal.Title>

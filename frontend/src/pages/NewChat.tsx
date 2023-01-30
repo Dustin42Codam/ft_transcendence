@@ -34,6 +34,9 @@ import {
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import { UserRole } from "../models/Channel";
 import LeaveChannel from "../components/chat/LeaveChannel";
+import MemberActions from "../components/chat/MemberActions";
+import PersonAddIcon from "@mui/icons-material/PersonAdd";
+import ChatAddMemberOffCanvas from "../components/chat/ChatAddMemberOffCanvas";
 
 const NewChat = () => {
   const currentUser = useAppSelector(selectCurrentUser);
@@ -117,7 +120,19 @@ const NewChat = () => {
               <ul className="navIcons">
                 {/* <li><ChatBubbleOutlineIcon /></li> */}
                 {/* <li><MoreVertIcon /></li> */}
-
+                {currentMember?.role !== "user" && (
+                  <li>
+                    {/* <PersonAddIcon /> */}
+                    <ChatAddMemberOffCanvas currentChat={currentChat} />
+                    {/*                     <ChatAddMember
+                      allUsers={allUsers}
+                      currentChat={currentChat}
+                      chatMembers={chatMembers}
+                      setRerender={setRerender}
+                      rerender={rerender}
+                    /> */}
+                  </li>
+                )}
                 {currentMember.role === UserRole.OWNER && (
                   <li>
                     <ChannelSettings
@@ -263,9 +278,9 @@ const NewChat = () => {
               </div>
               <div className="newChatMessage myMessage">
                 <div className="newChatP">
-                  Heeeey  is assigned a value but never used is
-                  assigned a value but never used is assigned a value but
-                  never used is assigned a value but never used
+                  Heeeey is assigned a value but never used is assigned a value
+                  but never used is assigned a value but never used is assigned
+                  a value but never used
                   <br />
                   <span>12:15</span>
                 </div>
@@ -324,12 +339,16 @@ const NewChat = () => {
                           <div className="newChatH4">
                             {member.user.display_name}
                           </div>
-                          <div className="newChatP time">{member.role}</div>
+                          {/* <div className="newChatP time">{member.role}</div> */}
                         </div>
                         <div className="message_p">
                           <div className="newChatP">{member.user.status}</div>
                         </div>
                       </div>
+                      <li>
+                        {/* <MoreVertIcon /> */}
+                        <MemberActions />
+                      </li>
                     </div>
                   )
               )}

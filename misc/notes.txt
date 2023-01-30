@@ -1,5 +1,7 @@
 
 todo:
+	-	change DM chat dropdown select style to the same
+		as group chat style
 	-	firefox cant establish connection to ws://
 	-	get all users authguard
 		-	check tfa secret of other users
@@ -38,9 +40,9 @@ todo:
 		-	add drop down when click on user
 			+	visit profile
 				+	click on avatar
-				-	and drop down
-			-	ban
-			-	unban
+				-	and drop down?
+			->	ban
+			->	unban
 			-	mute
 			-	unmute
 			-	make admin

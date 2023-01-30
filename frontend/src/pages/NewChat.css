@@ -105,6 +105,14 @@
   margin-top: 10px;
 }
 
+.navIcons li:hover {
+  color: #272727;
+  background-color: rgb(201, 201, 201);
+  border-radius: 50%;
+  width: 200%;
+  height: 200%;
+}
+
 .newChatP {
   color: black;
 }
@@ -123,6 +131,15 @@
   padding: 15px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.06);
   cursor: pointer;
+}
+
+.chatlist .block li {
+  display: flex;
+  list-style: none;
+  cursor: pointer;
+  color: #51585c;
+  font-size: 1.5em;
+  margin-top: 10px;
 }
 
 .chatlist .block:hover {

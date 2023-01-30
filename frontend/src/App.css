@@ -20,6 +20,10 @@ body {
   /* height: intial !important; min-height: 100% !important; */
 }
 
+.css-i4bv87-MuiSvgIcon-root {
+  margin: 15px;
+}
+
 p {
   color: rgb(244, 241, 208);
 }

@@ -243,30 +243,27 @@ export const UserPage = () => {
                   </div>
 
                   <div className="text-center mt-3">
-                      {
-                        user.status === UserStatus.OFFLINE && (
-                        <span className="bg-secondary p-1 px-3 rounded text-white">
-                          <Badge pill bg="secondary">
-                            {user.status}
-                          </Badge>
-                        </span>)
-                      }   
-                      {
-                        user.status === UserStatus.ONLINE && (
-                        <span className="bg-success p-1 px-3 rounded text-white">
-                          <Badge pill bg="success">
-                            {user.status}
-                          </Badge>
-                        </span>)
-                      }   
-                      {
-                        user.status === UserStatus.IN_A_GAME && (
-                          <span className="bg-primary p-1 px-3 rounded">
-                          <Badge pill bg="primary">
-                            {user.status}
-                          </Badge>
-                        </span>)
-                      }
+                    {user.status === UserStatus.OFFLINE && (
+                      <span className="bg-secondary p-1 px-3 rounded text-white">
+                        <Badge pill bg="secondary">
+                          {user.status}
+                        </Badge>
+                      </span>
+                    )}
+                    {user.status === UserStatus.ONLINE && (
+                      <span className="bg-success p-1 px-3 rounded text-white">
+                        <Badge pill bg="success">
+                          {user.status}
+                        </Badge>
+                      </span>
+                    )}
+                    {user.status === UserStatus.IN_A_GAME && (
+                      <span className="bg-primary p-1 px-3 rounded">
+                        <Badge pill bg="primary">
+                          {user.status}
+                        </Badge>
+                      </span>
+                    )}
                     <h5 className="mt-3">{user.display_name}</h5>
 
                     <div className="mt-2 buttons button-layout">
