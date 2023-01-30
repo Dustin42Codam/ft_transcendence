@@ -39,6 +39,7 @@ interface GamePhysics {
   player1: Player;
   player2: Player;
   score: Array<number>;
+	scored: boolean;
 }
 
 interface GameRoom {
@@ -71,7 +72,6 @@ class GameState {
     const batP1: Bat = gamePhysics.player1.bat;
     const batP2: Bat = gamePhysics.player2.bat;
     const ball: Ball = gamePhysics.ball;
-    console.log(batP1, batP2, ball);
     ctx.fillRect(batP1.positionX, batP1.positionY, batP1.width, batP1.height);
     ctx.fillRect(batP2.positionX, batP2.positionY, batP2.width, batP2.height);
     ctx.fillRect(ball.positionX, ball.positionY, ball.width, ball.height);
@@ -104,7 +104,6 @@ const Game = (props: any) => {
         (function loop() {
           timer = setTimeout(() => {
             gameState = store.getState().gameSocket;
-            console.log(gameState);
             if (!gameState.isConnected) {
               theGameFrame!.innerHTML =
                 "<h1>Waiting for connection to game server</h1>";
@@ -144,6 +143,7 @@ const Game = (props: any) => {
       theGameFrame!.innerHTML = savedTheGameFrame;
       const currentUser = store.getState().currentUser;
       const canvas = document.getElementById("gameCanvas") as HTMLCanvasElement;
+      const score = document.getElementById("score") as HTMLCanvasElement;
       const game = new GameState(canvas, gameState);
 
       canvas.addEventListener("keydown", function onKeyDown(e) {
@@ -174,6 +174,7 @@ const Game = (props: any) => {
         }
       });
       let lastLoop: any = new Date();
+			score!.innerHTML = `<h1 id="score">${gameState.gamePhysics.player1.displayName} ${gameState.gamePhysics.score[0]} : ${gameState.gamePhysics.player2.displayName} ${gameState.gamePhysics.score[1]}</h1>`;
       const startAnimation = () => {
         setTimeout(() => {
           let thisLoop: any = new Date();
@@ -182,6 +183,9 @@ const Game = (props: any) => {
           gameState = store.getState().gameSocket;
           game.setGameState(gameState.gamePhysics);
           lastLoop = thisLoop;
+					if (game.gamePhysics.scored) {
+						score!.innerHTML = `<h1 id="score">${gameState.gamePhysics.player1.displayName} ${gameState.gamePhysics.score[0]} : ${gameState.gamePhysics.player2.displayName} ${gameState.gamePhysics.score[1]}</h1>`;
+					}
           game.dt = dt;
           game.fps = fps;
           game.animation();
@@ -194,11 +198,12 @@ const Game = (props: any) => {
   }, []);
   return (
     <Wrapper>
-      <div id="canvasContainer">
-        <canvas tabIndex={0} id="gameCanvas" width="1300" height="700">
-          Game is not supported for this borwser. Needs <b>cavas</b> support.
-        </canvas>
-      </div>
+			<div id="canvasContainer">
+				<h1 id="score"></h1>
+				<canvas tabIndex={0} id="gameCanvas" width="1300" height="700">
+					Game is not supported for this borwser. Needs <b>cavas</b> support.
+				</canvas>
+			</div>
     </Wrapper>
   );
 };

@@ -40,6 +40,7 @@ interface GamePhysics {
 	player1: Player;
 	player2: Player;
 	score: Array<number>;
+	scored: boolean;
 }
 
 interface GameRoom {
@@ -90,6 +91,7 @@ const defaultGame: GameRoom = {
 		player1: defaultPlyaer,
 		player2: defaultPlyaer,
 		score: [0, 0],
+		scored: false,
 	},
 };
 
@@ -152,7 +154,6 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 			};
 		}
 		function isBallSet(ball: Ball): boolean {
-			//logger.debug("balls are equeal:", JSON.stringify(ball) == JSON.stringify(defaultGame.gamePhysics.ball));
 			return JSON.stringify(ball) != JSON.stringify(defaultGame.gamePhysics.ball);
 		}
 		function checkIfScore(game: GameRoom): boolean {
@@ -239,9 +240,10 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 						}
 						checkBallHitBat(game);
 						if (checkIfScore(game)) {
-							console.log(
-								"P1 Scored\nP1 " + game.gamePhysics.score[0] + " - " + game.gamePhysics.score[1] + " P2\n\n"
-							);
+							game.gamePhysics.scored = true;
+							setTimeout(() => {
+								game.gamePhysics.scored = false;
+							}, 1000);
 						}
 						moveBall(game.gamePhysics.ball);
 						ballHitWall(game);
@@ -355,10 +357,5 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 				}
 			}
 		});
-		this.logger.log(`BAT1 ${payload.gameRoomId} ${payload.direction}, ${userId}`);
-
-		//console.log(`BAT1 ${payload.gameRoomId} ${payload.direction}`);
-		//console.log(payload);
-		//this.io.to(`${payload.gameRoomId}`).emit(GameroomEvents.GetBatP1, payload.direction);
   }
 }
