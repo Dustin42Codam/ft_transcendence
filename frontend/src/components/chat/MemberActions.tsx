@@ -14,6 +14,7 @@ import { MemberRole } from "../../models/Member";
 import { useAppSelector } from "../../redux/hooks";
 import { selectCurrentMember } from "../../redux/slices/currentMemberSlice";
 import ChatMemberMute from "./ChatMemberMute";
+import ChatAdminAdd from "./ChatAdminAdd";
 
 type MyProps = { member: any, currentMember: any };
 type MyState = { open: boolean };
@@ -64,6 +65,12 @@ class MemberActions extends React.Component<MyProps, MyState> {
 					{
 						this.props.currentMember.role !== MemberRole.USER && (
 							<ChatMemberMute member={this.props.member}/>
+						)
+					}
+					{
+						this.props.currentMember.role === MemberRole.OWNER &&
+						(
+							<ChatAdminAdd member={this.props.member}/>
 						)
 					}
 					<li>Option 1</li>

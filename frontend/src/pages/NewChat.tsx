@@ -314,6 +314,13 @@ const NewChat = () => {
                   <img src={currentUser.avatar} className="cover" />
                 </Link>
               </div>
+              {
+                currentMember.role !== MemberRole.USER && (
+                  <div className="message_p">
+                    <div className="newChatP">channel {currentMember.role}</div>
+                  </div>
+                )
+              }
               <ul className="navIcons">
                 <li>
                   <LeaveChannel />

@@ -51,10 +51,8 @@ todo:
 			+	unmute
 				-	check un/mute with text input
 
-			-	make admin
-				-	
-			-	remove admin
-				-
+			->	add new admin
+			->	remove admin
 
 			-	grant ownership
 				-	crown
