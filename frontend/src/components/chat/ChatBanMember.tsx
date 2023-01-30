@@ -1,7 +1,5 @@
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import { UserRole } from '../../models/Channel';
-import { MemberRole } from '../../models/Member';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { fetchChatMembers } from '../../redux/slices/chatMembersSlice';
 
