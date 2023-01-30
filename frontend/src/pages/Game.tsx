@@ -69,10 +69,9 @@ class GameState {
   }
 
   draw(gamePhysics: GamePhysics, ctx: CanvasRenderingContext2D) {
-		/*
-		 * TODO go over game state and draw the whole thing
-    ctx.fillRect(this.positionX, this.positionY, this.width, this.height);
-	 */
+		const batP1: Bat = gamePhysics.player1.bat;
+		const batP2: Bat = gamePhysics.player1.bat;
+    ctx.fillRect(batP1.positionX, batP1.positionX, batP1.width, batP1.height);
   }
 
   animation() {
@@ -99,6 +98,7 @@ const Game = (props: any) => {
         (function loop() {
           timer = setTimeout(() => {
             gameState = store.getState().gameSocket;
+						console.log(gameState);
             if (!gameState.isConnected) {
               theGameFrame!.innerHTML =
                 "<h1>Waiting for connection to game server</h1>";
@@ -112,15 +112,15 @@ const Game = (props: any) => {
                 theGameFrame!.innerHTML =
                   "<h1>Waiting connect to the game</h1>";
               } else {
-                if (gameState.player1 != undefined) {
+                if (gameState.gamePhysics.player1 != undefined) {
                   theGameFrame!.innerHTML = "<h1>Player 1 Joined</h1>";
                 }
-                if (gameState.player2 != undefined) {
+                if (gameState.gamePhysics.player2 != undefined) {
                   theGameFrame!.innerHTML = "<h1>Player 2 Joined</h1>";
                 }
                 if (
-                  gameState.player2 != undefined &&
-                  gameState.player1 != undefined
+                  gameState.gamePhysics.player2 != undefined &&
+                  gameState.gamePhysics.player1 != undefined
                 ) {
                   theGameFrame!.innerHTML = "<h1>Player 1 and 2 Joined</h1>";
                   resolve(true);

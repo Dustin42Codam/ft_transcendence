@@ -109,6 +109,7 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
   afterInit(server: Server) {
     this.logger.log("Game gateway: game namespace socket server is running");
 		this.physicLoop(this.activeGames, this.logger, this.io);
+		this.serverLoop(this.activeGames, this.logger, this.io);
   }
 
   async handleConnection(client): Promise<void> {
@@ -124,6 +125,17 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 		//if we do this then we do not have to worry about storing the ball
   }
 
+	async serverLoop(activeGames: Array<GameRoom>, logger: any, io: any): Promise<void>  {
+		function test() {
+			setTimeout(() => {
+				activeGames.map((game: GameRoom, index: number) => {
+					io.to(game.gameRoomId).emit(GameroomEvents.ServerLoop, game.gameRoomId);
+				});
+				test();
+			}, 1000);
+		}
+		test();
+	}
 	//physic loop
 	async physicLoop(activeGames: Array<GameRoom>, logger: any, io: any): Promise<void>  {
 		function getRandomPosition(): Ball {
@@ -232,7 +244,7 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 						moveBall(game.gamePhysics.ball);
 						ballHitWall(game);
 					}
-					io.to(game.gameRoomId).emit(GameroomEvents.PhysicsUpdate, game.gamePhysics);
+					io.to(game.gameRoomId).emit(GameroomEvents.PhysicsLoop, game.gamePhysics);
 				});
 				test();
 			}, 1000);

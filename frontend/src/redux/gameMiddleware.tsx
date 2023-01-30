@@ -62,8 +62,11 @@ const gameSocketMiddleware: Middleware = (store) => {
       gameSocket.on(GameEvent.GameRoomNotification, (notification: string) => {
         store.dispatch(gameSocketActions.getNotificatoin(notification));
       });
-      gameSocket.on(GameEvent.PhysicsUpdate, (gamePhysics: GamePhysics) => {
+      gameSocket.on(GameEvent.PhysicsLoop, (gamePhysics: GamePhysics) => {
         store.dispatch(gameSocketActions.physicsLoop(gamePhysics));
+      });
+      gameSocket.on(GameEvent.ServerLoop, (gameRoomId: string) => {
+        store.dispatch(gameSocketActions.serverLoop(gameRoomId));
       });
       gameSocket.on(GameEvent.Ping, (payload: any) => {
         console.log("Ping from server");

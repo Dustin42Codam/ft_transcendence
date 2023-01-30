@@ -65,7 +65,7 @@ interface GameRoom {
   isConnected: boolean;
   isJoning: boolean;
   gameRoomId: string;
-  gamePhysics: GamePhysics;
+  gamePhysics?: GamePhysics;
   notificatoin: string;
 }
 
@@ -116,6 +116,7 @@ const gameSocketSlice = createSlice({
       return;
     },
     leaveRoom: (state, action: PayloadAction<number>) => {
+      state.isJoning = false;
       return;
     },
     moveBatP1: (state, action: PayloadAction<any>) => {
@@ -124,10 +125,12 @@ const gameSocketSlice = createSlice({
     moveBatP2: (state, action: PayloadAction<any>) => {
       return;
     },
-
-    //TODO do not start if both players are not in the room
     physicsLoop: (state, action: PayloadAction<GamePhysics>) => {
       state.gamePhysics = action.payload;
+      return;
+    },
+    serverLoop: (state, action: PayloadAction<string>) => {
+      state.gameRoomId = action.payload;
       return;
     },
     ping: (state, action: PayloadAction<number>) => {

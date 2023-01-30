@@ -5,6 +5,7 @@ enum GameroomEvents {
   LeaveGameRoom = "leave_game_room",
   GameRoomNotification = "game_room_notification",
   Ping = "ping",
-  PhysicsUpdate = "game_physics_update",
+  PhysicsLoop = "game_physics_loop",
+  ServerLoop = "game_server_loop",
 }
 export default GameroomEvents;
