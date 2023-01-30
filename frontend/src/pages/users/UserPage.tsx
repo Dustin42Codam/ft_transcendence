@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { selectUserById } from "../../redux/slices/usersSlice";
 import Wrapper from "../../components/Wrapper";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { Tab, Tabs } from "react-bootstrap";
+import { Badge, Tab, Tabs } from "react-bootstrap";
 import UserFriends from "../../components/UserFriends";
 import axios from "axios";
 import "./UserPage.css";
@@ -15,7 +15,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import store from "../../redux/store";
 import GameLadder from "../../components/GameLadder";
-import { ChatroomType } from "../../models/Channel";
+import { ChatroomType, UserStatus } from "../../models/Channel";
 
 export const UserPage = () => {
   const { userId } = useParams();
@@ -243,9 +243,30 @@ export const UserPage = () => {
                   </div>
 
                   <div className="text-center mt-3">
-                    <span className="bg-secondary p-1 px-3 rounded text-white">
-                      {user.status}
-                    </span>
+                      {
+                        user.status === UserStatus.OFFLINE && (
+                        <span className="bg-secondary p-1 px-3 rounded text-white">
+                          <Badge pill bg="secondary">
+                            {user.status}
+                          </Badge>
+                        </span>)
+                      }   
+                      {
+                        user.status === UserStatus.ONLINE && (
+                        <span className="bg-success p-1 px-3 rounded text-white">
+                          <Badge pill bg="success">
+                            {user.status}
+                          </Badge>
+                        </span>)
+                      }   
+                      {
+                        user.status === UserStatus.IN_A_GAME && (
+                          <span className="bg-primary p-1 px-3 rounded">
+                          <Badge pill bg="primary">
+                            {user.status}
+                          </Badge>
+                        </span>)
+                      }
                     <h5 className="mt-3">{user.display_name}</h5>
 
                     <div className="mt-2 buttons button-layout">

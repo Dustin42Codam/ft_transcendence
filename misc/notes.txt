@@ -16,6 +16,7 @@ todo:
 			-	add time?
 			-	add status?
 			-	show last message (message_p)
+	-	add badge to user page
 
 	-	New Chat UI
 		-	add message input
@@ -39,6 +40,7 @@ todo:
 			-	remove admin
 			-	grant ownership
 			-	remove
+		-	add user to channel slider
 		-	seperate DM page
 		-	add smileys
 			-	smiley button
