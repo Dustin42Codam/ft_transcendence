@@ -1,0 +1,15 @@
+.activeGameRow {
+  display: flex;
+  flex-flow: row;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.activeGameColumn {
+  flex-flow: row;
+  flex-basis: auto;
+  min-width: 70px;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-basis: fit-content;
+}

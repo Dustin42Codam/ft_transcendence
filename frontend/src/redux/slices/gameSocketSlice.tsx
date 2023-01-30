@@ -1,74 +1,97 @@
 import { createAsyncThunk, PayloadAction, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
+interface MoveableObject {
+  positionX: number;
+  positionY: number;
+  width: number;
+  height: number;
+}
+
+interface Bat extends MoveableObject {}
+
 interface BatMove {
-  GameRoomId: number;
-  BatX: number;
-  BatY: number;
+  gameRoomId: string;
+  bat: Bat;
 }
 
-interface Bat {
-  X: number;
-  Y: number;
-}
-
-interface Ball {
-  X: number;
-  Y: number;
-}
-
-interface userInRoom {
+interface Player {
   displayName: string;
-  bat?: Bat;
+  bat: Bat;
 }
 
-interface JoinGameRoomDTO {
-  gameRoomId: number;
-  player1?: userInRoom;
-  player2?: userInRoom;
-  spectator?: userInRoom;
+interface Ball extends MoveableObject {
+  directionX: number;
+  directionY: number;
+  speed: number;
 }
 
-export interface GameState {
+interface GamePhysics {
+  canvasWidth: number;
+  canvasHeight: number;
+  ball: Ball;
+  player1: Player;
+  player2: Player;
+  score: Array<number>;
+}
+
+//player2 = { displayName: user.display_name, bat: {positionX: 1250, positionY:270}};
+const leftBat: Bat = {
+  positionX: 1250,
+  positionY: 270,
+  height: 200,
+  width: 160,
+};
+
+const rightBat: Bat = {
+  positionX: 50,
+  positionY: 270,
+  height: 200,
+  width: 160,
+};
+
+const defaultPlyaer: Player = {
+  displayName: "",
+  bat: {
+    positionX: -1,
+    positionY: -1,
+    height: -1,
+    width: -1,
+  },
+};
+
+interface GameRoom {
   isEstablishingConnection: boolean;
   isConnected: boolean;
-  gameRoomId: number;
-  ball: Ball;
-  player1?: userInRoom;
-  player2?: userInRoom;
-  scoreP1: number;
-  scoreP2: number;
-  player1Moved: string;
-  player2Moved: string;
-  spectator?: userInRoom;
+  isJoning: boolean;
+  gameRoomId: string;
+  gamePhysics?: GamePhysics;
   notificatoin: string;
 }
 
-export const initialState: GameState = {
+export const initialState: GameRoom = {
   isEstablishingConnection: false,
   isConnected: false,
-  gameRoomId: -1,
-  player1: undefined,
-  player2: undefined,
-  scoreP1: 0,
-  scoreP2: 0,
-  player1Moved: "",
-  player2Moved: "",
-  spectator: undefined,
-  ball: { X: -1, Y: -1 },
+  isJoning: false,
+  gameRoomId: "-1",
+  gamePhysics: {
+    canvasWidth: 1300,
+    canvasHeight: 700,
+    ball: {
+      positionX: -1,
+      positionY: -1,
+      directionX: -1,
+      directionY: -1,
+      width: -1,
+      height: -1,
+      speed: -1,
+    },
+    player1: defaultPlyaer,
+    player2: defaultPlyaer,
+    score: [0, 0],
+  },
   notificatoin: "",
 };
-
-/*
-export const fetchCurrentGameRoomMessages = createAsyncThunk(
-  "socket/fetchCurrentGameRoomMessages",
-  async (gameroomId: number) => {
-    const response = await axios.get(`message/chatroom/id/${chatroomId}`);
-
-    return response.data;
-  }
-);
-*/
 
 const gameSocketSlice = createSlice({
   name: "gameSocket",
@@ -89,65 +112,25 @@ const gameSocketSlice = createSlice({
       return;
     },
     joinRoom: (state, action: PayloadAction<number>) => {
+      state.isJoning = true;
       return;
-    },
-    joinRoomSuccess: (state, action: PayloadAction<JoinGameRoomDTO>) => {
-      //console.log("this is payload", action.payload);
-      console.log(
-        "Joined a room: ",
-        action.payload,
-        action.payload.player2 != undefined && state.player2 == undefined
-      );
-      state.gameRoomId = action.payload.gameRoomId;
-      if (action.payload.player1 != undefined && state.player1 == undefined) {
-        state.player1 = action.payload.player1;
-      }
-      if (action.payload.player2 != undefined && state.player2 == undefined) {
-        state.player2 = action.payload.player2;
-      }
-      if (action.payload.spectator != undefined) {
-        state.spectator = action.payload.spectator;
-      }
     },
     leaveRoom: (state, action: PayloadAction<number>) => {
+      state.isJoning = false;
       return;
     },
-    leaveRoomSuccess: (state) => {
-      state.gameRoomId = initialState.gameRoomId;
+    moveBat: (state, action: PayloadAction<any>) => {
       return;
     },
-    moveBatP1: (state, action: PayloadAction<any>) => {
+    physicsLoop: (state, action: PayloadAction<GamePhysics>) => {
+      state.gamePhysics = action.payload;
       return;
     },
-    moveBatP2: (state, action: PayloadAction<any>) => {
+    serverLoop: (state, action: PayloadAction<string>) => {
+      state.gameRoomId = action.payload;
       return;
     },
-    clearBatP1: (state) => {
-      state.player1Moved = "";
-      return;
-    },
-    clearBatP2: (state) => {
-      state.player2Moved = "";
-      return;
-    },
-    getBatP1: (state, action: PayloadAction<any>) => {
-      state.player1Moved = action.payload;
-      return;
-    },
-    getBatP2: (state, action: PayloadAction<any>) => {
-      state.player2Moved = action.payload;
-      return;
-    },
-    getScore: (state, action: PayloadAction<any>) => {
-      return;
-    },
-    getBall: (state, action: PayloadAction<any>) => {
-      return;
-    },
-    serverStartedTheGame: (state, action: PayloadAction<any>) => {
-      return;
-    },
-    clientWantsToStartGame: (state, action: PayloadAction<any>) => {
+    ping: (state, action: PayloadAction<number>) => {
       return;
     },
   },

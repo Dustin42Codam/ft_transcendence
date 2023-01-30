@@ -3,33 +3,39 @@ import { io, Socket } from "socket.io-client";
 import { gameSocketActions } from "./slices/gameSocketSlice";
 import GameEvent from "./gameEvent";
 
-interface JoinGameRoom {
-  GameRoomId: number;
-  gamer: userInRoom;
+interface MoveableObject {
+  positionX: number;
+  positionY: number;
+  width: number;
+  height: number;
 }
 
-interface Bat {
-  X: number;
-  Y: number;
+interface Bat extends MoveableObject {}
+
+interface BatMove {
+  gameRoomId: string;
+  bat: Bat;
 }
 
-interface Ball {
-  X: number;
-  Y: number;
-}
-
-interface userInRoom {
+interface Player {
   displayName: string;
-  bat?: Bat;
+  bat: Bat;
 }
 
-interface JoinGameRoomDTO {
-  gameRoomId: number;
-  player1?: userInRoom;
-  player2?: userInRoom;
-  spectator?: userInRoom;
+interface Ball extends MoveableObject {
+  directionX: number;
+  directionY: number;
+  speed: number;
 }
 
+interface GamePhysics {
+  canvasWidth: number;
+  canvasHeight: number;
+  ball: Ball;
+  player1: Player;
+  player2: Player;
+  score: Array<number>;
+}
 const gameSocketMiddleware: Middleware = (store) => {
   let gameSocket: Socket = io("ws://localhost:3002/game", {
     autoConnect: false,
@@ -53,64 +59,26 @@ const gameSocketMiddleware: Middleware = (store) => {
         store.dispatch(gameSocketActions.connectionEstablished());
         //gameSocket.emit(GameEvent.RequestAllMessages);
       });
-      /*
-			//TODO send bat position 
-      gameSocket.on(GameEvent.ReceiveMessage, (chatMessage: GameMessage) => {
-        store.dispatch(gameSocketActions.receiveMessage({ chatMessage }));
-      });
-		 */
-      gameSocket.on(GameEvent.SpectateGameRoom, (spectateGame: any) => {
-        //TOAST a Message
-        //Join the user to go to the game room
-        //store.dispatch(gameSocketActions.joinRoomSuccess(spectateGame));
-      });
-      /*
-      gameSocket.on(GameEvent.MessageToGameRoom, (messageToGameRoom: any) => {
-        //TOAST a Message
-        store.dispatch(gameSocketActions.joinRoomSuccess(messageToGameRoom));
-      });
-		 */
-      gameSocket.on(
-        GameEvent.JoinGameRoomSuccess,
-        (payload: JoinGameRoomDTO) => {
-          store.dispatch(gameSocketActions.joinRoomSuccess(payload));
-        }
-      );
-      //TODO what data do we need in the backend
-      gameSocket.on(GameEvent.GetBatP2, (payload: any) => {
-        store.dispatch(gameSocketActions.getBatP2(payload));
-      });
-      gameSocket.on(GameEvent.GetBatP1, (payload: any) => {
-        store.dispatch(gameSocketActions.getBatP1(payload));
-      });
-      gameSocket.on(GameEvent.LeaveGameRoomSuccess, () => {
-        store.dispatch(gameSocketActions.leaveRoomSuccess());
-      });
       gameSocket.on(GameEvent.GameRoomNotification, (notification: string) => {
         store.dispatch(gameSocketActions.getNotificatoin(notification));
       });
+      gameSocket.on(GameEvent.PhysicsLoop, (gamePhysics: GamePhysics) => {
+        store.dispatch(gameSocketActions.physicsLoop(gamePhysics));
+      });
+      gameSocket.on(GameEvent.ServerLoop, (gameRoomId: string) => {
+        store.dispatch(gameSocketActions.serverLoop(gameRoomId));
+      });
+      gameSocket.on(GameEvent.Ping, (payload: any) => {
+        console.log("Ping from server");
+      });
     }
     if (isConnectionEstablished) {
-      console.log(
-        "trying to join",
-        gameSocketActions.joinRoom.match(action),
-        action
-      );
       if (gameSocketActions.joinRoom.match(action)) {
         console.log("we are in", GameEvent.JoinGameRoom, action.payload);
         gameSocket.emit(GameEvent.JoinGameRoom, String(action.payload));
       }
-      /*
-			 * TODO think how to send data from gameSocket to gameSocket
-      if (gameSocketActions.sendMessage.match(action)) {
-        gameSocket.emit(GameEvent.SendMessage, action.payload.chatMessage);
-      }
-		 */
-      if (gameSocketActions.moveBatP1.match(action)) {
-        gameSocket.emit(GameEvent.MoveBatP1, action.payload);
-      }
-      if (gameSocketActions.moveBatP2.match(action)) {
-        gameSocket.emit(GameEvent.MoveBatP2, action.payload);
+      if (gameSocketActions.moveBat.match(action)) {
+        gameSocket.emit(GameEvent.MoveBat, action.payload);
       }
       if (gameSocketActions.leaveRoom.match(action)) {
         gameSocket.emit(GameEvent.LeaveGameRoom, action.payload);

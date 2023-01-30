@@ -3,9 +3,11 @@ import { Link } from "react-router-dom";
 import LogoutIcon from "@mui/icons-material/Logout";
 import "./Nav.css";
 import { useAppDispatch } from "../redux/hooks";
+import { useNavigate } from "react-router-dom";
 
 const Nav = (props: any) => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const logout = async () => {
     await axios
@@ -16,6 +18,7 @@ const Nav = (props: any) => {
     dispatch({
       type: "SIGNOUT_REQUEST",
     });
+    navigate("/authenticate");
   };
 
   return (

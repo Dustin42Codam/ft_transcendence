@@ -76,7 +76,7 @@ const Menu = (props: any) => {
           </p>
         </NavLink>
         <NavLink
-          to={"/games"}
+          to={"/game"}
           className="navItem"
           style={{ textDecoration: "none" }}
         >
