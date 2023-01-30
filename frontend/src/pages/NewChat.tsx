@@ -36,7 +36,7 @@ import { UserRole } from "../models/Channel";
 import LeaveChannel from "../components/chat/LeaveChannel";
 import MemberActions from "../components/chat/MemberActions";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
-import ChatAddMemberOffCanvas from "../components/chat/ChatAddMemberOffCanvas";
+import ChatUserListModal from "../components/chat/ChatUserListModal";
 
 const NewChat = () => {
   const currentUser = useAppSelector(selectCurrentUser);
@@ -123,7 +123,7 @@ const NewChat = () => {
                 {currentMember?.role !== "user" && (
                   <li>
                     {/* <PersonAddIcon /> */}
-                    <ChatAddMemberOffCanvas currentChat={currentChat} />
+                    <ChatUserListModal />
                     {/*                     <ChatAddMember
                       allUsers={allUsers}
                       currentChat={currentChat}
