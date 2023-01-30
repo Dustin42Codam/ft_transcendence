@@ -54,8 +54,8 @@
 
 .userList .block .imagebox {
   position: relative;
-  min-width: 45px;
-  height: 45px;
+  min-width: 65px;
+  height: 65px;
   overflow: hidden;
   border-radius: 50%;
   margin-right: 10px;
@@ -73,7 +73,13 @@
 }
 
 .userList .block .details .listHead .newChatH4 {
-  font-size: 1.1em;
+  font-size: 1.5em;
   font-weight: 600;
   color: #111;
+}
+
+.userList .block .details .status .newChatP {
+  font-size: 1.3em;
+  /* font-weight: 600; */
+  color: rgb(43, 43, 43);
 }

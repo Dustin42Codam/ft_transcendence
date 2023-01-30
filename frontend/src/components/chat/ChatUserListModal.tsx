@@ -73,10 +73,14 @@ function ModalBody() {
 
 								<div className="details">
 									<div className="listHead">
-										<div className="newChatH4">{user.display_name}</div>
+										<div className="newChatH4">
+											{user.display_name}
+										</div>
 									</div>
-									<div className="message_p">
-										<div className="newChatP">{user.status}</div>
+									<div className="status">
+										<div className="newChatP">
+											{user.status}
+										</div>
 									</div>
 								</div>
 								<li>
