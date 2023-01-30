@@ -18,16 +18,17 @@ todo:
 			-	show last message (message_p)
 
 	-	New Chat UI
+		-	add message input
 		+	add status to user list
-		->	channel settings modal heading
+		+	channel settings modal heading
 			+	modal
 			+	change name
 			+	change type
 			+	change password
 			+	delete channel
 			+	disable channel settings menu for unauthorized users
-			->	leave channel
-				-	overlay hover button right
+			+	leave channel
+				+	overlay hover button right
 		-	add drop down when click on user
 			-	visit profile
 			-	ban
@@ -38,6 +39,7 @@ todo:
 			-	remove admin
 			-	grant ownership
 			-	remove
+		-	seperate DM page
 		-	add smileys
 			-	smiley button
 			-	smiley dropdown
