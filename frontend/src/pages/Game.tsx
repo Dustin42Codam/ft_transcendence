@@ -70,8 +70,12 @@ class GameState {
 
   draw(gamePhysics: GamePhysics, ctx: CanvasRenderingContext2D) {
 		const batP1: Bat = gamePhysics.player1.bat;
-		const batP2: Bat = gamePhysics.player1.bat;
-    ctx.fillRect(batP1.positionX, batP1.positionX, batP1.width, batP1.height);
+		const batP2: Bat = gamePhysics.player2.bat;
+		const ball: Ball = gamePhysics.ball;
+		console.log(batP1, batP2, ball);
+    ctx.fillRect(batP1.positionX, batP1.positionY, batP1.width, batP1.height);
+    ctx.fillRect(batP2.positionX, batP2.positionY, batP2.width, batP2.height);
+    ctx.fillRect(ball.positionX, ball.positionY, ball.width, ball.height);
   }
 
   animation() {
@@ -198,7 +202,7 @@ const Game = (props: any) => {
       const startAnimation = () => {
         gameState = store.getState().gameSocket;
 
-        game.gamePhysics = gameState.gamePhysics;
+        game.setGameState(gameState.gamePhysics);
         let thisLoop: any = new Date();
         let fps: any = 1000 / (thisLoop - lastLoop);
         let dt: any = 150 / fps;
@@ -207,7 +211,7 @@ const Game = (props: any) => {
         game.fps = fps;
         game.animation();
         game.frame += 1;
-        requestAnimationFrame(startAnimation);
+				requestAnimationFrame(startAnimation)
       };
       startAnimation();
     });
