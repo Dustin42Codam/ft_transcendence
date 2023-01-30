@@ -16,10 +16,15 @@ todo:
 			-	add time?
 			-	add status?
 			-	show last message (message_p)
-	-	add badge to user page
+	+	add new badge to user page to display the status
+		in different colors
 
 	-	New Chat UI
+		-	add auto scroll down
 		-	add message input
+		-	add time stamp?
+		-	add user name to message in group chat
+			-	instead of time?
 		+	add status to user list
 		+	channel settings modal heading
 			+	modal
@@ -31,7 +36,9 @@ todo:
 			+	leave channel
 				+	overlay hover button right
 		-	add drop down when click on user
-			-	visit profile
+			+	visit profile
+				+	click on avatar
+				-	and drop down
 			-	ban
 			-	unban
 			-	mute

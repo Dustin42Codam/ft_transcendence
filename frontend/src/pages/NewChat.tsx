@@ -315,7 +315,9 @@ const NewChat = () => {
                   member.user.id !== currentUser.id && (
                     <div className="block" key={index}>
                       <div className="imagebox">
-                        <img src={member.user.avatar} className="cover" />
+                        <Link to={`/users/${member.user.id}`}>
+                          <img src={member.user.avatar} className="cover" />
+                        </Link>
                       </div>
                       <div className="details">
                         <div className="listHead">
