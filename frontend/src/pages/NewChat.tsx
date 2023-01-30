@@ -33,6 +33,7 @@ import {
 } from "../redux/slices/currentMemberSlice";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import { UserRole } from "../models/Channel";
+import LeaveChannel from "../components/chat/LeaveChannel";
 
 const NewChat = () => {
   const currentUser = useAppSelector(selectCurrentUser);
@@ -302,7 +303,7 @@ const NewChat = () => {
                   <MoreVertIcon />
                 </li>
                 <li>
-                  <ExitToAppIcon />
+                  <LeaveChannel />
                 </li>
               </ul>
             </div>

@@ -123,8 +123,7 @@ const ChannelSettings = (props: any) => {
       );
     } else if (
       (chatType == ChatroomType.PROTECTED ||
-        currentMember.chatroom.type === ChatroomType.PROTECTED) &&
-      password.length
+        currentMember.chatroom.type === ChatroomType.PROTECTED)
     ) {
       dispatch(
         updateCurrentChatPassword({
@@ -170,37 +169,6 @@ const ChannelSettings = (props: any) => {
         </Modal.Footer>
       </Modal>
     );
-  }
-
-  async function leaveChannel() {
-    await axios
-      .post(`member/leave/id/${currentMember.id}`)
-      .then((ret) => {
-        toast.success(`You left the chat!`, {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        });
-        navigate("/");
-      })
-      .catch((error: any) => {
-        console.log(error);
-        toast.error(`${error.response.data.message}`, {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        });
-      });
   }
 
   return (
@@ -298,12 +266,6 @@ const ChannelSettings = (props: any) => {
             show={delModalShow}
             onHide={() => setDelModalShow(false)}
           />
-          {/* ++++++++++++++++++++++++++++++++++ */}
-
-          {/* +++++++++ Leave Channel +++++++++ */}
-          <Button variant="warning" onClick={leaveChannel}>
-            Leave
-          </Button>
           {/* ++++++++++++++++++++++++++++++++++ */}
 
           {/* +++++++++ Save Settings +++++++++ */}
