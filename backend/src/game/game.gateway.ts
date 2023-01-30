@@ -22,6 +22,7 @@ interface BatMove {
 }
 
 interface Player {
+	id: number;
 	displayName: string;
 	bat: Bat;
 }
@@ -51,17 +52,18 @@ const leftBat: Bat = {
 	positionX: 1250,	
 	positionY: 270,	
 	height: 200,
-	width: 160, 
+	width: 20, 
 }
 
 const rightBat: Bat = {
-	positionX: 50,	
+	positionX: 30,	
 	positionY: 270,	
 	height: 200,
-	width: 160, 
+	width: 20, 
 }
 
 const defaultPlyaer: Player = {
+	id: -1,
 	displayName: "",
 	bat: {
 		positionX: -1,	
@@ -144,7 +146,7 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 				positionY: 350,
 				directionX: Math.random() < 0.5 ? 1 : -1,
 				directionY: Math.floor(Math.random() * 5) - 2,
-				speed: 1,
+				speed: 4,
 				width: 20,
 				height: 20,
 			};
@@ -300,9 +302,9 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 				let player1: Player;
 
 				if (userId == gameFromDb.player_1) {
-					player1 = { displayName: user.display_name, bat: JSON.parse(JSON.stringify({...leftBat}))};
+					player1 = { id: userId, displayName: user.display_name, bat: JSON.parse(JSON.stringify({...leftBat}))};
 				} else {
-					player1 = { displayName: user.display_name, bat: JSON.parse(JSON.stringify({...rightBat}))};
+					player1 = { id: userId, displayName: user.display_name, bat: JSON.parse(JSON.stringify({...rightBat}))};
 				}	
 				currentActiveGame.gamePhysics.player1 = player1;
 				this.io.to(gameRoomId).emit(GameroomEvents.GameRoomNotification, `Player 1: ${user.display_name}`);
@@ -310,9 +312,9 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 				let player2: Player;
 
 				if (userId == gameFromDb.player_1) {
-					player2 = { displayName: user.display_name, bat: JSON.parse(JSON.stringify({...leftBat}))};
+					player2 = { id: userId, displayName: user.display_name, bat: JSON.parse(JSON.stringify({...leftBat}))};
 				} else {
-					player2 = { displayName: user.display_name, bat: JSON.parse(JSON.stringify({...rightBat}))};
+					player2 = { id: userId, displayName: user.display_name, bat: JSON.parse(JSON.stringify({...rightBat}))};
 				}	
 				currentActiveGame.gamePhysics.player2 = player2;
 
@@ -322,17 +324,41 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 	}
 
 	//TODO make these change the gameState from the gameRoomId In active games
-  @SubscribeMessage(GameroomEvents.MoveBatP1)
-  handleMoveBatP1(client: Socket, payload: any): void {
-		console.log(`BAT1 ${payload.gameRoomId} ${payload.direction}`);
-		console.log(payload);
-		//this.io.to(`${payload.gameRoomId}`).emit(GameroomEvents.GetBatP1, payload.direction);
-  }
+  @SubscribeMessage(GameroomEvents.MoveBat)
+  async handleMoveBat(client: Socket, payload: any): Promise<void> {
+		const userId: number = await this.userService.getUserFromClient(client);
+		if (!userId)
+			throw ("user not found");
+		this.activeGames.map((game: GameRoom, index: number) => {
+			this.logger.debug(game.gameRoomId, payload.gameRoomId, game.gamePhysics.player1.id, userId, payload.direction);
+			if (game.gameRoomId == payload.gameRoomId) {
+				if (game.gamePhysics.player1.id == userId) {
+					if (payload.direction == "down") {
+						if (game.gamePhysics.player1.bat.positionY > 0) {
+							game.gamePhysics.player1.bat.positionY -= 50;
+						}
+					} else if (payload.direction == "up") {
+						if (game.gamePhysics.player1.bat.positionY < 520) {
+							game.gamePhysics.player1.bat.positionY += 50;
+						}
+					}
+				} else if (game.gamePhysics.player2.id == userId) {
+					if (payload.direction == "down") {
+						if (game.gamePhysics.player2.bat.positionY > 0) {
+							game.gamePhysics.player2.bat.positionY -= 50;
+						}
+					} else if (payload.direction == "up") {
+						if (game.gamePhysics.player2.bat.positionY < 520) { 
+							game.gamePhysics.player2.bat.positionY += 50;
+						}
+					}
+				}
+			}
+		});
+		this.logger.log(`BAT1 ${payload.gameRoomId} ${payload.direction}, ${userId}`);
 
-  @SubscribeMessage(GameroomEvents.MoveBatP2)
-  handleMoveBatP2(client: Socket, payload: any): void {
-		console.log(`BAT2 ${payload.gameRoomId} ${payload.direction}`);
-		//console.log(payload, GameroomEvents.GetBatP2, payload.direction);
-		//this.io.to(`${payload.gameRoomId}`).emit(GameroomEvents.GetBatP2, payload.direction);
+		//console.log(`BAT1 ${payload.gameRoomId} ${payload.direction}`);
+		//console.log(payload);
+		//this.io.to(`${payload.gameRoomId}`).emit(GameroomEvents.GetBatP1, payload.direction);
   }
 }

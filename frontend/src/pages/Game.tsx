@@ -14,37 +14,36 @@ interface MoveableObject {
   height: number;
 }
 
-interface Bat extends MoveableObject {
-}
+interface Bat extends MoveableObject {}
 
 interface BatMove {
-	gameRoomId: string;
-	bat: Bat;
+  gameRoomId: string;
+  bat: Bat;
 }
 
 interface Player {
-	displayName: string;
-	bat: Bat;
+  displayName: string;
+  bat: Bat;
 }
 
 interface Ball extends MoveableObject {
   directionX: number;
   directionY: number;
-	speed: number;
+  speed: number;
 }
 
 interface GamePhysics {
-	canvasWidth: number;
-	canvasHeight: number;
-	ball: Ball;
-	player1: Player;
-	player2: Player;
-	score: Array<number>;
+  canvasWidth: number;
+  canvasHeight: number;
+  ball: Ball;
+  player1: Player;
+  player2: Player;
+  score: Array<number>;
 }
 
 interface GameRoom {
-	gameRoomId: string;
-	gamePhysics: GamePhysics;
+  gameRoomId: string;
+  gamePhysics: GamePhysics;
 }
 
 class GameState {
@@ -52,45 +51,48 @@ class GameState {
   ctx: CanvasRenderingContext2D;
   dt: any;
   fps: any;
-	gamePhysics: GamePhysics;
+  gamePhysics: GamePhysics;
 
-	setGameState(gamePhysics: GamePhysics): void {
-		this.gamePhysics = gamePhysics;
-	}
+  setGameState(gamePhysics: GamePhysics): void {
+    this.gamePhysics = gamePhysics;
+  }
 
   constructor(canvas: HTMLCanvasElement, gamePhysics: GamePhysics) {
     if (!canvas || !canvas.getContext)
       throw new Error("The Browser can not render the game");
-		this.gamePhysics = gamePhysics;
+    this.gamePhysics = gamePhysics;
     this.frame = 0;
-		this.dt = 0;
-		this.fps = 0;
+    this.dt = 0;
+    this.fps = 0;
     this.ctx = canvas.getContext("2d")!;
   }
 
   draw(gamePhysics: GamePhysics, ctx: CanvasRenderingContext2D) {
-		const batP1: Bat = gamePhysics.player1.bat;
-		const batP2: Bat = gamePhysics.player2.bat;
-		const ball: Ball = gamePhysics.ball;
-		console.log(batP1, batP2, ball);
+    const batP1: Bat = gamePhysics.player1.bat;
+    const batP2: Bat = gamePhysics.player2.bat;
+    const ball: Ball = gamePhysics.ball;
+    console.log(batP1, batP2, ball);
     ctx.fillRect(batP1.positionX, batP1.positionY, batP1.width, batP1.height);
     ctx.fillRect(batP2.positionX, batP2.positionY, batP2.width, batP2.height);
     ctx.fillRect(ball.positionX, ball.positionY, ball.width, ball.height);
   }
 
   animation() {
-    this.ctx.clearRect(0, 0, this.gamePhysics.canvasWidth, this.gamePhysics.canvasHeight);
-		this.draw(this.gamePhysics, this.ctx);
+    this.ctx.clearRect(
+      0,
+      0,
+      this.gamePhysics.canvasWidth,
+      this.gamePhysics.canvasHeight
+    );
+    this.draw(this.gamePhysics, this.ctx);
   }
 }
-
 
 const Game = (props: any) => {
   const dispatch = useAppDispatch();
   const location = useLocation();
 
   useEffect(() => {
-
     const url: Array<string> = location.pathname.split("/");
     const theGameFrame = document.getElementById("content");
     const savedTheGameFrame = theGameFrame!.innerHTML;
@@ -102,7 +104,7 @@ const Game = (props: any) => {
         (function loop() {
           timer = setTimeout(() => {
             gameState = store.getState().gameSocket;
-						console.log(gameState);
+            console.log(gameState);
             if (!gameState.isConnected) {
               theGameFrame!.innerHTML =
                 "<h1>Waiting for connection to game server</h1>";
@@ -155,67 +157,41 @@ const Game = (props: any) => {
 
         if (String.fromCharCode(keynum) == "(") {
           e.preventDefault();
-          if (
-            currentUser.currentUser.display_name ==
-            gameState.player1.displayName
-          ) {
-            dispatch(
-              gameSocketActions.moveBatP1({
-                gameRoomId: gameState.gameRoomId,
-                direction: "up",
-              })
-            );
-          } else {
-            dispatch(
-              gameSocketActions.moveBatP2({
-                gameRoomId: gameState.gameRoomId,
-                direction: "up",
-              })
-            );
-          }
-          //
-        }
-        if (String.fromCharCode(keynum) == "&") {
+          dispatch(
+            gameSocketActions.moveBat({
+              gameRoomId: gameState.gameRoomId,
+              direction: "up",
+            })
+          );
+        } else if (String.fromCharCode(keynum) == "&") {
           e.preventDefault();
-          if (
-            currentUser.currentUser.display_name ==
-            gameState.player1.displayName
-          ) {
-            dispatch(gameSocketActions.moveBatP1(1));
-            dispatch(
-              gameSocketActions.moveBatP1({
-                gameRoomId: gameState.gameRoomId,
-                direction: "down",
-              })
-            );
-          } else {
-            dispatch(
-              gameSocketActions.moveBatP2({
-                gameRoomId: gameState.gameRoomId,
-                direction: "down",
-              })
-            );
-          }
-        }
-      });
+          dispatch(
+            gameSocketActions.moveBat({
+              gameRoomId: gameState.gameRoomId,
+              direction: "down",
+            })
+          );
+				}
+			});
       let lastLoop: any = new Date();
       const startAnimation = () => {
-        gameState = store.getState().gameSocket;
-
-        game.setGameState(gameState.gamePhysics);
-        let thisLoop: any = new Date();
-        let fps: any = 1000 / (thisLoop - lastLoop);
-        let dt: any = 150 / fps;
-        lastLoop = thisLoop;
-        game.dt = dt;
-        game.fps = fps;
-        game.animation();
-        game.frame += 1;
-				requestAnimationFrame(startAnimation)
+        setTimeout(() => {
+          let thisLoop: any = new Date();
+          let fps: any = 1000 / (thisLoop - lastLoop);
+          let dt: any = 150 / fps;
+          gameState = store.getState().gameSocket;
+          game.setGameState(gameState.gamePhysics);
+          lastLoop = thisLoop;
+          game.dt = dt;
+          game.fps = fps;
+          game.animation();
+          game.frame += 1;
+          requestAnimationFrame(startAnimation);
+        }, 15);
       };
       startAnimation();
-    });
-  }, []);
+		});
+	}, []);
   return (
     <Wrapper>
       <div id="canvasContainer">

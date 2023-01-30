@@ -77,11 +77,8 @@ const gameSocketMiddleware: Middleware = (store) => {
         console.log("we are in", GameEvent.JoinGameRoom, action.payload);
         gameSocket.emit(GameEvent.JoinGameRoom, String(action.payload));
       }
-      if (gameSocketActions.moveBatP1.match(action)) {
-        gameSocket.emit(GameEvent.MoveBatP1, action.payload);
-      }
-      if (gameSocketActions.moveBatP2.match(action)) {
-        gameSocket.emit(GameEvent.MoveBatP2, action.payload);
+      if (gameSocketActions.moveBat.match(action)) {
+        gameSocket.emit(GameEvent.MoveBat, action.payload);
       }
       if (gameSocketActions.leaveRoom.match(action)) {
         gameSocket.emit(GameEvent.LeaveGameRoom, action.payload);

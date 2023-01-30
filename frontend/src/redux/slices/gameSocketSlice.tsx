@@ -119,10 +119,7 @@ const gameSocketSlice = createSlice({
       state.isJoning = false;
       return;
     },
-    moveBatP1: (state, action: PayloadAction<any>) => {
-      return;
-    },
-    moveBatP2: (state, action: PayloadAction<any>) => {
+    moveBat: (state, action: PayloadAction<any>) => {
       return;
     },
     physicsLoop: (state, action: PayloadAction<GamePhysics>) => {
