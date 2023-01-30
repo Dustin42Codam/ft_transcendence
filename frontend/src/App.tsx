@@ -51,7 +51,8 @@ function App() {
           <Routes>
             <Route path={"/authenticate"} element={<Authenticate />} />
             <Route path={"/particles"} element={<ParticleBackground />} />
-            <Route path="/" element={<Navigate to="./authenticate" />} />
+            <Route path="/" element={<Navigate to="/authenticate" />} />
+            <Route path="/dashboard" element={<Navigate to="/authenticate" />} />
             <Route path={"*"} element={<NotFound />} />
           </Routes>
         </BrowserRouter>
@@ -69,7 +70,7 @@ function App() {
           <Routes>
             <Route path={"/authenticate"} element={<Authenticate />} />
             <Route path={"/particles"} element={<ParticleBackground />} />
-            <Route path="/" element={<Navigate to="./authenticate" />} />
+            <Route path="/" element={<Navigate to="/authenticate" />} />
             <Route
               path={"/authenticate/2fa"}
               element={<TwoFactorAuthentication />}

@@ -1,5 +1,8 @@
 
 todo:
+	-	firefox cant establish connection to ws://
+	-	get all users authguard
+		-	check tfa secret of other users
 	-	change contentBody in user list, user profile, user page?
 	-	remove header
 	-	new side bar
@@ -22,14 +25,9 @@ todo:
 			+	change type
 			+	change password
 			+	delete channel
-			-	add "you need to be admin to change settings"
-				when user tries to click on settings dropdown
 			+	disable channel settings menu for unauthorized users
 			->	leave channel
 				-	overlay hover button right
-		->	add smileys
-			->	smiley button
-			-	smiley dropdown
 		-	add drop down when click on user
 			-	visit profile
 			-	ban
@@ -40,6 +38,9 @@ todo:
 			-	remove admin
 			-	grant ownership
 			-	remove
+		-	add smileys
+			-	smiley button
+			-	smiley dropdown
 
 	-	Chat
 		-	mark messages as read/unread ?
