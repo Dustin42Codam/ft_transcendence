@@ -138,9 +138,10 @@
   display: flex;
   list-style: none;
   cursor: pointer;
-  color: #51585c;
+  color: #868c8f;
   font-size: 1.5em;
-  margin-top: 10px;
+  /* margin-top: 10px; */
+  margin: 5px;
 }
 
 .chatlist .block:hover {

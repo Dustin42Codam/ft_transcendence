@@ -22,7 +22,7 @@ import {
 } from "../redux/slices/chatMembersSlice";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
-import { Member } from "../models/Member";
+import { Member, MemberRole } from "../models/Member";
 import EmojiEmotionsIcon from "@mui/icons-material/EmojiEmotions";
 import InsertEmoticonIcon from "@mui/icons-material/InsertEmoticon";
 import ChannelSettings from "../components/chat/ChannelSettings";
@@ -37,6 +37,7 @@ import LeaveChannel from "../components/chat/LeaveChannel";
 import MemberActions from "../components/chat/MemberActions";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import ChatUserListModal from "../components/chat/ChatUserListModal";
+
 
 const NewChat = () => {
   const currentUser = useAppSelector(selectCurrentUser);
@@ -313,10 +314,6 @@ const NewChat = () => {
                 </Link>
               </div>
               <ul className="navIcons">
-                {/* <li><ChatBubbleOutlineIcon /></li> */}
-                <li>
-                  <MoreVertIcon />
-                </li>
                 <li>
                   <LeaveChannel />
                 </li>
@@ -345,9 +342,16 @@ const NewChat = () => {
                           <div className="newChatP">{member.user.status}</div>
                         </div>
                       </div>
+                      {
+                        member.role !== MemberRole.USER && (
+                          <div className="message_p">
+                            <div className="newChatP">{member.role}</div>
+                          </div>
+                        )
+                      }
                       <div className="userActions">
                         {/* <MoreVertIcon /> */}
-                        <MemberActions member/>
+                        <MemberActions member={member}/>
                       </div>
                     </div>
                   )
