@@ -70,8 +70,9 @@ const NewChat = () => {
         fetchChatMembers({
           id: currentChat.id,
         })
-      );
+      );      
     }
+    
   }, [currentChat]);
 
   useEffect(() => {
@@ -322,7 +323,9 @@ const NewChat = () => {
 
             {/* chat list */}
             <div className="chatlist">
-              {chatMembers.map(
+              {[...chatMembers]
+                .sort((a, b) => a.id - b.id)
+                .map(
                 (member: Member, index: number) =>
                   member.user.id !== currentUser.id && (
                     <div className="block" key={index}>
@@ -351,7 +354,10 @@ const NewChat = () => {
                       }
                       <div className="userActions">
                         {/* <MoreVertIcon /> */}
-                        <MemberActions member={member}/>
+                        <MemberActions
+                          member={member}
+                          currentMember={currentMember}
+                        />
                       </div>
                     </div>
                   )

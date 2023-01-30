@@ -43,13 +43,11 @@ todo:
 			+	visit profile
 				+	when clicking on avatar
 				-	and drop down?
-			->	ban
-			->	unban
+			+	ban
+			+	unban
 
-			-	mute
-				-	FaVolumeMute
-			-	unmute
-				-	FaVolumeUp
+			->	mute
+			->	unmute
 
 			-	make admin
 				-	
@@ -61,6 +59,7 @@ todo:
 
 			-	remove
 				-	FaUserMinus
+			-	send game invite
 
 		+	add user to channel modal
 		-	seperate DM page

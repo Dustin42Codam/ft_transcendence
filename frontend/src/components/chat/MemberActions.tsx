@@ -7,11 +7,14 @@ import { Button, Modal } from "react-bootstrap";
 import VolumeOffIcon from "@mui/icons-material/VolumeOff"; //mute
 import NotInterestedIcon from "@mui/icons-material/NotInterested"; //ban1
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline"; //ban2
-import ChatBanUser from "./ChatBanUser";
+import ChatBanMember from "./ChatBanMember";
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { MemberRole } from "../../models/Member";
+import { useAppSelector } from "../../redux/hooks";
+import { selectCurrentMember } from "../../redux/slices/currentMemberSlice";
 
-type MyProps = { member: any };
+type MyProps = { member: any, currentMember: any };
 type MyState = { open: boolean };
 class MemberActions extends React.Component<MyProps, MyState> {
 	container = createRef<HTMLDivElement>();
@@ -52,9 +55,11 @@ class MemberActions extends React.Component<MyProps, MyState> {
 		{this.state.open && (
 			<div className="dropdown">
 				<ul>
-					<li>
-						<ChatBanUser user={this.props.member}/>
-					</li>
+					{
+						this.props.currentMember.role !== MemberRole.USER && (
+							<ChatBanMember member={this.props.member}/>
+						)
+					}
 					<li>Option 1</li>
 					<li>Option 2</li>
 					<li>Option 3</li>

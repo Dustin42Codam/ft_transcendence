@@ -46,6 +46,7 @@ const chatMembers = createSlice({
       })
       .addCase(fetchChatMembers.fulfilled, (state, action) => {
         state.status = "succeeded";
+        // action.payload.sort
         state.members = action.payload;
       })
       .addCase(fetchChatMembers.rejected, (state: any, action) => {
