@@ -345,10 +345,10 @@ const NewChat = () => {
                           <div className="newChatP">{member.user.status}</div>
                         </div>
                       </div>
-                      <li>
+                      <div className="userActions">
                         {/* <MoreVertIcon /> */}
-                        <MemberActions />
-                      </li>
+                        <MemberActions member={member}/>
+                      </div>
                     </div>
                   )
               )}

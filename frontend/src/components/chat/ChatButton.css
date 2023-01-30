@@ -25,6 +25,7 @@
 .chatButton:hover {
   border-color: rgb(244, 241, 208);
   font-size: 12px;
+  transition-duration: 0.15s;
 }
 
 .chatButton:selection {

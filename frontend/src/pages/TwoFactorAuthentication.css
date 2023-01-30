@@ -96,6 +96,7 @@
 }
 
 .authBox .pincode-input-text:hover {
+  transition-duration: 0.15s;
   border: 5px solid #42fa8f;
   box-shadow: 0 0 5px rgba(0, 255, 0, 0.3), 0 0 10px rgba(0, 255, 0, 0.2),
     0 0 15px rgba(0, 255, 0, 0.1), 0 2px 0 black;
@@ -117,6 +118,7 @@
 }
 
 ._submit-button:hover {
+  transition-duration: 0.15s;
   color: white;
   width: 198px;
   box-shadow: 0 0 21px rgba(26, 19, 75, 0.6);

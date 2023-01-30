@@ -16,6 +16,7 @@
 
 .member-link:hover {
   color: blue;
+  transition-duration: 0.15s;
 }
 
 .member-link:active {

@@ -67,6 +67,7 @@ code {
 
 .icon-button:hover {
   filter: brightness(1.2);
+  transition-duration: 0.15s;
 }
 
 .icon-button svg {
@@ -109,10 +110,12 @@ code {
 
 .menu-item .icon-button:hover {
   filter: none;
+  transition-duration: 0.15s;
 }
 
 .menu-item:hover {
   background-color: #525357;
+  transition-duration: 0.15s;
 }
 
 .icon-right {

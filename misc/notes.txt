@@ -22,6 +22,8 @@ todo:
 		in different colors
 
 	-	New Chat UI
+		-	new chat bg with better crop
+			-	test on macos
 		-	add auto scroll down
 		-	add message input
 		-	add time stamp?
@@ -37,9 +39,9 @@ todo:
 			+	disable channel settings menu for unauthorized users
 			+	leave channel
 				+	overlay hover button right
-		-	add drop down when click on user
+		->	add drop down when click on user
 			+	visit profile
-				+	click on avatar
+				+	when clicking on avatar
 				-	and drop down?
 			->	ban
 			->	unban
@@ -49,7 +51,7 @@ todo:
 			-	remove admin
 			-	grant ownership
 			-	remove
-		-	add user to channel slider
+		+	add user to channel modal
 		-	seperate DM page
 		-	add smileys
 			-	smiley button
@@ -142,12 +144,6 @@ bugs:
 			+	into 2 seperate components ????
 		+	Leave channel bug
 		+	admin leaves channel -> rejoins -> still admin
-
-notes:	
-	-	ChatLobby?
-	-	ChatCreate?
-	-	ChatTable?
-
 
 toasties:
 
