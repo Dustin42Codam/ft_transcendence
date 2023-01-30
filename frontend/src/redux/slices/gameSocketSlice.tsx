@@ -8,90 +8,88 @@ interface MoveableObject {
   height: number;
 }
 
-interface Bat extends MoveableObject {
-}
+interface Bat extends MoveableObject {}
 
 interface BatMove {
-	gameRoomId: string;
-	bat: Bat;
+  gameRoomId: string;
+  bat: Bat;
 }
 
 interface Player {
-	displayName: string;
-	bat: Bat;
+  displayName: string;
+  bat: Bat;
 }
 
 interface Ball extends MoveableObject {
   directionX: number;
   directionY: number;
-	speed: number;
+  speed: number;
 }
 
 interface GamePhysics {
-	canvasWidth: number;
-	canvasHeight: number;
-	ball: Ball;
-	player1: Player;
-	player2: Player;
-	score: Array<number>;
+  canvasWidth: number;
+  canvasHeight: number;
+  ball: Ball;
+  player1: Player;
+  player2: Player;
+  score: Array<number>;
 }
-
 
 //player2 = { displayName: user.display_name, bat: {positionX: 1250, positionY:270}};
 const leftBat: Bat = {
-	positionX: 1250,	
-	positionY: 270,	
-	height: 200,
-	width: 160, 
-}
+  positionX: 1250,
+  positionY: 270,
+  height: 200,
+  width: 160,
+};
 
 const rightBat: Bat = {
-	positionX: 50,	
-	positionY: 270,	
-	height: 200,
-	width: 160, 
-}
+  positionX: 50,
+  positionY: 270,
+  height: 200,
+  width: 160,
+};
 
 const defaultPlyaer: Player = {
-	displayName: "",
-	bat: {
-		positionX: -1,	
-		positionY: -1,	
-		height: -1,
-		width: -1,
-	},
-}
+  displayName: "",
+  bat: {
+    positionX: -1,
+    positionY: -1,
+    height: -1,
+    width: -1,
+  },
+};
 
 interface GameRoom {
-	isEstablishingConnection: boolean;
-	isConnected: boolean;
-	isJoning: boolean;
-	gameRoomId: string;
-	gamePhysics: GamePhysics;
-	notificatoin: string;
+  isEstablishingConnection: boolean;
+  isConnected: boolean;
+  isJoning: boolean;
+  gameRoomId: string;
+  gamePhysics: GamePhysics;
+  notificatoin: string;
 }
 
 export const initialState: GameRoom = {
-	isEstablishingConnection: false,
-	isConnected: false,
-	isJoning: false,
-	gameRoomId: "-1",
-	gamePhysics: {
-		canvasWidth: 1300,
-		canvasHeight: 700,
-		ball: {
-			positionX: -1,
-			positionY: -1,
-			directionX: -1,
-			directionY: -1,
-			width: -1,
-			height: -1,
-			speed: -1,
-		},
-		player1: defaultPlyaer,
-		player2: defaultPlyaer,
-		score: [0, 0],
-	},
+  isEstablishingConnection: false,
+  isConnected: false,
+  isJoning: false,
+  gameRoomId: "-1",
+  gamePhysics: {
+    canvasWidth: 1300,
+    canvasHeight: 700,
+    ball: {
+      positionX: -1,
+      positionY: -1,
+      directionX: -1,
+      directionY: -1,
+      width: -1,
+      height: -1,
+      speed: -1,
+    },
+    player1: defaultPlyaer,
+    player2: defaultPlyaer,
+    score: [0, 0],
+  },
   notificatoin: "",
 };
 

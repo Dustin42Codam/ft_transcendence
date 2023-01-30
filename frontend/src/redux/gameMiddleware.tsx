@@ -10,32 +10,31 @@ interface MoveableObject {
   height: number;
 }
 
-interface Bat extends MoveableObject {
-}
+interface Bat extends MoveableObject {}
 
 interface BatMove {
-	gameRoomId: string;
-	bat: Bat;
+  gameRoomId: string;
+  bat: Bat;
 }
 
 interface Player {
-	displayName: string;
-	bat: Bat;
+  displayName: string;
+  bat: Bat;
 }
 
 interface Ball extends MoveableObject {
   directionX: number;
   directionY: number;
-	speed: number;
+  speed: number;
 }
 
 interface GamePhysics {
-	canvasWidth: number;
-	canvasHeight: number;
-	ball: Ball;
-	player1: Player;
-	player2: Player;
-	score: Array<number>;
+  canvasWidth: number;
+  canvasHeight: number;
+  ball: Ball;
+  player1: Player;
+  player2: Player;
+  score: Array<number>;
 }
 const gameSocketMiddleware: Middleware = (store) => {
   let gameSocket: Socket = io("ws://localhost:3002/game", {

@@ -7,349 +7,86 @@ import store from "../redux/store";
 
 import { useLocation } from "react-router-dom";
 
-class MoveableObject {
+interface MoveableObject {
   positionX: number;
   positionY: number;
-  directionX: number;
-  directionY: number;
   width: number;
   height: number;
-
-  constructor(
-    posX: number,
-    posY: number,
-    dirX: number,
-    dirY: number,
-    wid: number,
-    hei: number
-  ) {
-    this.positionX = posX;
-    this.positionY = posY;
-    this.directionX = dirX;
-    this.directionY = dirY;
-    this.width = wid;
-    this.height = hei;
-  }
-
-  draw(ctx: CanvasRenderingContext2D) {
-    ctx.fillRect(this.positionX, this.positionY, this.width, this.height);
-  }
-
-  move(speed: number) {
-    this.positionX += this.directionX * speed;
-    this.positionY += this.directionY * speed;
-  }
-
-  doesOverlapWith(obj: MoveableObject) {
-    if (
-      this.positionX > obj.positionX + obj.width ||
-      obj.positionX > this.positionX + this.width
-    )
-      return false;
-    if (
-      this.positionY + this.height < obj.positionY ||
-      obj.positionY + obj.height < this.positionY
-    )
-      return false;
-    return true;
-  }
 }
 
-class Ball extends MoveableObject {
-  speed: number;
-
-  //make a new consrtctor BAll struct from the backend
-  constructor(ballState: any) {
-    super(
-      ballState.positionX,
-      ballState.positionY,
-      ballState.directionX,
-      ballState.directionY,
-      ballState.height,
-      ballState.width
-    );
-    this.speed = ballState.speed;
-    //this.reset(fieldWidth, fieldHeight, direction);
-  }
-
-  //this needs to be tirgered once score and once game starts
-  //(canvasX, canvasY, direction value
-  reset(fieldWidth: number, fieldHeight: number, directionValue: number) {
-    //maybe dispatch and make a promise?
-    //
-
-    this.positionX = fieldWidth - this.width / 2;
-    this.positionY = fieldHeight - this.height / 2;
-    this.directionX = directionValue;
-    this.directionY = 0;
-  }
-
-  hitWall(fieldHeight: number) {
-    //1300 700
-    //send the it hit a wall
-    //that its direction hash chagned
-    if (this.positionY < 0 || this.positionY + this.height > fieldHeight)
-      this.directionY = -this.directionY;
-  }
-
-  hitBat(bat: Bat) {
-    if (this.doesOverlapWith(bat)) {
-      const new_dir = [-3, -2, -1, 0, 1, 2, 3];
-      if (this.directionX < 0) {
-        if (this.positionX == bat.positionX + bat.width) {
-          this.directionY =
-            Math.floor(
-              (this.positionY + this.height / 2 - bat.positionY) /
-                (bat.height / 5)
-            ) - 2;
-          this.directionX = -this.directionX;
-          return;
-        }
-      } else {
-        if (this.positionX + this.width == bat.positionX) {
-          this.directionY =
-            Math.floor(
-              (this.positionY + this.height / 2 - bat.positionY) /
-                (bat.height / 5)
-            ) - 2;
-          this.directionX = -this.directionX;
-          return;
-        }
-      }
-      this.directionY = -this.directionY;
-    }
-  }
-
-  hitPowerUp(
-    powerUp: PowerUp,
-    bat: Bat,
-    fieldWitdh: number,
-    fieldHeight: number
-  ) {
-    if (this.doesOverlapWith(powerUp) && powerUp._timeInactive == 0) {
-      bat.startPowerUp(fieldHeight);
-      powerUp.reset(fieldWitdh, fieldHeight);
-    }
-  }
-
-  animate(
-    fieldWidth: number,
-    fieldHeight: number,
-    ctx: CanvasRenderingContext2D,
-    batP1: Bat,
-    batP2: Bat,
-    powerUp: PowerUp,
-    dt: any,
-    fps: any
-  ) {
-    this.hitWall(fieldHeight);
-    if (this.directionX < 0) {
-      this.hitPowerUp(powerUp, batP2, fieldWidth, fieldHeight);
-      this.hitBat(batP1);
-    } else if (this.directionX > 0) {
-      this.hitPowerUp(powerUp, batP1, fieldWidth, fieldHeight);
-      this.hitBat(batP2);
-    }
-    this.move(this.speed * dt);
-    this.draw(ctx);
-  }
+interface Bat extends MoveableObject {
 }
 
-class Bat extends MoveableObject {
-  normalBatHeight: number;
-  powerUpBatHeight: number;
-  powerUpActive: boolean;
-  powerUpTimer: number;
-
-  constructor(
-    posX: number,
-    fieldHeight: number,
-    batHeight: number,
-    powerUpBatHeight: number
-  ) {
-    /*
-		positionX: number;
-		positionY: number;
-		directionX: number;
-		directionY: number;
-		width: number;
-		height: number;
-	 */
-    super(posX, fieldHeight, 0, 1, 10, batHeight);
-    this.powerUpTimer = 0;
-    this.powerUpActive = false;
-    this.normalBatHeight = batHeight;
-    this.powerUpBatHeight = powerUpBatHeight;
-  }
-
-  animate(ctx: CanvasRenderingContext2D) {
-    this.checkPowerUpTimer();
-    this.draw(ctx);
-  }
-
-  reset() {
-    this.height = this.normalBatHeight;
-    this.powerUpActive = false;
-    this.positionY =
-      this.positionY + (this.powerUpBatHeight - this.normalBatHeight) / 2;
-  }
-
-  checkPowerUpTimer() {
-    if (this.powerUpActive) {
-      if (this.powerUpTimer > 0) this.powerUpTimer -= 1;
-      else this.reset();
-    }
-  }
-
-  startPowerUp(fieldHeight: number) {
-    this.powerUpTimer = 600;
-    this.powerUpActive = true;
-    let newSize = 200;
-    if (this.positionY < (this.powerUpBatHeight - this.normalBatHeight) / 2)
-      this.positionY = 0;
-    else if (
-      this.positionY + this.height >
-      fieldHeight - (this.powerUpBatHeight - this.normalBatHeight) / 2
-    )
-      this.positionY = fieldHeight - this.powerUpBatHeight;
-    else this.positionY -= (this.powerUpBatHeight - this.normalBatHeight) / 2;
-    this.height = this.powerUpBatHeight;
-  }
-
-  moveUp(speed: number, direction: number) {
-    if (this.positionY < 570) {
-      this.positionY += direction * speed;
-    }
-  }
-  moveDown(speed: number, direction: number) {
-    if (this.positionY > -30) {
-      this.positionY -= direction * speed;
-    }
-  }
+interface BatMove {
+	gameRoomId: string;
+	bat: Bat;
 }
 
-class PowerUp extends MoveableObject {
-  _timeInactive: number;
-  _restartTime: number;
+interface Player {
+	displayName: string;
+	bat: Bat;
+}
 
-  constructor(fieldWidth: number, fieldHeight: number, restartTime: number) {
-    super(0, 0, 0, 0, 10, 10);
-    this.setPosistion(fieldWidth, fieldHeight);
-    this._restartTime = restartTime;
-    this._timeInactive = this._restartTime / 2;
-  }
+interface Ball extends MoveableObject {
+  directionX: number;
+  directionY: number;
+	speed: number;
+}
 
-  setPosistion(fieldWidth: number, fieldHeight: number) {
-    let posY = Math.floor(Math.random() * fieldHeight - this.height);
-    let posX = Math.floor(
-      ((Math.random() * fieldWidth) / 3) * 2 + (1 / 6) * fieldWidth
-    );
-    this.positionX = posX;
-    this.positionY = posY;
-  }
+interface GamePhysics {
+	canvasWidth: number;
+	canvasHeight: number;
+	ball: Ball;
+	player1: Player;
+	player2: Player;
+	score: Array<number>;
+}
 
-  reset(fieldWidth: number, fieldHeight: number) {
-    this.setPosistion(fieldWidth, fieldHeight);
-    this._timeInactive = this._restartTime;
-  }
-
-  animate(ctx: CanvasRenderingContext2D) {
-    if (this._timeInactive > 0) this._timeInactive -= 1;
-    else this.draw(ctx);
-  }
+interface GameRoom {
+	gameRoomId: string;
+	gamePhysics: GamePhysics;
 }
 
 class GameState {
-  scoreP1: number;
-  scoreP2: number;
-  batP1: Bat;
-  batP2: Bat;
-  powerUp: PowerUp;
-  ball: Ball;
   frame: number;
   ctx: CanvasRenderingContext2D;
-  width: number;
-  height: number;
-  BatP1up: boolean;
-  BatP1down: boolean;
-  reduxInteralState: any;
   dt: any;
   fps: any;
+	gamePhysics: GamePhysics;
 
-  constructor(canvas: HTMLCanvasElement, gameState: any) {
+	setGameState(gamePhysics: GamePhysics): void {
+		this.gamePhysics = gamePhysics;
+	}
+
+  constructor(canvas: HTMLCanvasElement, gamePhysics: GamePhysics) {
     if (!canvas || !canvas.getContext)
       throw new Error("The Browser can not render the game");
-    this.scoreP1 = 0;
-    this.scoreP2 = 0;
+		this.gamePhysics = gamePhysics;
     this.frame = 0;
-    this.reduxInteralState = gameState;
-    this.batP1 = new Bat(
-      gameState.player1.bat.X,
-      gameState.player1.bat.Y,
-      160,
-      200
-    );
-    this.batP2 = new Bat(
-      gameState.player2.bat.X,
-      gameState.player2.bat.Y,
-      160,
-      200
-    );
-    //the date comes from here
-    this.ball = new Ball(gameState.ball); //TODO set from backend
-    this.powerUp = new PowerUp(canvas.width, canvas.height, 600);
+		this.dt = 0;
+		this.fps = 0;
     this.ctx = canvas.getContext("2d")!;
-    this.width = canvas.width;
-    this.height = canvas.height;
-    this.BatP1up = false;
-    this.BatP1down = false;
   }
 
-  score() {
-    if (this.ball.positionX + this.ball.width < 0) {
-      this.scoreP2 += 1;
-      this.ball = new Ball(this.reduxInteralState.ball);
-    } else if (this.ball.positionX > this.width) {
-      this.scoreP1 += 1;
-      this.ball = new Ball(this.reduxInteralState.ball);
-      console.log(
-        "P1 Scored\nP1 " + this.scoreP1 + " - " + this.scoreP2 + " P2\n\n"
-      );
-    }
+  draw(gamePhysics: GamePhysics, ctx: CanvasRenderingContext2D) {
+		/*
+		 * TODO go over game state and draw the whole thing
+    ctx.fillRect(this.positionX, this.positionY, this.width, this.height);
+	 */
   }
 
   animation() {
-    //canvas width hights
-    this.ctx.clearRect(0, 0, this.width, this.height); //this from the backend
-    this.powerUp.animate(this.ctx); //this from the backend
-    this.batP1.animate(this.ctx); //send this to p2 + this.width + this.height
-    this.batP2.animate(this.ctx); //send this to p1 + this.width + this.height
-    this.ball.animate(
-      this.width,
-      this.height,
-      this.ctx,
-      this.batP1,
-      this.batP2,
-      this.powerUp,
-      this.dt,
-      this.fps
-    ); //send to to spect
-  }
-  listeScoer() {
-    //listen to score(); if P1 or P2 sockers send the all the clients
-  }
-  listenWin() {
-    //
+    this.ctx.clearRect(0, 0, this.gamePhysics.canvasWidth, this.gamePhysics.canvasHeight);
+		this.draw(this.gamePhysics, this.ctx);
   }
 }
+
 
 const Game = (props: any) => {
   const dispatch = useAppDispatch();
   const location = useLocation();
-  //const moveBatP1 = () => {};
 
   useEffect(() => {
-    //get game Id by url
 
     const url: Array<string> = location.pathname.split("/");
     const theGameFrame = document.getElementById("content");
@@ -357,26 +94,8 @@ const Game = (props: any) => {
     let timer: any;
     let gameState: any;
     theGameFrame!.innerHTML = "<h1>Game is pending</h1>";
-    /*
-    posX: number,
-    fieldHeight: number,
-    badHeight: number,
-    powerUpBatHeight: number
-	 */
-    //this.batP1 = new Bat(10, 160, 160, 200);
-    //this.batP2 = new Bat(canvas.width - 20, canvas.height, 160, 200);
-    //bot values will come from the backend!
-    //
     const waitForTheGameToStart = async () => {
       const dataNeedToStartTheGame = await new Promise((resolve, reject) => {
-        /*
-			function isBatReady(bat: Bat): boolean {
-				if (bat.X != -1 && bat.Y != -1) {
-					return true;
-				}
-				return false;
-			}
-		 */
         (function loop() {
           timer = setTimeout(() => {
             gameState = store.getState().gameSocket;
@@ -419,13 +138,7 @@ const Game = (props: any) => {
       theGameFrame!.innerHTML = savedTheGameFrame;
       const currentUser = store.getState().currentUser;
       const canvas = document.getElementById("gameCanvas") as HTMLCanvasElement;
-      //here I create the game
-      //how can we get the rest ball data here we don't need to because boths palyers have the ball state the same
-      //here we would pass ball
       const game = new GameState(canvas, gameState);
-      //UserName
-      //UserType
-      //GameRoomId
 
       canvas.addEventListener("keydown", function onKeyDown(e) {
         let keynum: any;
@@ -436,15 +149,12 @@ const Game = (props: any) => {
           keynum = e.which;
         }
 
-        //what player am I?
         if (String.fromCharCode(keynum) == "(") {
           e.preventDefault();
-          //so here emit a evant
           if (
             currentUser.currentUser.display_name ==
             gameState.player1.displayName
           ) {
-            game.batP1.moveUp(10, 5);
             dispatch(
               gameSocketActions.moveBatP1({
                 gameRoomId: gameState.gameRoomId,
@@ -452,7 +162,6 @@ const Game = (props: any) => {
               })
             );
           } else {
-            game.batP2.moveUp(10, 5);
             dispatch(
               gameSocketActions.moveBatP2({
                 gameRoomId: gameState.gameRoomId,
@@ -464,13 +173,11 @@ const Game = (props: any) => {
         }
         if (String.fromCharCode(keynum) == "&") {
           e.preventDefault();
-          //so here emit a evant
           if (
             currentUser.currentUser.display_name ==
             gameState.player1.displayName
           ) {
             dispatch(gameSocketActions.moveBatP1(1));
-            game.batP1.moveDown(10, 5);
             dispatch(
               gameSocketActions.moveBatP1({
                 gameRoomId: gameState.gameRoomId,
@@ -478,7 +185,6 @@ const Game = (props: any) => {
               })
             );
           } else {
-            game.batP2.moveDown(10, 5);
             dispatch(
               gameSocketActions.moveBatP2({
                 gameRoomId: gameState.gameRoomId,
@@ -488,42 +194,18 @@ const Game = (props: any) => {
           }
         }
       });
-      //maybe here we can send to the back end start game
-      //3 2 1
-      //game.ball = gameState.ball;
       let lastLoop: any = new Date();
       const startAnimation = () => {
-        //function that gets the current bat positions, ball, score
         gameState = store.getState().gameSocket;
 
-        //TODO replace up and down with just rendering the game state
-        if (
-          gameState.player1.displayName != currentUser.currentUser.display_name
-        ) {
-          if (gameState.player1Moved == "up") {
-            game.batP1.moveUp(10, 5);
-          } else if (gameState.player1Moved == "down") {
-            game.batP1.moveDown(10, 5);
-          }
-        } else if (
-          gameState.player2.displayName != currentUser.currentUser.display_name
-        ) {
-          if (gameState.player2Moved == "up") {
-            game.batP2.moveUp(10, 5);
-          } else if (gameState.player2Moved == "down") {
-            game.batP2.moveDown(10, 5);
-          }
-        }
-
+        game.gamePhysics = gameState.gamePhysics;
         let thisLoop: any = new Date();
         let fps: any = 1000 / (thisLoop - lastLoop);
         let dt: any = 150 / fps;
         lastLoop = thisLoop;
         game.dt = dt;
         game.fps = fps;
-        //getBall();
         game.animation();
-        game.score();
         game.frame += 1;
         requestAnimationFrame(startAnimation);
       };
