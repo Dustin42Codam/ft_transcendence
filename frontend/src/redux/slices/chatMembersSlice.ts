@@ -69,6 +69,7 @@ const chatMembers = createSlice({
 // selectors
 export const selectAllChatMembers = (state: any) => state.chatMembers.members;
 
-export const selectJoinableUsers = (state: any) => state.chatMembers.joinableUsers;
+export const selectJoinableUsers = (state: any) =>
+  state.chatMembers.joinableUsers;
 
 export default chatMembers.reducer;

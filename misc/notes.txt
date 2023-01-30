@@ -45,12 +45,23 @@ todo:
 				-	and drop down?
 			->	ban
 			->	unban
+
 			-	mute
+				-	FaVolumeMute
 			-	unmute
+				-	FaVolumeUp
+
 			-	make admin
+				-	
 			-	remove admin
+				-
+
 			-	grant ownership
+				-	crown
+
 			-	remove
+				-	FaUserMinus
+
 		+	add user to channel modal
 		-	seperate DM page
 		-	add smileys

@@ -3,6 +3,93 @@ code {
     monospace;
 }
 
+.memberActionsContainer {
+  position: relative;
+  display: inline-block;
+}
+
+.memberActionsContainer .actionButton {
+  padding: 0;
+  width: 50px;
+  border: 0;
+  background-color: #fff;
+  color: #333;
+  cursor: pointer;
+  outline: 0;
+  font-size: 40px;
+}
+
+.dropdown {
+	position: absolute;
+	top: 58px;
+	width: 300px;
+	transform: translateX(-45%);
+	background-color: var(--bg);
+	border: var(--border);
+	border-radius: var(--border-radius);
+	padding: 1rem;
+	overflow: hidden;
+	transition: height var(--speed) ease;
+}
+
+.memberActionsContainer .dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 300px;
+  z-index: 2;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  box-shadow: 0 16px 24px 2px rgba(0, 0, 0, 0.14);
+}
+
+.memberActionsContainer .dropdown ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 0.7em;
+}
+
+.memberActionsContainer .dropdown li {
+  padding: 0;
+}
+
+.memberActionsContainer .dropdown li:hover {
+  background-color: rgba(0, 0, 0, 0.14);
+  cursor: pointer;
+}
+
+.memberCard {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.memberAvatar {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+}
+
+.memberInfo {
+  font-size: 2.2em;
+  font-weight: 600;
+  color: #111;
+  display: flex;
+  flex-direction: column;
+  /* align-items: center; */
+}
+
+.memberInfo .memberRole {
+  align-self: center;
+  font-size: 0.8em;
+  font-weight: 300;
+  color: rgb(136, 136, 136);
+}
+
+.buttonBox {
+  display: flex;
+}
+
 :root {
   --bg: #242526;
   --bg-accent: #484a4d;
@@ -78,7 +165,7 @@ code {
 
 /* Dropdown Menu */
 
-.dropdown {
+._dropdown {
   position: absolute;
   top: 58px;
   width: 300px;

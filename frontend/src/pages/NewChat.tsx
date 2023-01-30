@@ -347,7 +347,7 @@ const NewChat = () => {
                       </div>
                       <div className="userActions">
                         {/* <MoreVertIcon /> */}
-                        <MemberActions member={member}/>
+                        <MemberActions member/>
                       </div>
                     </div>
                   )
