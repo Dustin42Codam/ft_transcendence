@@ -41,39 +41,12 @@ const GameLobby = (navigation: any) => {
     fetchAllActiveGames();
   }, []);
 
-  /*
-	useEffect(() => {
-		async function getUserById(id: number): Promise<any> {
-				await axios.get(`/users/id/${id}`, {})
-				.then((resp) => {return resp.data.display_name})
-				.catch((err) => console.log(err));
-		}
-		if (activeGames) {
-			let tmpActiveGames: any = activeGames;
-			tmpActiveGames.map((games: any, index: number) => {
-				console.log(games);
-				let player_1_display_name: Promise<any> = getUserById(games.player_1);
-				let player_2_display_name: Promise<any> = getUserById(games.player_2);
-				tmpActiveGames[index] = {...games, player_1_name: player_1_display_name};
-				tmpActiveGames[index] = {...games, player_2_name: player_2_display_name};
-				console.log(tmpActiveGames[index]);
-
-				//activeGames[index]
-			});
-		}
-	}, [activeGames])
-	 */
-
   async function joinGameRoom() {
-    //here get all the clasic games
-    //get the max id plus 1
     axios
       .post("/game/classic", {})
       .then((resp) => {
         const classicGame: any = resp.data;
-        navigation.navigate(`/game/${classicGame.id}`, {
-          gameId: classicGame.id,
-        });
+        navigate(`/game/${classicGame.id}`);
       })
       .catch((err) => console.log(err));
   }
@@ -82,8 +55,6 @@ const GameLobby = (navigation: any) => {
       .post("/game/classic", {})
       .then((resp) => console.log(resp))
       .catch((err) => console.log(err));
-    //dispatch(gameSocketActions.joinRoom(activeGames[gameIndex].id));
-    //navigate(`/game/${activeGames[gameIndex].id}`);
   }
   async function sendGameInvite() {
     axios
@@ -96,12 +67,8 @@ const GameLobby = (navigation: any) => {
       "I want to spectate the game gameIndex:",
       activeGames[gameIndex]
     );
-    //here we do a check that checks if the player joining is not the player whould made the game
     dispatch(gameSocketActions.joinRoom(activeGames[gameIndex].id));
     navigate(`/game/${activeGames[gameIndex].id}`);
-
-    //navigate me to the game
-    //here we need to render to page and disable joining a new game if a user is already part of a game
   }
 
   return (
