@@ -64,6 +64,6 @@ export class MessageController {
     if (this.memberService.isRestricted(member)) {
       throw new BadRequestException("You are restricted from this chatroom.");
     }
-    return this.messageService.create({ timestamp: new Date(), member: member, message: body.message });
+    return this.messageService.create({ member: member, message: body.message });
   }
 }
