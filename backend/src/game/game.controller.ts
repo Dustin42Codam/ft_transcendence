@@ -43,40 +43,24 @@ export class GameController {
         return ladder;
     }
 
-    @Post('private/join/id/:id')
-    async joinPrivateGameById(
-        @Param('id') id : string,
-        @Req() request: Request
-    ) {
-        const userId = await this.authServcie.userId(request);
-        const user = await this.userService.getUserById(userId);
-        if (this.gameService.isAlreadyInGame(user))
-            throw new BadRequestException("This user is already in a game");
-        //TODO add check if person is in the correct chatroom
-        const game = await this.gameService.getGameById(Number(id));
-        return this.gameService.addUserToGame(userId, game)
-    }
 
-    @Post('private/classic')
-    async createPrivateClassicGame(
+    //TODO make it work with spectating
+    @Post('private/join/invite_code/:invite_code')
+    async joinPrivateGameByInviteCode(
+        @Param('invite_code') invite_code : string,
         @Req() request: Request
     ) {
         const userId = await this.authServcie.userId(request);
         const user = await this.userService.getUserById(userId);
         if (this.gameService.isAlreadyInGame(user))
             throw new BadRequestException("This user is already in a game");
-        return this.gameService.create({player_1: userId, type: GameType.PRIVATE, mode: GameMode.CLASSIC })
-    }
-
-    @Post('private/power_up')
-    async createPrivatePowerUpGame(
-        @Req() request: Request
-    ) {
-        const userId = await this.authServcie.userId(request);
-        const user = await this.userService.getUserById(userId);
-        if (this.gameService.isAlreadyInGame(user))
-            throw new BadRequestException("This user is already in a game");
-        return this.gameService.create({player_1: userId, type: GameType.PRIVATE, mode: GameMode.POWER_UP})
+        const AllPrivateGames = await this.gameService.find({where: {status: GameStatus.PENDING, type: GameType.PRIVATE}})
+        for (const game of AllPrivateGames) {
+            if (game.invite_code === Number(invite_code)) {
+                return this.gameService.addUserToGame(userId, game)
+            }
+        }
+        throw new BadRequestException("This game does not exist or is already full.");
     }
 
     @Post('classic')

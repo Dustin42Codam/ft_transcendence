@@ -36,9 +36,12 @@ export class Game {
 
   @Column()
   type: GameType;
+  
+  @Column({nullable: true, default: null })
+  invite_code: string;
 
   @Column()
-  mode: GameType;
+  mode: GameMode;
 
   @CreateDateColumn()
   timestamp: Date;
