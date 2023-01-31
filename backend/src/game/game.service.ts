@@ -91,9 +91,7 @@ export class GameService extends AbstractService {
         {status: GameStatus.PENDING},
         {status: GameStatus.ACTIVE}
       ]});
-      console.log(allPendingGames)
     for (const game of allPendingGames) {
-      console.log(game)
       if (game.player_1 === user.id) {
         return true;
       }
@@ -101,7 +99,6 @@ export class GameService extends AbstractService {
         return true
       }
     }
-    console.log("return false")
     return false;
   }
 }

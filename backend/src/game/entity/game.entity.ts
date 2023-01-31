@@ -2,9 +2,13 @@ import { Column, Entity, PrimaryGeneratedColumn, CreateDateColumn } from "typeor
 import { User } from "src/user/entity/user.entity";
 
 export enum GameType {
+  PUBLIC = "public",
+  PRIVATE = "private",
+}
+
+export enum GameMode {
   CLASSIC = "classic",
   POWER_UP = "power_up",
-  PRIVATE = "private",
 }
 
 export enum GameStatus {
@@ -32,6 +36,9 @@ export class Game {
 
   @Column()
   type: GameType;
+
+  @Column()
+  mode: GameType;
 
   @CreateDateColumn()
   timestamp: Date;
