@@ -48,25 +48,17 @@ export class GameService extends AbstractService {
       await this.gameStatsService.addLose(player_1);
       await this.gameStatsService.addWin(player_2);
     }
+    game.status = GameStatus.PASSIVE;
     await this.update(game.id, game)
     game.status = GameStatus.PASSIVE;
     return game;
   }
 
-  async addScoreP1(gameId: number) {
+  async addScore(gameId: number, score_player_1: number, score_player_2: number) {
     const game = await this.getGameById(gameId)
-    game.score_player_1++;
-    if (this.isGameFinished(game.score_player_1)) {
-      return this.endGame(game);
-    }
-    await this.update(game.id, game)
-    return game
-  }
-
-  async addScoreP2(gameId: number) {
-    const game = await this.getGameById(gameId)
-    game.score_player_2++;
-    if (this.isGameFinished(game.score_player_2)) {
+    game.score_player_1 = score_player_1;
+    game.score_player_2 = score_player_2;
+    if (this.isGameFinished(game)) {
       return this.endGame(game);
     }
     await this.update(game.id, game)
