@@ -12,6 +12,18 @@ import {
 import { selectAllUsers } from "../../redux/slices/usersSlice";
 import "./ChatBox.css";
 
+function TimeStamp(props: any) {
+	const date = new Date(props.timestamp);
+	const hours = date.getHours();
+	const minutes = date.getMinutes();
+	
+	return (
+		<span>
+			{`${hours}:${minutes}`}
+		</span>
+	)
+}
+
 function ChatBox() {
   const location = useLocation();
   const currentChat = useAppSelector(selectCurrentChatroom);
@@ -51,8 +63,8 @@ function ChatBox() {
 				<div className="newChatMessage myMessage" key={index}>
 					<div className="newChatP">
             	    	{msg.message}
-					<br />
-					<span>12:15</span>
+						<br />
+						<TimeStamp timestamp={msg.timestamp}/>
 					</div>
 				</div>
             ) : (
@@ -62,9 +74,7 @@ function ChatBox() {
 							{msg.member.user.display_name}
 						</div>
 						{msg.message}
-						<span>
-							12:17
-						</span>
+						<TimeStamp timestamp={msg.timestamp}/>
 					</div>
 				</div>
         	))}
