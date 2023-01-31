@@ -18,4 +18,5 @@
   width: 198px;
   box-shadow: 0 0 21px rgba(26, 19, 75, 0.6);
   background-color: rgb(34, 31, 49);
+  transition-duration: 0.15s;
 }

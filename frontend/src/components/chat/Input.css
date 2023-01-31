@@ -11,6 +11,7 @@ input {
 /*When hover on highlights*/
 input:hover {
   border-color: rgb(244, 241, 208);
+  transition-duration: 0.15s;
 }
 
 /*When clicked on highlights*/

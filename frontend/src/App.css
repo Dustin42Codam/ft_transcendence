@@ -20,6 +20,10 @@ body {
   /* height: intial !important; min-height: 100% !important; */
 }
 
+.css-i4bv87-MuiSvgIcon-root {
+  margin: 15px;
+}
+
 p {
   color: rgb(244, 241, 208);
 }
@@ -45,7 +49,8 @@ p {
   display: flex;
   flex-direction: row;
   overflow: auto;
-  background-color: rgb(100, 100, 100);
+  /* background-color: rgb(100, 100, 100); */
+  background-color: rgb(16, 16, 20);
 }
 
 .contentBody .sidenav {

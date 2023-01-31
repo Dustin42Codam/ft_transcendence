@@ -1,12 +1,72 @@
 
 todo:
+	-	move toasts from right to middle
+	-	change DM chat dropdown select style to the same
+		as group chat style
+	-	firefox cant establish connection to ws://
+	-	get all users authguard
+		-	check tfa secret of other users
+	-	change contentBody in user list, user profile, user page?
+	-	remove header
+	-	new side bar
+		-	move project name to top of sidebar
+		-	move sign out button to side bar
+	-	remove footer
+	-	New side bar
+		-	new colors
+		-	new side dropdown DM render
+			-	render user blocks
+			-	add time?
+			-	add status?
+			-	show last message (message_p)
+	+	add new badge to user page to display the status
+		in different colors
 
-	-	double rendering toasts in chat ui
+	->	New Chat UI
+		-	new chat bg with better crop
+			-	test on macos
+		->	add auto scroll down
+		+	add message input
+		+	add time stamp
+		->	add user name to message in group chat
+			->	different colors per user name
+				+	user name is displayed within the text box
+					just above the message
+				-	user.id % 5 selects css class
+		+	add status to user list
+		+	channel settings modal heading
+			+	modal
+			+	change name
+			+	change type
+			+	change password
+			+	delete channel
+			+	disable channel settings menu for unauthorized users
+			+	leave channel
+				+	overlay hover button right
+		->	add drop down when click on user
+			+	visit profile
+				+	when clicking on avatar
+				-	and drop down?
+			+	ban
+			+	unban
+				-	check un/ban with text input
+			+	mute
+			+	unmute
+				-	check un/mute with text input
+			+	add new admin
+			+	remove admin
+			+	grant ownership
+			+	remove member
+			!!-	send game invite
+				-	what if receiver is already in a game?
 
-	-	leave chat toast bug
 
-	-	Chat
-		-	ping pong invite
+		!!-	seperate DM page
+
+		+	add user to channel modal
+		-	add smileys
+			-	smiley button
+			-	smiley dropdown
 
 
 done:
@@ -18,7 +78,7 @@ done:
 			+	add update chat to redux slice
 		+	fetch current chat members
 	+	rm friendrequest slice
-	+	Chat
+	+	Old Chat
 		+	it shouldn't be possible to leave a DM
 		+	check messages of inactive users
 		+	auto scroll to bottom
@@ -71,6 +131,8 @@ bugs:
 	-	users can upload any file sizes
 
 	fixed:
+		+	leave chat toast bug
+		+	double rendering toasts in chat ui
 		+	old files are not deleted
 		+	user can create empty user names
 		+	change channel password bug
@@ -89,12 +151,6 @@ bugs:
 			+	into 2 seperate components ????
 		+	Leave channel bug
 		+	admin leaves channel -> rejoins -> still admin
-
-notes:	
-	-	ChatLobby?
-	-	ChatCreate?
-	-	ChatTable?
-
 
 toasties:
 

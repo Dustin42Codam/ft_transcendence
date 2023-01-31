@@ -4,7 +4,7 @@ const Dashboard = () => {
   return (
     <Wrapper>
       <div>
-        Wellcome to the most awesome Pong game since 197... somthing something
+        Welcome to the most awesome Pong game since 1972
       </div>
     </Wrapper>
   );

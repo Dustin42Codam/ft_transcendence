@@ -19,6 +19,7 @@ header {
 }
 .card:hover {
   box-shadow: 0 0 12px 3px rgba(0, 0, 0, 0.08);
+  transition-duration: 0.15s;
 }
 .card-title {
   margin-top: 20px;
@@ -50,6 +51,7 @@ header {
 
 .card:hover .avatar .avatar-small img {
   border-color: rgb(99, 204, 131);
+  transition-duration: 0.15s;
 }
 
 .btn {
