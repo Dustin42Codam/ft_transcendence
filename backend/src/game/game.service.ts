@@ -4,7 +4,7 @@ import { Repository } from "typeorm";
 
 import { AbstractService } from "src/common/abstract.service";
 
-import { Game, GameStatus, GameType } from "./entity/game.entity";
+import { Game, GameMode, GameStatus, GameType } from "./entity/game.entity";
 import { GameCreateDto } from "./dto/game-create.dto";
 import { GameStatsService } from "src/games_stats/game_stats.service";
 import { UserService } from "src/user/user.service";
@@ -91,9 +91,7 @@ export class GameService extends AbstractService {
         {status: GameStatus.PENDING},
         {status: GameStatus.ACTIVE}
       ]});
-      console.log(allPendingGames)
     for (const game of allPendingGames) {
-      console.log(game)
       if (game.player_1 === user.id) {
         return true;
       }
@@ -101,7 +99,20 @@ export class GameService extends AbstractService {
         return true
       }
     }
-    console.log("return false")
     return false;
+  }
+
+    async createPrivateClassicGame(userId: number, invite_code: number) {
+      const user = await this.userService.getUserById(userId);
+      if (this.isAlreadyInGame(user))
+          throw new BadRequestException("This user is already in a game");
+      return this.create({player_1: userId, type: GameType.PRIVATE, mode: GameMode.CLASSIC, invite_code: invite_code})
+  }
+
+  async createPrivatePowerUpGame(userId: number, invite_code: number) {
+    const user = await this.userService.getUserById(userId);
+    if (this.isAlreadyInGame(user))
+        throw new BadRequestException("This user is already in a game");
+    return this.create({player_1: userId, type: GameType.PRIVATE, mode: GameMode.POWER_UP, invite_code: invite_code})
   }
 }
