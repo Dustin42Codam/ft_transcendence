@@ -57,7 +57,7 @@ function ChatBox() {
     }, [currentChat, currentChatMessages]);
 
   return (
-    <div className="chatBox">
+    <div className="chatBox" ref={dummy}>
       {messages?.map((msg: any, index: number) =>
             msg.member.user.id === currentUser.id ? (
 				<div className="newChatMessage myMessage" key={index}>
@@ -65,6 +65,7 @@ function ChatBox() {
             	    	{msg.message}
 						<br />
 						<TimeStamp timestamp={msg.timestamp}/>
+						<div ref={dummy}></div>
 					</div>
 				</div>
             ) : (
@@ -75,10 +76,12 @@ function ChatBox() {
 						</div>
 						{msg.message}
 						<TimeStamp timestamp={msg.timestamp}/>
+						<div ref={dummy}></div>
 					</div>
 				</div>
         	))}
-    </div>
+		<div ref={dummy}></div>
+    </div >
   );
 }
 

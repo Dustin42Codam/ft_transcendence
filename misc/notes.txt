@@ -27,7 +27,7 @@ todo:
 			-	test on macos
 		->	add auto scroll down
 		+	add message input
-		-	add time stamp?
+		+	add time stamp
 		->	add user name to message in group chat
 			->	different colors per user name
 				+	user name is displayed within the text box
@@ -77,7 +77,7 @@ done:
 			+	add update chat to redux slice
 		+	fetch current chat members
 	+	rm friendrequest slice
-	+	Chat
+	+	Old Chat
 		+	it shouldn't be possible to leave a DM
 		+	check messages of inactive users
 		+	auto scroll to bottom

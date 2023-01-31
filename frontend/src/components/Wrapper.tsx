@@ -5,8 +5,8 @@ import { Navbar } from "react-bootstrap";
 const Wrapper = (props: any) => {
   return (
     <div className="wrapper">
-      <Nav className="header" />
-      <Navbar />
+      {/* <Nav className="header" /> */}
+      {/* <Navbar /> */}
       <div className="contentBody">
         <Menu className="sidenav" />
         <div id="content" className="content">
