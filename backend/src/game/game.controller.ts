@@ -52,12 +52,12 @@ export class GameController {
     ) {
         const userId = await this.authServcie.userId(request);
         const user = await this.userService.getUserById(userId);
-        if (this.gameService.isAlreadyInGame(user))
+        if (await this.gameService.isAlreadyInGame(user))
             throw new BadRequestException("This user is already in a game");
         const AllPrivateGames = await this.gameService.find({where: {status: GameStatus.PENDING, type: GameType.PRIVATE}})
         for (const game of AllPrivateGames) {
             if (game.invite_code === Number(invite_code)) {
-                return this.gameService.addUserToGame(userId, game)
+                return await this.gameService.addUserToGame(userId, game)
             }
         }
         throw new BadRequestException("This game does not exist or is already full.");

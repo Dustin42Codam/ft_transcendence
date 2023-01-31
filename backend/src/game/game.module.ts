@@ -1,4 +1,4 @@
-import { Module } from "@nestjs/common";
+import { Module, forwardRef } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 
 import { CommonModule } from "src/common/common.module";
@@ -16,7 +16,7 @@ import { UserModule } from "src/user/user.module";
 		TypeOrmModule.forFeature([Game]),
 		GameStatsModule,
 		CommonModule,
-		UserModule,
+		forwardRef(() => UserModule),
 		AuthModule,
 	],
   controllers: [GameController],

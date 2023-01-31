@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
@@ -10,7 +10,6 @@ import {
   selectCurrentChatroom,
   socketActions,
 } from "../../redux/slices/socketSlice";
-import { Chat } from "../../models/Chats";
 import {
   selectCurrentMember,
   updateCurrentChatPassword,
@@ -18,18 +17,12 @@ import {
 } from "../../redux/slices/currentMemberSlice";
 import { Col, FloatingLabel } from "react-bootstrap";
 import { ChatroomType } from "../../models/Channel";
-import {
-  fetchChatMembers,
-  selectAllChatMembers,
-} from "../../redux/slices/chatMembersSlice";
 import { deleteChat } from "../../redux/slices/chatsSlice";
 import { useNavigate } from "react-router-dom";
-import PersonAddIcon from "@mui/icons-material/PersonAdd";
 
 const ChannelSettings = (props: any) => {
   const currentChat = useAppSelector(selectCurrentChatroom);
   const currentMember = useAppSelector(selectCurrentMember);
-  const chatMembers = useAppSelector(selectAllChatMembers);
   const [show, setShow] = useState(false);
   const [delModalShow, setDelModalShow] = React.useState(false);
   const handleClose = () => setShow(false);

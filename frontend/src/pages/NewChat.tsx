@@ -120,9 +120,9 @@ const NewChat = () => {
               </div>
 
               <ul className="navIcons">
-				<li>
-					<SendGameInvite />
-				</li>
+                <li>
+                  <SendGameInvite member={currentMember} />
+                </li>
                 {/* <li><ChatBubbleOutlineIcon /></li> */}
                 {/* <li><MoreVertIcon /></li> */}
                 {currentMember?.role !== "user" && (
