@@ -119,6 +119,7 @@ const gameSocketSlice = createSlice({
     },
     leaveRoom: (state, action: PayloadAction<number>) => {
       state.isJoning = false;
+      state.gameRoomId = "-1";
       return;
     },
     moveBat: (state, action: PayloadAction<any>) => {

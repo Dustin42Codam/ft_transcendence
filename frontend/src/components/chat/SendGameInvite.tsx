@@ -1,11 +1,31 @@
 import "./SendGameInvite.css";
-import React, { createRef } from "react";
-import { Member } from "../../models/Member";
+import React, {
+  Component,
+  createRef,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
+import { Button, Modal } from "react-bootstrap";
+import VolumeOffIcon from "@mui/icons-material/VolumeOff"; //mute
+import NotInterestedIcon from "@mui/icons-material/NotInterested"; //ban1
+import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline"; //ban2
+import ChatMemberBan from "./ChatMemberBan";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { MemberRole } from "../../models/Member";
+import { useAppSelector } from "../../redux/hooks";
+import { selectCurrentMember } from "../../redux/slices/currentMemberSlice";
+import ChatMemberMute from "./ChatMemberMute";
+import ChatAdminAdd from "./ChatAdminAdd";
+import ChatChangeOwner from "./ChatChangeOwner";
+import ChatMemberRemove from "./ChatMemberRemove";
+import { UserStatus } from "../../models/Channel";
 import SportsTennisIcon from "@mui/icons-material/SportsTennis";
 import axios from "axios";
 import { toast } from "react-toastify";
 
-type MyProps = { member: Member };
+type MyProps = { member: any };
 type MyState = { open: boolean };
 class SendGameInvite extends React.Component<MyProps, MyState> {
   container = createRef<HTMLDivElement>();

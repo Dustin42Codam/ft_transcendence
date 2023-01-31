@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, Inject, forwardRef } from "@nestjs/common";
+import { HttpStatus ,HttpException, BadRequestException, Injectable, Inject, forwardRef } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { AbstractService } from "src/common/abstract.service";
 import { GameStatsCreateDto } from "src/games_stats/dto/gamestats-create.dto";
@@ -34,11 +34,7 @@ export class UserService extends AbstractService {
     }
 
   async getUserById(id: number, relations?: any[]) {
-    const user = await this.findOne({ id }, relations);
-    if (!user) {
-			throw new BadRequestException("This user does not exist");
-		}
-    return user;
+    return await this.findOne({ id }, relations);
   }
 
   async setTwoFactorAuthenticationSecret(secret: string, userId: number) {
@@ -105,6 +101,9 @@ export class UserService extends AbstractService {
 
 	async changeStatus(id: number, status: UserStatus) {	
 		const user = await this.getUserById(id);
+		if (!user) {
+			return ;
+		}
 		user.status = status;
 		Object.assign(user, status);
 		await this.userRepository.save(user);
