@@ -3,8 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { ChatroomType } from "../../models/Chats";
-import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { fetchChatMembers } from "../../redux/slices/chatMembersSlice";
+import { useAppSelector } from "../../redux/hooks";
 import { selectCurrentUser } from "../../redux/slices/currentUserSlice";
 import {
   selectCurrentChatroom,
@@ -16,7 +15,7 @@ import "./ChatBox.css";
 function TimeStamp(props: any) {
   const date = new Date(props.timestamp);
   const hours = date.getHours();
-  const minutes = date.getMinutes();
+  const minutes = (date.getMinutes() < 10 ? '0' : '') + date.getMinutes();
 
   return <span>{`${hours}:${minutes}`}</span>;
 }
@@ -27,7 +26,7 @@ function ChatBox() {
   const currentChatMessages = useAppSelector(selectCurrentChatroomMessages);
   const currentUser = useAppSelector(selectCurrentUser);
   const [messages, setMessages] = useState([]);
-  const dummy = useRef<HTMLDivElement>(null);
+  const messageElement = useRef<HTMLDivElement>(null);
   const users = useAppSelector(selectAllUsers);
   const navigate = useNavigate();
   let user;
@@ -47,18 +46,22 @@ function ChatBox() {
 
   useEffect(() => {
     fetchMessages();
-    dummy?.current?.scrollIntoView({
-      behavior: "smooth",
-      block: "end",
-      inline: "nearest",
-    });
+    if (messageElement) {
+      messageElement.current?.addEventListener('DOMNodeInserted', (event: any) => {
+        const { currentTarget: target } = event;
+        target.scroll({
+          top: target.scrollHeight,
+          behavior: 'smooth'
+        });
+      })
+    }
   }, [currentChat, currentChatMessages]);
 
   async function getInviteLink(inviteCode: string) {
     await axios
       .post(`game/private/join/invite_code/${inviteCode}`)
-      .then((response: any) => {
-        toast.success(`You joined a new game!`, {
+      .then(() => {
+        toast.success(`You joined the game!`, {
           position: "top-center",
           autoClose: 5000,
           hideProgressBar: false,
@@ -68,7 +71,6 @@ function ChatBox() {
           progress: undefined,
           theme: "colored",
         });
-        console.log("🚀 ~ file: ChatBox.tsx:61 ~ .then ~ response", response.data)
         navigate(`/game`);
       })
       .catch((error: any) => {
@@ -87,18 +89,14 @@ function ChatBox() {
   }
 
   return (
-    <div className="chatBox" ref={dummy}>
+    <div className="chatBox" ref={messageElement}>
       {messages?.map((msg: any, index: number) =>
         msg.member.user.id === currentUser.id ? (
           <div className="newChatMessage myMessage" key={index}>
             <div className="newChatP">
-{/*               {msg.type == 'invite'
-                ? (<div onClick={() => getInviteLink(msg.invite_code)}></div>)
-                : (<div>{msg.message}</div>)} */}
                 {msg.message}
               <br />
               <TimeStamp timestamp={msg.timestamp} />
-              <div ref={dummy}></div>
             </div>
           </div>
         ) : (
@@ -111,13 +109,11 @@ function ChatBox() {
                 </div>)
                 : (<div>{msg.message}</div>)}
               <TimeStamp timestamp={msg.timestamp} />
-              <div ref={dummy}></div>
             </div>
           </div>
         )
         )
       }
-      <div ref={dummy}></div>
     </div>
   );
 }
