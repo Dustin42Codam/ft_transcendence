@@ -55,9 +55,9 @@ todo:
 			+	add new admin
 			+	remove admin
 
-			->	grant ownership
+			+	grant ownership
 
-			-	remove
+			->	remove member
 			-	send game invite
 
 

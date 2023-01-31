@@ -16,6 +16,7 @@ import { selectCurrentMember } from "../../redux/slices/currentMemberSlice";
 import ChatMemberMute from "./ChatMemberMute";
 import ChatAdminAdd from "./ChatAdminAdd";
 import ChatChangeOwner from "./ChatChangeOwner";
+import ChatMemberRemove from "./ChatMemberRemove";
 
 type MyProps = { member: any, currentMember: any };
 type MyState = { open: boolean };
@@ -59,12 +60,14 @@ class MemberActions extends React.Component<MyProps, MyState> {
 			<div className="dropdown">
 				<ul>
 					{
-						this.props.currentMember.role !== MemberRole.USER && (
+						this.props.currentMember.role !== MemberRole.USER &&
+						(
 							<ChatMemberBan member={this.props.member}/>
 						)
 					}
 					{
-						this.props.currentMember.role !== MemberRole.USER && (
+						this.props.currentMember.role !== MemberRole.USER &&
+						(
 							<ChatMemberMute member={this.props.member}/>
 						)
 					}
@@ -80,12 +83,12 @@ class MemberActions extends React.Component<MyProps, MyState> {
 							<ChatChangeOwner member={this.props.member}/>
 						)
 					}
-{/* 					{
+					{
 						this.props.currentMember.role === MemberRole.OWNER &&
 						(
-							<ChatChangeOwner member={this.props.member}/>
+							<ChatMemberRemove member={this.props.member}/>
 						)
-					} */}
+					}
 				</ul>
 			</div>)
 		}
