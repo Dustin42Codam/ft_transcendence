@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from "react";
 import Wrapper from "../components/Wrapper";
 import axios from "axios";
+import { useAppDispatch } from "../redux/hooks";
+import { fetchJoinableChats } from "../redux/slices/chatsSlice";
 
 const Dashboard = () => {
   const [acitiveGames, setActiveGames] = useState<any>(null);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     async function fetchAllActiveGames() {
@@ -16,6 +19,7 @@ const Dashboard = () => {
         .catch((err) => console.log(err));
     }
     fetchAllActiveGames();
+    dispatch(fetchJoinableChats());
   }, []);
 
   async function joinGameRoom() {
