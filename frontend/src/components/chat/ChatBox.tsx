@@ -22,13 +22,6 @@ function ChatBox() {
   const users = useAppSelector(selectAllUsers);
   let user;
 
-/*   const dispatch = useAppDispatch();
-  dispatch(
-    fetchChatMembers({
-      id: currentChat.id,
-    })
-  ); */
-
   if (currentChat.id !== -1 && currentChat.type === ChatroomType.DIRECT) {
     user = users.find((user: any) => user.display_name === currentChat.name);
   }
@@ -65,7 +58,9 @@ function ChatBox() {
             ) : (
 				<div className="newChatMessage friendMessage" key={index}>
 					<div className="newChatP">
-					<div className="friendName">Tom</div>
+						<div className="friendName">
+							{msg.member.user.display_name}
+						</div>
 						{msg.message}
 						<span>
 							12:17

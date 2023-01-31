@@ -25,12 +25,12 @@ todo:
 	->	New Chat UI
 		-	new chat bg with better crop
 			-	test on macos
-		-	add auto scroll down
-		->	add message input
+		->	add auto scroll down
+		+	add message input
 		-	add time stamp?
-		!!-	add user name to message in group chat
-			-	different colors per user name
-				->	user name is displayed within the text box
+		->	add user name to message in group chat
+			->	different colors per user name
+				+	user name is displayed within the text box
 					just above the message
 				-	user.id % 5 selects css class
 		+	add status to user list
