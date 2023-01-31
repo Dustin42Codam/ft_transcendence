@@ -24,17 +24,16 @@ import ChatAdminAdd from "./ChatAdminAdd";
 import ChatChangeOwner from "./ChatChangeOwner";
 import ChatMemberRemove from "./ChatMemberRemove";
 import { UserStatus } from "../../models/Channel";
-import SportsTennisIcon from '@mui/icons-material/SportsTennis';
+import SportsTennisIcon from "@mui/icons-material/SportsTennis";
 import axios from "axios";
 
-type MyProps = { };
+type MyProps = {};
 type MyState = { open: boolean };
 class SendGameInvite extends React.Component<MyProps, MyState> {
   container = createRef<HTMLDivElement>();
   state = {
     open: false,
   };
-
 
   handleButtonClick = () => {
     this.setState((state) => {
@@ -56,7 +55,7 @@ class SendGameInvite extends React.Component<MyProps, MyState> {
   };
 
   componentDidMount() {
-	console.log('lol');
+    console.log("lol");
     document.addEventListener("mousedown", this.handleClickOutside);
   }
   componentWillUnmount() {
@@ -64,13 +63,13 @@ class SendGameInvite extends React.Component<MyProps, MyState> {
   }
 
   async sendDefaultInvite() {
-	console.log('Send game invite for a default game.')
-	// await axios.post('')
+    console.log("Send game invite for a default game.");
+    // await axios.post('')
   }
 
   async sendPowerUpInvite() {
-	console.log('Send game invite for a power up game.')
-	// await axios.post('')
+    console.log("Send game invite for a power up game.");
+    // await axios.post('')
   }
 
   render() {
@@ -80,8 +79,8 @@ class SendGameInvite extends React.Component<MyProps, MyState> {
         {this.state.open && (
           <div className="dropdown">
             <ul>
-				<li onClick={this.sendDefaultInvite}>Default Game</li>
-				<li onClick={this.sendPowerUpInvite}>Power Up Game</li>
+              <li onClick={this.sendDefaultInvite}>Default Game</li>
+              <li onClick={this.sendPowerUpInvite}>Power Up Game</li>
             </ul>
           </div>
         )}

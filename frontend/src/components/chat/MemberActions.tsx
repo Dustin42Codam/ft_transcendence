@@ -54,7 +54,7 @@ class MemberActions extends React.Component<MyProps, MyState> {
   };
 
   componentDidMount() {
-	console.log('lol');
+    console.log("lol");
     document.addEventListener("mousedown", this.handleClickOutside);
   }
   componentWillUnmount() {
