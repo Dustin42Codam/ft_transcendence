@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import { ChatroomType } from "../../models/Chats";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { fetchChatMembers } from "../../redux/slices/chatMembersSlice";
@@ -28,6 +29,7 @@ function ChatBox() {
   const [messages, setMessages] = useState([]);
   const dummy = useRef<HTMLDivElement>(null);
   const users = useAppSelector(selectAllUsers);
+  const navigate = useNavigate();
   let user;
 
   if (currentChat.id !== -1 && currentChat.type === ChatroomType.DIRECT) {
@@ -52,13 +54,48 @@ function ChatBox() {
     });
   }, [currentChat, currentChatMessages]);
 
+  async function getInviteLink(inviteCode: string) {
+    await axios
+      .post(`game/private/join/invite_code/${inviteCode}`)
+      .then((response: any) => {
+        toast.success(`You joined a new game!`, {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+        console.log("🚀 ~ file: ChatBox.tsx:61 ~ .then ~ response", response.data)
+        navigate(`/game`);
+      })
+      .catch((error: any) => {
+        console.log(error);
+        toast.error(`${error.response.data.message}`, {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+      });
+  }
+
   return (
     <div className="chatBox" ref={dummy}>
       {messages?.map((msg: any, index: number) =>
         msg.member.user.id === currentUser.id ? (
           <div className="newChatMessage myMessage" key={index}>
             <div className="newChatP">
-              {msg.message}
+{/*               {msg.type == 'invite'
+                ? (<div onClick={() => getInviteLink(msg.invite_code)}></div>)
+                : (<div>{msg.message}</div>)} */}
+                {msg.message}
               <br />
               <TimeStamp timestamp={msg.timestamp} />
               <div ref={dummy}></div>
@@ -68,13 +105,18 @@ function ChatBox() {
           <div className="newChatMessage friendMessage" key={index}>
             <div className="newChatP">
               <div className="friendName">{msg.member.user.display_name}</div>
-              {msg.message}
+              {msg.type == 'invite'
+                ? (<div onClick={() => getInviteLink(msg.invite_code)}>
+                  {msg.message}
+                </div>)
+                : (<div>{msg.message}</div>)}
               <TimeStamp timestamp={msg.timestamp} />
               <div ref={dummy}></div>
             </div>
           </div>
         )
-      )}
+        )
+      }
       <div ref={dummy}></div>
     </div>
   );
