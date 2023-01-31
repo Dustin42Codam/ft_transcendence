@@ -81,6 +81,10 @@
   cursor: pointer;
 }
 
+.currentMemberRole {
+  color:#333435;
+}
+
 .cover {
   position: absolute;
   top: 0;

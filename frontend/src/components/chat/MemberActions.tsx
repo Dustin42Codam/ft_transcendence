@@ -15,6 +15,7 @@ import { useAppSelector } from "../../redux/hooks";
 import { selectCurrentMember } from "../../redux/slices/currentMemberSlice";
 import ChatMemberMute from "./ChatMemberMute";
 import ChatAdminAdd from "./ChatAdminAdd";
+import ChatChangeOwner from "./ChatChangeOwner";
 
 type MyProps = { member: any, currentMember: any };
 type MyState = { open: boolean };
@@ -73,10 +74,18 @@ class MemberActions extends React.Component<MyProps, MyState> {
 							<ChatAdminAdd member={this.props.member}/>
 						)
 					}
-					<li>Option 1</li>
-					<li>Option 2</li>
-					<li>Option 3</li>
-					<li>Option 4</li>
+					{
+						this.props.currentMember.role === MemberRole.OWNER &&
+						(
+							<ChatChangeOwner member={this.props.member}/>
+						)
+					}
+{/* 					{
+						this.props.currentMember.role === MemberRole.OWNER &&
+						(
+							<ChatChangeOwner member={this.props.member}/>
+						)
+					} */}
 				</ul>
 			</div>)
 		}

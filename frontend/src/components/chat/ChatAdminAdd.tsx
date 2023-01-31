@@ -80,7 +80,6 @@ function ChatAdminAdd(props: any) {
 		  });
 	  }
 
-
 	if (props.member.role === MemberRole.USER)
 		{
 			return (

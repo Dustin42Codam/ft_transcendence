@@ -1,5 +1,6 @@
 
 todo:
+	-	move toasts from right to middle
 	-	change DM chat dropdown select style to the same
 		as group chat style
 	-	firefox cant establish connection to ws://
@@ -51,14 +52,12 @@ todo:
 			+	unmute
 				-	check un/mute with text input
 
-			->	add new admin
-			->	remove admin
+			+	add new admin
+			+	remove admin
 
-			-	grant ownership
-				-	crown
+			->	grant ownership
 
 			-	remove
-				-	FaUserMinus
 			-	send game invite
 
 

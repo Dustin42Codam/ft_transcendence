@@ -317,7 +317,7 @@ const NewChat = () => {
               {
                 currentMember.role !== MemberRole.USER && (
                   <div className="message_p">
-                    <div className="newChatP">channel {currentMember.role}</div>
+                    <div className="currentMemberRole">channel {currentMember.role}</div>
                   </div>
                 )
               }
