@@ -142,7 +142,7 @@ const currentMemberSlice = createSlice({
     updateCurrentMember(state, action) {
       const { role } = action.payload;
       state.currentMember.role = role;
-    }
+    },
   },
   extraReducers(builder) {
     builder
@@ -172,6 +172,7 @@ const currentMemberSlice = createSlice({
         state.status = "loading";
       })
       .addCase(updateCurrentChatPassword.fulfilled, (state, action) => {
+        // state.currentMember.chatroom.type = ChatroomType.PROTECTED;
         state.status = "succeeded";
       })
       .addCase(updateCurrentChatPassword.rejected, (state: any, action) => {

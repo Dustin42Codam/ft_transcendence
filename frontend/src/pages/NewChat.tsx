@@ -24,7 +24,6 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 import { Member, MemberRole } from "../models/Member";
 import EmojiEmotionsIcon from "@mui/icons-material/EmojiEmotions";
-import InsertEmoticonIcon from "@mui/icons-material/InsertEmoticon";
 import ChannelSettings from "../components/chat/ChannelSettings";
 import {
   fetchCurrentMember,
@@ -36,7 +35,7 @@ import LeaveChannel from "../components/chat/LeaveChannel";
 import MemberActions from "../components/chat/MemberActions";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import ChatUserListModal from "../components/chat/ChatUserListModal";
-
+import ChatInput from "../components/chat/ChatInput";
 
 const NewChat = () => {
   const currentUser = useAppSelector(selectCurrentUser);
@@ -69,9 +68,8 @@ const NewChat = () => {
         fetchChatMembers({
           id: currentChat.id,
         })
-      );      
+      );
     }
-    
   }, [currentChat]);
 
   useEffect(() => {
@@ -147,167 +145,160 @@ const NewChat = () => {
             </div>
 
             {/* chatbox */}
-            <div className="chatBox">
-              <div className="newChatMessage myMessage">
-                <div className="newChatP">
-                  Heeeey
-                  <br />
-                  <span>12:15</span>
-                </div>
-              </div>
-              <div className="newChatMessage friendMessage">
-                <div className="newChatP">
-                  <div className="friendName">
-                    Tom
+            {/* chat messages */}
+              <div className="chatBox">
+                <div className="newChatMessage myMessage">
+                  <div className="newChatP">
+                    Heeeey
+                    <br />
+                    <span>12:15</span>
                   </div>
-                  {/* <br /> */}
-                  Hello my name is ?
-                  <span>12:15</span>
+                </div>
+                <div className="newChatMessage friendMessage">
+                  <div className="newChatP">
+                    <div className="friendName">Tom</div>
+                    {/* <br /> */}
+                    Hello my name is ?<span>12:15</span>
+                  </div>
+                </div>
+                <div className="newChatMessage myMessage">
+                  <div className="newChatP">
+                    Heeeey
+                    <br />
+                    <span>12:15</span>
+                  </div>
+                </div>
+                <div className="newChatMessage friendMessage">
+                  <div className="newChatP">
+                    Hello!
+                    <br />
+                    <span>12:15</span>
+                  </div>
+                </div>
+                <div className="newChatMessage myMessage">
+                  <div className="newChatP">
+                    Heeeey
+                    <br />
+                    <span>12:15</span>
+                  </div>
+                </div>
+                <div className="newChatMessage friendMessage">
+                  <div className="newChatP">
+                    Hello!
+                    <br />
+                    <span>12:15</span>
+                  </div>
+                </div>
+                <div className="newChatMessage myMessage">
+                  <div className="newChatP">
+                    Heeeey
+                    <br />
+                    <span>12:15</span>
+                  </div>
+                </div>
+                <div className="newChatMessage friendMessage">
+                  <div className="newChatP">
+                    Hello!
+                    <br />
+                    <span>12:15</span>
+                  </div>
+                </div>
+                <div className="newChatMessage myMessage">
+                  <div className="newChatP">
+                    Heeeey
+                    <br />
+                    <span>12:15</span>
+                  </div>
+                </div>
+                <div className="newChatMessage friendMessage">
+                  <div className="newChatP">
+                    Hello!
+                    <br />
+                    <span>12:15</span>
+                  </div>
+                </div>
+                <div className="newChatMessage myMessage">
+                  <div className="newChatP">
+                    Heeeey
+                    <br />
+                    <span>12:15</span>
+                  </div>
+                </div>
+                <div className="newChatMessage friendMessage">
+                  <div className="newChatP">
+                    Hello!
+                    <br />
+                    <span>12:15</span>
+                  </div>
+                </div>
+                <div className="newChatMessage myMessage">
+                  <div className="newChatP">
+                    Heeeey
+                    <br />
+                    <span>12:15</span>
+                  </div>
+                </div>
+                <div className="newChatMessage friendMessage">
+                  <div className="newChatP">
+                    Hello!
+                    <br />
+                    <span>12:15</span>
+                  </div>
+                </div>
+                <div className="newChatMessage myMessage">
+                  <div className="newChatP">
+                    Heeeey
+                    <br />
+                    <span>12:15</span>
+                  </div>
+                </div>
+                <div className="newChatMessage friendMessage">
+                  <div className="newChatP">
+                    Hello!
+                    <br />
+                    <span>12:15</span>
+                  </div>
+                </div>
+                <div className="newChatMessage myMessage">
+                  <div className="newChatP">
+                    Heeeey
+                    <br />
+                    <span>12:15</span>
+                  </div>
+                </div>
+                <div className="newChatMessage friendMessage">
+                  <div className="newChatP">
+                    Hello! Hello elements must have an alt prop, either
+                    withHello elements must have an alt prop, either withHello
+                    elements must have an alt prop, either with
+                    <br />
+                    <span>12:15</span>
+                  </div>
+                </div>
+                <div className="newChatMessage myMessage">
+                  <div className="newChatP">
+                    Heeeey is assigned a value but never used is assigned a
+                    value but never used is assigned a value but never used is
+                    assigned a value but never used
+                    <br />
+                    <span>12:15</span>
+                  </div>
+                </div>
+                <div className="newChatMessage friendMessage">
+                  <div className="newChatP">
+                    Hello elements must have an alt prop, either with meaningful
+                    text, or an empty string!
+                    <br />
+                    <span>12:15</span>
+                  </div>
                 </div>
               </div>
-              <div className="newChatMessage myMessage">
-                <div className="newChatP">
-                  Heeeey
-                  <br />
-                  <span>12:15</span>
-                </div>
-              </div>
-              <div className="newChatMessage friendMessage">
-                <div className="newChatP">
-                  Hello!
-                  <br />
-                  <span>12:15</span>
-                </div>
-              </div>
-              <div className="newChatMessage myMessage">
-                <div className="newChatP">
-                  Heeeey
-                  <br />
-                  <span>12:15</span>
-                </div>
-              </div>
-              <div className="newChatMessage friendMessage">
-                <div className="newChatP">
-                  Hello!
-                  <br />
-                  <span>12:15</span>
-                </div>
-              </div>
-              <div className="newChatMessage myMessage">
-                <div className="newChatP">
-                  Heeeey
-                  <br />
-                  <span>12:15</span>
-                </div>
-              </div>
-              <div className="newChatMessage friendMessage">
-                <div className="newChatP">
-                  Hello!
-                  <br />
-                  <span>12:15</span>
-                </div>
-              </div>
-              <div className="newChatMessage myMessage">
-                <div className="newChatP">
-                  Heeeey
-                  <br />
-                  <span>12:15</span>
-                </div>
-              </div>
-              <div className="newChatMessage friendMessage">
-                <div className="newChatP">
-                  Hello!
-                  <br />
-                  <span>12:15</span>
-                </div>
-              </div>
-              <div className="newChatMessage myMessage">
-                <div className="newChatP">
-                  Heeeey
-                  <br />
-                  <span>12:15</span>
-                </div>
-              </div>
-              <div className="newChatMessage friendMessage">
-                <div className="newChatP">
-                  Hello!
-                  <br />
-                  <span>12:15</span>
-                </div>
-              </div>
-              <div className="newChatMessage myMessage">
-                <div className="newChatP">
-                  Heeeey
-                  <br />
-                  <span>12:15</span>
-                </div>
-              </div>
-              <div className="newChatMessage friendMessage">
-                <div className="newChatP">
-                  Hello!
-                  <br />
-                  <span>12:15</span>
-                </div>
-              </div>
-              <div className="newChatMessage myMessage">
-                <div className="newChatP">
-                  Heeeey
-                  <br />
-                  <span>12:15</span>
-                </div>
-              </div>
-              <div className="newChatMessage friendMessage">
-                <div className="newChatP">
-                  Hello!
-                  <br />
-                  <span>12:15</span>
-                </div>
-              </div>
-              <div className="newChatMessage myMessage">
-                <div className="newChatP">
-                  Heeeey
-                  <br />
-                  <span>12:15</span>
-                </div>
-              </div>
-              <div className="newChatMessage friendMessage">
-                <div className="newChatP">
-                  Hello! Hello elements must have an alt prop, either withHello
-                  elements must have an alt prop, either withHello elements must
-                  have an alt prop, either with
-                  <br />
-                  <span>12:15</span>
-                </div>
-              </div>
-              <div className="newChatMessage myMessage">
-                <div className="newChatP">
-                  Heeeey is assigned a value but never used is assigned a value
-                  but never used is assigned a value but never used is assigned
-                  a value but never used
-                  <br />
-                  <span>12:15</span>
-                </div>
-              </div>
-              <div className="newChatMessage friendMessage">
-                <div className="newChatP">
-                  Hello elements must have an alt prop, either with meaningful
-                  text, or an empty string!
-                  <br />
-                  <span>12:15</span>
-                </div>
-              </div>
-            </div>
 
-            {/* chat input */}
-            <div className="chatboxInput">
-              <input type="text" placeholder="Type a message" />
-              <div className="emoji-icon">
-                <InsertEmoticonIcon />
-              </div>
-              {/* <EmojiEmotionsIcon /> */}
-            </div>
+            {/* user input */}
+            <ChatInput location={location}/>
           </div>{" "}
           {/* end left side */}
+          {/* start right side -> member list + user actions */}
           <div className="rightSide">
             <div className="userListHeader">
               <div className="userImage">
@@ -315,13 +306,13 @@ const NewChat = () => {
                   <img src={currentUser.avatar} className="cover" />
                 </Link>
               </div>
-              {
-                currentMember.role !== MemberRole.USER && (
-                  <div className="message_p">
-                    <div className="currentMemberRole">channel {currentMember.role}</div>
+              {currentMember.role !== MemberRole.USER && (
+                <div className="message_p">
+                  <div className="currentMemberRole">
+                    channel {currentMember.role}
                   </div>
-                )
-              }
+                </div>
+              )}
               <ul className="navIcons">
                 <li>
                   <LeaveChannel />
@@ -334,40 +325,38 @@ const NewChat = () => {
               {[...chatMembers]
                 .sort((a, b) => a.id - b.id)
                 .map(
-                (member: Member, index: number) =>
-                  member.user.id !== currentUser.id && (
-                    <div className="block" key={index}>
-                      <div className="imagebox">
-                        <Link to={`/users/${member.user.id}`}>
-                          <img src={member.user.avatar} className="cover" />
-                        </Link>
-                      </div>
-                      <div className="details">
-                        <div className="listHead">
-                          <div className="newChatH4">
-                            {member.user.display_name}
+                  (member: Member, index: number) =>
+                    member.user.id !== currentUser.id && (
+                      <div className="block" key={index}>
+                        <div className="imagebox">
+                          <Link to={`/users/${member.user.id}`}>
+                            <img src={member.user.avatar} className="cover" />
+                          </Link>
+                        </div>
+                        <div className="details">
+                          <div className="listHead">
+                            <div className="newChatH4">
+                              {member.user.display_name}
+                            </div>
+                          </div>
+                          <div className="message_p">
+                            <div className="newChatP">{member.user.status}</div>
                           </div>
                         </div>
-                        <div className="message_p">
-                          <div className="newChatP">{member.user.status}</div>
-                        </div>
-                      </div>
-                      {
-                        member.role !== MemberRole.USER && (
+                        {member.role !== MemberRole.USER && (
                           <div className="message_p">
                             <div className="newChatP">{member.role}</div>
                           </div>
-                        )
-                      }
-                      <div className="userActions">
-                        <MemberActions
-                          member={member}
-                          currentMember={currentMember}
-                        />
+                        )}
+                        <div className="userActions">
+                          <MemberActions
+                            member={member}
+                            currentMember={currentMember}
+                          />
+                        </div>
                       </div>
-                    </div>
-                  )
-              )}
+                    )
+                )}
             </div>
           </div>
         </div>

@@ -111,17 +111,19 @@ const ChannelSettings = (props: any) => {
           type: chatType,
         })
       );
-      dispatch(
-        socketActions.updateChatType({
-          chatRoom: {
-            id: currentChat.id,
-            name: currentChat.name,
-            userId: currentChat.userId,
-            type: chatType,
-            members: props.chatMembers,
-          },
-        })
-      );
+      if (password === passwordConfirm) {
+        dispatch(
+          socketActions.updateChatType({
+            chatRoom: {
+              id: currentChat.id,
+              name: currentChat.name,
+              userId: currentChat.userId,
+              type: chatType,
+              members: props.chatMembers,
+            },
+          })
+        );
+      }
     } else if (
       chatType == ChatroomType.PROTECTED ||
       currentMember.chatroom.type === ChatroomType.PROTECTED
@@ -138,7 +140,7 @@ const ChannelSettings = (props: any) => {
     }
   }
 
-  function MyVerticallyCenteredModal(props: any) {
+  function ConfirmDelete(props: any) {
     return (
       <Modal
         {...props}
@@ -262,7 +264,7 @@ const ChannelSettings = (props: any) => {
           <Button variant="danger" onClick={() => setDelModalShow(true)}>
             Delete Channel
           </Button>
-          <MyVerticallyCenteredModal
+          <ConfirmDelete
             show={delModalShow}
             onHide={() => setDelModalShow(false)}
           />
