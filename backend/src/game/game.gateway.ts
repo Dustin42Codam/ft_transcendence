@@ -5,6 +5,7 @@ import GameroomEvents from "./gameroomEvents";
 import { UseGuards } from "@nestjs/common";
 import { Namespace, Server, Socket } from "socket.io";
 import { Logger, Req } from "@nestjs/common";
+import { GameStatus } from "./entity/game.entity";
 
 interface MoveableObject {
   positionX: number;
@@ -46,6 +47,7 @@ interface GamePhysics {
 interface GameRoom {
 	gameRoomId: string;
 	gamePhysics: GamePhysics;
+	finished: boolean;
 }
 
 const leftBat: Bat = {
@@ -92,6 +94,7 @@ const defaultGame: GameRoom = {
 		score: [0, 0],
 		scored: false,
 	},
+	finished: false,
 };
 
 @WebSocketGateway(3002, {
@@ -100,7 +103,7 @@ const defaultGame: GameRoom = {
 export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
   constructor(
 		private readonly userService: UserService,
-		private readonly gameService: GameService,
+		private readonly gameService: GameService
 		) {
 		};
 
@@ -231,7 +234,7 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 		}
 		function test() {
 			setTimeout(() => {
-				activeGames.map((game: GameRoom, index: number) => {
+				activeGames.map(async (game: GameRoom, index: number) => {
 					logger.debug(`GAME[${index}]:`, game);
 					if (gameHasStarted(game.gamePhysics)) {
 						if (!isBallSet(game.gamePhysics.ball)) {
@@ -240,8 +243,13 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 						checkBallHitBat(game);
 						if (checkIfScore(game)) {
 							game.gamePhysics.scored = true;
-							//TODO Able add svaing score
-							//here we can save it socre?
+							this.gameService.addScore(Number(game.gameRoomId), game.gamePhysics.score[0], game.gamePhysics.score[1]).then(
+								(be_game) => {
+									if (be_game.status == GameStatus.PASSIVE) {
+										game.finished = true;
+									}
+								}
+							);
 							setTimeout(() => {
 								game.gamePhysics.scored = false;
 							}, 1000);
@@ -251,8 +259,14 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 					}
 					io.to(game.gameRoomId).emit(GameroomEvents.PhysicsLoop, game.gamePhysics);
 				});
-				test();
 			}, 1000);
+			let new_active_games : Array<GameRoom> = [];
+			activeGames.map((game: GameRoom, index: number) => {
+				if (!game.finished) {
+					new_active_games.push(game);
+				}
+			})
+			activeGames = new_active_games;
 		}
 		test();
 	}
