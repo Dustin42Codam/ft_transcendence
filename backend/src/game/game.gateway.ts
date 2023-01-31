@@ -298,31 +298,18 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 		}
 		const currentActiveGame: GameRoom = this.getActiveGameByGameRoomId(gameRoomId);
 		if (!currentActiveGame)
-			throw ("server side error");
-		//checks if palyer joining is one of the players
-		if (gameFromDb.player_1 != userId || gameFromDb.player_2 != userId) {
-			if (clientsInRoom == 1) {
-				let player1: Player;
-
-				if (userId == gameFromDb.player_1) {
-					player1 = { id: userId, displayName: user.display_name, bat: JSON.parse(JSON.stringify({...leftBat}))};
-				} else {
-					player1 = { id: userId, displayName: user.display_name, bat: JSON.parse(JSON.stringify({...rightBat}))};
-				}	
-				currentActiveGame.gamePhysics.player1 = player1;
-				this.io.to(gameRoomId).emit(GameroomEvents.GameRoomNotification, `Player 1: ${user.display_name}`);
-			} else if (clientsInRoom == 2) {
-				let player2: Player;
-
-				if (userId == gameFromDb.player_1) {
-					player2 = { id: userId, displayName: user.display_name, bat: JSON.parse(JSON.stringify({...leftBat}))};
-				} else {
-					player2 = { id: userId, displayName: user.display_name, bat: JSON.parse(JSON.stringify({...rightBat}))};
-				}	
-				currentActiveGame.gamePhysics.player2 = player2;
-
-				this.io.to(gameRoomId).emit(GameroomEvents.GameRoomNotification, `Player 2: ${user.display_name}`);
-			}
+			throw ("game your joining is not in memmory. server side error or user input not check");
+		//the issuse comes when some one tires to join the room and overRides the player 
+		if (gameFromDb.player_1 == userId) {
+			let player1: Player;
+			player1 = { id: userId, displayName: user.display_name, bat: JSON.parse(JSON.stringify({...rightBat}))};
+			currentActiveGame.gamePhysics.player1 = player1;
+			this.io.to(gameRoomId).emit(GameroomEvents.GameRoomNotification, `Player 1: ${user.display_name}`);
+		} else if (gameFromDb.player_2 == userId) {
+			let player2: Player;
+			player2 = { id: userId, displayName: user.display_name, bat: JSON.parse(JSON.stringify({...leftBat}))};
+			currentActiveGame.gamePhysics.player2 = player2;
+			this.io.to(gameRoomId).emit(GameroomEvents.GameRoomNotification, `Player 2: ${user.display_name}`);
 		}
 	}
 
