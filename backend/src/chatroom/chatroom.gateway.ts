@@ -47,7 +47,7 @@ export class ChatroomGateway implements OnGatewayInit, OnGatewayConnection, OnGa
   }
 
  async handleConnection(client: any): Promise<void> {
-		console.log(`client ${client.id} conected, `);
+	console.log(`client ${client.id} conected, `);
     const userId = await this.userService.getUserFromClient(client);
 		if (userId) {
 			await this.userService.changeStatus(userId, UserStatus.ONLINE );
@@ -81,7 +81,7 @@ export class ChatroomGateway implements OnGatewayInit, OnGatewayConnection, OnGa
     }
 		console.log("clienat jointed:" ,client.id, payload);
     client.join(`${payload.id}`);
-    // this.io.to(`${payload.id}`).emit(ChatroomEvents.ChatRoomNotification, `${member.user.display_name} joined the room`);
+    this.io.to(`${payload.id}`).emit(ChatroomEvents.ChatRoomNotification, `${member.user.display_name} joined the room`);
     client.emit(ChatroomEvents.JoinChatRoomSuccess, payload);
   }
 

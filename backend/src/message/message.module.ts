@@ -13,7 +13,14 @@ import { MessageService } from "./message.service";
 import { UserModule } from "src/user/user.module";
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Message]), CommonModule, forwardRef(() => ChatroomModule), MemberModule, BlockModule, AuthModule, forwardRef(() => UserModule)],
+  imports: [
+	TypeOrmModule.forFeature([Message]),
+	CommonModule, forwardRef(() => ChatroomModule),
+	forwardRef(() =>MemberModule),
+	BlockModule,
+	AuthModule,
+	forwardRef(() => UserModule)
+	],
   controllers: [MessageController],
   providers: [MessageService],
   exports: [MessageService],

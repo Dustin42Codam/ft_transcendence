@@ -39,7 +39,7 @@ export const updateCurrentChatType = createAsyncThunk(
       data.password !== data.passwordConfirm
     ) {
       toast.error(`Passwords didn't match!`, {
-        position: "top-right",
+        position: "top-center",
         autoClose: 5000,
         hideProgressBar: false,
         closeOnClick: true,
@@ -57,7 +57,7 @@ export const updateCurrentChatType = createAsyncThunk(
       })
       .then((ret) => {
         toast.success(`Channel type changed to ${data.type}!`, {
-          position: "top-right",
+          position: "top-center",
           autoClose: 5000,
           hideProgressBar: false,
           closeOnClick: true,
@@ -69,7 +69,7 @@ export const updateCurrentChatType = createAsyncThunk(
       })
       .catch((error: any) => {
         toast.error(`${error.response.data.message}`, {
-          position: "top-right",
+          position: "top-center",
           autoClose: 5000,
           hideProgressBar: false,
           closeOnClick: true,
@@ -92,7 +92,7 @@ export const updateCurrentChatPassword = createAsyncThunk(
       data.password !== data.passwordConfirm
     ) {
       toast.error(`Passwords didn't match!`, {
-        position: "top-right",
+        position: "top-center",
         autoClose: 5000,
         hideProgressBar: false,
         closeOnClick: true,
@@ -109,7 +109,7 @@ export const updateCurrentChatPassword = createAsyncThunk(
       })
       .then(() => {
         toast.success(`Channel password updated!`, {
-          position: "top-right",
+          position: "top-center",
           autoClose: 5000,
           hideProgressBar: false,
           closeOnClick: true,
@@ -121,7 +121,7 @@ export const updateCurrentChatPassword = createAsyncThunk(
       })
       .catch((error: any) => {
         toast.error(`${error.response.data.message}`, {
-          position: "top-right",
+          position: "top-center",
           autoClose: 5000,
           hideProgressBar: false,
           closeOnClick: true,

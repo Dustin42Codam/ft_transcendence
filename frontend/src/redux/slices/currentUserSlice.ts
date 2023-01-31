@@ -43,7 +43,7 @@ export const updateCurrentUser = createAsyncThunk(
         .post(`users/id/${user.id}`, user)
         .then((response: any) => {
           toast.success("User data successfully updated!", {
-            position: "top-right",
+            position: "top-center",
             autoClose: 5000,
             hideProgressBar: false,
             closeOnClick: true,
@@ -60,7 +60,7 @@ export const updateCurrentUser = createAsyncThunk(
         throw error;
       }
       toast.error(`${error.response.data.message}`, {
-        position: "top-right",
+        position: "top-center",
         autoClose: 5000,
         hideProgressBar: false,
         closeOnClick: true,

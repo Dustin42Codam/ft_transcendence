@@ -14,7 +14,7 @@ function ChatMemberMute(props: any) {
       .post(`member/mute/id/${props.member.id}`)
       .then(() => {
         toast.success(`${props.member.user.display_name} muted!`, {
-          position: "top-right",
+          position: "top-center",
           autoClose: 5000,
           hideProgressBar: false,
           closeOnClick: true,
@@ -32,7 +32,7 @@ function ChatMemberMute(props: any) {
       .catch((error: any) => {
         console.log(error);
         toast.error(`${error.response.data.message}`, {
-          position: "top-right",
+          position: "top-center",
           autoClose: 5000,
           hideProgressBar: false,
           closeOnClick: true,
@@ -49,7 +49,7 @@ function ChatMemberMute(props: any) {
       .post(`member/unmute/id/${props.member.id}`)
       .then(() => {
         toast.success(`${props.member.user.display_name} unmuted!`, {
-          position: "top-right",
+          position: "top-center",
           autoClose: 5000,
           hideProgressBar: false,
           closeOnClick: true,
@@ -67,7 +67,7 @@ function ChatMemberMute(props: any) {
       .catch((error: any) => {
         console.log(error);
         toast.error(`${error.response.data.message}`, {
-          position: "top-right",
+          position: "top-center",
           autoClose: 5000,
           hideProgressBar: false,
           closeOnClick: true,

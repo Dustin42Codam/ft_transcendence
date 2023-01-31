@@ -303,7 +303,6 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 
   @SubscribeMessage(GameroomEvents.JoinGameRoom)
   async handelJoinRoom(client: Socket, gameRoomId: string): Promise<void> {
-
 		const clientsInRoom = (await this.io.in(gameRoomId).fetchSockets()).length;
 		const userId: number = await this.userService.getUserFromClient(client);
 		if (!userId)

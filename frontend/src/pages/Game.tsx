@@ -94,7 +94,7 @@ const Game = (props: any) => {
 
   useEffect(() => {
     const url: Array<string> = location.pathname.split("/");
-		console.log("this is url", url);
+    console.log("this is url", url);
     const theGameFrame = document.getElementById("content");
     const savedTheGameFrame = theGameFrame!.innerHTML;
     let timer: any;
@@ -188,14 +188,14 @@ const Game = (props: any) => {
           if (game.gamePhysics.scored) {
             score!.innerHTML = `<h1 id="score">${gameState.gamePhysics.player1.displayName} ${gameState.gamePhysics.score[0]} : ${gameState.gamePhysics.player2.displayName} ${gameState.gamePhysics.score[1]}</h1>`;
           }
-					if (game.gamePhysics.score[0] == 5) {
+          if (game.gamePhysics.score[0] == 5) {
             score!.innerHTML = `<h1 id="score">${gameState.gamePhysics.player1.displayName} ${gameState.gamePhysics.score[0]} : ${gameState.gamePhysics.player2.displayName} ${gameState.gamePhysics.score[1]}</h1>`;
-						theGameFrame!.innerHTML = `<h2>${game.gamePhysics.player1.displayName} -> Won</h2>`;
-					}
-					if (game.gamePhysics.score[1] == 5) {
+            theGameFrame!.innerHTML = `<h2>${game.gamePhysics.player1.displayName} -> Won</h2>`;
+          }
+          if (game.gamePhysics.score[1] == 5) {
             score!.innerHTML = `<h1 id="score">${gameState.gamePhysics.player1.displayName} ${gameState.gamePhysics.score[0]} : ${gameState.gamePhysics.player2.displayName} ${gameState.gamePhysics.score[1]}</h1>`;
-						theGameFrame!.innerHTML = `<h2>${game.gamePhysics.player2.displayName} -> Won</h2>`;
-					}
+            theGameFrame!.innerHTML = `<h2>${game.gamePhysics.player2.displayName} -> Won</h2>`;
+          }
           game.dt = dt;
           game.fps = fps;
           game.animation();
@@ -205,14 +205,12 @@ const Game = (props: any) => {
       };
       startAnimation();
     });
-		return () => {
-			clearTimeout(timer);
-			console.log("we are leaving");
-			theGameFrame!.innerHTML = "<h1>Game is pending</h1>";
-    	dispatch(
-    		gameSocketActions.leaveRoom(Number(url[url.length - 1]))
-    	);
-		}
+    return () => {
+      clearTimeout(timer);
+      console.log("we are leaving");
+      theGameFrame!.innerHTML = "<h1>Game is pending</h1>";
+      dispatch(gameSocketActions.leaveRoom(Number(url[url.length - 1])));
+    };
   }, []);
   return (
     <Wrapper>

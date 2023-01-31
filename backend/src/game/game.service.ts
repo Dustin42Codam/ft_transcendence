@@ -102,17 +102,19 @@ export class GameService extends AbstractService {
     return false;
   }
 
-    async createPrivateClassicGame(userId: number, invite_code: number) {
+    async createPrivateClassicGame(userId: number, invite_code: string) {
       const user = await this.userService.getUserById(userId);
-      if (this.isAlreadyInGame(user))
-          throw new BadRequestException("This user is already in a game");
+      if (await this.isAlreadyInGame(user)) {
+        throw new BadRequestException("This user is already in a game");
+	  }
       return this.create({player_1: userId, type: GameType.PRIVATE, mode: GameMode.CLASSIC, invite_code: invite_code})
   }
 
-  async createPrivatePowerUpGame(userId: number, invite_code: number) {
+  async createPrivatePowerUpGame(userId: number, invite_code: string) {
     const user = await this.userService.getUserById(userId);
-    if (this.isAlreadyInGame(user))
+    if (await this.isAlreadyInGame(user)) {
         throw new BadRequestException("This user is already in a game");
+	}
     return this.create({player_1: userId, type: GameType.PRIVATE, mode: GameMode.POWER_UP, invite_code: invite_code})
   }
 }

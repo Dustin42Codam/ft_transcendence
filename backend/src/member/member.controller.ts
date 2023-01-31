@@ -11,6 +11,7 @@ import express, { Request } from "express";
 import { AuthService } from "src/auth/auth.service";
 import { MessageService } from "src/message/message.service";
 import { MessageType } from "src/message/entity/message.entity";
+import { GameService } from "src/game/game.service";
 
 @UseGuards(AuthGuard)
 @Controller("member")
@@ -20,8 +21,8 @@ export class MemberController {
 	private chatroomService: ChatroomService,
 	private userServcie: UserService,
 	private authService: AuthService,
-  private messageService: MessageService,
-  private gameService, GameService,
+  	private messageService: MessageService,
+  	private gameService: GameService,
 ) {}
 
 	@Get("me/id/:id")
@@ -215,7 +216,7 @@ export class MemberController {
     await this.memberService.update(receiver.id, receiver);
   }
 
-  @Post("create/game/classic")
+  @Post("create/game/classic/id/:id")
   async createClassicGameInvite(@Param("id") id: string, @Req() request: Request) {
     const userId = await this.authService.userId(request);
     const member = await this.memberService.getMemberById(Number(id));
@@ -226,12 +227,12 @@ export class MemberController {
       throw new BadRequestException("You are restricted from this chatroom.");
     }
     const invite_code = Array(32).fill(null).map(() => Math.round(Math.random() * 16).toString(16)).join("")
-    const game = this.gameService.createPrivateClassicGame(userId, invite_code);
+    const game = await this.gameService.createPrivateClassicGame(userId, invite_code);
     await this.messageService.create({member: member, message: "Come play a classic game with me", type: MessageType.INVITE, invite_code: invite_code})
     return game;
   }
 
-  @Post("create/game/power_up")
+  @Post("create/game/power_up/id/:id")
   async createPowerUpGameInvite(@Param("id") id: string, @Req() request: Request) {
     const userId = await this.authService.userId(request);
     const member = await this.memberService.getMemberById(Number(id));
@@ -242,8 +243,8 @@ export class MemberController {
       throw new BadRequestException("You are restricted from this chatroom.");
     }
     const invite_code = Array(32).fill(null).map(() => Math.round(Math.random() * 16).toString(16)).join("")
-    const game = this.gameService.createPrivatePowerUpGame(userId, invite_code);
-    await this.messageService.create({member: member, message: "Come play a classic game with me", type: MessageType.INVITE, invite_code: invite_code})
+    const game = await this.gameService.createPrivatePowerUpGame(userId, invite_code);
+    await this.messageService.create({member: member, message: "Come play a power up game with me", type: MessageType.INVITE, invite_code: invite_code})
     return game;
   }
 }
