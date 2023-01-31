@@ -1,5 +1,7 @@
 
 todo:
+	-	fix old jwt cookie back end crash
+	-	change game css
 	-	move toasts from right to middle
 	-	change DM chat dropdown select style to the same
 		as group chat style
@@ -57,9 +59,10 @@ todo:
 			+	remove admin
 			+	grant ownership
 			+	remove member
+		
 			!!-	send game invite
-				-	what if receiver is already in a game?
-
+				-	default game
+				-	power up game
 
 		!!-	seperate DM page
 

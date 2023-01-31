@@ -54,6 +54,7 @@ class MemberActions extends React.Component<MyProps, MyState> {
   };
 
   componentDidMount() {
+	console.log('lol');
     document.addEventListener("mousedown", this.handleClickOutside);
   }
   componentWillUnmount() {
@@ -67,9 +68,6 @@ class MemberActions extends React.Component<MyProps, MyState> {
         {this.state.open && (
           <div className="dropdown">
             <ul>
-              {/* {this.props.member.status === UserStatus.ONLINE && ( */}
-              <SendGameInvite member={this.props.member} />
-              {/* )} */}
               {this.props.currentMember.role !== MemberRole.USER && (
                 <ChatMemberBan member={this.props.member} />
               )}

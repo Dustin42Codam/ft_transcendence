@@ -37,6 +37,8 @@ import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import ChatUserListModal from "../components/chat/ChatUserListModal";
 import ChatInput from "../components/chat/ChatInput";
 import ChatBox from "../components/chat/ChatBox";
+import SportsTennisIcon from "@mui/icons-material/SportsTennis";
+import SendGameInvite from "../components/chat/SendGameInvite";
 
 const NewChat = () => {
   const currentUser = useAppSelector(selectCurrentUser);
@@ -118,6 +120,9 @@ const NewChat = () => {
               </div>
 
               <ul className="navIcons">
+				<li>
+					<SendGameInvite />
+				</li>
                 {/* <li><ChatBubbleOutlineIcon /></li> */}
                 {/* <li><MoreVertIcon /></li> */}
                 {currentMember?.role !== "user" && (
