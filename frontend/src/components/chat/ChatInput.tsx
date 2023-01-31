@@ -40,13 +40,13 @@ function ChatInput(props: any) {
     }
     waitForIt();
     if (currentChatroom.id === -1 || currentChatroom.name === "") {
-		navigate("/", { replace: true });
+      navigate("/", { replace: true });
     }
-}, [props.location]);
+  }, [props.location]);
 
-const sendMessage = (e: any) => {
-	e.preventDefault();
-	
+  const sendMessage = (e: any) => {
+    e.preventDefault();
+
     if (currentMember.banned === true) {
       toast.error(`You are banned!`, {
         position: "top-right",
@@ -78,20 +78,20 @@ const sendMessage = (e: any) => {
             authorId: currentUser.id,
           },
         })
-		);
+      );
       inputRef.current!["messageInput"].value = "";
     }
   };
 
   return (
     <form
-		className="chatboxInput"
-		onSubmit={(e) => sendMessage(e)}
-		ref={inputRef}
-	>
+      className="chatboxInput"
+      onSubmit={(e) => sendMessage(e)}
+      ref={inputRef}
+    >
       <input
         type="text"
-		name="messageInput"
+        name="messageInput"
         placeholder="Type a message"
         onChange={(e) => setMessage(e.target.value)}
         autoComplete="off"
@@ -99,7 +99,7 @@ const sendMessage = (e: any) => {
       <div className="emoji-icon">
         <InsertEmoticonIcon />
       </div>
-	  <input type="submit" autoComplete="off" hidden />
+      <input type="submit" autoComplete="off" hidden />
     </form>
   );
 }

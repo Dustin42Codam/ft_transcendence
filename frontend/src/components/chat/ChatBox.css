@@ -1,0 +1,90 @@
+.chatBox {
+  position: relative;
+  width: 100%;
+  height: calc(100% - 120px);
+  padding: 50px;
+  overflow-y: auto;
+}
+
+.newChatMessage {
+  position: relative;
+  display: flex;
+  width: 100%;
+  margin: 5px 0;
+}
+
+.newChatMessage .newChatP {
+  position: relative;
+  right: 0;
+  text-align: right;
+  max-width: 65%;
+  padding: 12px;
+  background: #dcf8c6;
+  border-radius: 10px;
+  font-size: 0.9em;
+}
+
+.newChatMessage .newChatP::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: -12px;
+  width: 20px;
+  height: 20px;
+  background: linear-gradient(
+    135deg,
+    #dcf8c6 0%,
+    #dcf8c6 50%,
+    transparent 50%,
+    transparent
+  );
+}
+
+.newChatMessage .newChatP span {
+  display: block;
+  margin-top: 5px;
+  font-size: 0.85em;
+  opacity: 0.5;
+}
+
+.myMessage {
+  justify-content: flex-end;
+}
+
+.friendMessage {
+  justify-content: flex-start;
+}
+
+.friendMessage .newChatP {
+  background: #fff;
+  text-align: left;
+}
+
+.friendMessage .newChatP .friendName {
+  background: #fff;
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.9em;
+  margin-bottom: 3px;
+}
+
+.friendMessage .newChatP span {
+  background: #fff;
+  text-align: right;
+}
+
+.friendMessage .newChatP::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -12px;
+  width: 20px;
+  height: 20px;
+  background: linear-gradient(
+    225deg,
+    #ffffff 0%,
+    #ffffff 50%,
+    transparent 50%,
+    transparent
+  );
+}

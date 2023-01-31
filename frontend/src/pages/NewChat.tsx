@@ -36,6 +36,7 @@ import MemberActions from "../components/chat/MemberActions";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import ChatUserListModal from "../components/chat/ChatUserListModal";
 import ChatInput from "../components/chat/ChatInput";
+import ChatBox from "../components/chat/ChatBox";
 
 const NewChat = () => {
   const currentUser = useAppSelector(selectCurrentUser);
@@ -145,8 +146,10 @@ const NewChat = () => {
             </div>
 
             {/* chatbox */}
-            {/* chat messages */}
-              <div className="chatBox">
+
+            <ChatBox />
+
+            {/*               <div className="chatBox">
                 <div className="newChatMessage myMessage">
                   <div className="newChatP">
                     Heeeey
@@ -157,7 +160,6 @@ const NewChat = () => {
                 <div className="newChatMessage friendMessage">
                   <div className="newChatP">
                     <div className="friendName">Tom</div>
-                    {/* <br /> */}
                     Hello my name is ?<span>12:15</span>
                   </div>
                 </div>
@@ -168,134 +170,10 @@ const NewChat = () => {
                     <span>12:15</span>
                   </div>
                 </div>
-                <div className="newChatMessage friendMessage">
-                  <div className="newChatP">
-                    Hello!
-                    <br />
-                    <span>12:15</span>
-                  </div>
-                </div>
-                <div className="newChatMessage myMessage">
-                  <div className="newChatP">
-                    Heeeey
-                    <br />
-                    <span>12:15</span>
-                  </div>
-                </div>
-                <div className="newChatMessage friendMessage">
-                  <div className="newChatP">
-                    Hello!
-                    <br />
-                    <span>12:15</span>
-                  </div>
-                </div>
-                <div className="newChatMessage myMessage">
-                  <div className="newChatP">
-                    Heeeey
-                    <br />
-                    <span>12:15</span>
-                  </div>
-                </div>
-                <div className="newChatMessage friendMessage">
-                  <div className="newChatP">
-                    Hello!
-                    <br />
-                    <span>12:15</span>
-                  </div>
-                </div>
-                <div className="newChatMessage myMessage">
-                  <div className="newChatP">
-                    Heeeey
-                    <br />
-                    <span>12:15</span>
-                  </div>
-                </div>
-                <div className="newChatMessage friendMessage">
-                  <div className="newChatP">
-                    Hello!
-                    <br />
-                    <span>12:15</span>
-                  </div>
-                </div>
-                <div className="newChatMessage myMessage">
-                  <div className="newChatP">
-                    Heeeey
-                    <br />
-                    <span>12:15</span>
-                  </div>
-                </div>
-                <div className="newChatMessage friendMessage">
-                  <div className="newChatP">
-                    Hello!
-                    <br />
-                    <span>12:15</span>
-                  </div>
-                </div>
-                <div className="newChatMessage myMessage">
-                  <div className="newChatP">
-                    Heeeey
-                    <br />
-                    <span>12:15</span>
-                  </div>
-                </div>
-                <div className="newChatMessage friendMessage">
-                  <div className="newChatP">
-                    Hello!
-                    <br />
-                    <span>12:15</span>
-                  </div>
-                </div>
-                <div className="newChatMessage myMessage">
-                  <div className="newChatP">
-                    Heeeey
-                    <br />
-                    <span>12:15</span>
-                  </div>
-                </div>
-                <div className="newChatMessage friendMessage">
-                  <div className="newChatP">
-                    Hello!
-                    <br />
-                    <span>12:15</span>
-                  </div>
-                </div>
-                <div className="newChatMessage myMessage">
-                  <div className="newChatP">
-                    Heeeey
-                    <br />
-                    <span>12:15</span>
-                  </div>
-                </div>
-                <div className="newChatMessage friendMessage">
-                  <div className="newChatP">
-                    Hello! Hello elements must have an alt prop, either
-                    withHello elements must have an alt prop, either withHello
-                    elements must have an alt prop, either with
-                    <br />
-                    <span>12:15</span>
-                  </div>
-                </div>
-                <div className="newChatMessage myMessage">
-                  <div className="newChatP">
-                    Heeeey is assigned a value but never used is assigned a
-                    value but never used is assigned a value but never used is
-                    assigned a value but never used
-                    <br />
-                    <span>12:15</span>
-                  </div>
-                </div>
-                <div className="newChatMessage friendMessage">
-                  <div className="newChatP">
-                    Hello elements must have an alt prop, either with meaningful
-                    text, or an empty string!
-                    <br />
-                    <span>12:15</span>
-                  </div>
-                </div>
-              </div>
+              </div> */}
 
             {/* user input */}
-            <ChatInput location={location}/>
+            <ChatInput location={location} />
           </div>{" "}
           {/* end left side */}
           {/* start right side -> member list + user actions */}
