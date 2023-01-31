@@ -1,9 +1,7 @@
-import React from 'react'
+import React from "react";
 
 function SendGameInvite(props: any) {
-  return (
-	<li>Send game invite</li>
-  )
+  return <li>Send game invite</li>;
 }
 
-export default SendGameInvite
+export default SendGameInvite;

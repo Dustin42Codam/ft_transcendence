@@ -68,7 +68,7 @@ class MemberActions extends React.Component<MyProps, MyState> {
           <div className="dropdown">
             <ul>
               {/* {this.props.member.status === UserStatus.ONLINE && ( */}
-                <SendGameInvite member={this.props.member} />
+              <SendGameInvite member={this.props.member} />
               {/* )} */}
               {this.props.currentMember.role !== MemberRole.USER && (
                 <ChatMemberBan member={this.props.member} />
