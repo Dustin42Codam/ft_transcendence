@@ -33,7 +33,7 @@ interface GamePhysics {
   player1: Player;
   player2: Player;
   score: Array<number>;
-	scored: boolean;
+  scored: boolean;
 }
 
 //player2 = { displayName: user.display_name, bat: {positionX: 1250, positionY:270}};
@@ -90,7 +90,7 @@ export const initialState: GameRoom = {
     player1: defaultPlyaer,
     player2: defaultPlyaer,
     score: [0, 0],
-		scored: false,
+    scored: false,
   },
   notificatoin: "",
 };

@@ -35,7 +35,7 @@ interface GamePhysics {
   player1: Player;
   player2: Player;
   score: Array<number>;
-	scored: boolean;
+  scored: boolean;
 }
 const gameSocketMiddleware: Middleware = (store) => {
   let gameSocket: Socket = io("ws://localhost:3002/game", {

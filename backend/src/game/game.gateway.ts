@@ -48,7 +48,6 @@ interface GameRoom {
 	gamePhysics: GamePhysics;
 }
 
-//player2 = { displayName: user.display_name, bat: {positionX: 1250, positionY:270}};
 const leftBat: Bat = {
 	positionX: 1250,	
 	positionY: 270,	
@@ -136,7 +135,7 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 					io.to(game.gameRoomId).emit(GameroomEvents.ServerLoop, game.gameRoomId);
 				});
 				test();
-			}, 1000);
+			}, 3000);
 		}
 		test();
 	}
@@ -241,6 +240,8 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 						checkBallHitBat(game);
 						if (checkIfScore(game)) {
 							game.gamePhysics.scored = true;
+							//TODO Able add svaing score
+							//here we can save it socre?
 							setTimeout(() => {
 								game.gamePhysics.scored = false;
 							}, 1000);
@@ -251,7 +252,7 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 					io.to(game.gameRoomId).emit(GameroomEvents.PhysicsLoop, game.gamePhysics);
 				});
 				test();
-			}, 15);
+			}, 1000);
 		}
 		test();
 	}
@@ -290,7 +291,7 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 		const gameFromDb = await this.gameService.getGameById(Number(gameRoomId));
 		if (!gameFromDb)
 			throw ("game with id not found");
-		//check if a game is already in the pyhisic loop
+		//checks if a game is already in the pyhisic loop
 		if (!this.isGameInPhysicsLoop(gameRoomId)) {
 			let newGame: GameRoom = JSON.parse(JSON.stringify({...defaultGame}));//create a deep copy
 			this.activeGames.push({...newGame, gameRoomId: gameRoomId});
@@ -298,7 +299,7 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 		const currentActiveGame: GameRoom = this.getActiveGameByGameRoomId(gameRoomId);
 		if (!currentActiveGame)
 			throw ("server side error");
-		//check if palyer joining is one of the players
+		//checks if palyer joining is one of the players
 		if (gameFromDb.player_1 != userId || gameFromDb.player_2 != userId) {
 			if (clientsInRoom == 1) {
 				let player1: Player;
@@ -325,7 +326,6 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 		}
 	}
 
-	//TODO make these change the gameState from the gameRoomId In active games
   @SubscribeMessage(GameroomEvents.MoveBat)
   async handleMoveBat(client: Socket, payload: any): Promise<void> {
 		const userId: number = await this.userService.getUserFromClient(client);
