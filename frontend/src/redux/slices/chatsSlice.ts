@@ -41,7 +41,7 @@ export const addNewGroupChat = createAsyncThunk(
     try {
       await axios.post(`chatroom/create`, data.chat);
       toast.success("Channel successfully created!", {
-        position: "top-right",
+        position: "top-center",
         autoClose: 5000,
         hideProgressBar: false,
         closeOnClick: true,
@@ -56,7 +56,7 @@ export const addNewGroupChat = createAsyncThunk(
         throw error;
       }
       toast.error(`${error.response.data.message}`, {
-        position: "top-right",
+        position: "top-center",
         autoClose: 5000,
         hideProgressBar: false,
         closeOnClick: true,
@@ -76,7 +76,7 @@ export const deleteChat = createAsyncThunk(
     try {
       await axios.post(`chatroom/remove/id/${chat.id}`);
       toast.success("Channel successfully deleted!", {
-        position: "top-right",
+        position: "top-center",
         autoClose: 5000,
         hideProgressBar: false,
         closeOnClick: true,
@@ -91,7 +91,7 @@ export const deleteChat = createAsyncThunk(
         throw error;
       }
       toast.error(`${error.response.data}`, {
-        position: "top-right",
+        position: "top-center",
         autoClose: 5000,
         hideProgressBar: false,
         closeOnClick: true,

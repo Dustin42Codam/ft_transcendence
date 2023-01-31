@@ -49,7 +49,7 @@ function ChatInput(props: any) {
 
     if (currentMember.banned === true) {
       toast.error(`You are banned!`, {
-        position: "top-right",
+        position: "top-center",
         autoClose: 5000,
         hideProgressBar: false,
         closeOnClick: true,
@@ -60,7 +60,7 @@ function ChatInput(props: any) {
       });
     } else if (currentMember.muted_until >= new Date().toISOString()) {
       toast.error(`You are muted until ${currentMember.muted_until}!`, {
-        position: "top-right",
+        position: "top-center",
         autoClose: 5000,
         hideProgressBar: false,
         closeOnClick: true,

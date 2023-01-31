@@ -63,7 +63,7 @@ function ChatUserList(props: any) {
       .post(`member/leave/id/${member[0].id}`)
       .then((ret) => {
         toast.success(`You left the chat!`, {
-          position: "top-right",
+          position: "top-center",
           autoClose: 5000,
           hideProgressBar: false,
           closeOnClick: true,
@@ -77,7 +77,7 @@ function ChatUserList(props: any) {
       .catch((error: any) => {
         console.log(error);
         toast.error(`${error.response.data.message}`, {
-          position: "top-right",
+          position: "top-center",
           autoClose: 5000,
           hideProgressBar: false,
           closeOnClick: true,
@@ -99,7 +99,7 @@ function ChatUserList(props: any) {
       .post(`member/ban/id/${member.id}`)
       .then(() => {
         toast.success(`${member.user.display_name} banned!`, {
-          position: "top-right",
+          position: "top-center",
           autoClose: 5000,
           hideProgressBar: false,
           closeOnClick: true,
@@ -112,7 +112,7 @@ function ChatUserList(props: any) {
       .catch((error: any) => {
         console.log(error);
         toast.error(`${error.response.data.message}`, {
-          position: "top-right",
+          position: "top-center",
           autoClose: 5000,
           hideProgressBar: false,
           closeOnClick: true,
@@ -130,7 +130,7 @@ function ChatUserList(props: any) {
       .post(`member/unban/id/${member.id}`)
       .then(() => {
         toast.success(`${member.user.display_name} unbanned!`, {
-          position: "top-right",
+          position: "top-center",
           autoClose: 5000,
           hideProgressBar: false,
           closeOnClick: true,
@@ -143,7 +143,7 @@ function ChatUserList(props: any) {
       .catch((error: any) => {
         console.log(error);
         toast.error(`${error.response.data.message}`, {
-          position: "top-right",
+          position: "top-center",
           autoClose: 5000,
           hideProgressBar: false,
           closeOnClick: true,
@@ -161,7 +161,7 @@ function ChatUserList(props: any) {
       .post(`member/makeAdmin/id/${member.id}`)
       .then(() => {
         toast.success(`${member.user.display_name} set as admin!`, {
-          position: "top-right",
+          position: "top-center",
           autoClose: 5000,
           hideProgressBar: false,
           closeOnClick: true,
@@ -174,7 +174,7 @@ function ChatUserList(props: any) {
       .catch((error: any) => {
         console.log(error);
         toast.error(`${error.response.data.message}`, {
-          position: "top-right",
+          position: "top-center",
           autoClose: 5000,
           hideProgressBar: false,
           closeOnClick: true,
@@ -192,7 +192,7 @@ function ChatUserList(props: any) {
       .post(`member/removeAdmin/id/${member.id}`)
       .then(() => {
         toast.success(`${member.user.display_name} removed as admin!`, {
-          position: "top-right",
+          position: "top-center",
           autoClose: 5000,
           hideProgressBar: false,
           closeOnClick: true,
@@ -205,7 +205,7 @@ function ChatUserList(props: any) {
       .catch((error: any) => {
         console.log(error);
         toast.error(`${error.response.data.message}`, {
-          position: "top-right",
+          position: "top-center",
           autoClose: 5000,
           hideProgressBar: false,
           closeOnClick: true,
@@ -223,7 +223,7 @@ function ChatUserList(props: any) {
       .post(`member/mute/id/${member.id}`)
       .then(() => {
         toast.success(`${member.user.display_name} muted!`, {
-          position: "top-right",
+          position: "top-center",
           autoClose: 5000,
           hideProgressBar: false,
           closeOnClick: true,
@@ -236,7 +236,7 @@ function ChatUserList(props: any) {
       .catch((error: any) => {
         console.log(error);
         toast.error(`${error.response.data.message}`, {
-          position: "top-right",
+          position: "top-center",
           autoClose: 5000,
           hideProgressBar: false,
           closeOnClick: true,
@@ -254,7 +254,7 @@ function ChatUserList(props: any) {
       .post(`member/unmute/id/${member.id}`)
       .then(() => {
         toast.success(`${member.user.display_name} unmuted!`, {
-          position: "top-right",
+          position: "top-center",
           autoClose: 5000,
           hideProgressBar: false,
           closeOnClick: true,
@@ -267,7 +267,7 @@ function ChatUserList(props: any) {
       .catch((error: any) => {
         console.log(error);
         toast.error(`${error.response.data.message}`, {
-          position: "top-right",
+          position: "top-center",
           autoClose: 5000,
           hideProgressBar: false,
           closeOnClick: true,
@@ -285,7 +285,7 @@ function ChatUserList(props: any) {
       .post(`member/owner/id/${member.id}`)
       .then(() => {
         toast.success(`${member.user.display_name} is the new channel owner!`, {
-          position: "top-right",
+          position: "top-center",
           autoClose: 5000,
           hideProgressBar: false,
           closeOnClick: true,
@@ -298,7 +298,7 @@ function ChatUserList(props: any) {
       .catch((error: any) => {
         console.log(error);
         toast.error(`${error.response.data.message}`, {
-          position: "top-right",
+          position: "top-center",
           autoClose: 5000,
           hideProgressBar: false,
           closeOnClick: true,
@@ -317,7 +317,7 @@ function ChatUserList(props: any) {
         .post(`chatroom/name/id/${currentChat.id}`, { name: chatName })
         .then(() => {
           toast.success(`Channel name updated!`, {
-            position: "top-right",
+            position: "top-center",
             autoClose: 5000,
             hideProgressBar: false,
             closeOnClick: true,
@@ -341,7 +341,7 @@ function ChatUserList(props: any) {
         .catch((error: any) => {
           console.log(error);
           toast.error(`${error.response.data.message}`, {
-            position: "top-right",
+            position: "top-center",
             autoClose: 5000,
             hideProgressBar: false,
             closeOnClick: true,
@@ -353,7 +353,7 @@ function ChatUserList(props: any) {
         });
     } else {
       toast.error(`You can't give a chat an empty name!`, {
-        position: "top-right",
+        position: "top-center",
         autoClose: 5000,
         hideProgressBar: false,
         closeOnClick: true,
@@ -411,7 +411,7 @@ function ChatUserList(props: any) {
       .post(`member/remove/id/${member.id}`)
       .then(() => {
         toast.success(`You removed ${member.user.display_name} from chat!`, {
-          position: "top-right",
+          position: "top-center",
           autoClose: 5000,
           hideProgressBar: false,
           closeOnClick: true,
@@ -424,7 +424,7 @@ function ChatUserList(props: any) {
       .catch((error: any) => {
         console.log(error);
         toast.error(`${error.response.data.message}`, {
-          position: "top-right",
+          position: "top-center",
           autoClose: 5000,
           hideProgressBar: false,
           closeOnClick: true,

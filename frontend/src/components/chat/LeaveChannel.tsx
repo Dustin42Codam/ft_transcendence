@@ -16,7 +16,7 @@ function LeaveChannel() {
       .post(`member/leave/id/${currentMember.id}`)
       .then((ret) => {
         toast.success(`You left the chat!`, {
-          position: "top-right",
+          position: "top-center",
           autoClose: 5000,
           hideProgressBar: false,
           closeOnClick: true,
@@ -30,7 +30,7 @@ function LeaveChannel() {
       .catch((error: any) => {
         console.log(error);
         toast.error(`${error.response.data.message}`, {
-          position: "top-right",
+          position: "top-center",
           autoClose: 5000,
           hideProgressBar: false,
           closeOnClick: true,

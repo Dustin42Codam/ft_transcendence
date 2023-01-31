@@ -73,7 +73,7 @@ export const UserPage = () => {
       .post(`friend/add/id/${userId}`)
       .then(() => {
         toast.success(`Added ${user.display_name} as friend!`, {
-          position: "top-right",
+          position: "top-center",
           autoClose: 5000,
           hideProgressBar: false,
           closeOnClick: true,
@@ -85,7 +85,7 @@ export const UserPage = () => {
       })
       .catch((error: any) => {
         toast.error(`Error: Failed to add ${user.display_name} as friend!`, {
-          position: "top-right",
+          position: "top-center",
           autoClose: 5000,
           hideProgressBar: false,
           closeOnClick: true,
@@ -104,7 +104,7 @@ export const UserPage = () => {
       .post(`friend/remove/id/${userId}`)
       .then(() => {
         toast.success(`Removed ${user.display_name} as friend!`, {
-          position: "top-right",
+          position: "top-center",
           autoClose: 5000,
           hideProgressBar: false,
           closeOnClick: true,
@@ -116,7 +116,7 @@ export const UserPage = () => {
       })
       .catch((error: any) => {
         toast.error(`Error: Failed to remove ${user.display_name} as friend!`, {
-          position: "top-right",
+          position: "top-center",
           autoClose: 5000,
           hideProgressBar: false,
           closeOnClick: true,
@@ -135,7 +135,7 @@ export const UserPage = () => {
       .post(`block/add/receiverId/${userId}`)
       .then(() => {
         toast.success(`Blocked ${user.display_name}!`, {
-          position: "top-right",
+          position: "top-center",
           autoClose: 5000,
           hideProgressBar: false,
           closeOnClick: true,
@@ -147,7 +147,7 @@ export const UserPage = () => {
       })
       .catch((error: any) => {
         toast.error(`Error: Failed to block ${user.display_name}!`, {
-          position: "top-right",
+          position: "top-center",
           autoClose: 5000,
           hideProgressBar: false,
           closeOnClick: true,
@@ -167,7 +167,7 @@ export const UserPage = () => {
       .post(`block/remove/receiverId/${userId}`)
       .then(() => {
         toast.success(`Unblocked ${user.display_name}!`, {
-          position: "top-right",
+          position: "top-center",
           autoClose: 5000,
           hideProgressBar: false,
           closeOnClick: true,
@@ -179,7 +179,7 @@ export const UserPage = () => {
       })
       .catch((error: any) => {
         toast.error(`Error: Failed to unblock ${user.display_name}!`, {
-          position: "top-right",
+          position: "top-center",
           autoClose: 5000,
           hideProgressBar: false,
           closeOnClick: true,

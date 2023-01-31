@@ -47,7 +47,7 @@ const ChannelSettings = (props: any) => {
         .post(`chatroom/name/id/${currentChat.id}`, { name: chatName })
         .then(() => {
           toast.success(`Channel name updated!`, {
-            position: "top-right",
+            position: "top-center",
             autoClose: 5000,
             hideProgressBar: false,
             closeOnClick: true,
@@ -71,7 +71,7 @@ const ChannelSettings = (props: any) => {
         .catch((error: any) => {
           console.log(error);
           toast.error(`${error.response.data.message}`, {
-            position: "top-right",
+            position: "top-center",
             autoClose: 5000,
             hideProgressBar: false,
             closeOnClick: true,
@@ -83,7 +83,7 @@ const ChannelSettings = (props: any) => {
         });
     } else {
       toast.error(`You can't give a chat an empty name!`, {
-        position: "top-right",
+        position: "top-center",
         autoClose: 5000,
         hideProgressBar: false,
         closeOnClick: true,

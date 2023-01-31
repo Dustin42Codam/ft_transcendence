@@ -18,7 +18,7 @@ async function addUserToChat(props: any) {
     .post(`chatroom/add/id/${props.currentChat.id}`, { user_id: props.user.id })
     .then(() => {
       toast.success(`You added ${props.user.display_name} the chat!`, {
-        position: "top-right",
+        position: "top-center",
         autoClose: 5000,
         hideProgressBar: false,
         closeOnClick: true,
@@ -31,7 +31,7 @@ async function addUserToChat(props: any) {
     .catch((error: any) => {
       console.log(error);
       toast.error(`${error.response.data.message}`, {
-        position: "top-right",
+        position: "top-center",
         autoClose: 5000,
         hideProgressBar: false,
         closeOnClick: true,

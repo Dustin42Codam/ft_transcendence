@@ -14,7 +14,7 @@ function ChatChangeOwner(props: any) {
         toast.success(
           `${props.member.user.display_name} is the new channel owner!`,
           {
-            position: "top-right",
+            position: "top-center",
             autoClose: 5000,
             hideProgressBar: false,
             closeOnClick: true,
@@ -33,7 +33,7 @@ function ChatChangeOwner(props: any) {
       .catch((error: any) => {
         console.log(error);
         toast.error(`${error.response?.data.message}`, {
-          position: "top-right",
+          position: "top-center",
           autoClose: 5000,
           hideProgressBar: false,
           closeOnClick: true,

@@ -27,7 +27,7 @@ function ChatAddMember(props: any) {
       .post(`chatroom/add/id/${props.currentChat.id}`, { user_id: user.id })
       .then(() => {
         toast.success(`You added ${user.display_name} the chat!`, {
-          position: "top-right",
+          position: "top-center",
           autoClose: 5000,
           hideProgressBar: false,
           closeOnClick: true,
@@ -40,7 +40,7 @@ function ChatAddMember(props: any) {
       .catch((error: any) => {
         console.log(error);
         toast.error(`${error.response.data.message}`, {
-          position: "top-right",
+          position: "top-center",
           autoClose: 5000,
           hideProgressBar: false,
           closeOnClick: true,

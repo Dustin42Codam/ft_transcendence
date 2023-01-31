@@ -15,7 +15,7 @@ function ChatAdminAdd(props: any) {
       .post(`member/removeAdmin/id/${props.member.id}`)
       .then(() => {
         toast.success(`${props.member.user.display_name} dismissed as admin!`, {
-          position: "top-right",
+          position: "top-center",
           autoClose: 5000,
           hideProgressBar: false,
           closeOnClick: true,
@@ -33,7 +33,7 @@ function ChatAdminAdd(props: any) {
       .catch((error: any) => {
         console.log(error);
         toast.error(`${error.response.data.message}`, {
-          position: "top-right",
+          position: "top-center",
           autoClose: 5000,
           hideProgressBar: false,
           closeOnClick: true,
@@ -50,7 +50,7 @@ function ChatAdminAdd(props: any) {
       .post(`member/makeAdmin/id/${props.member.id}`)
       .then(() => {
         toast.success(`${props.member.user.display_name} set as admin!`, {
-          position: "top-right",
+          position: "top-center",
           autoClose: 5000,
           hideProgressBar: false,
           closeOnClick: true,
@@ -68,7 +68,7 @@ function ChatAdminAdd(props: any) {
       .catch((error: any) => {
         console.log(error);
         toast.error(`${error.response.data.message}`, {
-          position: "top-right",
+          position: "top-center",
           autoClose: 5000,
           hideProgressBar: false,
           closeOnClick: true,

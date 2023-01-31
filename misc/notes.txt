@@ -1,11 +1,10 @@
 
 todo:
-	-	fix old jwt cookie back end crash
-	-	change game css
-	-	move toasts from right to middle
+	+	fix old jwt cookie back end crash
+	+	change game css
+	+	move toasts from right to middle
 	-	change DM chat dropdown select style to the same
 		as group chat style
-	-	firefox cant establish connection to ws://
 	-	get all users authguard
 		-	check tfa secret of other users
 	-	change contentBody in user list, user profile, user page?
@@ -25,8 +24,8 @@ todo:
 		in different colors
 
 	->	New Chat UI
-		-	new chat bg with better crop
-			-	test on macos
+		->	new chat bg with better crop
+			->	test on macos
 		->	add auto scroll down
 		+	add message input
 		+	add time stamp
@@ -170,7 +169,7 @@ toast.(``, {
 toast.warn(``, {
 	type: "success",
 	isLoading: false,
-	position: "top-right",
+	position: "top-center",
 	autoClose: 5000,
 	hideProgressBar: false,
 	closeOnClick: true,
@@ -180,7 +179,7 @@ toast.warn(``, {
 	theme: "colored",
 });
 toast.info(``, {
-	position: "top-right",
+	position: "top-center",
 	autoClose: 5000,
 	hideProgressBar: false,
 	closeOnClick: true,
@@ -193,7 +192,7 @@ toast.update(id, {
 	render: `${newUserName} joined the chat!`,
 	type: "success",
 	isLoading: false,
-	position: "top-right",
+	position: "top-center",
 	autoClose: 5000,
 	hideProgressBar: false,
 	closeOnClick: true,

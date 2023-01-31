@@ -16,7 +16,7 @@ function ChatMemberRemove(props: any) {
         toast.success(
           `You removed ${props.member.user.display_name} from chat!`,
           {
-            position: "top-right",
+            position: "top-center",
             autoClose: 5000,
             hideProgressBar: false,
             closeOnClick: true,
@@ -30,7 +30,7 @@ function ChatMemberRemove(props: any) {
       .catch((error: any) => {
         console.log(error);
         toast.error(`${error.response?.data.message}`, {
-          position: "top-right",
+          position: "top-center",
           autoClose: 5000,
           hideProgressBar: false,
           closeOnClick: true,
