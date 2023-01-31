@@ -22,14 +22,17 @@ todo:
 	+	add new badge to user page to display the status
 		in different colors
 
-	-	New Chat UI
+	->	New Chat UI
 		-	new chat bg with better crop
 			-	test on macos
 		-	add auto scroll down
-		-	add message input
+		->	add message input
 		-	add time stamp?
-		-	add user name to message in group chat
-			-	instead of time?
+		!!-	add user name to message in group chat
+			-	different colors per user name
+				->	user name is displayed within the text box
+					just above the message
+				-	user.id % 5 selects css class
 		+	add status to user list
 		+	channel settings modal heading
 			+	modal
@@ -47,29 +50,22 @@ todo:
 			+	ban
 			+	unban
 				-	check un/ban with text input
-
 			+	mute
 			+	unmute
 				-	check un/mute with text input
-
 			+	add new admin
 			+	remove admin
-
 			+	grant ownership
+			+	remove member
+			!!-	send game invite
 
-			->	remove member
-			-	send game invite
 
+		!!-	seperate DM page
 
 		+	add user to channel modal
-		-	seperate DM page
 		-	add smileys
 			-	smiley button
 			-	smiley dropdown
-
-	-	Chat
-		-	mark messages as read/unread ?
-		-	ping pong invite
 
 
 done:

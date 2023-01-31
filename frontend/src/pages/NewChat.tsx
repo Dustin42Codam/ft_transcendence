@@ -26,7 +26,6 @@ import { Member, MemberRole } from "../models/Member";
 import EmojiEmotionsIcon from "@mui/icons-material/EmojiEmotions";
 import InsertEmoticonIcon from "@mui/icons-material/InsertEmoticon";
 import ChannelSettings from "../components/chat/ChannelSettings";
-import ChannelSettingsSlide from "../components/chat/ChannelSettingsSlide";
 import {
   fetchCurrentMember,
   selectCurrentMember,
@@ -144,7 +143,6 @@ const NewChat = () => {
                     />
                   </li>
                 )}
-                {/* <li><ChannelSettingsSlide currentChat currentMember chatMembers/></li> */}
               </ul>
             </div>
 
@@ -159,8 +157,11 @@ const NewChat = () => {
               </div>
               <div className="newChatMessage friendMessage">
                 <div className="newChatP">
-                  Hello!
-                  <br />
+                  <div className="friendName">
+                    Tom
+                  </div>
+                  {/* <br /> */}
+                  Hello my name is ?
                   <span>12:15</span>
                 </div>
               </div>
@@ -346,7 +347,6 @@ const NewChat = () => {
                           <div className="newChatH4">
                             {member.user.display_name}
                           </div>
-                          {/* <div className="newChatP time">{member.role}</div> */}
                         </div>
                         <div className="message_p">
                           <div className="newChatP">{member.user.status}</div>
@@ -360,7 +360,6 @@ const NewChat = () => {
                         )
                       }
                       <div className="userActions">
-                        {/* <MoreVertIcon /> */}
                         <MemberActions
                           member={member}
                           currentMember={currentMember}

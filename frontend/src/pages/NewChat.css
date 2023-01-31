@@ -299,6 +299,19 @@
   text-align: left;
 }
 
+.friendMessage .newChatP .friendName {
+  background: #fff;
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.9em;
+  margin-bottom: 3px;
+}
+
+.friendMessage .newChatP span {
+  background: #fff;
+  text-align: right;
+}
+
 .friendMessage .newChatP::before {
   content: "";
   position: absolute;
