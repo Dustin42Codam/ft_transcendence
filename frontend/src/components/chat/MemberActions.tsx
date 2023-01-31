@@ -14,6 +14,7 @@ import VolumeOffIcon from "@mui/icons-material/VolumeOff"; //mute
 import NotInterestedIcon from "@mui/icons-material/NotInterested"; //ban1
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline"; //ban2
 import ChatMemberBan from "./ChatMemberBan";
+import SendGameInvite from "./SendGameInvite";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { MemberRole } from "../../models/Member";
@@ -23,6 +24,7 @@ import ChatMemberMute from "./ChatMemberMute";
 import ChatAdminAdd from "./ChatAdminAdd";
 import ChatChangeOwner from "./ChatChangeOwner";
 import ChatMemberRemove from "./ChatMemberRemove";
+import { UserStatus } from "../../models/Channel";
 
 type MyProps = { member: any; currentMember: any };
 type MyState = { open: boolean };
@@ -65,6 +67,9 @@ class MemberActions extends React.Component<MyProps, MyState> {
         {this.state.open && (
           <div className="dropdown">
             <ul>
+              {/* {this.props.member.status === UserStatus.ONLINE && ( */}
+                <SendGameInvite member={this.props.member} />
+              {/* )} */}
               {this.props.currentMember.role !== MemberRole.USER && (
                 <ChatMemberBan member={this.props.member} />
               )}

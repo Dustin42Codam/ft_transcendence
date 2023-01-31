@@ -58,6 +58,7 @@ todo:
 			+	grant ownership
 			+	remove member
 			!!-	send game invite
+				-	what if receiver is already in a game?
 
 
 		!!-	seperate DM page

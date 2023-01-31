@@ -13,15 +13,11 @@ import { selectAllUsers } from "../../redux/slices/usersSlice";
 import "./ChatBox.css";
 
 function TimeStamp(props: any) {
-	const date = new Date(props.timestamp);
-	const hours = date.getHours();
-	const minutes = date.getMinutes();
-	
-	return (
-		<span>
-			{`${hours}:${minutes}`}
-		</span>
-	)
+  const date = new Date(props.timestamp);
+  const hours = date.getHours();
+  const minutes = date.getMinutes();
+
+  return <span>{`${hours}:${minutes}`}</span>;
 }
 
 function ChatBox() {
@@ -48,40 +44,39 @@ function ChatBox() {
   }
 
   useEffect(() => {
-      fetchMessages();
+    fetchMessages();
     dummy?.current?.scrollIntoView({
       behavior: "smooth",
       block: "end",
       inline: "nearest",
     });
-    }, [currentChat, currentChatMessages]);
+  }, [currentChat, currentChatMessages]);
 
   return (
     <div className="chatBox" ref={dummy}>
       {messages?.map((msg: any, index: number) =>
-            msg.member.user.id === currentUser.id ? (
-				<div className="newChatMessage myMessage" key={index}>
-					<div className="newChatP">
-            	    	{msg.message}
-						<br />
-						<TimeStamp timestamp={msg.timestamp}/>
-						<div ref={dummy}></div>
-					</div>
-				</div>
-            ) : (
-				<div className="newChatMessage friendMessage" key={index}>
-					<div className="newChatP">
-						<div className="friendName">
-							{msg.member.user.display_name}
-						</div>
-						{msg.message}
-						<TimeStamp timestamp={msg.timestamp}/>
-						<div ref={dummy}></div>
-					</div>
-				</div>
-        	))}
-		<div ref={dummy}></div>
-    </div >
+        msg.member.user.id === currentUser.id ? (
+          <div className="newChatMessage myMessage" key={index}>
+            <div className="newChatP">
+              {msg.message}
+              <br />
+              <TimeStamp timestamp={msg.timestamp} />
+              <div ref={dummy}></div>
+            </div>
+          </div>
+        ) : (
+          <div className="newChatMessage friendMessage" key={index}>
+            <div className="newChatP">
+              <div className="friendName">{msg.member.user.display_name}</div>
+              {msg.message}
+              <TimeStamp timestamp={msg.timestamp} />
+              <div ref={dummy}></div>
+            </div>
+          </div>
+        )
+      )}
+      <div ref={dummy}></div>
+    </div>
   );
 }
 
