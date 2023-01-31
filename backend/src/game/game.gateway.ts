@@ -107,14 +107,14 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 		) {
 		};
 
-  private logger: Logger = new Logger("GameGatway");
-	private activeGames: Array<GameRoom> = [];
+  	private logger: Logger = new Logger("GameGatway");
+	public activeGames: Array<GameRoom> = [];
 
   @WebSocketServer() io: Namespace;
 
   afterInit(server: Server) {
     this.logger.log("Game gateway: game namespace socket server is running");
-		this.physicLoop(this.activeGames, this.logger, this.io);
+		this.physicLoop(this.activeGames, this.logger, this.io, this.gameService);
 		this.serverLoop(this.activeGames, this.logger, this.io);
   }
 
@@ -143,14 +143,14 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 		test();
 	}
 	//physic loop
-	async physicLoop(activeGames: Array<GameRoom>, logger: any, io: any): Promise<void>  {
+	async physicLoop(activeGames: Array<GameRoom>, logger: any, io: any, gameService: GameService): Promise<void>  {
 		function getRandomPosition(): Ball {
 			return {
 				positionX: 650,
 				positionY: 350,
 				directionX: Math.random() < 0.5 ? 1 : -1,
 				directionY: Math.floor(Math.random() * 5) - 2,
-				speed: 4,
+				speed: 10,
 				width: 20,
 				height: 20,
 			};
@@ -235,7 +235,7 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 		function test() {
 			setTimeout(() => {
 				activeGames.map(async (game: GameRoom, index: number) => {
-					logger.debug(`GAME[${index}]:`, game);
+					// logger.debug(`GAME[${index}]:`, game);
 					if (gameHasStarted(game.gamePhysics)) {
 						if (!isBallSet(game.gamePhysics.ball)) {
 							game.gamePhysics.ball = getRandomPosition();
@@ -243,8 +243,9 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 						checkBallHitBat(game);
 						if (checkIfScore(game)) {
 							game.gamePhysics.scored = true;
-							this.gameService.addScore(Number(game.gameRoomId), game.gamePhysics.score[0], game.gamePhysics.score[1]).then(
+							gameService.addScore(Number(game.gameRoomId), game.gamePhysics.score[0], game.gamePhysics.score[1]).then(
 								(be_game) => {
+									console.log(be_game)
 									if (be_game.status == GameStatus.PASSIVE) {
 										game.finished = true;
 									}
@@ -259,14 +260,14 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 					}
 					io.to(game.gameRoomId).emit(GameroomEvents.PhysicsLoop, game.gamePhysics);
 				});
+				test();
 			}, 15);
-			let new_active_games : Array<GameRoom> = [];
-			activeGames.map((game: GameRoom, index: number) => {
-				if (!game.finished) {
-					new_active_games.push(game);
-				}
-			})
-			activeGames = new_active_games;
+			var i = activeGames.length
+			while (i--) {
+				if (activeGames[i].finished) { 
+					activeGames.splice(i, 1);
+				} 
+			}
 		}
 		test();
 	}

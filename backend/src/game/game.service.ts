@@ -34,8 +34,8 @@ export class GameService extends AbstractService {
 		return game;
 }
 
-  private isGameFinished(score: number) {
-    return (score >= 5)
+  private isGameFinished(game: Game) {
+    return (game.score_player_1 >= 5 || game.score_player_2 >= 5)
   }
 
   async endGame(game: Game) {
