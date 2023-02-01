@@ -29,7 +29,7 @@ const ChannelSettings = (props: any) => {
   const handleShow = () => setShow(true);
   const dispatch = useAppDispatch();
   const [chatName, setChatName] = useState(currentMember.chatroom.name);
-  const [chatType, setChatType] = useState("");
+  const [chatType, setChatType] = useState(currentMember.chatroom.type);
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
   const navigate = useNavigate();
@@ -88,7 +88,7 @@ const ChannelSettings = (props: any) => {
     }
   }
 
-  function saveChanges(e: any) {
+  function saveChanges() {
     if (chatName !== currentChat.name) {
       changeChannelName();
       if (!chatName.length) {
@@ -224,8 +224,6 @@ const ChannelSettings = (props: any) => {
             {/* ++++++++++++++++++++++++ */}
 
             {/* +++++ Channel Password +++++ */}
-            {/* <Form.Group className="mb-3" controlId="exampleForm.ControlInput2"> */}
-
             <Form.Floating className="mb-3">
               <Form.Control
                 id="floatingInputCustom"
@@ -257,7 +255,6 @@ const ChannelSettings = (props: any) => {
               </label>
             </Form.Floating>
             {/* ++++++++++++++++++++++++++++ */}
-            {/* </Form.Group> */}
           </Form>
         </Modal.Body>
 
@@ -273,7 +270,7 @@ const ChannelSettings = (props: any) => {
           {/* ++++++++++++++++++++++++++++++++++ */}
 
           {/* +++++++++ Save Settings +++++++++ */}
-          <Button variant="primary" onClick={(e) => saveChanges(e)}>
+          <Button variant="primary" onClick={saveChanges}>
             Save Changes
           </Button>
           {/* ++++++++++++++++++++++++++++++++++ */}
