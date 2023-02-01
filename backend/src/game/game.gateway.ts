@@ -253,7 +253,6 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 			ball.positionY += ball.directionY * ball.speed;
 		}
 		function gameHasStarted(game: GamePhysics): boolean {
-			//logger.debug("player2", game.player2, "default", defaultPlyaer, JSON.stringify(game.player1) != JSON.stringify(defaultPlyaer), JSON.stringify(game.player2) != JSON.stringify(defaultPlyaer));
 			if ((JSON.stringify(game.player1) != JSON.stringify(defaultPlyaer)) && JSON.stringify(game.player2) != JSON.stringify(defaultPlyaer)) {
 				return true;
 			}
@@ -297,9 +296,7 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 								game.gamePhysics.powerUp = getRandomPowerUp();
 							}
 							if (powerUpOnBoard(game)) {
-								logger.log("on board power up");
 								if (hitPowerUp(game)) {
-									logger.log("hit power up");
 									game.gamePhysics.powerUp = {...defaultPowerUp}; 
 									activatePowerUp(game);
 								}
@@ -345,7 +342,7 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 					io.to(game.gameRoomId).emit(GameroomEvents.PhysicsLoop, game.gamePhysics);
 				});
 				test();
-			}, 30);
+			}, 15);
 			var i = activeGames.length
 			while (i--) {
 				if (activeGames[i].finished) { 
