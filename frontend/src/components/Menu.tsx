@@ -29,7 +29,7 @@ const Menu = (props: any) => {
     if (joinableChats.length > 0) {
       setJoinChanel(!joinChanel);
     } else {
-      toast("🦄 You do not have any chats to join!", {
+      toast.info(`There are no chats to join!`, {
         position: "top-center",
         autoClose: 5000,
         hideProgressBar: false,
@@ -37,10 +37,10 @@ const Menu = (props: any) => {
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: "light",
-      });
-    }
-  };
+        theme: "colored"
+      })
+    };
+  }
 
   return (
     <nav className={props.className}>
