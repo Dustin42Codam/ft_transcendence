@@ -12,6 +12,7 @@ import {
 } from "../../redux/slices/chatMembersSlice";
 import AddIcon from "@mui/icons-material/Add";
 import { Modal } from "react-bootstrap";
+import { fontSize } from "@mui/system";
 
 async function addUserToChat(props: any) {
   await axios
@@ -71,6 +72,11 @@ function ModalBody() {
   return (
     <Modal.Body>
       <div className="userList">
+        {joinableUsers.length == 0 &&
+          <div className="newChatP" style={{fontSize: "20px", textAlign: "center"}}>
+            There are no users to add...
+          </div>
+        }
         {joinableUsers.map(
           (user: User, index: number) =>
             user && (
@@ -109,7 +115,7 @@ function ModalBody() {
   );
 }
 
-function ChatUserListModal(props: any) {
+function ChatUserListModal() {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -117,9 +123,12 @@ function ChatUserListModal(props: any) {
   return (
     <>
       <PersonAddIcon onClick={handleShow} />
-      <Modal show={show} onHide={handleClose}>
+      <Modal className="modal" show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Add a new user</Modal.Title>
+          <Modal.Title>
+            Add a new user
+          </Modal.Title>
+        
         </Modal.Header>
 
         <ModalBody />

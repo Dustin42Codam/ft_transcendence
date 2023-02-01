@@ -14,8 +14,8 @@ import { Link } from "react-router-dom";
 import ChatUserList from "../components/chat/ChatUserList";
 import { fetchUsers, selectAllUsers } from "../redux/slices/usersSlice";
 import { ChatroomType } from "../models/Chats";
-import "./Message.css";
-import "./Chat.css";
+// import "./Message.css";
+// import "./Chat.css";
 import {
   fetchChatMembers,
   selectAllChatMembers,
@@ -39,6 +39,7 @@ import ChatInput from "../components/chat/ChatInput";
 import ChatBox from "../components/chat/ChatBox";
 import SportsTennisIcon from "@mui/icons-material/SportsTennis";
 import SendGameInvite from "../components/chat/SendGameInvite";
+import ParticleBackground from "../components/ParticleBackground";
 
 const NewChat = () => {
   const currentUser = useAppSelector(selectCurrentUser);
