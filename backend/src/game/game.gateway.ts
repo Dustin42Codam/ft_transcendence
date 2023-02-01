@@ -15,6 +15,7 @@ interface MoveableObject {
 }
 
 interface Bat extends MoveableObject {
+	powerUpTimer?: number;
 }
 
 interface PowerUp extends MoveableObject {
@@ -54,7 +55,15 @@ interface GameRoom {
 	finished: boolean;
 }
 
+const defaultPowerUp: PowerUp = {
+	positionX: -1,	
+	positionY: -1,	
+	height: 40,
+	width: 40, 
+}
+
 const leftBat: Bat = {
+	powerUpTimer: -1,
 	positionX: 1250,	
 	positionY: 270,	
 	height: 200,
@@ -62,6 +71,7 @@ const leftBat: Bat = {
 }
 
 const rightBat: Bat = {
+	powerUpTimer: -1,
 	positionX: 30,	
 	positionY: 270,	
 	height: 200,
@@ -145,10 +155,10 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 	async physicLoop(activeGames: Array<GameRoom>, logger: any, io: any, gameService: GameService): Promise<void>  {
 		function getRandomPowerUp(): PowerUp {
 			return {
-				//positionX: Math.floor(Math.random() * 1299),
-				//positionY: Math.floor(Math.random() * 699),
-				positionX: 650,
-				positionY: 350,
+				positionX: Math.floor(Math.random() * 1299),
+				positionY: Math.floor(Math.random() * 699),
+				//positionX: 650,DEBUG
+				//positionY: 350,DEBUG
 				width: 100,
 				height: 100,
 			};
@@ -241,7 +251,7 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 			}
 			return false;
 		}
-		function setPowerUp(powerUp: PowerUp | undefined): boolean {
+		function isPowerUp(powerUp: PowerUp | undefined): boolean {
 			return powerUp ? true : false;
 		}
 		function hitPowerUp(game: GameRoom): boolean {
@@ -251,6 +261,21 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 			}
 			return false;
     }
+		function powerUpPlayer(player: Player): void {
+			player.bat.height = 250;
+			player.bat.powerUpTimer = 600;
+		}
+		function activatePowerUp(game: GameRoom): void {
+			if (game.gamePhysics.ball.directionX < 0) {
+				powerUpPlayer(game.gamePhysics.player1);
+			}
+			if (game.gamePhysics.ball.directionX > 0) {
+				powerUpPlayer(game.gamePhysics.player2);
+			}
+		}
+		function powerUpOnBoard(game: GameRoom): boolean {
+			return (game.gamePhysics.powerUp.positionX != defaultPowerUp.positionX && game.gamePhysics.powerUp.positionY != defaultPowerUp.positionY);
+		}
 		function test() {
 			setTimeout(() => {
 				activeGames.map(async (game: GameRoom, index: number) => {
@@ -258,32 +283,48 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 					if (gameHasStarted(game.gamePhysics)) {
 						if (!isBallSet(game.gamePhysics.ball)) {
 							game.gamePhysics.ball = getRandomPosition();
-							if (setPowerUp(game.gamePhysics.powerUp)) {
+						}
+						if (isPowerUp(game.gamePhysics.powerUp)) {
+							if (game.gamePhysics.player1.bat.powerUpTimer <= 0 && game.gamePhysics.player2.bat.powerUpTimer <= 0 && !powerUpOnBoard(game)) {
 								game.gamePhysics.powerUp = getRandomPowerUp();
 							}
-						} else {
-							checkBallHitBat(game);
-							if (checkIfScore(game)) {
-								game.gamePhysics.scored = true;
-								gameService.addScore(Number(game.gameRoomId), game.gamePhysics.score[0], game.gamePhysics.score[1]).then(
-									(be_game) => {
-										if (be_game.status == GameStatus.PASSIVE) {
-											game.finished = true;
-										}
-									}
-								);
-								setTimeout(() => {
-									game.gamePhysics.scored = false;
-								}, 1000);
+							if (powerUpOnBoard(game)) {
+								logger.log("on board power up");
+								if (hitPowerUp(game)) {
+									logger.log("hit power up");
+									game.gamePhysics.powerUp = {...defaultPowerUp}; 
+									activatePowerUp(game);
+								}
 							}
-							if (hitPowerUp(game)) {
-								//TODO apply power up effect
-								logger.log("hits power up");
-							
+							if (game.gamePhysics.player1.bat.powerUpTimer > 0) {
+								game.gamePhysics.player1.bat.powerUpTimer--;
 							}
-							moveBall(game.gamePhysics.ball);
-							ballHitWall(game);
+							if (game.gamePhysics.player2.bat.powerUpTimer > 0) {
+								game.gamePhysics.player2.bat.powerUpTimer--;
+							}
+							if (game.gamePhysics.player1.bat.powerUpTimer == 0) {
+								game.gamePhysics.player1.bat.height = 200;
+							}
+							if (game.gamePhysics.player2.bat.powerUpTimer == 0) {
+								game.gamePhysics.player2.bat.height = 200;
+							}
 						}
+						checkBallHitBat(game);
+						if (checkIfScore(game)) {
+							game.gamePhysics.scored = true;
+							gameService.addScore(Number(game.gameRoomId), game.gamePhysics.score[0], game.gamePhysics.score[1]).then(
+								(be_game) => {
+									if (be_game.status == GameStatus.PASSIVE) {
+										game.finished = true;
+									}
+								}
+							);
+							setTimeout(() => {
+								game.gamePhysics.scored = false;
+							}, 1000);
+						}
+						moveBall(game.gamePhysics.ball);
+						ballHitWall(game);
 					}
 					io.to(game.gameRoomId).emit(GameroomEvents.PhysicsLoop, game.gamePhysics);
 				});
@@ -347,7 +388,7 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 			if (gameFromDb.mode == "classic") {
 				this.activeGames.push({...newGame, gameRoomId: gameRoomId});
 			} else if (gameFromDb.mode == "power_up") {
-				newGame.gamePhysics = {...newGame.gamePhysics, powerUp: {positionY: -1, positionX: -1, height: 20, width: 20}};
+				newGame.gamePhysics = {...newGame.gamePhysics, powerUp: JSON.parse(JSON.stringify({...defaultPowerUp}))};
 				this.activeGames.push({...newGame, gameRoomId: gameRoomId});
 			}
 		}

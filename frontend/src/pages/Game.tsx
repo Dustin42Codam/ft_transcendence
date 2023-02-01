@@ -4,6 +4,7 @@ import { gameSocketActions } from "../redux/slices/gameSocketSlice";
 import { useAppDispatch } from "../redux/hooks";
 import "./Game.css";
 import store from "../redux/store";
+import Confetty from "../components/confety";
 
 import { useLocation } from "react-router-dom";
 
@@ -80,7 +81,9 @@ class GameState {
     ctx.fillRect(batP2.positionX, batP2.positionY, batP2.width, batP2.height);
     ctx.fillRect(ball.positionX, ball.positionY, ball.width, ball.height);
 		if (powerUp) {
-			ctx.fillRect(powerUp.positionX, powerUp.positionY, powerUp.width, powerUp.height);
+			if (powerUp.positionX != -1 && powerUp.positionY != -1) {
+				ctx.fillRect(powerUp.positionX, powerUp.positionY, powerUp.width, powerUp.height);
+			}
 		}
   }
 
@@ -197,11 +200,11 @@ const Game = (props: any) => {
           }
           if (game.gamePhysics.score[0] == 5) {
             score!.innerHTML = `<h1 id="score">${gameState.gamePhysics.player1.displayName} ${gameState.gamePhysics.score[0]} : ${gameState.gamePhysics.player2.displayName} ${gameState.gamePhysics.score[1]}</h1>`;
-            theGameFrame!.innerHTML = `<h2>${game.gamePhysics.player1.displayName} -> Won</h2>`;
+            theGameFrame!.innerHTML = `<div><h2>${game.gamePhysics.player1.displayName} -> Won</h2><Confetty></Confetty></div>`;
           }
           if (game.gamePhysics.score[1] == 5) {
             score!.innerHTML = `<h1 id="score">${gameState.gamePhysics.player1.displayName} ${gameState.gamePhysics.score[0]} : ${gameState.gamePhysics.player2.displayName} ${gameState.gamePhysics.score[1]}</h1>`;
-            theGameFrame!.innerHTML = `<h2>${game.gamePhysics.player2.displayName} -> Won</h2>`;
+            theGameFrame!.innerHTML = `<div><h2>${game.gamePhysics.player2.displayName} -> Won</h2><Confetty></Confetty></div>`;
           }
           game.dt = dt;
           game.fps = fps;
@@ -222,6 +225,7 @@ const Game = (props: any) => {
   return (
     <Wrapper>
       <div id="canvasContainer">
+				
         <h1 id="score"></h1>
         <canvas tabIndex={0} id="gameCanvas" width="1300" height="700">
           Game is not supported for this borwser. Needs <b>cavas</b> support.
