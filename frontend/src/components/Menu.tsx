@@ -29,7 +29,7 @@ const Menu = (props: any) => {
     if (joinableChats.length > 0) {
       setJoinChanel(!joinChanel);
     } else {
-      toast("🦄 You do not have any chats to join!", {
+      toast.info(`There are no chats to join!`, {
         position: "top-center",
         autoClose: 5000,
         hideProgressBar: false,
@@ -37,7 +37,7 @@ const Menu = (props: any) => {
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: "light",
+        theme: "colored",
       });
     }
   };
@@ -96,7 +96,7 @@ const Menu = (props: any) => {
                   }}
                   onClick={() => setActiveDm(!activeDm)}
                 />
-                DM
+                Direct Messages
               </p>
               {createChatPopUp && (
                 <PopUp
@@ -116,7 +116,7 @@ const Menu = (props: any) => {
                   }}
                   onClick={() => setActiveDm(!activeDm)}
                 />
-                DM
+                Direct Messages
               </p>
               {createChatPopUp && (
                 <PopUp
@@ -138,7 +138,7 @@ const Menu = (props: any) => {
                   }}
                   onClick={() => setActiveChanels(!activeChanels)}
                 />
-                Chats
+                Channels
                 <AddIcon
                   sx={{
                     ml: 17,
@@ -177,7 +177,7 @@ const Menu = (props: any) => {
                   }}
                   onClick={() => setActiveChanels(!activeChanels)}
                 />
-                Chats
+                Channels
                 <AddIcon
                   sx={{
                     ml: 17,

@@ -25,15 +25,11 @@ todo:
 
 	->	New Chat UI
 		->	new chat bg with better crop
-			->	test on macos
-		->	add auto scroll down
+			- test macos
+		+	add auto scroll down
 		+	add message input
 		+	add time stamp
-		->	add user name to message in group chat
-			->	different colors per user name
-				+	user name is displayed within the text box
-					just above the message
-				-	user.id % 5 selects css class
+		+	add user name to message in group chat
 		+	add status to user list
 		+	channel settings modal heading
 			+	modal
@@ -44,10 +40,10 @@ todo:
 			+	disable channel settings menu for unauthorized users
 			+	leave channel
 				+	overlay hover button right
-		->	add drop down when click on user
-			+	visit profile
+		+	add drop down when click on user
+			->	visit profile
 				+	when clicking on avatar
-				-	and drop down?
+				->	and drop down?
 			+	ban
 			+	unban
 				-	check un/ban with text input
@@ -60,7 +56,7 @@ todo:
 			+	remove member
 		
 			!!-	send game invite
-				-	default game
+				+	default game
 				-	power up game
 
 		!!-	seperate DM page

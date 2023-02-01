@@ -56,7 +56,11 @@ export class GameController {
             throw new BadRequestException("This user is already in a game");
         const AllPrivateGames = await this.gameService.find({where: {status: GameStatus.PENDING, type: GameType.PRIVATE}})
         for (const game of AllPrivateGames) {
-            if (game.invite_code === Number(invite_code)) {
+            console.log("🚀 ~ file: game.controller.ts:59 ~ GameController ~ game", game)
+            console.log("🚀 ~ file: game.controller.ts:62 ~ GameController ~ invite_code", typeof(invite_code))
+            console.log("🚀 ~ file: game.controller.ts:63 ~ GameController ~ game.invite_code", typeof(game.invite_code))
+            
+            if (game.invite_code === invite_code) {
                 return await this.gameService.addUserToGame(userId, game)
             }
         }

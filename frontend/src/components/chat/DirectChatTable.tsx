@@ -90,12 +90,14 @@ const DirectChatTable = () => {
   	generate map table using the chats array we got from the redux store
   */
   const renderedChats = friends.map((friend: any, index: number) => (
-    <div
-      key={friend.id}
-      className="chatRow"
-      onClick={() => handleClick(friend.display_name, index)}
-    >
-      {friend.display_name}
+    <div key={friend.id} className="dmContainer">
+      <div
+        className="chatRow"
+        onClick={() => handleClick(friend.display_name, index)}
+      >
+        <img className="userImageDM" src={friend.avatar} />{" "}
+        {friend.display_name}
+      </div>
     </div>
   ));
 

@@ -1,9 +1,9 @@
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import { ChatroomType } from "../../models/Chats";
-import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { fetchChatMembers } from "../../redux/slices/chatMembersSlice";
+import { useAppSelector } from "../../redux/hooks";
 import { selectCurrentUser } from "../../redux/slices/currentUserSlice";
 import {
   selectCurrentChatroom,
@@ -15,7 +15,7 @@ import "./ChatBox.css";
 function TimeStamp(props: any) {
   const date = new Date(props.timestamp);
   const hours = date.getHours();
-  const minutes = date.getMinutes();
+  const minutes = (date.getMinutes() < 10 ? "0" : "") + date.getMinutes();
 
   return <span>{`${hours}:${minutes}`}</span>;
 }
@@ -26,8 +26,9 @@ function ChatBox() {
   const currentChatMessages = useAppSelector(selectCurrentChatroomMessages);
   const currentUser = useAppSelector(selectCurrentUser);
   const [messages, setMessages] = useState([]);
-  const dummy = useRef<HTMLDivElement>(null);
+  const messageElement = useRef<HTMLDivElement>(null);
   const users = useAppSelector(selectAllUsers);
+  const navigate = useNavigate();
   let user;
 
   if (currentChat.id !== -1 && currentChat.type === ChatroomType.DIRECT) {
@@ -45,15 +46,53 @@ function ChatBox() {
 
   useEffect(() => {
     fetchMessages();
-    dummy?.current?.scrollIntoView({
-      behavior: "smooth",
-      block: "end",
-      inline: "nearest",
-    });
+    if (messageElement) {
+      messageElement.current?.addEventListener(
+        "DOMNodeInserted",
+        (event: any) => {
+          const { currentTarget: target } = event;
+          target.scroll({
+            top: target.scrollHeight,
+            behavior: "smooth",
+          });
+        }
+      );
+    }
   }, [currentChat, currentChatMessages]);
 
+  async function getInviteLink(inviteCode: string) {
+    await axios
+      .post(`game/private/join/invite_code/${inviteCode}`)
+      .then(() => {
+        toast.success(`You joined the game!`, {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+        navigate(`/game`);
+      })
+      .catch((error: any) => {
+        console.log(error);
+        toast.error(`${error.response.data.message}`, {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+      });
+  }
+
   return (
-    <div className="chatBox" ref={dummy}>
+    <div className="chatBox" ref={messageElement}>
       {messages?.map((msg: any, index: number) =>
         msg.member.user.id === currentUser.id ? (
           <div className="newChatMessage myMessage" key={index}>
@@ -61,21 +100,24 @@ function ChatBox() {
               {msg.message}
               <br />
               <TimeStamp timestamp={msg.timestamp} />
-              <div ref={dummy}></div>
             </div>
           </div>
         ) : (
           <div className="newChatMessage friendMessage" key={index}>
             <div className="newChatP">
               <div className="friendName">{msg.member.user.display_name}</div>
-              {msg.message}
+              {msg.type == "invite" ? (
+                <div onClick={() => getInviteLink(msg.invite_code)}>
+                  {msg.message}
+                </div>
+              ) : (
+                <div>{msg.message}</div>
+              )}
               <TimeStamp timestamp={msg.timestamp} />
-              <div ref={dummy}></div>
             </div>
           </div>
         )
       )}
-      <div ref={dummy}></div>
     </div>
   );
 }

@@ -39,7 +39,7 @@ export const updateCurrentChatType = createAsyncThunk(
       data.password !== data.passwordConfirm
     ) {
       toast.error(`Passwords didn't match!`, {
-        position: "top-center",
+        position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
         closeOnClick: true,
@@ -57,7 +57,7 @@ export const updateCurrentChatType = createAsyncThunk(
       })
       .then((ret) => {
         toast.success(`Channel type changed to ${data.type}!`, {
-          position: "top-center",
+          position: "top-right",
           autoClose: 5000,
           hideProgressBar: false,
           closeOnClick: true,
@@ -69,7 +69,7 @@ export const updateCurrentChatType = createAsyncThunk(
       })
       .catch((error: any) => {
         toast.error(`${error.response.data.message}`, {
-          position: "top-center",
+          position: "top-right",
           autoClose: 5000,
           hideProgressBar: false,
           closeOnClick: true,
@@ -86,13 +86,9 @@ export const updateCurrentChatType = createAsyncThunk(
 export const updateCurrentChatPassword = createAsyncThunk(
   "currentMember/updateCurrentChatPassword",
   async (data: any) => {
-    if (
-      data.type === ChatroomType.PROTECTED &&
-      data.password?.length &&
-      data.password !== data.passwordConfirm
-    ) {
+    if (data.password !== data.passwordConfirm) {
       toast.error(`Passwords didn't match!`, {
-        position: "top-center",
+        position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
         closeOnClick: true,
@@ -109,7 +105,7 @@ export const updateCurrentChatPassword = createAsyncThunk(
       })
       .then(() => {
         toast.success(`Channel password updated!`, {
-          position: "top-center",
+          position: "top-right",
           autoClose: 5000,
           hideProgressBar: false,
           closeOnClick: true,
@@ -121,7 +117,7 @@ export const updateCurrentChatPassword = createAsyncThunk(
       })
       .catch((error: any) => {
         toast.error(`${error.response.data.message}`, {
-          position: "top-center",
+          position: "top-right",
           autoClose: 5000,
           hideProgressBar: false,
           closeOnClick: true,

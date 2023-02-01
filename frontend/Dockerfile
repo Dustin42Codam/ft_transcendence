@@ -1,5 +1,5 @@
 ###BASE###
-FROM node:18.12.0-alpine3.16 as base
+FROM node:18.13.0-alpine3.17 as base
 
 ENV NODE_ENV=production
 
@@ -48,7 +48,7 @@ FROM test as audit
 CMD ["npm", "run", "audit"]
 
 ###PROD###
-FROM nginx:1.23.2-alpine as prod
+FROM nginx:1.23.-alpine as prod
 
 COPY --chown=nginx:nginx --from=build ./frontend/build ./build
 

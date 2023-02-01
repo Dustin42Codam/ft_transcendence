@@ -1,3 +1,15 @@
+.modal {
+  position: absolute;
+  top: 150px;
+  right: 100px;
+  bottom: 0;
+  left: 0;
+  max-height: 70vh;
+  z-index: 10040;
+  overflow: auto;
+  overflow-y: auto;
+}
+
 .userAddButton {
   border: none;
   border-radius: 50%;

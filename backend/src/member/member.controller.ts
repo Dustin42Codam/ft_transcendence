@@ -228,7 +228,13 @@ export class MemberController {
     }
     const invite_code = Array(32).fill(null).map(() => Math.round(Math.random() * 16).toString(16)).join("")
     const game = await this.gameService.createPrivateClassicGame(userId, invite_code);
-    await this.messageService.create({member: member, message: "Come play a classic game with me", type: MessageType.INVITE, invite_code: invite_code})
+    await this.messageService.create(
+      {
+        member: member,
+        message: "Come play a classic game with me",
+        type: MessageType.INVITE,
+        invite_code: invite_code
+      })
     return game;
   }
 
@@ -244,7 +250,13 @@ export class MemberController {
     }
     const invite_code = Array(32).fill(null).map(() => Math.round(Math.random() * 16).toString(16)).join("")
     const game = await this.gameService.createPrivatePowerUpGame(userId, invite_code);
-    await this.messageService.create({member: member, message: "Come play a power up game with me", type: MessageType.INVITE, invite_code: invite_code})
+    await this.messageService.create(
+      {
+        member: member,
+        message: "Come play a power up game with me",
+        type: MessageType.INVITE,
+        invite_code: invite_code
+      })
     return game;
   }
 }

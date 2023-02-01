@@ -12,13 +12,29 @@
 }
 
 .chatRow {
-  background-color: rgb(31, 33, 40);
+  background-color: rgba(31, 33, 40, 0.479);
   /* transition-duration: 2s; */
+  cursor: pointer;
+  margin: 1px;
+  padding-left: 5px;
+  border-radius: 3%;
 }
 
 .chatRow:hover {
-  color: rgb(61, 61, 61);
-  cursor: default;
-  background-color: azure;
+  cursor: pointer;
+  color: rgb(255, 255, 255);
+  background-color: rgb(72, 75, 75);
   transition-duration: 0.15s;
+}
+
+.dmContainer {
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+}
+
+.userImageDM {
+  height: 30px;
+  width: 30px;
+  border-radius: 20%;
 }

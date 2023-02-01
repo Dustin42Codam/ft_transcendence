@@ -5,43 +5,43 @@
 	font-family: 'Open Sans', sans-serif;
 } */
 
-/* new body */
-.newChatBody {
+/*  body */
+.dmBody {
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 50vh;
   width: 100%;
   /* background: linear-gradient(
-    #009688 0%,
-    #009688 130px,
-    #d9dbd5 130px,
-    #d9dbd5 100%
-  ); */
+	  #009688 0%,
+	  #009688 130px,
+	  #d9dbd5 130px,
+	  #d9dbd5 100%
+	); */
 }
 
-.newChatContainer {
+.dmContainer {
   margin: 0;
   padding: 0;
   position: relative;
   width: 1396px;
   max-width: 100%;
   height: calc(100vh - 40px);
-  background: #fff;
+  background: rgb(37, 37, 37);
   box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.06), 0 2px 5px 0 rgba(0, 0, 0, 0.06);
   display: flex;
   /* border: red 3px solid; */
 }
 
 /* chatbox on the left */
-.newChatContainer .leftSide {
+.dmContainer .leftSide {
   position: relative;
   flex: 70%;
   background: #e5ddd5;
 }
 
 /* user list on the right */
-.newChatContainer .rightSide {
+.dmContainer .rightSide {
   position: relative;
   flex: 30%;
   background: #fff;
@@ -49,15 +49,15 @@
 }
 
 /* background chat box pattern */
-.newChatContainer .leftSide::before {
+.dmContainer .leftSide::before {
   content: "";
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: url(../particles3.png);
-  /* opacity: 0.2; */
+  background: url(../particles6.png);
+  opacity: 0.99;
 }
 
 /* header */
@@ -118,7 +118,7 @@
   transition-duration: 0.15s;
 }
 
-.newChatP {
+.dmP {
   color: black;
 }
 
@@ -184,7 +184,7 @@
   margin-bottom: 5px;
 }
 
-.chatlist .block .details .listHead .newChatH4 {
+.chatlist .block .details .listHead .dmH4 {
   font-size: 1.1em;
   font-weight: 600;
   color: #111;
@@ -201,7 +201,7 @@
   align-items: center;
 }
 
-.message_p .newChatP {
+.message_p .dmP {
   color: #aaa;
   display: -webkit-box;
   -webkit-line-clamp: 1;
@@ -213,7 +213,7 @@
   /* align-items: center; */
 }
 
-.newChatH4 {
+.dmH4 {
   color: black;
 }
 
@@ -224,13 +224,13 @@
   align-items: center;
 }
 
-.imageText .newChatH4 {
+.imageText .dmH4 {
   font-weight: 500;
   line-height: 1.2em;
   margin-left: 15px;
 }
 
-.imageText .newChatH4 span {
+.imageText .dmH4 span {
   font-size: 0.8em;
   color: #555;
 }

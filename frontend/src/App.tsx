@@ -6,7 +6,6 @@ import Dashboard from "./pages/Dashboard";
 import Authenticate from "./pages/Authenticate";
 import UserEdit from "./pages/users/UserEdit";
 import { UserProfile } from "./pages/users/UserProfile";
-import Chat from "./pages/Chat";
 import { useEffect } from "react";
 import { UserList } from "./pages/users/UserList";
 import { UserPage } from "./pages/users/UserPage";
@@ -20,7 +19,8 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import store from "./redux/store";
 import { gameSocketActions } from "./redux/slices/gameSocketSlice";
-import NewChat from "./pages/NewChat";
+import Chat from "./pages/Chat";
+import DirectChat from "./pages/DirectChat";
 
 function App() {
   const userStatus = useAppSelector((state) => state.currentUser.status);
@@ -96,9 +96,8 @@ function App() {
               element={<Navigate to="/dashboard" />}
             />
 
-            <Route path={"/chats/:name"} element={<NewChat />} />
-            {/* <Route path={"/chats/:name"} element={<Chat />} /> */}
-            <Route path={"/chats/dm/:id"} element={<Chat />} />
+            <Route path={"/chats/:name"} element={<Chat />} />
+            <Route path={"/chats/dm/:id"} element={<DirectChat />} />
 
             <Route path={"/profile"} element={<UserProfile />} />
             <Route path={"/profile/edit"} element={<UserEdit />} />

@@ -1,5 +1,5 @@
 ###BASE###
-FROM node:18.12.0-alpine3.15 as base
+FROM node:18.13.0-alpine3.17 as base
 
 ENV PATH /node_modules/.bin:$PATH
 
