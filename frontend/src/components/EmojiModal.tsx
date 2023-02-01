@@ -1,8 +1,9 @@
 import React, { createRef } from 'react'
 import EmojiPicker from 'emoji-picker-react';
-import { Emoji, EmojiStyle } from 'emoji-picker-react';
+import { EmojiStyle } from 'emoji-picker-react';
 import InsertEmoticonIcon from "@mui/icons-material/InsertEmoticon";
-import "./Emojis.css"
+import "./EmojiModal.css"
+import Modal from "react-bootstrap/Modal";
 
 type MyProps = {
 	message: any;
@@ -38,28 +39,27 @@ class Emojis extends React.Component<MyProps, MyState> {
 		}
 	}
 
-	componentDidMount() {
-		document.addEventListener("mousedown", this.handleClickOutside);
-	}
-
-	componentWillUnmount(){
-		document.removeEventListener("mousedown", this.handleClickOutside);
-	}
-
 	render() {
 		return (
 			<div className="emoji-icon" ref={this.container}>
 				<InsertEmoticonIcon onClick={this.handleButtonClick}/>
-				{this.state.open && (
-					<EmojiPicker
-					emojiStyle={EmojiStyle.GOOGLE}
-					onEmojiClick={(emoji: any) => {
-						console.log("🚀 ~ file: ChatInput.tsx:112 ~ ChatInput ~ emoji", emoji)
-						this.props.setMessage(this.props.message + emoji.emoji)
-						this.props.inputRef.current!["messageInput"].value += emoji.emoji;
-					}}
-					/>
-				)}
+					<Modal
+						show={this.state.open}
+						onHide={this.handleButtonClick}
+						dialogClassName="emojiModals"
+					>
+						<Modal.Header closeButton>
+							<EmojiPicker
+								emojiStyle={EmojiStyle.GOOGLE}
+								height="100%" width="50em"
+								onEmojiClick={(emoji: any) => {
+									this.props.setMessage(this.props.message + emoji.emoji)
+									this.props.inputRef.current!["messageInput"].value += emoji.emoji;
+									}
+								}
+							/>
+						</Modal.Header>
+					</Modal>
 			</div>
 		);
 	}

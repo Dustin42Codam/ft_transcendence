@@ -1,0 +1,21 @@
+.emojiModal {
+	width: 500px;
+	height: 500px;
+}
+
+.EmojiPickerReacts {
+	height: 100px;
+	width: 290px !important;
+	position: absolute !important;
+	bottom: 10px !important;
+	right: -280px !important;
+	z-index: 2 !important;
+}
+
+.EmojiPickerReact {
+	--epr-emoji-size: 40px;
+}
+
+.EmojiPickerReact::-webkit-scrollbar{
+	display: none;
+  }

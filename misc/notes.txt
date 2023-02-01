@@ -1,5 +1,6 @@
 
 todo:
+	-	move emojis into modal
 	->	add "create channel" button to side bar
 		instead of "+" icon
 		->	new create new chat UI pop up
