@@ -150,8 +150,8 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 	async physicLoop(activeGames: Array<GameRoom>, logger: any, io: any, gameService: GameService): Promise<void>  {
 		function getRandomPowerUp(): PowerUp {
 			return {
-				positionX: Math.random() * 1299,
-				positionY: Math.random() * 699,
+				positionX: Math.floor(Math.random() * 1299),
+				positionY: Math.floor(Math.random() * 699),
 				width: 20,
 				height: 20,
 			};
