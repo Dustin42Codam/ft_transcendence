@@ -94,9 +94,8 @@ const DirectChatTable = () => {
       <div
         className="chatRow"
         onClick={() => handleClick(friend.display_name, index)}
-        >
-        <img className="userImageDM" src={friend.avatar} />
-        {' '}
+      >
+        <img className="userImageDM" src={friend.avatar} />{" "}
         {friend.display_name}
       </div>
     </div>

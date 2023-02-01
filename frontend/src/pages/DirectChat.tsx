@@ -3,9 +3,7 @@ import "./Chat.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useRef } from "react";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
-import {
-  selectCurrentChatroom,
-} from "../redux/slices/socketSlice";
+import { selectCurrentChatroom } from "../redux/slices/socketSlice";
 import { Link } from "react-router-dom";
 import { selectAllUsers } from "../redux/slices/usersSlice";
 import {
@@ -51,17 +49,22 @@ const DirectChat = () => {
             <div className="userListHeader">
               <div className="imageText">
                 <div className="userImage">
-            	    <Link to="/profile">
-            	      <img src={user?.avatar} className="cover" />
-            	    </Link>
-            	  </div>
+                  <Link to="/profile">
+                    <img src={user?.avatar} className="cover" />
+                  </Link>
+                </div>
                 <div className="newChatH4">
-						      {currentChat.name}<br /><span>online</span>
-				        </div>
+                  {currentChat.name}
+                  <br />
+                  <span>online</span>
+                </div>
               </div>
               <ul className="navIcons">
                 <li>
-                  <SendGameInvite member={currentMember} navigation={navigate} />
+                  <SendGameInvite
+                    member={currentMember}
+                    navigation={navigate}
+                  />
                 </li>
               </ul>
             </div>

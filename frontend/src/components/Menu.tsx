@@ -37,10 +37,10 @@ const Menu = (props: any) => {
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: "colored"
-      })
-    };
-  }
+        theme: "colored",
+      });
+    }
+  };
 
   return (
     <nav className={props.className}>

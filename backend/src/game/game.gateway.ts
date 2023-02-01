@@ -17,6 +17,9 @@ interface MoveableObject {
 interface Bat extends MoveableObject {
 }
 
+interface PowerUp extends MoveableObject {
+}
+
 interface BatMove {
 	gameRoomId: string;
 	bat: Bat;
@@ -42,6 +45,7 @@ interface GamePhysics {
 	player2: Player;
 	score: Array<number>;
 	scored: boolean;
+	powerUp?: PowerUp;
 }
 
 interface GameRoom {
@@ -107,7 +111,7 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 		) {
 		};
 
-  	private logger: Logger = new Logger("GameGatway");
+  private logger: Logger = new Logger("GameGatway");
 	public activeGames: Array<GameRoom> = [];
 
   @WebSocketServer() io: Namespace;
@@ -235,7 +239,7 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 		function test() {
 			setTimeout(() => {
 				activeGames.map(async (game: GameRoom, index: number) => {
-					// logger.debug(`GAME[${index}]:`, game);
+					logger.debug(`GAME[${index}]:`, game);
 					if (gameHasStarted(game.gamePhysics)) {
 						if (!isBallSet(game.gamePhysics.ball)) {
 							game.gamePhysics.ball = getRandomPosition();
@@ -262,7 +266,7 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 					io.to(game.gameRoomId).emit(GameroomEvents.PhysicsLoop, game.gamePhysics);
 				});
 				test();
-			}, 15);
+			}, 1000);
 			var i = activeGames.length
 			while (i--) {
 				if (activeGames[i].finished) { 
@@ -320,7 +324,12 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 		}
 		if (!this.isGameInPhysicsLoop(gameRoomId)) {
 			let newGame: GameRoom = JSON.parse(JSON.stringify({...defaultGame}));//creates a deep copy
-			this.activeGames.push({...newGame, gameRoomId: gameRoomId});
+			if (gameFromDb.mode == "classic") {
+				this.activeGames.push({...newGame, gameRoomId: gameRoomId});
+			} else if (gameFromDb.mode == "power_up") {
+				newGame.gamePhysics = {...newGame.gamePhysics, powerUp: {positionY: -1, positionX: -1, height: 20, width: 20}};
+				this.activeGames.push({...newGame, gameRoomId: gameRoomId});
+			}
 		}
 		const currentActiveGame: GameRoom = this.getActiveGameByGameRoomId(gameRoomId);
 		if (!currentActiveGame) {
