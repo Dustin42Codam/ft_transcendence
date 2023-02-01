@@ -304,12 +304,6 @@ export const UserPage = () => {
                       )}{" "}
                       <button
                         className="btn btn-outline-primary px-4"
-                        disabled={isBlocked}
-                      >
-                        Send Game Invite
-                      </button>{" "}
-                      <button
-                        className="btn btn-outline-primary px-4"
                         onClick={joinDM}
                         disabled={isBlocked || !friendship}
                       >
