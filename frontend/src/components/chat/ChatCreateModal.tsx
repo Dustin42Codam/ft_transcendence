@@ -8,7 +8,7 @@ import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { selectCurrentUser } from "../../redux/slices/currentUserSlice";
 import { addNewGroupChat, fetchGroupChats } from "../../redux/slices/chatsSlice";
 import { toast } from "react-toastify";
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 
 function ChatCreateModal() {
 	const [show, setShow] = useState(false);
@@ -20,7 +20,8 @@ function ChatCreateModal() {
 	const handleClose = () => setShow(false);
 	const handleShow = () => setShow(true);
 	const dispatch = useAppDispatch();
-
+	const inputRef = useRef<HTMLFormElement>(null);
+	
 	async function createChat() {
 		if (!chatName) {
 		  toast.error("Name cannot be empty!", {
@@ -61,6 +62,14 @@ function ChatCreateModal() {
 		  );
 		  dispatch(fetchGroupChats());
 		}
+		inputRef.current!["floatingInputCustom"].value = "";
+		inputRef.current!["floatingPasswordConfirmCustom"].value = "";
+		inputRef.current!["chatName"].value = "";
+		inputRef.current!["floatingSelectGrid"].value = ChatroomType.PUBLIC;
+		setPassword("");
+		setPasswordConfirm("");
+		setChatName("");
+		setChatType(ChatroomType.PUBLIC);
 	  }
 
   return (
@@ -75,7 +84,7 @@ function ChatCreateModal() {
         	</Modal.Header>
 
 			<Modal.Body>
-				<Form>
+				<Form ref={inputRef}>
 					{/* +++++ Channel Name +++++ */}
 					<Form.Group>
 						<Form.Label>
@@ -83,6 +92,7 @@ function ChatCreateModal() {
 						</Form.Label>
 						<Form.Control
 							type='name'
+							id="chatName"
 							autoFocus
 							onChange={(e: any) => setChatName(e.target.value)}
 						/>
@@ -94,6 +104,7 @@ function ChatCreateModal() {
 						<FloatingLabel
 						controlId="floatingSelectGrid"
 						label="Channel Type"
+						id="chatType"
 						className="mb-3"
 						>
 							<Form.Select

@@ -1,15 +1,23 @@
 
 todo:
+	-	fetch joinable chats when clicking
+		on "join channel"
+		-	makes sure that the user
+			doesn't have to always reload
+			the whole application in order
+			to see if there are joinable chats
 
 	->	add "create channel" button to side bar
 		instead of "+" icon
-		->	new create new chat UI pop up modal
-		-	redirect to chat after creation
-		-	select user from friend list
-			-	test call dispatch with userIds beforhand
+		+	cannot have a pw bug
+		+	new create new chat UI pop up modal
 		+	fix rendering in side bar
 			+	doesnt render directly after chat
 				was created
+		-	optional:
+			-	redirect to chat after creation
+			-	select user from friend list
+				-	test call dispatch with userIds beforhand
 
 	-	new join channel pop up
 		-	info if there are no channels to join 
