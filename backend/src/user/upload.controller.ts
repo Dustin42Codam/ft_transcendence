@@ -1,4 +1,4 @@
-import { Get, Post, Controller, UploadedFile, UseInterceptors, Param, Res, UseGuards, Req } from "@nestjs/common";
+import { Get, Post, Controller, UploadedFile, UseInterceptors, Param, Res, UseGuards, Req, ParseFilePipeBuilder, HttpStatus } from "@nestjs/common";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { diskStorage } from "multer";
 import { Response, Request } from "express";
@@ -27,7 +27,16 @@ export class UploadController {
     }),
   )
   async uploadFile(
-    @UploadedFile() file,
+    @UploadedFile(new ParseFilePipeBuilder()
+    .addFileTypeValidator({
+      fileType: 'jpeg|jpg|gif|png',
+    })
+    .addMaxSizeValidator({
+      maxSize: 4000000
+    })
+    .build({
+      errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY
+    }),) file,
     @Req() request: Request
   ) {
     console.log("Uploading file:", file);

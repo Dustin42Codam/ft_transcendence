@@ -6,6 +6,7 @@ import express, { Request } from "express";
 import { AuthService } from "src/auth/auth.service";
 import { UserService } from "src/user/user.service";
 import { GameMode, GameStatus, GameType } from "./entity/game.entity";
+import { GameStatsService } from "src/games_stats/game_stats.service";
 
 @Controller("game")
 export class GameController {
@@ -97,5 +98,22 @@ export class GameController {
         } else {
             return this.gameService.create({player_1: userId, type: GameType.PUBLIC, mode: GameMode.POWER_UP})
         }
+    }
+
+    @Post('leave/id/:id')
+    async end(
+        @Param('id') id : string,
+        @Req() request: Request
+    ) {
+        const userId = await this.authServcie.userId(request);
+        const user = await this.userService.getUserById(userId);
+        const game = await this.gameService.getGameById(Number(id));
+        if (game.state !== GameStatus.PENDING) {
+            throw new BadRequestException("You can only leave a pending game.");
+        }
+        if (game.player_1.id !== user.id) {
+            throw new BadRequestException("This user is not in the game.");
+        }
+        this.gameService.delete(game.id);
     }
 }
