@@ -15,6 +15,7 @@ interface MoveableObject {
 }
 
 interface Bat extends MoveableObject {}
+interface PowerUp extends MoveableObject {}
 
 interface BatMove {
   gameRoomId: string;
@@ -38,6 +39,7 @@ interface GamePhysics {
   ball: Ball;
   player1: Player;
   player2: Player;
+	powerUp?: PowerUp;
   score: Array<number>;
   scored: boolean;
 }
@@ -72,9 +74,14 @@ class GameState {
     const batP1: Bat = gamePhysics.player1.bat;
     const batP2: Bat = gamePhysics.player2.bat;
     const ball: Ball = gamePhysics.ball;
+    const powerUp: PowerUp | undefined = gamePhysics.powerUp;
+
     ctx.fillRect(batP1.positionX, batP1.positionY, batP1.width, batP1.height);
     ctx.fillRect(batP2.positionX, batP2.positionY, batP2.width, batP2.height);
     ctx.fillRect(ball.positionX, ball.positionY, ball.width, ball.height);
+		if (powerUp) {
+			ctx.fillRect(powerUp.positionX, powerUp.positionY, powerUp.width, powerUp.height);
+		}
   }
 
   animation() {

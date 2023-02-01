@@ -67,10 +67,6 @@ const GameLobby = (navigation: any) => {
       .catch((err) => console.log(err));
   }
   async function spectateGame(gameIndex: number) {
-    console.log(
-      "I want to spectate the game gameIndex:",
-      activeGames[gameIndex]
-    );
     dispatch(gameSocketActions.joinRoom(activeGames[gameIndex].id));
     navigate(`/game/${activeGames[gameIndex].id}`);
   }
