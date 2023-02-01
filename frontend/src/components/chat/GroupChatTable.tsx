@@ -5,7 +5,6 @@ import { socketActions } from "../../redux/slices/socketSlice";
 import { useNavigate } from "react-router-dom";
 import CastleIcon from "@mui/icons-material/Castle";
 import PublicIcon from "@mui/icons-material/Public";
-import "./ChatTable.css";
 import { useAppSelector } from "../../redux/hooks";
 import {
   fetchGroupChats,
@@ -15,6 +14,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { selectCurrentUser } from "../../redux/slices/currentUserSlice";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { fetchCurrentMember } from "../../redux/slices/currentMemberSlice";
+import "./ChatTable.css";
 
 export enum ChatroomType {
   PUBLIC = "public",
