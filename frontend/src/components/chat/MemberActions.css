@@ -51,11 +51,13 @@ code {
 
 .memberActionsContainer .dropdown li {
   padding: 0;
+  color: #888;
 }
 
 .memberActionsContainer .dropdown li:hover {
-  background-color: rgba(0, 0, 0, 0.14);
+  /* background-color: rgba(0, 0, 0, 0.14); */
   cursor: pointer;
+  color:white;
 }
 
 .memberCard {
