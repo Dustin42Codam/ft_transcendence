@@ -12,13 +12,12 @@ import {
 } from "../../redux/slices/chatMembersSlice";
 import AddIcon from "@mui/icons-material/Add";
 import { Modal } from "react-bootstrap";
-import { fontSize } from "@mui/system";
 
 async function addUserToChat(props: any) {
   await axios
     .post(`chatroom/add/id/${props.currentChat.id}`, { user_id: props.user.id })
     .then(() => {
-      toast.success(`You added ${props.user.display_name} the chat!`, {
+      toast.success(`You added ${props.user.display_name} to the chat!`, {
         position: "top-center",
         autoClose: 5000,
         hideProgressBar: false,
