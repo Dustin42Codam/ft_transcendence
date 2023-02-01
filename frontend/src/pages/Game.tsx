@@ -40,7 +40,7 @@ interface GamePhysics {
   ball: Ball;
   player1: Player;
   player2: Player;
-	powerUp?: PowerUp;
+  powerUp?: PowerUp;
   score: Array<number>;
   scored: boolean;
 }
@@ -80,11 +80,16 @@ class GameState {
     ctx.fillRect(batP1.positionX, batP1.positionY, batP1.width, batP1.height);
     ctx.fillRect(batP2.positionX, batP2.positionY, batP2.width, batP2.height);
     ctx.fillRect(ball.positionX, ball.positionY, ball.width, ball.height);
-		if (powerUp) {
-			if (powerUp.positionX != -1 && powerUp.positionY != -1) {
-				ctx.fillRect(powerUp.positionX, powerUp.positionY, powerUp.width, powerUp.height);
-			}
-		}
+    if (powerUp) {
+      if (powerUp.positionX != -1 && powerUp.positionY != -1) {
+        ctx.fillRect(
+          powerUp.positionX,
+          powerUp.positionY,
+          powerUp.width,
+          powerUp.height
+        );
+      }
+    }
   }
 
   animation() {
@@ -225,7 +230,6 @@ const Game = (props: any) => {
   return (
     <Wrapper>
       <div id="canvasContainer">
-				
         <h1 id="score"></h1>
         <canvas tabIndex={0} id="gameCanvas" width="1300" height="700">
           Game is not supported for this borwser. Needs <b>cavas</b> support.

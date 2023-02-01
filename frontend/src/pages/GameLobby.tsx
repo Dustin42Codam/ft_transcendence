@@ -52,12 +52,12 @@ const GameLobby = (navigation: any) => {
   }
   async function joinPowerupGame() {
     axios
-      .post("/game/power_up", {
-			})
-      .then((resp) => {console.log(resp)
+      .post("/game/power_up", {})
+      .then((resp) => {
+        console.log(resp);
         const powerUpGame: any = resp.data;
         navigate(`/game/${powerUpGame.id}`);
-			})
+      })
       .catch((err) => console.log(err));
   }
   async function sendGameInvite() {
