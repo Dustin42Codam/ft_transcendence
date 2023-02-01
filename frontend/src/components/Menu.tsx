@@ -96,7 +96,7 @@ const Menu = (props: any) => {
                   }}
                   onClick={() => setActiveDm(!activeDm)}
                 />
-                DM
+                Direct Messages
               </p>
               {createChatPopUp && (
                 <PopUp
@@ -116,7 +116,7 @@ const Menu = (props: any) => {
                   }}
                   onClick={() => setActiveDm(!activeDm)}
                 />
-                DM
+                Direct Messages
               </p>
               {createChatPopUp && (
                 <PopUp
@@ -138,7 +138,7 @@ const Menu = (props: any) => {
                   }}
                   onClick={() => setActiveChanels(!activeChanels)}
                 />
-                Chats
+                Channels
                 <AddIcon
                   sx={{
                     ml: 17,
@@ -177,7 +177,7 @@ const Menu = (props: any) => {
                   }}
                   onClick={() => setActiveChanels(!activeChanels)}
                 />
-                Chats
+                Channels
                 <AddIcon
                   sx={{
                     ml: 17,

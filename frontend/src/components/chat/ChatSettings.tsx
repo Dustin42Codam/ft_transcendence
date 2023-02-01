@@ -40,7 +40,7 @@ const ChannelSettings = (props: any) => {
         .post(`chatroom/name/id/${currentChat.id}`, { name: chatName })
         .then(() => {
           toast.success(`Channel name updated!`, {
-            position: "top-center",
+            position: "top-right",
             autoClose: 5000,
             hideProgressBar: false,
             closeOnClick: true,
@@ -64,7 +64,7 @@ const ChannelSettings = (props: any) => {
         .catch((error: any) => {
           console.log(error);
           toast.error(`${error.response.data.message}`, {
-            position: "top-center",
+            position: "top-right",
             autoClose: 5000,
             hideProgressBar: false,
             closeOnClick: true,
@@ -76,7 +76,7 @@ const ChannelSettings = (props: any) => {
         });
     } else {
       toast.error(`You can't give a chat an empty name!`, {
-        position: "top-center",
+        position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
         closeOnClick: true,
@@ -88,14 +88,17 @@ const ChannelSettings = (props: any) => {
     }
   }
 
-  function saveChanges() {
+  function saveChanges(e: any) {
     if (chatName !== currentChat.name) {
       changeChannelName();
       if (!chatName.length) {
         return;
       }
     }
-    if (chatType.length && chatType !== currentChat.type) {
+
+    console.log("🚀 ~ file: ChatSettings.tsx:100 ~ saveChanges ~ chatType", chatType)
+    console.log("🚀 ~ file: ChatSettings.tsx:101 ~ saveChanges ~ currentChat.type", currentChat.type)
+    if (chatType !== currentChat.type) {
       dispatch(
         updateCurrentChatType({
           id: currentChat.id,
@@ -104,33 +107,34 @@ const ChannelSettings = (props: any) => {
           type: chatType,
         })
       );
-      if (password === passwordConfirm) {
-        dispatch(
-          socketActions.updateChatType({
-            chatRoom: {
-              id: currentChat.id,
-              name: currentChat.name,
-              userId: currentChat.userId,
-              type: chatType,
-              members: props.chatMembers,
-            },
-          })
-        );
-      }
-    } else if (
-      chatType == ChatroomType.PROTECTED ||
-      currentMember.chatroom.type === ChatroomType.PROTECTED
-    ) {
+    }
+    else if (currentChat.type === "protected") {
+      console.log("🚀 ~ file: ChatSettings.tsx:124 ~ saveChanges ~ pw")
+      
       dispatch(
         updateCurrentChatPassword({
           id: currentChat.id,
           password: password,
           passwordConfirm: passwordConfirm,
+          type: 'protected',
         })
       );
-      setPassword("");
-      setPasswordConfirm("");
+      // setPassword("");
+      // setPasswordConfirm("");
     }
+
+    dispatch(
+      socketActions.updateChatType({
+        chatRoom: {
+          id: currentChat.id,
+          name: currentChat.name,
+          userId: currentChat.userId,
+          type: chatType,
+          members: props.chatMembers,
+      },
+    })
+  );
+
   }
 
   function ConfirmDelete(props: any) {
@@ -264,7 +268,7 @@ const ChannelSettings = (props: any) => {
           {/* ++++++++++++++++++++++++++++++++++ */}
 
           {/* +++++++++ Save Settings +++++++++ */}
-          <Button variant="primary" onClick={saveChanges}>
+          <Button variant="primary" onClick={(e) => saveChanges(e)}>
             Save Changes
           </Button>
           {/* ++++++++++++++++++++++++++++++++++ */}
