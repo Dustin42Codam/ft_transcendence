@@ -1,5 +1,9 @@
 
 todo:
+	->	add "create channel" button to side bar
+		instead of "+" icon
+		->	new create new chat UI pop up
+
 	-	rm "Sign out" text and leave only
 		an icon and attach an hover overlay text
 		to it
@@ -12,20 +16,20 @@ todo:
 		mouse hovers in the sidebar
 	+	hide scroll bar on sidebar nav items
 		+	check how huge list of users is being rendered
-	->	add "create channel" button to side bar
-		instead of "+" icon
 	-	make whole div clickable to expand
 		dropdown menu for chats instead
 		of just the icon
 	+	move toasts on user page to the right
 
+	-	better game UI
+	-	better dashboard UI
+
 	-	optional, non mandatory extra stuff:
-		->	new create new chat UI
 		-	reset password in UI and component state
 			after new password + passwordConfirm
 			didn't match
 		-	change contentBody in user list, user profile, user page?
-		-	remove header
+		+	remove header
 		-	new side bar
 			-	move project name to top of sidebar
 			-	move sign out button to side bar

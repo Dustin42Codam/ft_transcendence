@@ -73,7 +73,6 @@ const GroupChatTable = () => {
           currentChatroom.id == groupChats[chatToJoinIndex].id &&
           currentChatroom.name == groupChats[chatToJoinIndex].name
         ) {
-          console.log("All goooed:", currentChatroom);
           resolve(null);
           clearInterval(interval);
         }

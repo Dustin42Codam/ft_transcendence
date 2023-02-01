@@ -3,7 +3,6 @@ import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import GroupAdd from "@mui/icons-material/GroupAdd";
 import PeopleIcon from "@mui/icons-material/People";
 import SentimentSatisfiedAltIcon from "@mui/icons-material/SentimentSatisfiedAlt";
-import AddIcon from "@mui/icons-material/Add";
 import SportsTennisIcon from "@mui/icons-material/SportsTennis";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import React, { useState } from "react";
@@ -17,19 +16,23 @@ import { fetchDirectChats, selectJoinableChats } from "../redux/slices/chatsSlic
 import PopUp from "./PopUp";
 import { toast } from "react-toastify";
 import LogoutIcon from "@mui/icons-material/Logout";
+import AddCommentIcon from '@mui/icons-material/AddComment';
+import AddIcon from '@mui/icons-material/Add';
 import "./Menu.css";
+
 
 const Menu = (props: any) => {
   const [activeDm, setActiveDm] = useState(false);
-  const [activeChanels, setActiveChanels] = useState(false);
+  const [activeChannels, setActiveChannels] = useState(false);
   const [createChatPopUp, setCreateChatPopUp] = useState(false);
-  const [joinChanel, setJoinChanel] = useState(false);
+  const [joinChannel, setJoinChannel] = useState(false);
+  const [createChannel, setCreateChannel] = useState(false);
   const joinableChats = useAppSelector(selectJoinableChats);
   const dispatch = useAppDispatch();
 
   const joinChats = () => {
     if (joinableChats.length > 0) {
-      setJoinChanel(!joinChanel);
+      setJoinChannel(!joinChannel);
     } else {
       toast.info(`There are no chats to join!`, {
         position: "top-center",
@@ -134,7 +137,7 @@ const Menu = (props: any) => {
           )}
         </div>
         <div className="navItem">
-          {activeChanels === true ? (
+          {activeChannels === true ? (
             <React.Fragment>
               <p>
               <div className="channelRow">
@@ -143,10 +146,10 @@ const Menu = (props: any) => {
                     "&:hover": { backgroundColor: "grey" },
                     borderRadius: "10%",
                   }}
-                  onClick={() => setActiveChanels(!activeChanels)}
+                  onClick={() => setActiveChannels(!activeChannels)}
                 />
                 Channels
-                <div className="addIcon">
+{/*                 <div className="addIcon">
                   <AddIcon
                     sx={{
                       ml: 17,
@@ -155,7 +158,7 @@ const Menu = (props: any) => {
                     }}
                     onClick={() => setCreateChatPopUp(!createChatPopUp)}
                     />
-                </div>
+                </div> */}
               </div>
               </p>
               {createChatPopUp && (
@@ -165,13 +168,16 @@ const Menu = (props: any) => {
                 />
               )}
               <GroupChatTable />
-              <p className="navItemHiglight" onClick={() => joinChats()}>
+              <p className="navChatOption" onClick={() => setCreateChannel(true)}>
+                <AddIcon /> Create channel
+              </p>
+              <p className="navChatOption" onClick={() => joinChats()}>
                 <GroupAdd /> Join channel
               </p>
-              {joinChanel && (
+              {joinChannel && (
                 <PopUp
                   content={
-                    <JoinableChatTable setJoinableChats={setJoinChanel} />
+                    <JoinableChatTable setJoinableChats={setJoinChannel} />
                   }
                   handleClose={() => joinChats()}
                 />
@@ -186,10 +192,10 @@ const Menu = (props: any) => {
                     "&:hover": { backgroundColor: "grey" },
                     borderRadius: "10%",
                   }}
-                  onClick={() => setActiveChanels(!activeChanels)}
+                  onClick={() => setActiveChannels(!activeChannels)}
                 />
                 Channels
-                <div className="addIcon">
+{/*                 <div className="addIcon">
                   <AddIcon
                     sx={{
                       ml: 17,
@@ -198,7 +204,7 @@ const Menu = (props: any) => {
                     }}
                     onClick={() => setCreateChatPopUp(!createChatPopUp)}
                     />
-                </div>
+                </div> */}
               </div>
             </p>
             </React.Fragment>
