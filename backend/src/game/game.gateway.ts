@@ -124,15 +124,10 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 
   async handleConnection(client): Promise<void> {
 		this.logger.log(`clienet: ${client.id} connected`);
-		//tmp gurad
-    // await this.userService.getUserFromClient(client);
-		// console.log(`game client ${client.id} conected`);
   }
 
   async handleDisconnect(client: any): Promise<void> {
 		this.logger.log(`clienet: ${client.id} disconnected`);
-		//check active games if user is part of active game they loos
-		//if we do this then we do not have to worry about storing the ball
   }
 
 	async serverLoop(activeGames: Array<GameRoom>, logger: any, io: any): Promise<void>  {
@@ -150,10 +145,12 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 	async physicLoop(activeGames: Array<GameRoom>, logger: any, io: any, gameService: GameService): Promise<void>  {
 		function getRandomPowerUp(): PowerUp {
 			return {
-				positionX: Math.floor(Math.random() * 1299),
-				positionY: Math.floor(Math.random() * 699),
-				width: 20,
-				height: 20,
+				//positionX: Math.floor(Math.random() * 1299),
+				//positionY: Math.floor(Math.random() * 699),
+				positionX: 650,
+				positionY: 350,
+				width: 100,
+				height: 100,
 			};
 		}
 		function getRandomPosition(): Ball {
@@ -247,10 +244,17 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 		function setPowerUp(powerUp: PowerUp | undefined): boolean {
 			return powerUp ? true : false;
 		}
+		function hitPowerUp(game: GameRoom): boolean {
+			//hitPowerUp(powerUp: PowerUp, bat: Bat, fieldWitdh: number, fieldHeight: number) {
+      if (doesOverlapWith(game.gamePhysics.ball, game.gamePhysics.powerUp)) {
+				return true;
+			}
+			return false;
+    }
 		function test() {
 			setTimeout(() => {
 				activeGames.map(async (game: GameRoom, index: number) => {
-					logger.debug(`GAME[${index}]:`, game);
+					//logger.debug(`GAME[${index}]:`, game);
 					if (gameHasStarted(game.gamePhysics)) {
 						if (!isBallSet(game.gamePhysics.ball)) {
 							game.gamePhysics.ball = getRandomPosition();
@@ -263,7 +267,6 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 								game.gamePhysics.scored = true;
 								gameService.addScore(Number(game.gameRoomId), game.gamePhysics.score[0], game.gamePhysics.score[1]).then(
 									(be_game) => {
-										console.log(be_game)
 										if (be_game.status == GameStatus.PASSIVE) {
 											game.finished = true;
 										}
@@ -273,6 +276,11 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 									game.gamePhysics.scored = false;
 								}, 1000);
 							}
+							if (hitPowerUp(game)) {
+								//TODO apply power up effect
+								logger.log("hits power up");
+							
+							}
 							moveBall(game.gamePhysics.ball);
 							ballHitWall(game);
 						}
@@ -280,7 +288,7 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 					io.to(game.gameRoomId).emit(GameroomEvents.PhysicsLoop, game.gamePhysics);
 				});
 				test();
-			}, 1000);
+			}, 30);
 			var i = activeGames.length
 			while (i--) {
 				if (activeGames[i].finished) { 
@@ -315,7 +323,6 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 
   @SubscribeMessage(GameroomEvents.LeaveGameRoom)
   async handelLeaveRoom(client: Socket, gameRoomId: string): Promise<void> {
-		console.log("leaving");
     client.leave(gameRoomId);
 	}
 
@@ -330,7 +337,6 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 		if (!gameFromDb)
 			throw ("game with id not found");
     client.join(gameRoomId);
-		console.log(gameRoomId, gameFromDb.status, gameFromDb.id);
 		if (gameFromDb.status == "passive") {
 			this.io.to(gameRoomId).emit(GameroomEvents.GameRoomNotification, `game is no longer active. Please start a new game`);
 			client.leave(gameRoomId);
@@ -370,7 +376,6 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 		if (!userId)
 			throw ("user not found");
 		this.activeGames.map((game: GameRoom, index: number) => {
-			this.logger.debug(game.gameRoomId, payload.gameRoomId, game.gamePhysics.player1.id, userId, payload.direction);
 			if (game.gameRoomId == payload.gameRoomId) {
 				if (game.gamePhysics.player1.id == userId) {
 					if (payload.direction == "down") {
