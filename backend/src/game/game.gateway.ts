@@ -148,6 +148,14 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 	}
 	//physic loop
 	async physicLoop(activeGames: Array<GameRoom>, logger: any, io: any, gameService: GameService): Promise<void>  {
+		function getRandomPowerUp(): PowerUp {
+			return {
+				positionX: Math.random() * 1299,
+				positionY: Math.random() * 699,
+				width: 20,
+				height: 20,
+			};
+		}
 		function getRandomPosition(): Ball {
 			return {
 				positionX: 650,
@@ -236,6 +244,9 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 			}
 			return false;
 		}
+		function setPowerUp(powerUp: PowerUp | undefined): boolean {
+			return powerUp ? true : false;
+		}
 		function test() {
 			setTimeout(() => {
 				activeGames.map(async (game: GameRoom, index: number) => {
@@ -243,6 +254,9 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 					if (gameHasStarted(game.gamePhysics)) {
 						if (!isBallSet(game.gamePhysics.ball)) {
 							game.gamePhysics.ball = getRandomPosition();
+							if (setPowerUp(game.gamePhysics.powerUp)) {
+								game.gamePhysics.powerUp = getRandomPowerUp();
+							}
 						} else {
 							checkBallHitBat(game);
 							if (checkIfScore(game)) {
