@@ -10,14 +10,13 @@ import { NavLink } from "react-router-dom";
 import GroupChatTable from "./chat/GroupChatTable";
 import DirectChatTable from "./chat/DirectChatTable";
 import JoinableChatTable from "./chat/JoinableChatTable";
+import ChatCreateModal from "./chat/ChatCreateModal";
 import ChatCreate from "./chat/ChatCreate";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { fetchDirectChats, selectJoinableChats } from "../redux/slices/chatsSlice";
 import PopUp from "./PopUp";
 import { toast } from "react-toastify";
 import LogoutIcon from "@mui/icons-material/Logout";
-import AddCommentIcon from '@mui/icons-material/AddComment';
-import AddIcon from '@mui/icons-material/Add';
 import "./Menu.css";
 
 
@@ -168,8 +167,8 @@ const Menu = (props: any) => {
                 />
               )}
               <GroupChatTable />
-              <p className="navChatOption" onClick={() => setCreateChannel(true)}>
-                <AddIcon /> Create channel
+              <p className="navChatOption">
+                <ChatCreateModal />
               </p>
               <p className="navChatOption" onClick={() => joinChats()}>
                 <GroupAdd /> Join channel

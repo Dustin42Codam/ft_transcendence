@@ -1,9 +1,20 @@
 
 todo:
-	-	move emojis into modal
+
 	->	add "create channel" button to side bar
 		instead of "+" icon
-		->	new create new chat UI pop up
+		->	new create new chat UI pop up modal
+		-	redirect to chat after creation
+		-	select user from friend list
+			-	test call dispatch with userIds beforhand
+		+	fix rendering in side bar
+			+	doesnt render directly after chat
+				was created
+
+	-	new join channel pop up
+		-	info if there are no channels to join 
+
+	+	move emojis into modal
 
 	-	rm "Sign out" text and leave only
 		an icon and attach an hover overlay text
@@ -24,6 +35,8 @@ todo:
 
 	-	better game UI
 	-	better dashboard UI
+		-	particles js?
+		-	particles png?
 
 	-	optional, non mandatory extra stuff:
 		-	reset password in UI and component state
