@@ -1,5 +1,6 @@
 
 todo:
+	-	
 	+	fix old jwt cookie back end crash
 	+	change game css
 	+	move toasts from right to middle
@@ -11,7 +12,7 @@ todo:
 		-	move project name to top of sidebar
 		-	move sign out button to side bar
 	+	remove footer
-	-	new create new chat UI
+	->	new create new chat UI
 	-	New side bar
 		-	new colors
 		-	new side dropdown DM render
@@ -54,16 +55,16 @@ todo:
 			+	grant ownership
 			+	remove member
 		
-			!!-	send game invite
+			+	send game invite
 				+	default game
-				-	power up game
+				+	power up game
 
-		!!-	seperate DM page
+		+	seperate DM page
 
 		+	add user to channel modal
-		-	add smileys
-			-	smiley button
-			-	smiley dropdown
+		+	add smileys
+			+	smiley button
+			+	smiley dropdown
 
 
 done:
@@ -125,7 +126,7 @@ done:
 
 bugs:
 
-	-	users can upload any file sizes
+	+	users can upload any file sizes
 
 	fixed:
 		+	leave chat toast bug
