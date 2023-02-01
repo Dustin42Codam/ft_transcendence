@@ -1,16 +1,19 @@
 
 todo:
-
-	-	fix join DM
-		-	cannot join all DMs from sidebar
+	-	rm "Sign out" text and leave only
+		an icon and attach an hover overlay text
+		to it
+	+	fix join DM
+		+	cannot join all DMs from sidebar
 	->	get all users authguard
 		->	check tfa secret of other users
 	+	fix sidebar create channel row layout
 	->	change cursor to pointer on all
 		mouse hovers in the sidebar
-	->	hide scroll bar on sidebar nav items
-		+	overflow=hidden
-		->	check how huge list of users is being rendered
+	+	hide scroll bar on sidebar nav items
+		+	check how huge list of users is being rendered
+	->	add "create channel" button to side bar
+		instead of "+" icon
 	-	make whole div clickable to expand
 		dropdown menu for chats instead
 		of just the icon

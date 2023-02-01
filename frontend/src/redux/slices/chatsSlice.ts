@@ -41,7 +41,7 @@ export const addNewGroupChat = createAsyncThunk(
     try {
       await axios.post(`chatroom/create`, data.chat);
       toast.success("Channel successfully created!", {
-        position: "top-center",
+        position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
         closeOnClick: true,
@@ -56,7 +56,7 @@ export const addNewGroupChat = createAsyncThunk(
         throw error;
       }
       toast.error(`${error.response.data.message}`, {
-        position: "top-center",
+        position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
         closeOnClick: true,

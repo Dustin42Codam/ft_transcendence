@@ -5,6 +5,15 @@
   margin-top: 15px;
 }
 
+.sidenav {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;  /* IE 10+ */
+}
+
+.sidenav::-webkit-scrollbar{
+  display: none;
+}
+
 .navItemHiglight:hover {
   background-color: rgb(50, 50, 50);
   transition-duration: 0.15s;
@@ -18,6 +27,11 @@
 }
 
 .addIcon {
+  position: absolute;
+  left: 60px;
+}
+
+.logOutIcon {
   position: absolute;
   left: 60px;
 }

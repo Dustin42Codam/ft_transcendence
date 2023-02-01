@@ -15,8 +15,9 @@ import ChatCreate from "./chat/ChatCreate";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { fetchDirectChats, selectJoinableChats } from "../redux/slices/chatsSlice";
 import PopUp from "./PopUp";
-import "./Menu.css";
 import { toast } from "react-toastify";
+import LogoutIcon from "@mui/icons-material/Logout";
+import "./Menu.css";
 
 const Menu = (props: any) => {
   const [activeDm, setActiveDm] = useState(false);
@@ -44,6 +45,7 @@ const Menu = (props: any) => {
   };
 
   return (
+    <>
     <nav className={props.className}>
       <div className="sideNavContainer">
         <NavLink
@@ -204,6 +206,8 @@ const Menu = (props: any) => {
         </div>
       </div>
     </nav>
+    <LogoutIcon />
+    </>
   );
 };
 

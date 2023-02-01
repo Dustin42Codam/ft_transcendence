@@ -24,18 +24,22 @@ const Nav = (props: any) => {
   return (
     <nav className={props.className}>
       <div className="navBarContainer">
-        <p className="nameProject">ft_transcendence</p>
-        <Link
+        {/* <p className="nameProject">
+          ft_transcendence
+        </p> */}
+        <div className="projectName">
+          ft_transcendence
+        </div>
+        {/* <Link
           to="/authenticate"
           className="logoutButton"
           onClick={logout}
           style={{ textDecoration: "none" }}
-        >
-          <div className="logOut">
-            <p>Sign out</p>
+        > */}
+          {/* <div className="logOut"> */}
+          {/* </div> */}
+        {/* </Link> */}
             <LogoutIcon />
-          </div>
-        </Link>
       </div>
     </nav>
   );
