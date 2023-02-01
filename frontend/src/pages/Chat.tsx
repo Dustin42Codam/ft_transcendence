@@ -1,17 +1,15 @@
 import Wrapper from "../components/Wrapper";
 import "./Chat.css";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import {
   selectCurrentChatroom,
   selectCurrentChatroomMessages,
 } from "../redux/slices/socketSlice";
-import axios from "axios";
 import { selectCurrentUser } from "../redux/slices/currentUserSlice";
 import { Link } from "react-router-dom";
 import { fetchUsers, selectAllUsers } from "../redux/slices/usersSlice";
-import { ChatroomType } from "../models/Chats";
 import {
   fetchChatMembers,
   selectAllChatMembers,
@@ -35,25 +33,12 @@ const Chat = () => {
   const location = useLocation();
   const currentChat = useAppSelector(selectCurrentChatroom);
   const currentChatMessages = useAppSelector(selectCurrentChatroomMessages);
-  const [messages, setMessages] = useState([]);
   const dummy = useRef<HTMLDivElement>(null);
   const users = useAppSelector(selectAllUsers);
   const chatMembers = useAppSelector(selectAllChatMembers);
   const currentMember = useAppSelector(selectCurrentMember);
-  const allUsers = useAppSelector(selectAllUsers);
-  const [rerender, setRerender] = useState(true);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  let user;
-
-  async function fetchMessages() {
-    if (currentChat.id !== -1) {
-      const response: any = await axios.get(
-        `message/chatroom/id/${currentChat.id}`
-      );
-      setMessages(response?.data);
-    }
-  }
 
   useEffect(() => {
     if (currentChat.id !== -1) {
@@ -72,17 +57,12 @@ const Chat = () => {
         id: currentChat.id,
       })
     );
-    fetchMessages();
     dummy?.current?.scrollIntoView({
       behavior: "smooth",
       block: "end",
       inline: "nearest",
     });
   }, [currentChat, currentChatMessages]);
-
-  if (currentChat.id !== -1 && currentChat.type === ChatroomType.DIRECT) {
-    user = users.find((user: any) => user.display_name === currentChat.name);
-  }
 
   return (
     <Wrapper>
@@ -91,15 +71,6 @@ const Chat = () => {
           <div className="leftSide">
             <div className="userListHeader">
               <div className="imageText">
-                {/* direct chat  */}
-                {/* <div className="userImage">
-            	    <Link to="/profile">
-            	      <img src={currentUser.avatar} className="cover" />
-            	    </Link>
-            	</div> */}
-                {/* <div className="newChatH4">
-						{currentChat.name}<br /><span>online</span>
-					</div> */}
 
                 {/* group chat */}
                 <div className="newChatH4">
@@ -116,19 +87,9 @@ const Chat = () => {
                     navigation={navigate}
                   />
                 </li>
-                {/* <li><ChatBubbleOutlineIcon /></li> */}
-                {/* <li><MoreVertIcon /></li> */}
                 {currentMember?.role !== "user" && (
                   <li>
-                    {/* <PersonAddIcon /> */}
                     <ChatUserListModal />
-                    {/*                     <ChatAddMember
-                      allUsers={allUsers}
-                      currentChat={currentChat}
-                      chatMembers={chatMembers}
-                      setRerender={setRerender}
-                      rerender={rerender}
-                    /> */}
                   </li>
                 )}
                 {currentMember.role === UserRole.OWNER && (
@@ -147,33 +108,11 @@ const Chat = () => {
 
             <ChatBox />
 
-            {/*               <div className="chatBox">
-                <div className="newChatMessage myMessage">
-                  <div className="newChatP">
-                    Heeeey
-                    <br />
-                    <span>12:15</span>
-                  </div>
-                </div>
-                <div className="newChatMessage friendMessage">
-                  <div className="newChatP">
-                    <div className="friendName">Tom</div>
-                    Hello my name is ?<span>12:15</span>
-                  </div>
-                </div>
-                <div className="newChatMessage myMessage">
-                  <div className="newChatP">
-                    Heeeey
-                    <br />
-                    <span>12:15</span>
-                  </div>
-                </div>
-              </div> */}
-
             {/* user input */}
             <ChatInput location={location} />
           </div>{" "}
           {/* end left side */}
+
           {/* start right side -> member list + user actions */}
           <div className="rightSide">
             <div className="userListHeader">

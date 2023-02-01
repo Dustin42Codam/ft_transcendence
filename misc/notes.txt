@@ -3,8 +3,6 @@ todo:
 	+	fix old jwt cookie back end crash
 	+	change game css
 	+	move toasts from right to middle
-	-	change DM chat dropdown select style to the same
-		as group chat style
 	-	get all users authguard
 		-	check tfa secret of other users
 	-	change contentBody in user list, user profile, user page?
@@ -12,7 +10,8 @@ todo:
 	-	new side bar
 		-	move project name to top of sidebar
 		-	move sign out button to side bar
-	-	remove footer
+	+	remove footer
+	-	new create new chat UI
 	-	New side bar
 		-	new colors
 		-	new side dropdown DM render
