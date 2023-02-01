@@ -16,6 +16,7 @@ interface MoveableObject {
 
 interface Bat extends MoveableObject {
 	powerUpTimer?: number;
+	lastTouch: boolean;
 }
 
 interface PowerUp extends MoveableObject {
@@ -68,6 +69,7 @@ const leftBat: Bat = {
 	positionY: 270,	
 	height: 200,
 	width: 20, 
+	lastTouch: false,
 }
 
 const rightBat: Bat = {
@@ -76,6 +78,7 @@ const rightBat: Bat = {
 	positionY: 270,	
 	height: 200,
 	width: 20, 
+	lastTouch: false,
 }
 
 const defaultPlyaer: Player = {
@@ -86,6 +89,7 @@ const defaultPlyaer: Player = {
 		positionY: -1,	
 		height: -1,
 		width: -1,
+		lastTouch: false,
 	},
 }
 
@@ -235,9 +239,13 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 			//const new_dir: Array<number> = [-3, -2, -1, 0, 1, 2, 3];
 			if (doesOverlapWith(game.gamePhysics.ball, game.gamePhysics.player1.bat)) {
 				ballHitsBat(game.gamePhysics.ball, game.gamePhysics.player1.bat);
+				game.gamePhysics.player1.bat.lastTouch = true;
+				game.gamePhysics.player2.bat.lastTouch = false;
 			}
 			if (doesOverlapWith(game.gamePhysics.ball, game.gamePhysics.player2.bat)) {
 				ballHitsBat(game.gamePhysics.ball, game.gamePhysics.player2.bat);
+				game.gamePhysics.player1.bat.lastTouch = false;
+				game.gamePhysics.player2.bat.lastTouch = true;
 			}
 		}
 		function moveBall(ball: Ball): void {
@@ -262,14 +270,13 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 			return false;
     }
 		function powerUpPlayer(player: Player): void {
-			player.bat.height = 250;
-			player.bat.powerUpTimer = 600;
+			player.bat.height = 280;
+			player.bat.powerUpTimer = 400;
 		}
 		function activatePowerUp(game: GameRoom): void {
-			if (game.gamePhysics.ball.directionX < 0) {
+			if (game.gamePhysics.player1.bat.lastTouch) {
 				powerUpPlayer(game.gamePhysics.player1);
-			}
-			if (game.gamePhysics.ball.directionX > 0) {
+			} else if (game.gamePhysics.player2.bat.lastTouch) {
 				powerUpPlayer(game.gamePhysics.player2);
 			}
 		}
@@ -284,8 +291,9 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 						if (!isBallSet(game.gamePhysics.ball)) {
 							game.gamePhysics.ball = getRandomPosition();
 						}
+						checkBallHitBat(game);
 						if (isPowerUp(game.gamePhysics.powerUp)) {
-							if (game.gamePhysics.player1.bat.powerUpTimer <= 0 && game.gamePhysics.player2.bat.powerUpTimer <= 0 && !powerUpOnBoard(game)) {
+							if (game.gamePhysics.player1.bat.powerUpTimer <= 0 && game.gamePhysics.player2.bat.powerUpTimer <= 0 && !powerUpOnBoard(game) && (game.gamePhysics.player1.bat.lastTouch || game.gamePhysics.player2.bat.lastTouch)) {
 								game.gamePhysics.powerUp = getRandomPowerUp();
 							}
 							if (powerUpOnBoard(game)) {
@@ -309,9 +317,17 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 								game.gamePhysics.player2.bat.height = 200;
 							}
 						}
-						checkBallHitBat(game);
 						if (checkIfScore(game)) {
 							game.gamePhysics.scored = true;
+							if (isPowerUp(game.gamePhysics.powerUp)) {
+								game.gamePhysics.player1.bat.lastTouch = false;
+								game.gamePhysics.player2.bat.lastTouch = false;
+								game.gamePhysics.powerUp = {...defaultPowerUp}; 
+								game.gamePhysics.player1.bat.powerUpTimer = 0;
+								game.gamePhysics.player2.bat.powerUpTimer = 0;
+								game.gamePhysics.player1.bat.height = 200;
+								game.gamePhysics.player2.bat.height = 200;
+							}
 							gameService.addScore(Number(game.gameRoomId), game.gamePhysics.score[0], game.gamePhysics.score[1]).then(
 								(be_game) => {
 									if (be_game.status == GameStatus.PASSIVE) {
