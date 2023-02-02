@@ -20,7 +20,11 @@ const SelectInput = (props: {
   }
 
   return (
-    <select id={props.id} onChange={(e: any) => changeChatType(e)}>
+    <select
+      style={{ padding: "6px" }}
+      id={props.id}
+      onChange={(e: any) => changeChatType(e)}
+    >
       <option value={ChatroomType.PROTECTED}>Protected</option>
       <option value={ChatroomType.PRIVATE}>Private</option>
       <option value={ChatroomType.PUBLIC}>Public</option>

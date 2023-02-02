@@ -51,6 +51,8 @@ interface GamePhysics {
 }
 
 interface GameRoom {
+	start_point_set: boolean;
+	timer: Date;
 	gameRoomId: string;
 	gamePhysics: GamePhysics;
 	finished: boolean;
@@ -94,6 +96,8 @@ const defaultPlyaer: Player = {
 }
 
 const defaultGame: GameRoom = {
+	timer: new Date(),
+	start_point_set: false,
 	gameRoomId: "-1",
 	gamePhysics: {
 		canvasWidth: 1300,
@@ -252,9 +256,15 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 			ball.positionX += ball.directionX * ball.speed;
 			ball.positionY += ball.directionY * ball.speed;
 		}
-		function gameHasStarted(game: GamePhysics): boolean {
-			if ((JSON.stringify(game.player1) != JSON.stringify(defaultPlyaer)) && JSON.stringify(game.player2) != JSON.stringify(defaultPlyaer)) {
-				return true;
+		function gameHasStarted(game: GameRoom): boolean {
+			if (game.start_point_set) {
+				if (Number(game.timer) + 5 * 1000 < Number(new Date())) {
+					return true;
+				}
+			}
+			else if ((JSON.stringify(game.gamePhysics.player1) != JSON.stringify(defaultPlyaer)) && JSON.stringify(game.gamePhysics.player2) != JSON.stringify(defaultPlyaer)) {
+				game.start_point_set = true;
+				game.timer = new Date();
 			}
 			return false;
 		}
@@ -286,7 +296,7 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 			setTimeout(() => {
 				activeGames.map(async (game: GameRoom, index: number) => {
 					//logger.debug(`GAME[${index}]:`, game);
-					if (gameHasStarted(game.gamePhysics)) {
+					if (gameHasStarted(game)) {
 						if (!isBallSet(game.gamePhysics.ball)) {
 							game.gamePhysics.ball = getRandomPosition();
 						}
@@ -343,7 +353,7 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 				});
 				test();
 			}, 15);
-			var i = activeGames.length
+			let i = activeGames.length
 			while (i--) {
 				if (activeGames[i].finished) { 
 					//here we want to remove the clients but is ok for now//

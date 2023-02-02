@@ -58,6 +58,7 @@ p {
   flex: 0 0 250px;
   overflow: auto;
   height: 75vh;
+  background-color: rgb(49, 48, 49);
 }
 
 .contentBody .ads {
@@ -67,4 +68,9 @@ p {
 
 .footer {
   flex: 0 0 50px;
+}
+
+select {
+  border: 1px solid #484a4d;
+  border-radius: 5px;
 }

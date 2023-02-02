@@ -1,18 +1,27 @@
 @import url("https://fonts.cdnfonts.com/css/studio-sans");
 
 .chatGridContainer {
-  display: grid;
+  /* display: grid;
   font-family: "Studio Sans", sans-serif;
-  background-color: rgb(16, 16, 20);
+  background-color: rgb(66, 66, 71);
   color: rgb(244, 241, 208);
   grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-  border-left: thick solid rgb(255, 165, 0);
-  border-radius: 5px;
+  gap: 8px;
+  padding: 10px;
+  border-radius: 5px; */
+
+  display: flex;
+  flex-direction: column;
+  color: white;
+  background-color: rgb(66, 66, 71);
+  padding: 10px;
+  gap: 4px;
+  border-radius: 8px;
+  max-width: 400px;
+  min-width: 400px;
+  padding: 15px;
 }
 
 h1 {
   font-weight: bold;
-}
-
-h6 {
 }

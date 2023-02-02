@@ -78,9 +78,9 @@ export class GameController {
             throw new BadRequestException("This user is already in a game");
         const games = await this.gameService.find({where: {status: GameStatus.PENDING, type: GameType.PUBLIC, mode: GameMode.CLASSIC }})
         if (games.length > 0) {
-            return this.gameService.addUserToGame(user.id, games[0])
+            return await this.gameService.addUserToGame(user.id, games[0])
         } else {
-            return this.gameService.create({player_1: userId, type: GameType.PUBLIC, mode: GameMode.CLASSIC})
+            return await this.gameService.create({player_1: userId, type: GameType.PUBLIC, mode: GameMode.CLASSIC})
         }
     }
 
@@ -94,9 +94,9 @@ export class GameController {
             throw new BadRequestException("This user is already in a game");
         const games = await this.gameService.find({where: {status: GameStatus.PENDING, type: GameType.PUBLIC, mode: GameMode.POWER_UP}})
         if (games.length > 0) {
-            return this.gameService.addUserToGame(user.id, games[0])
+            return await this.gameService.addUserToGame(user.id, games[0])
         } else {
-            return this.gameService.create({player_1: userId, type: GameType.PUBLIC, mode: GameMode.POWER_UP})
+            return await this.gameService.create({player_1: userId, type: GameType.PUBLIC, mode: GameMode.POWER_UP})
         }
     }
 
@@ -114,6 +114,6 @@ export class GameController {
         if (game.player_1.id !== user.id) {
             throw new BadRequestException("This user isn't in the game.");
         }
-        this.gameService.delete(game.id);
+        await this.gameService.delete(game.id);
     }
 }
