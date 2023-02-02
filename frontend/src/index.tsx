@@ -16,6 +16,7 @@ import { persistStore } from "redux-persist";
 import { socketActions } from "./redux/slices/socketSlice";
 import { gameSocketActions } from "./redux/slices/gameSocketSlice";
 import "react-toastify/dist/ReactToastify.css";
+import ParticleBackground from "./components/ParticleBackground";
 
 axios.defaults.baseURL = "http://localhost:3000/api/";
 axios.defaults.withCredentials = true;
@@ -38,6 +39,10 @@ async function main() {
   root.render(
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
+        <ParticleBackground
+          clickEnable={false}
+          speed={0.4}
+        />
         <App />
       </PersistGate>
     </Provider>

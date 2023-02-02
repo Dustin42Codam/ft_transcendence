@@ -3,7 +3,7 @@ import type { Container, Engine } from "tsparticles-engine";
 import Particles from "react-tsparticles";
 import { loadFull } from "tsparticles";
 
-const ParticleBackground = () => {
+const ParticleBackground = (props: any) => {
   const particlesInit = useCallback(async (engine: Engine) => {
     console.log(engine);
 
@@ -27,7 +27,7 @@ const ParticleBackground = () => {
         interactivity: {
           events: {
             onClick: {
-              enable: true,
+              enable: props.clickEnable,
               mode: "repulse",
             },
             onHover: {
@@ -73,7 +73,7 @@ const ParticleBackground = () => {
               default: "bounce",
             },
             random: false,
-            speed: 1,
+            speed: props.speed,
             straight: false,
           },
           number: {

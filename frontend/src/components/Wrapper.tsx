@@ -1,9 +1,12 @@
 import Nav from "./Nav";
 import Menu from "./Menu";
 import { Navbar } from "react-bootstrap";
+import ParticleBackground from "./ParticleBackground";
 
 const Wrapper = (props: any) => {
   return (
+    <>
+    {/* <ParticleBackground /> */}
     <div className="wrapper">
       <Nav className="header" />
       <div className="contentBody">
@@ -13,6 +16,7 @@ const Wrapper = (props: any) => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 

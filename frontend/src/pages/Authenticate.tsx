@@ -40,7 +40,7 @@ const Authenticate = () => {
   }
   return (
     <div className="authenticate">
-      <ParticleBackground />
+      <ParticleBackground clickEnable={true} speed={1}/>
 
       <div className="transparentBox">
         <div className="authCard">
