@@ -28,6 +28,10 @@ body {
   margin: 15px;
 }
 
+span {
+  color: rgb(244, 241, 208);
+}
+
 p {
   color: rgb(244, 241, 208);
 }

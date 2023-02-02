@@ -74,7 +74,11 @@ describe("Testing if the god damn store works", () => {
     });
     store.dispatch(
       socketActions.receiveMessage({
-        chatMessage: { chatRoomId: 1, content: "Hi there", authorId: 23 },
+        chatMessage: {
+          chatRoomId: 1,
+          content: "Hi there",
+          authorId: 23,
+        },
       })
     );
     store.dispatch(

@@ -32,7 +32,10 @@ export const UserFriends = (props: { userId: number; userFriends?: any }) => {
                   ? "/profile"
                   : `/users/${friend.id}`
               }
-              style={{ textDecoration: "inherit", color: "inherit" }}
+              style={{
+                textDecoration: "inherit",
+                color: "inherit",
+              }}
             >
               <div className="card">
                 <div className="card-body">

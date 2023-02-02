@@ -26,7 +26,10 @@ export const UserList = () => {
                 <div className="col-md-4 animated fadeIn" key={user.id}>
                   <Link
                     to={`/users/${user.id}`}
-                    style={{ textDecoration: "inherit", color: "inherit" }}
+                    style={{
+                      textDecoration: "inherit",
+                      color: "inherit",
+                    }}
                   >
                     <div className="card">
                       <div className="card-body">

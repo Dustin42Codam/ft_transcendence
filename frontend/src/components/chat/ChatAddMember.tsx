@@ -24,7 +24,9 @@ function ChatAddMember(props: any) {
 
   async function addUserToChat(user: User) {
     await axios
-      .post(`chatroom/add/id/${props.currentChat.id}`, { user_id: user.id })
+      .post(`chatroom/add/id/${props.currentChat.id}`, {
+        user_id: user.id,
+      })
       .then(() => {
         toast.success(`You added ${user.display_name} the chat!`, {
           position: "top-center",
