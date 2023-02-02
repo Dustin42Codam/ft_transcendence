@@ -24,7 +24,7 @@ const Nav = (props: any) => {
   return (
     <nav className={props.className}>
       <div className="navBarContainer">
-        <p className="nameProject">ft_transcendence</p>
+        <h1 className="nameProject">Trancedance</h1>
         <Link
           to="/authenticate"
           className="logoutButton"
@@ -32,7 +32,7 @@ const Nav = (props: any) => {
           style={{ textDecoration: "none" }}
         >
           <div className="logOut">
-            <p>Sign out</p>
+            <span className="text">Sign out</span>
             <LogoutIcon />
           </div>
         </Link>

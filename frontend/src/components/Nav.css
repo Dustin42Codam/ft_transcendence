@@ -1,18 +1,21 @@
 .navBarContainer {
   display: flex;
-  padding: 15px;
-  flex-direction: row;
+  padding: 5px 0px 5px 15px;
   justify-content: space-between;
-}
-.nameProject {
-  margin-top: 10px;
-}
-.logoutButton {
-  margin-top: 10px;
+  align-items: center;
 }
 
 .logOut {
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+  align-items: center;
+}
+
+.logOut .text {
+  color: white;
+}
+
+.nameProject {
+  margin: 0;
+  padding: 0;
+  color: white;
 }

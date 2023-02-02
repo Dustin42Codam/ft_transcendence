@@ -106,8 +106,8 @@ class GameState {
 const Game = (props: any) => {
   const dispatch = useAppDispatch();
   const location = useLocation();
-	const url: Array<string> = location.pathname.split("/");
-	const currentUser = store.getState().currentUser.currentUser;
+  const url: Array<string> = location.pathname.split("/");
+  const currentUser = store.getState().currentUser.currentUser;
 
   useEffect(() => {
     console.log("this is url", url);
@@ -224,11 +224,21 @@ const Game = (props: any) => {
       clearTimeout(timer);
       console.log("we are leaving");
       theGameFrame!.innerHTML = "<h1>Game is pending</h1>";
-      dispatch(gameSocketActions.leaveRoom({ gameRoomId: Number(url[url.length - 1]), userId: currentUser.id}));
+      dispatch(
+        gameSocketActions.leaveRoom({
+          gameRoomId: Number(url[url.length - 1]),
+          userId: currentUser.id,
+        })
+      );
     };
   }, []);
   function leaveGame(e: any) {
-    dispatch(gameSocketActions.leaveRoom({ gameRoomId: Number(url[url.length - 1]), userId: currentUser.id}));
+    dispatch(
+      gameSocketActions.leaveRoom({
+        gameRoomId: Number(url[url.length - 1]),
+        userId: currentUser.id,
+      })
+    );
   }
   return (
     <Wrapper>

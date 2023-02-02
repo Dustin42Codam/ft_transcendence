@@ -78,6 +78,8 @@ export class GameService extends AbstractService {
     return await this.gameRepository.find({where: {status: GameStatus.ACTIVE}});
   }
 
+  sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
   async addUserToGame(player_2: number, game: Game) {
     game.player_2 = player_2
     game.status = GameStatus.ACTIVE

@@ -64,25 +64,17 @@ const ChatCreate = () => {
       <h1 id="chatHeader" className="gridItem header-1">
         Create a Chat
       </h1>
-      <button
-        className="gridItem chatButton"
-        onClick={createChat}
-        type="button"
-      >
-        GO!
-      </button>
       <h6 id="chatDescription" className="gridItem header-2">
         Feel free to create a chat room.
       </h6>
-      <label id="nameInputLable">
-        <p>Name</p>
-      </label>
+      <label id="nameInputLable">Name</label>
+      <TextInput setter={setName} id="nameInput" type="text" />
+      <label>Type</label>
       <SelectInput
         id="selectChatInput"
         setChatType={setChatType}
         setPassword={setPassword}
       />
-      <TextInput setter={setName} id="nameInput" type="text" />
       {chatType === ChatroomType.PROTECTED ? (
         <React.Fragment>
           <label id="chatPasswordInputLable" className="gridItem chatLable">
@@ -110,6 +102,14 @@ const ChatCreate = () => {
           />
         </React.Fragment>
       ) : null}
+      <hr />
+      <button
+        className="gridItem chatButton"
+        onClick={createChat}
+        type="button"
+      >
+        Create
+      </button>
     </div>
   );
 };
