@@ -24,7 +24,7 @@ export class BlockService extends AbstractService {
   async getBlockById(id: number) {
     const block = await this.findOne({ id }, ["sender", "receiver"]);
     if (!block) {
-      throw new BadRequestException("This block does not exist");
+      throw new BadRequestException("This block doesn't exist");
     }
     return block;
   }
@@ -39,7 +39,7 @@ export class BlockService extends AbstractService {
           receiver: receiver
         });
       if (!block) {
-        throw new BadRequestException("This block does not exist");
+        throw new BadRequestException("This block doen't exist");
       }
       return block;
     }

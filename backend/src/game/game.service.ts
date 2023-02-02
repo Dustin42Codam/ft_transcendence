@@ -29,7 +29,7 @@ export class GameService extends AbstractService {
   async getGameById(id: number) {
     const game = this.findOne({id});
     if (!game) {
-      throw new BadRequestException("This Game does not exist");
+      throw new BadRequestException("This Game doesn't exist");
     }
 		return game;
 }

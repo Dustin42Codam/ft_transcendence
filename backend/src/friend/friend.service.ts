@@ -24,7 +24,7 @@ export class FriendService extends AbstractService {
 
   async getFriendshipById(id: number) {
     const friendship = this.findOne({ id });
-    if (!friendship) throw new BadRequestException("This friendship does not exist");
+    if (!friendship) throw new BadRequestException("This friendship doesn't exist");
     return friendship;
   }
 

@@ -16,7 +16,6 @@ import { selectCurrentMember } from "../../redux/slices/currentMemberSlice";
 import { selectAllChatMembers } from "../../redux/slices/chatMembersSlice";
 import Emojis from "../Emojis";
 
-
 function ChatInput(props: any) {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -50,7 +49,7 @@ function ChatInput(props: any) {
     e.preventDefault();
 
     if (!message.length) {
-      return ;
+      return;
     }
 
     if (currentMember.banned === true) {
@@ -103,7 +102,7 @@ function ChatInput(props: any) {
         onChange={(e) => setMessage(e.target.value)}
         autoComplete="off"
       />
-      <Emojis inputRef={inputRef} message={message} setMessage={setMessage}/>
+      <Emojis inputRef={inputRef} message={message} setMessage={setMessage} />
       <input type="submit" autoComplete="off" hidden />
     </form>
   );

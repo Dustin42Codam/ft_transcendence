@@ -22,7 +22,7 @@ export class SocketIoAdapter extends IoAdapter {
 			],
 			credentials: true,
 		}
-		this.logger.log("configureing socketIO server with cutom CORS options", {
+		this.logger.log("configuring socketIO server with custom CORS options", {
 			cors,
 		})
 		const optionsWithCors: ServerOptions = {
@@ -49,7 +49,7 @@ const createTokenMiddleware =
 			const payload = jwtService.verify(token, {secret: process.env.JWT_SECRET});
 			next();
 		} catch {
-			logger.error("Frobiden to login");
+			logger.error("Forbidden to login");
 			next(new Error("FORBIDDEN"));
 		}
 	}

@@ -112,7 +112,7 @@ export class GameController {
             throw new BadRequestException("You can only leave a pending game.");
         }
         if (game.player_1.id !== user.id) {
-            throw new BadRequestException("This user is not in the game.");
+            throw new BadRequestException("This user isn't in the game.");
         }
         this.gameService.delete(game.id);
     }

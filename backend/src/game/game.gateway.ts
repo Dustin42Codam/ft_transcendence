@@ -137,11 +137,11 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
   }
 
   async handleConnection(client): Promise<void> {
-		this.logger.log(`clienet: ${client.id} connected`);
+		this.logger.log(`client: ${client.id} connected`);
   }
 
   async handleDisconnect(client: any): Promise<void> {
-		this.logger.log(`clienet: ${client.id} disconnected`);
+		this.logger.log(`client: ${client.id} disconnected`);
   }
 
 	async serverLoop(activeGames: Array<GameRoom>, logger: any, io: any): Promise<void>  {
@@ -409,7 +409,7 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 		if (!currentActiveGame) {
 			this.io.to(gameRoomId).emit(GameroomEvents.GameRoomNotification, `Server side error our bad maybe try again :)`);
 			client.leave(gameRoomId);
-			throw ("game your joining is not in memmory. server side error or user input not check");
+			throw ("game you're joining is not in memmory. Server side error or user input not check");
 		}
 		if (gameFromDb.player_1 == userId) {
 			let player1: Player;

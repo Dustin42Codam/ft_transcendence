@@ -70,7 +70,6 @@ const Chat = () => {
           <div className="leftSide">
             <div className="userListHeader">
               <div className="imageText">
-
                 {/* group chat */}
                 <div className="newChatH4">
                   {currentChat.name}
@@ -111,7 +110,6 @@ const Chat = () => {
             <ChatInput location={location} />
           </div>{" "}
           {/* end left side */}
-
           {/* start right side -> member list + user actions */}
           <div className="rightSide">
             <div className="userListHeader">

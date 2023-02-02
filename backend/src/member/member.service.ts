@@ -18,7 +18,7 @@ export class MemberService extends AbstractService {
   async getMemberByUserAndChatroom(user: User, chatroom: Chatroom) {
     const member = await this.findOne({ user, chatroom }, ["user", "chatroom"]);
     if (!member || member.status === MemberStatus.INACTIVE) {
-      throw new BadRequestException("This member does not exist.");  
+      throw new BadRequestException("This member doesn't exist.");  
     }
     return member;
   }
@@ -26,7 +26,7 @@ export class MemberService extends AbstractService {
   async getMemberById(id: number) {
     const member = await this.findOne({ id }, ["user", "chatroom"]);
     if (!member || member.status === MemberStatus.INACTIVE) {
-      throw new BadRequestException("This member does not exist.");
+      throw new BadRequestException("This member doesn't exist.");
     }
     return member;
   }

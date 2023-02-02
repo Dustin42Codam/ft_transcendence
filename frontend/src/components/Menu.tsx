@@ -13,7 +13,10 @@ import DirectChatTable from "./chat/DirectChatTable";
 import JoinableChatTable from "./chat/JoinableChatTable";
 import ChatCreate from "./chat/ChatCreate";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
-import { fetchDirectChats, selectJoinableChats } from "../redux/slices/chatsSlice";
+import {
+  fetchDirectChats,
+  selectJoinableChats,
+} from "../redux/slices/chatsSlice";
 import PopUp from "./PopUp";
 import "./Menu.css";
 import { toast } from "react-toastify";
@@ -116,7 +119,7 @@ const Menu = (props: any) => {
                     borderRadius: "10%",
                   }}
                   onClick={() => {
-                    setActiveDm(!activeDm)
+                    setActiveDm(!activeDm);
                     dispatch(fetchDirectChats());
                   }}
                 />
@@ -135,26 +138,26 @@ const Menu = (props: any) => {
           {activeChanels === true ? (
             <React.Fragment>
               <p>
-              <div className="channelRow">
-                <ArrowDropDownIcon
-                  sx={{
-                    "&:hover": { backgroundColor: "grey" },
-                    borderRadius: "10%",
-                  }}
-                  onClick={() => setActiveChanels(!activeChanels)}
-                />
-                Channels
-                <div className="addIcon">
-                  <AddIcon
+                <div className="channelRow">
+                  <ArrowDropDownIcon
                     sx={{
-                      ml: 17,
                       "&:hover": { backgroundColor: "grey" },
                       borderRadius: "10%",
                     }}
-                    onClick={() => setCreateChatPopUp(!createChatPopUp)}
+                    onClick={() => setActiveChanels(!activeChanels)}
+                  />
+                  Channels
+                  <div className="addIcon">
+                    <AddIcon
+                      sx={{
+                        ml: 17,
+                        "&:hover": { backgroundColor: "grey" },
+                        borderRadius: "10%",
+                      }}
+                      onClick={() => setCreateChatPopUp(!createChatPopUp)}
                     />
+                  </div>
                 </div>
-              </div>
               </p>
               {createChatPopUp && (
                 <PopUp
@@ -178,27 +181,27 @@ const Menu = (props: any) => {
           ) : (
             <React.Fragment>
               <p>
-              <div className="channelRow">
-                <ArrowRightIcon
-                  sx={{
-                    "&:hover": { backgroundColor: "grey" },
-                    borderRadius: "10%",
-                  }}
-                  onClick={() => setActiveChanels(!activeChanels)}
-                />
-                Channels
-                <div className="addIcon">
-                  <AddIcon
+                <div className="channelRow">
+                  <ArrowRightIcon
                     sx={{
-                      ml: 17,
                       "&:hover": { backgroundColor: "grey" },
                       borderRadius: "10%",
                     }}
-                    onClick={() => setCreateChatPopUp(!createChatPopUp)}
+                    onClick={() => setActiveChanels(!activeChanels)}
+                  />
+                  Channels
+                  <div className="addIcon">
+                    <AddIcon
+                      sx={{
+                        ml: 17,
+                        "&:hover": { backgroundColor: "grey" },
+                        borderRadius: "10%",
+                      }}
+                      onClick={() => setCreateChatPopUp(!createChatPopUp)}
                     />
+                  </div>
                 </div>
-              </div>
-            </p>
+              </p>
             </React.Fragment>
           )}
         </div>

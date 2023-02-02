@@ -21,7 +21,7 @@ export class UserController {
   async getUserById(@Param("id") id: string) {
 		const user = this.userService.getUserById(Number(id));
     if (!user) {
-			throw new BadRequestException("This user does not exist");
+			throw new BadRequestException("This user doesn't exist");
 		}
 		return user;
   }
@@ -45,11 +45,11 @@ export class UserController {
       const userId = await this.authService.userId(request);
       const user = await this.userService.getUserById(userId);
 	  if (body.display_name === "") {
-		throw new BadRequestException("You can not have a empty string as a username");
+		throw new BadRequestException("You can't have a empty string as a username");
 	  }
       if (body.display_name && body.display_name !== user.display_name) {
 		if (body.display_name.length  > 30) {
-			throw new BadRequestException("You can not have a username that is longer than 30 characters.");
+			throw new BadRequestException("You can't have a username that is longer than 30 characters.");
 		  }
         await this.userService.isUserNameUnique(body.display_name);
       }

@@ -6,7 +6,7 @@ import { updateCurrentUser } from "../redux/slices/currentUserSlice";
 
 const ImageUpload = (props: { uploaded: (url: string) => void }) => {
   const dispatch = useAppDispatch();
-  
+
   const upload = async (files: FileList | null) => {
     if (files === null) return;
 
@@ -14,9 +14,12 @@ const ImageUpload = (props: { uploaded: (url: string) => void }) => {
 
     formData.append("image", files[0]);
 
-    axios.post("upload", formData).then((response: any) => {
-      dispatch(updateCurrentUser({ avatar: response.data.url }));
-      props.uploaded(response.data.url);})
+    axios
+      .post("upload", formData)
+      .then((response: any) => {
+        dispatch(updateCurrentUser({ avatar: response.data.url }));
+        props.uploaded(response.data.url);
+      })
       .catch((err: any) => {
         toast.error(`you cannot upload this file`, {
           position: "top-center",
@@ -28,8 +31,7 @@ const ImageUpload = (props: { uploaded: (url: string) => void }) => {
           progress: undefined,
           theme: "colored",
         });
-    });
-  
+      });
   };
 
   return (
