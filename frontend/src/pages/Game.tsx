@@ -227,9 +227,13 @@ const Game = (props: any) => {
       dispatch(gameSocketActions.leaveRoom(Number(url[url.length - 1])));
     };
   }, []);
+  function leaveGame(e: any) {
+    dispatch(gameSocketActions.leaveRoom(Number(url[url.length - 1])));
+	}
   return (
     <Wrapper>
       <div id="canvasContainer">
+        <button onClick={(e) => leaveGame(e)}>Leave Game</button>
         <h1 id="score"></h1>
         <canvas tabIndex={0} id="gameCanvas" width="1300" height="700">
           Game is not supported for this borwser. Needs <b>cavas</b> support.
