@@ -33,7 +33,7 @@ const Nav = (props: any) => {
         >
           <div className="logOut">
             <span className="text">Sign out</span>
-            <LogoutIcon/>
+            <LogoutIcon />
           </div>
         </Link>
       </div>
