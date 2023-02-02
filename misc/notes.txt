@@ -1,27 +1,38 @@
 
 todo:
-	+	fix old jwt cookie back end crash
-	+	change game css
-	+	move toasts from right to middle
-	-	change DM chat dropdown select style to the same
-		as group chat style
-	-	get all users authguard
-		-	check tfa secret of other users
-	-	change contentBody in user list, user profile, user page?
-	-	remove header
-	-	new side bar
-		-	move project name to top of sidebar
-		-	move sign out button to side bar
-	-	remove footer
-	-	New side bar
-		-	new colors
-		-	new side dropdown DM render
-			-	render user blocks
-			-	add time?
-			-	add status?
-			-	show last message (message_p)
-	+	add new badge to user page to display the status
-		in different colors
+
+	-	fix join DM
+		-	cannot join all DMs from sidebar
+	->	get all users authguard
+		->	check tfa secret of other users
+	+	fix sidebar create channel row layout
+	->	change cursor to pointer on all
+		mouse hovers in the sidebar
+	->	hide scroll bar on sidebar nav items
+		+	overflow=hidden
+		->	check how huge list of users is being rendered
+	-	make whole div clickable to expand
+		dropdown menu for chats instead
+		of just the icon
+	+	move toasts on user page to the right
+
+	-	optional, non mandatory extra stuff:
+		->	new create new chat UI
+		-	reset password in UI and component state
+			after new password + passwordConfirm
+			didn't match
+		-	change contentBody in user list, user profile, user page?
+		-	remove header
+		-	new side bar
+			-	move project name to top of sidebar
+			-	move sign out button to side bar
+		-	New side bar
+			-	new colors
+			-	new side dropdown DM render
+				-	render user blocks
+				-	add time?
+				-	add status?
+				-	show last message (message_p)
 
 	->	New Chat UI
 		->	new chat bg with better crop
@@ -41,33 +52,39 @@ todo:
 			+	leave channel
 				+	overlay hover button right
 		+	add drop down when click on user
-			->	visit profile
+			+	visit profile
 				+	when clicking on avatar
-				->	and drop down?
 			+	ban
 			+	unban
-				-	check un/ban with text input
+				->	check un/ban with text input
 			+	mute
 			+	unmute
-				-	check un/mute with text input
+				->	check un/mute with text input
 			+	add new admin
 			+	remove admin
 			+	grant ownership
 			+	remove member
 		
-			!!-	send game invite
+			+	send game invite
 				+	default game
-				-	power up game
+				+	power up game
 
-		!!-	seperate DM page
+		+	seperate DM page
 
 		+	add user to channel modal
-		-	add smileys
-			-	smiley button
-			-	smiley dropdown
+		+	add smileys
+			+	smiley button
+			+	smiley dropdown
+
+	->	check if blocking user is effective
 
 
 done:
+	+	add new badge to user page to display the status
+		in different colors
+	+	remove footer
+	+	change game css
+	+	move toasts from right to middle
 	+	add toasts to user page
 	+	create protected chat without password bug
 	+	Redux store
@@ -94,8 +111,8 @@ done:
 	+	change ownership when owner leaves room
 	+	remove delete ban/mute from DMs
 	+	delete chat
-		+	only as owner???
-		+	FIX: can't delete chat on backend
+		+	only as owner
+		+	FIXED: can't delete chat on backend
 
 	+	add user to chat
 		+	admin can add another user to chat
@@ -126,9 +143,10 @@ done:
 
 bugs:
 
-	-	users can upload any file sizes
 
 	fixed:
+		+	fix old jwt cookie back end crash
+		+	users can upload any file sizes
 		+	leave chat toast bug
 		+	double rendering toasts in chat ui
 		+	old files are not deleted
