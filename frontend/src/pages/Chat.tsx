@@ -111,7 +111,10 @@ const Chat = () => {
 
               <ul className="navIcons">
                 <li>
-                  <SendGameInvite member={currentMember} navigation={navigate} />
+                  <SendGameInvite
+                    member={currentMember}
+                    navigation={navigate}
+                  />
                 </li>
                 {/* <li><ChatBubbleOutlineIcon /></li> */}
                 {/* <li><MoreVertIcon /></li> */}

@@ -4,7 +4,7 @@ import SportsTennisIcon from "@mui/icons-material/SportsTennis";
 import axios from "axios";
 import { toast } from "react-toastify";
 
-type MyProps = { member: any, navigation: any };
+type MyProps = { member: any; navigation: any };
 type MyState = { open: boolean };
 class SendGameInvite extends React.Component<MyProps, MyState> {
   container = createRef<HTMLDivElement>();

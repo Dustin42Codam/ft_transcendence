@@ -15,7 +15,7 @@ import "./ChatBox.css";
 function TimeStamp(props: any) {
   const date = new Date(props.timestamp);
   const hours = date.getHours();
-  const minutes = (date.getMinutes() < 10 ? '0' : '') + date.getMinutes();
+  const minutes = (date.getMinutes() < 10 ? "0" : "") + date.getMinutes();
 
   return <span>{`${hours}:${minutes}`}</span>;
 }
@@ -47,13 +47,16 @@ function ChatBox() {
   useEffect(() => {
     fetchMessages();
     if (messageElement) {
-      messageElement.current?.addEventListener('DOMNodeInserted', (event: any) => {
-        const { currentTarget: target } = event;
-        target.scroll({
-          top: target.scrollHeight,
-          behavior: 'smooth'
-        });
-      })
+      messageElement.current?.addEventListener(
+        "DOMNodeInserted",
+        (event: any) => {
+          const { currentTarget: target } = event;
+          target.scroll({
+            top: target.scrollHeight,
+            behavior: "smooth",
+          });
+        }
+      );
     }
   }, [currentChat, currentChatMessages]);
 
@@ -94,7 +97,7 @@ function ChatBox() {
         msg.member.user.id === currentUser.id ? (
           <div className="newChatMessage myMessage" key={index}>
             <div className="newChatP">
-                {msg.message}
+              {msg.message}
               <br />
               <TimeStamp timestamp={msg.timestamp} />
             </div>
@@ -103,17 +106,18 @@ function ChatBox() {
           <div className="newChatMessage friendMessage" key={index}>
             <div className="newChatP">
               <div className="friendName">{msg.member.user.display_name}</div>
-              {msg.type == 'invite'
-                ? (<div onClick={() => getInviteLink(msg.invite_code)}>
+              {msg.type == "invite" ? (
+                <div onClick={() => getInviteLink(msg.invite_code)}>
                   {msg.message}
-                </div>)
-                : (<div>{msg.message}</div>)}
+                </div>
+              ) : (
+                <div>{msg.message}</div>
+              )}
               <TimeStamp timestamp={msg.timestamp} />
             </div>
           </div>
         )
-        )
-      }
+      )}
     </div>
   );
 }

@@ -96,8 +96,14 @@ const ChannelSettings = (props: any) => {
       }
     }
 
-    console.log("🚀 ~ file: ChatSettings.tsx:100 ~ saveChanges ~ chatType", chatType)
-    console.log("🚀 ~ file: ChatSettings.tsx:101 ~ saveChanges ~ currentChat.type", currentChat.type)
+    console.log(
+      "🚀 ~ file: ChatSettings.tsx:100 ~ saveChanges ~ chatType",
+      chatType
+    );
+    console.log(
+      "🚀 ~ file: ChatSettings.tsx:101 ~ saveChanges ~ currentChat.type",
+      currentChat.type
+    );
     if (chatType !== currentChat.type) {
       dispatch(
         updateCurrentChatType({
@@ -107,16 +113,15 @@ const ChannelSettings = (props: any) => {
           type: chatType,
         })
       );
-    }
-    else if (currentChat.type === "protected") {
-      console.log("🚀 ~ file: ChatSettings.tsx:124 ~ saveChanges ~ pw")
-      
+    } else if (currentChat.type === "protected") {
+      console.log("🚀 ~ file: ChatSettings.tsx:124 ~ saveChanges ~ pw");
+
       dispatch(
         updateCurrentChatPassword({
           id: currentChat.id,
           password: password,
           passwordConfirm: passwordConfirm,
-          type: 'protected',
+          type: "protected",
         })
       );
       // setPassword("");
@@ -131,10 +136,9 @@ const ChannelSettings = (props: any) => {
           userId: currentChat.userId,
           type: chatType,
           members: props.chatMembers,
-      },
-    })
-  );
-
+        },
+      })
+    );
   }
 
   function ConfirmDelete(props: any) {

@@ -71,11 +71,14 @@ function ModalBody() {
   return (
     <Modal.Body>
       <div className="userList">
-        {joinableUsers.length == 0 &&
-          <div className="newChatP" style={{fontSize: "20px", textAlign: "center"}}>
+        {joinableUsers.length == 0 && (
+          <div
+            className="newChatP"
+            style={{ fontSize: "20px", textAlign: "center" }}
+          >
             There are no users to add...
           </div>
-        }
+        )}
         {joinableUsers.map(
           (user: User, index: number) =>
             user && (
@@ -124,10 +127,7 @@ function ChatUserListModal() {
       <PersonAddIcon onClick={handleShow} />
       <Modal className="modal" show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>
-            Add a new user
-          </Modal.Title>
-        
+          <Modal.Title>Add a new user</Modal.Title>
         </Modal.Header>
 
         <ModalBody />

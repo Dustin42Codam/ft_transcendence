@@ -86,9 +86,7 @@ export const updateCurrentChatType = createAsyncThunk(
 export const updateCurrentChatPassword = createAsyncThunk(
   "currentMember/updateCurrentChatPassword",
   async (data: any) => {
-    if (
-      data.password !== data.passwordConfirm
-    ) {
+    if (data.password !== data.passwordConfirm) {
       toast.error(`Passwords didn't match!`, {
         position: "top-right",
         autoClose: 5000,

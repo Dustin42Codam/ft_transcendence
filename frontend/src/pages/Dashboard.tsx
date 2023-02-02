@@ -7,7 +7,7 @@ const Dashboard = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-      dispatch(fetchJoinableChats());
+    dispatch(fetchJoinableChats());
   }, []);
 
   return (

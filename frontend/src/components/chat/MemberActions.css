@@ -57,7 +57,7 @@ code {
 .memberActionsContainer .dropdown li:hover {
   /* background-color: rgba(0, 0, 0, 0.14); */
   cursor: pointer;
-  color:white;
+  color: white;
 }
 
 .memberCard {
