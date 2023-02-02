@@ -55,45 +55,45 @@ const Menu = (props: any) => {
             className="navItem"
             style={{ textDecoration: "none" }}
           >
-            <p className="navItemHiglight">
+            <span className="navItemHiglight">
               <DashboardIcon />
               Dashboard
-            </p>
+            </span>
           </NavLink>
           <NavLink
             to={"/profile"}
             className="navItem"
             style={{ textDecoration: "none" }}
           >
-            <p className="navItemHiglight">
+            <span className="navItemHiglight">
               <SentimentSatisfiedAltIcon />
               Profile
-            </p>
+            </span>
           </NavLink>
           <NavLink
             to={"/users"}
             className="navItem"
             style={{ textDecoration: "none" }}
           >
-            <p className="navItemHiglight">
+            <span className="navItemHiglight">
               <PeopleIcon />
               Users
-            </p>
+            </span>
           </NavLink>
           <NavLink
             to={"/game"}
             className="navItem"
             style={{ textDecoration: "none" }}
           >
-            <p className="navItemHiglight">
+            <span className="navItemHiglight">
               <SportsTennisIcon />
               Games
-            </p>
+            </span>
           </NavLink>
           <div className="navItem">
             {activeDm === true ? (
               <React.Fragment>
-                <p>
+                <span>
                   <ArrowDropDownIcon
                     sx={{
                       "&:hover": { backgroundColor: "grey" },
@@ -102,12 +102,12 @@ const Menu = (props: any) => {
                     onClick={() => setActiveDm(!activeDm)}
                   />
                   Direct Messages
-                </p>
+                </span>
                 <DirectChatTable />
               </React.Fragment>
             ) : (
               <React.Fragment>
-                <p>
+                <span>
                   <ArrowRightIcon
                     sx={{
                       "&:hover": { backgroundColor: "grey" },
@@ -119,14 +119,14 @@ const Menu = (props: any) => {
                     }}
                   />
                   Direct Messages
-                </p>
+                </span>
               </React.Fragment>
             )}
           </div>
           <div className="navItem">
             {activeChannels === true ? (
               <React.Fragment>
-                <p>
+                <span>
                   <div className="channelRow">
                     <ArrowDropDownIcon
                       sx={{
@@ -137,14 +137,14 @@ const Menu = (props: any) => {
                     />
                     Channels
                   </div>
-                </p>
+                </span>
                 <GroupChatTable />
-                <p className="navChatOption">
+                <span className="navChatOption">
                   <ChatCreateModal />
-                </p>
-                <p className="navChatOption" onClick={() => joinChats()}>
+                </span>
+                <span className="navChatOption" onClick={() => joinChats()}>
                   <GroupAdd /> Join channel
-                </p>
+                </span>
                 {joinChannel && (
                   <PopUp
                     content={
@@ -156,7 +156,7 @@ const Menu = (props: any) => {
               </React.Fragment>
             ) : (
               <React.Fragment>
-                <p>
+                <span>
                   <div className="channelRow">
                     <ArrowRightIcon
                       sx={{
@@ -167,7 +167,7 @@ const Menu = (props: any) => {
                     />
                     Channels
                   </div>
-                </p>
+                </span>
               </React.Fragment>
             )}
           </div>
