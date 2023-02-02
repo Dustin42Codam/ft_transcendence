@@ -118,6 +118,5 @@ export class ChatroomGateway implements OnGatewayInit, OnGatewayConnection, OnGa
 		console.log("this is a message", payload, `${payload.chatRoomId}`);
     console.log(payload);
     this.io.to(`${payload.chatRoomId}`).emit(ChatroomEvents.SendMessageToClient, payload);
-    //TODO: emit the message
   }
 }

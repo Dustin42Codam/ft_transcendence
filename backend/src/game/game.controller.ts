@@ -8,6 +8,7 @@ import { UserService } from "src/user/user.service";
 import { GameMode, GameStatus, GameType } from "./entity/game.entity";
 import { GameStatsService } from "src/games_stats/game_stats.service";
 
+@UseGuards(AuthGuard) //TODO this should probably over the whole class
 @Controller("game")
 export class GameController {
   constructor(
@@ -36,7 +37,6 @@ export class GameController {
         return await this.gameService.getAllActiveGames();
     }
 
-	@UseGuards(AuthGuard) //TODO this should probably over the whole class
     @Get('get/ladder')
     async getGamesLadder(
         ) {
