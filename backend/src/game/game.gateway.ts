@@ -351,7 +351,7 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 					io.to(game.gameRoomId).emit(GameroomEvents.PhysicsLoop, game.gamePhysics);
 				});
 				test();
-			}, 1000);
+			}, 15);
 			var i = activeGames.length
 			while (i--) {
 				if (activeGames[i].finished) { 

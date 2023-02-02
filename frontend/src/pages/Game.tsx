@@ -5,6 +5,7 @@ import { useAppDispatch } from "../redux/hooks";
 import "./Game.css";
 import store from "../redux/store";
 import Confetty from "../components/confety";
+import { useNavigate } from "react-router-dom";
 
 import { useLocation } from "react-router-dom";
 
@@ -108,6 +109,7 @@ const Game = (props: any) => {
   const location = useLocation();
   const url: Array<string> = location.pathname.split("/");
   const currentUser = store.getState().currentUser.currentUser;
+  const navigate = useNavigate();
 
   useEffect(() => {
     console.log("this is url", url);
@@ -203,13 +205,8 @@ const Game = (props: any) => {
           if (game.gamePhysics.scored) {
             score!.innerHTML = `<h1 id="score">${gameState.gamePhysics.player1.displayName} ${gameState.gamePhysics.score[0]} : ${gameState.gamePhysics.player2.displayName} ${gameState.gamePhysics.score[1]}</h1>`;
           }
-          if (game.gamePhysics.score[0] == 5) {
-            score!.innerHTML = `<h1 id="score">${gameState.gamePhysics.player1.displayName} ${gameState.gamePhysics.score[0]} : ${gameState.gamePhysics.player2.displayName} ${gameState.gamePhysics.score[1]}</h1>`;
-            theGameFrame!.innerHTML = `<div><h2>${game.gamePhysics.player1.displayName} -> Won</h2><Confetty></Confetty></div>`;
-          }
-          if (game.gamePhysics.score[1] == 5) {
-            score!.innerHTML = `<h1 id="score">${gameState.gamePhysics.player1.displayName} ${gameState.gamePhysics.score[0]} : ${gameState.gamePhysics.player2.displayName} ${gameState.gamePhysics.score[1]}</h1>`;
-            theGameFrame!.innerHTML = `<div><h2>${game.gamePhysics.player2.displayName} -> Won</h2><Confetty></Confetty></div>`;
+          if (game.gamePhysics.score[0] == 5 || game.gamePhysics.score[0] == 5) {
+						navigate("/game");
           }
           game.dt = dt;
           game.fps = fps;
@@ -243,7 +240,7 @@ const Game = (props: any) => {
   return (
     <Wrapper>
       <div id="canvasContainer">
-        <button onClick={(e) => leaveGame(e)}>Leave Game</button>
+				<button onClick={(e) => leaveGame(e)}>Leave Game</button>
         <h1 id="score"></h1>
         <canvas tabIndex={0} id="gameCanvas" width="1300" height="700">
           Game is not supported for this borwser. Needs <b>cavas</b> support.
