@@ -87,13 +87,12 @@
 }
 
 .userList .block .details .listHead .newChatH4 {
-  font-size: 1.5em;
+  font-size: 1.2em;
   font-weight: 600;
   color: #111;
 }
 
 .userList .block .details .status .newChatP {
-  font-size: 1.3em;
   /* font-weight: 600; */
   color: rgb(43, 43, 43);
 }

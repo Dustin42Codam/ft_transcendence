@@ -63,7 +63,7 @@ class GameState {
 
   constructor(canvas: HTMLCanvasElement, gamePhysics: GamePhysics) {
     if (!canvas || !canvas.getContext)
-      throw new Error("The Browser can not render the game");
+      throw new Error("The Browser can't render the game");
     this.gamePhysics = gamePhysics;
     this.frame = 0;
     this.dt = 0;

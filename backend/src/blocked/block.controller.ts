@@ -27,7 +27,6 @@ export class BlockController {
 	async getBlocksFromUser(
 		@Param('id') id : string,
 	) {
-		console.log("🚀 ~ file: block.controller.ts:30 ~ BlockController ~ userId", id)
 		const sender = await this.userService.getUserById(Number(id))
 		return await this.blockService.getBlocksFromUser(sender);
 	}
@@ -41,7 +40,7 @@ export class BlockController {
 		const sender = await this.userService.getUserById(senderId);
 		const receiver = await this.userService.getUserById(Number(receiverId));
 		if (senderId === receiver.id) {
-			throw new BadRequestException("You can not block yourself.")
+			throw new BadRequestException("You can't block yourself.")
 		}
 
 		const block = await this.blockService.findOne({

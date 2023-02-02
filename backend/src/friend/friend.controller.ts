@@ -40,7 +40,7 @@ export class FriendController {
 		const user1 = await this.authService.userId(request);
 		const friendship = await this.friendService.getFriendshipByUserids(user1, Number(user2));
 		if (!friendship) {
-			throw new BadRequestException("This friendship does not exists.");
+			throw new BadRequestException("This friendship doesn't exists.");
 		}
 		return friendship;
 	}
@@ -86,14 +86,14 @@ export class FriendController {
 			receiver: receiver
 		});
 		if (blockBySender) {
-			throw new BadRequestException("You can not be a friend with a User that you blocked.");
+			throw new BadRequestException("You can't be a friend with a User that you blocked.");
 		}
 		const blockByReceiver = await this.blockService.findOne({
 			sender: receiver,
 			receiver: sender
 		});
 		if (blockByReceiver) {
-			throw new BadRequestException("You can not be a friend with a User that blocked you.");
+			throw new BadRequestException("You can't be a friend with a User that blocked you.");
 		}
 
 		return await this.friendService.createFriendship({

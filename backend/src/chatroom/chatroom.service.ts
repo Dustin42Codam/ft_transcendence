@@ -28,14 +28,14 @@ export class ChatroomService extends AbstractService {
   async getChatroomById(id: number) {
     const chatroom = await this.findOne({ id }, ["users"]);
     if (!chatroom) {
-      throw new BadRequestException("This chatroom does not exist");
+      throw new BadRequestException("This chatroom doesn't exist");
     }
     return chatroom;
   }
 
   async getChatroomByName(name: string) {
     const chatroom = await this.findOne({ name }, ["users"]);
-    if (!chatroom) throw new BadRequestException("This chatroom does not exist");
+    if (!chatroom) throw new BadRequestException("This chatroom doesn't exist");
     return chatroom;
   }
 

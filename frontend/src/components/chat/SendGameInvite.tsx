@@ -32,7 +32,6 @@ class SendGameInvite extends React.Component<MyProps, MyState> {
   };
 
   componentDidMount() {
-    console.log("lol");
     document.addEventListener("mousedown", this.handleClickOutside);
   }
   componentWillUnmount() {

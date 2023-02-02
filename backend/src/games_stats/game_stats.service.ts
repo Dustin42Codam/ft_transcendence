@@ -15,7 +15,7 @@ export class GameStatsService extends AbstractService {
 
   async getGameStatsById(id: number) {
     const gameStats = this.findOne({ id: id });
-    if (!gameStats) throw new BadRequestException("These game stats do not exist");
+    if (!gameStats) throw new BadRequestException("These game stats don't exist");
     return gameStats;
   }
 

@@ -9,7 +9,7 @@ import {
 } from "../redux/slices/socketSlice";
 import { selectCurrentUser } from "../redux/slices/currentUserSlice";
 import { Link } from "react-router-dom";
-import { fetchUsers, selectAllUsers } from "../redux/slices/usersSlice";
+import { fetchUsers } from "../redux/slices/usersSlice";
 import {
   fetchChatMembers,
   selectAllChatMembers,
@@ -34,7 +34,6 @@ const Chat = () => {
   const currentChat = useAppSelector(selectCurrentChatroom);
   const currentChatMessages = useAppSelector(selectCurrentChatroomMessages);
   const dummy = useRef<HTMLDivElement>(null);
-  const users = useAppSelector(selectAllUsers);
   const chatMembers = useAppSelector(selectAllChatMembers);
   const currentMember = useAppSelector(selectCurrentMember);
   const dispatch = useAppDispatch();

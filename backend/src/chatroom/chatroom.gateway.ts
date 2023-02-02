@@ -64,14 +64,14 @@ export class ChatroomGateway implements OnGatewayInit, OnGatewayConnection, OnGa
 
   @SubscribeMessage(ChatroomEvents.JoinChatRoom)
   async handelJoinRoom(client: Socket, payload: ChatRoom): Promise<void> {
-		console.log("clienat trying to join:" ,client.id, payload);
+		console.log("client trying to join:" ,client.id, payload);
     const chatroom = await this.chatroomService.getChatroomById(Number(payload.id));
     if (!chatroom) {
-      throw new BadRequestException(`Chatroom with id ${payload.id} does not exist.`);
+      throw new BadRequestException(`Chatroom with id ${payload.id} doesn't exist.`);
     }
     const userId = await this.userService.getUserFromClient(client);
     if (!userId) {
-      throw new BadRequestException(`User with id ${client.id} does not exist.`);
+      throw new BadRequestException(`User with id ${client.id} doesn't exist.`);
     }
 		const user = await this.userService.getUserById(userId);
     const member = await this.memberService.getMemberByUserAndChatroom(user, chatroom);
@@ -79,7 +79,7 @@ export class ChatroomGateway implements OnGatewayInit, OnGatewayConnection, OnGa
     if (await this.memberService.isRestricted(member)) {
       throw new BadRequestException(`User with id ${payload.userId} is restricted from chatroom with id ${payload.id}.`);
     }
-		console.log("clienat jointed:" ,client.id, payload);
+		console.log("client joined:" ,client.id, payload);
     client.join(`${payload.id}`);
     // this.io.to(`${payload.id}`).emit(ChatroomEvents.ChatRoomNotification, `${member.user.display_name} joined the room`);
     client.emit(ChatroomEvents.JoinChatRoomSuccess, payload);
@@ -104,13 +104,11 @@ export class ChatroomGateway implements OnGatewayInit, OnGatewayConnection, OnGa
 
   @SubscribeMessage(ChatroomEvents.SendMessageToServer)
   async handleMessageToServer(client: Socket, payload: Message): Promise<void> {
-    //client.broadcast
-    console.log("getting here");
     const user = await this.userService.getUserById(Number(payload.authorId));
     const chatroom = await this.chatroomService.getChatroomById(Number(payload.chatRoomId));
     console.log("🚀 ~ file: chatroom.gateway.ts:133 ~ ChatroomGateway ~ handleMessageToServer ~ payload.chatRoomId", payload.chatRoomId)
     if (!chatroom) {
-		throw new BadRequestException(`Chatroom with id ${payload.chatRoomId} does not exist.`);
+		throw new BadRequestException(`Chatroom with id ${payload.chatRoomId} doesn't exist.`);
 	}
     const member = await this.memberService.getMemberByUserAndChatroom(user, chatroom);
     if (await this.memberService.isRestricted(member))

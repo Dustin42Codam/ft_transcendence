@@ -153,11 +153,8 @@ const ChannelSettings = (props: any) => {
           <Modal.Title id="contained-modal-title-vcenter">Warning</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <h4>Are you sure?</h4>
-          <h5>
-            Do you really want to delete this channel? This process cannot be
-            undone.
-          </h5>
+          <h6>Are you sure?</h6>
+          <div>This process cannot be undone.</div>
         </Modal.Body>
         <Modal.Footer>
           <Button onClick={props.onHide}>Cancel</Button>

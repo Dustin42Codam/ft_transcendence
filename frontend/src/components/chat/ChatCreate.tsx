@@ -20,7 +20,7 @@ const ChatCreate = () => {
 
   async function createChat() {
     if (!name) {
-      toast.error("Name cannot be empty!", {
+      toast.error("Name can't be empty!", {
         position: "top-center",
         autoClose: 5000,
         hideProgressBar: false,
@@ -34,7 +34,7 @@ const ChatCreate = () => {
       chatType === ChatroomType.PROTECTED &&
       password !== passwordConfrim
     ) {
-      toast.error("Passwords did not match!", {
+      toast.error("Passwords didn't match!", {
         position: "top-center",
         autoClose: 5000,
         hideProgressBar: false,
