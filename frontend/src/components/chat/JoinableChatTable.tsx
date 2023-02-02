@@ -11,6 +11,7 @@ import PopUp from "../PopUp";
 import PasswordPrompt from "./PasswordPrompt";
 import { selectCurrentUser } from "../../redux/slices/currentUserSlice";
 import { fetchCurrentMember } from "../../redux/slices/currentMemberSlice";
+import { toast } from "react-toastify";
 
 export enum ChatroomType {
   PUBLIC = "public",
@@ -99,10 +100,17 @@ const JoinableChats = (props: any) => {
           })
         )
         .catch((err) => {
-          alert(
-            `Failed to log in to ${joinableChats[joinChatIndex].name} ` +
-              err.response.data.message
-          );
+          toast.error(`Failed to log in to ${joinableChats[joinChatIndex].name} ` +
+          err.response.data.message, {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+          });
         });
     }
   }, [password]);

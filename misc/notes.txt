@@ -1,5 +1,10 @@
 
 todo:
+	-	Join chat pop up
+		-	
+		-	test with many chats
+		-	bug: sometimes the user is
+			redirected to the wrong channel
 	-	fetch joinable chats when clicking
 		on "join channel"
 		-	makes sure that the user

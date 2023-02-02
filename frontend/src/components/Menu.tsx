@@ -11,7 +11,6 @@ import GroupChatTable from "./chat/GroupChatTable";
 import DirectChatTable from "./chat/DirectChatTable";
 import JoinableChatTable from "./chat/JoinableChatTable";
 import ChatCreateModal from "./chat/ChatCreateModal";
-import ChatCreate from "./chat/ChatCreate";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { fetchDirectChats, selectJoinableChats } from "../redux/slices/chatsSlice";
 import PopUp from "./PopUp";
@@ -103,12 +102,6 @@ const Menu = (props: any) => {
                 />
                 Direct Messages
               </p>
-              {createChatPopUp && (
-                <PopUp
-                  content={<ChatCreate />}
-                  handleClose={() => setCreateChatPopUp(!createChatPopUp)}
-                />
-              )}
               <DirectChatTable />
             </React.Fragment>
           ) : (
@@ -126,12 +119,6 @@ const Menu = (props: any) => {
                 />
                 Direct Messages
               </p>
-              {createChatPopUp && (
-                <PopUp
-                  content={<ChatCreate />}
-                  handleClose={() => setCreateChatPopUp(!createChatPopUp)}
-                />
-              )}
             </React.Fragment>
           )}
         </div>
@@ -148,24 +135,8 @@ const Menu = (props: any) => {
                   onClick={() => setActiveChannels(!activeChannels)}
                 />
                 Channels
-{/*                 <div className="addIcon">
-                  <AddIcon
-                    sx={{
-                      ml: 17,
-                      "&:hover": { backgroundColor: "grey" },
-                      borderRadius: "10%",
-                    }}
-                    onClick={() => setCreateChatPopUp(!createChatPopUp)}
-                    />
-                </div> */}
               </div>
               </p>
-              {createChatPopUp && (
-                <PopUp
-                  content={<ChatCreate />}
-                  handleClose={() => setCreateChatPopUp(!createChatPopUp)}
-                />
-              )}
               <GroupChatTable />
               <p className="navChatOption">
                 <ChatCreateModal />
@@ -194,16 +165,6 @@ const Menu = (props: any) => {
                   onClick={() => setActiveChannels(!activeChannels)}
                 />
                 Channels
-{/*                 <div className="addIcon">
-                  <AddIcon
-                    sx={{
-                      ml: 17,
-                      "&:hover": { backgroundColor: "grey" },
-                      borderRadius: "10%",
-                    }}
-                    onClick={() => setCreateChatPopUp(!createChatPopUp)}
-                    />
-                </div> */}
               </div>
             </p>
             </React.Fragment>
