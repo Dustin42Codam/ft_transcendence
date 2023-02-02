@@ -6,6 +6,7 @@ import "./Game.css";
 import store from "../redux/store";
 import Confetty from "../components/confety";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 import { useLocation } from "react-router-dom";
 
@@ -112,7 +113,6 @@ const Game = (props: any) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log("this is url", url);
     const theGameFrame = document.getElementById("content");
     const savedTheGameFrame = theGameFrame!.innerHTML;
     let timer: any;
@@ -195,31 +195,33 @@ const Game = (props: any) => {
       gameState = store.getState().gameSocket;
       score!.innerHTML = `<h1 id="score">${gameState.gamePhysics.player1.displayName} ${gameState.gamePhysics.score[0]} : ${gameState.gamePhysics.player2.displayName} ${gameState.gamePhysics.score[1]}</h1>`;
       const startAnimation = () => {
-        setTimeout(() => {
           let thisLoop: any = new Date();
           let fps: any = 1000 / (thisLoop - lastLoop);
           let dt: any = 150 / fps;
           gameState = store.getState().gameSocket;
           game.setGameState(gameState.gamePhysics);
           lastLoop = thisLoop;
-          if (game.gamePhysics.scored) {
+					if (game.gamePhysics.scored) {
             score!.innerHTML = `<h1 id="score">${gameState.gamePhysics.player1.displayName} ${gameState.gamePhysics.score[0]} : ${gameState.gamePhysics.player2.displayName} ${gameState.gamePhysics.score[1]}</h1>`;
           }
-          if (game.gamePhysics.score[0] == 5 || game.gamePhysics.score[0] == 5) {
-						navigate("/game");
+          if (game.gamePhysics.score[0] == 5) {
+            score!.innerHTML = `<h1 id="score">${gameState.gamePhysics.player1.displayName} ${gameState.gamePhysics.score[0]} : ${gameState.gamePhysics.player2.displayName} ${gameState.gamePhysics.score[1]}</h1>`;
+            theGameFrame!.innerHTML = `<div><h2>${game.gamePhysics.player1.displayName} Won</h2></div>`;
+          }
+          if (game.gamePhysics.score[1] == 5) {
+            score!.innerHTML = `<h1 id="score">${gameState.gamePhysics.player1.displayName} ${gameState.gamePhysics.score[0]} : ${gameState.gamePhysics.player2.displayName} ${gameState.gamePhysics.score[1]}</h1>`;
+            theGameFrame!.innerHTML = `<div><h2>${game.gamePhysics.player2.displayName} Won</h2></div>`;
           }
           game.dt = dt;
           game.fps = fps;
           game.animation();
           game.frame += 1;
           requestAnimationFrame(startAnimation);
-        }, 15);
       };
       startAnimation();
     });
     return () => {
       clearTimeout(timer);
-      console.log("we are leaving");
       theGameFrame!.innerHTML = "<h1>Game is pending</h1>";
       dispatch(
         gameSocketActions.leaveRoom({
@@ -229,18 +231,9 @@ const Game = (props: any) => {
       );
     };
   }, []);
-  function leaveGame(e: any) {
-    dispatch(
-      gameSocketActions.leaveRoom({
-        gameRoomId: Number(url[url.length - 1]),
-        userId: currentUser.id,
-      })
-    );
-  }
   return (
     <Wrapper>
       <div id="canvasContainer">
-				<button onClick={(e) => leaveGame(e)}>Leave Game</button>
         <h1 id="score"></h1>
         <canvas tabIndex={0} id="gameCanvas" width="1300" height="700">
           Game is not supported for this borwser. Needs <b>cavas</b> support.

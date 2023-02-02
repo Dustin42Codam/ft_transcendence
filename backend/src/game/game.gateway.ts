@@ -294,7 +294,7 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 		function test() {
 			setTimeout(() => {
 				activeGames.map(async (game: GameRoom, index: number) => {
-					//logger.debug(`GAME[${index}]:`, game);
+					logger.debug(`GAME[${index}]:`, game);
 					if (gameHasStarted(game)) {
 						if (!isBallSet(game.gamePhysics.ball)) {
 							game.gamePhysics.ball = getRandomPosition();
@@ -387,8 +387,21 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
   @SubscribeMessage(GameroomEvents.LeaveGameRoom)
   async handelLeaveRoom(client: Socket, payload: any): Promise<void> {
 		const currentActiveGame: GameRoom = this.getActiveGameByGameRoomId(payload.gameRoomId);
-		this.logger.debug(currentActiveGame);
 
+		console.log(this.activeGames.length);
+		if (currentActiveGame) {
+			if ((JSON.stringify(currentActiveGame.gamePhysics.player1) == JSON.stringify(defaultPlyaer)) || JSON.stringify(currentActiveGame.gamePhysics.player2) == JSON.stringify(defaultPlyaer)) {
+				let i:number = this.activeGames.length;
+				while (i--) {
+					if (this.activeGames[i].gameRoomId == currentActiveGame.gameRoomId) { 
+						const game = await this.gameService.getGameById(Number(currentActiveGame.gameRoomId));
+						await this.gameService.delete(game.id);
+						this.activeGames.splice(i, 1);
+					} 
+				}
+			}
+		}
+		console.log(this.activeGames.length);
     client.leave(payload.gameRoomId);
 	}
 
