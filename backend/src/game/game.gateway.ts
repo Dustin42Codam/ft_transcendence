@@ -236,7 +236,6 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 			ball.directionY = -ball.directionY;
 		}
 		function checkBallHitBat(game: GameRoom) {
-			//const new_dir: Array<number> = [-3, -2, -1, 0, 1, 2, 3];
 			if (doesOverlapWith(game.gamePhysics.ball, game.gamePhysics.player1.bat)) {
 				ballHitsBat(game.gamePhysics.ball, game.gamePhysics.player1.bat);
 				game.gamePhysics.player1.bat.lastTouch = true;
@@ -342,7 +341,7 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 					io.to(game.gameRoomId).emit(GameroomEvents.PhysicsLoop, game.gamePhysics);
 				});
 				test();
-			}, 15);
+			}, 1000);
 			var i = activeGames.length
 			while (i--) {
 				if (activeGames[i].finished) { 
@@ -376,8 +375,11 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 	}
 
   @SubscribeMessage(GameroomEvents.LeaveGameRoom)
-  async handelLeaveRoom(client: Socket, gameRoomId: string): Promise<void> {
-    client.leave(gameRoomId);
+  async handelLeaveRoom(client: Socket, payload: any): Promise<void> {
+		const currentActiveGame: GameRoom = this.getActiveGameByGameRoomId(payload.gameRoomId);
+		this.logger.debug(currentActiveGame);
+
+    client.leave(payload.gameRoomId);
 	}
 
   @SubscribeMessage(GameroomEvents.JoinGameRoom)

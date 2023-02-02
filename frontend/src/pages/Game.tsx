@@ -106,9 +106,10 @@ class GameState {
 const Game = (props: any) => {
   const dispatch = useAppDispatch();
   const location = useLocation();
+	const url: Array<string> = location.pathname.split("/");
+	const currentUser = store.getState().currentUser.currentUser;
 
   useEffect(() => {
-    const url: Array<string> = location.pathname.split("/");
     console.log("this is url", url);
     const theGameFrame = document.getElementById("content");
     const savedTheGameFrame = theGameFrame!.innerHTML;
@@ -157,7 +158,6 @@ const Game = (props: any) => {
     waitForTheGameToStart().then(() => {
       clearTimeout(timer);
       theGameFrame!.innerHTML = savedTheGameFrame;
-      const currentUser = store.getState().currentUser;
       const canvas = document.getElementById("gameCanvas") as HTMLCanvasElement;
       const score = document.getElementById("score") as HTMLCanvasElement;
       const game = new GameState(canvas, gameState);
@@ -224,12 +224,12 @@ const Game = (props: any) => {
       clearTimeout(timer);
       console.log("we are leaving");
       theGameFrame!.innerHTML = "<h1>Game is pending</h1>";
-      dispatch(gameSocketActions.leaveRoom(Number(url[url.length - 1])));
+      dispatch(gameSocketActions.leaveRoom({ gameRoomId: Number(url[url.length - 1]), userId: currentUser.id}));
     };
   }, []);
   function leaveGame(e: any) {
-    dispatch(gameSocketActions.leaveRoom(Number(url[url.length - 1])));
-	}
+    dispatch(gameSocketActions.leaveRoom({ gameRoomId: Number(url[url.length - 1]), userId: currentUser.id}));
+  }
   return (
     <Wrapper>
       <div id="canvasContainer">
