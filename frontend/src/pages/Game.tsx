@@ -195,28 +195,28 @@ const Game = (props: any) => {
       gameState = store.getState().gameSocket;
       score!.innerHTML = `<h1 id="score">${gameState.gamePhysics.player1.displayName} ${gameState.gamePhysics.score[0]} : ${gameState.gamePhysics.player2.displayName} ${gameState.gamePhysics.score[1]}</h1>`;
       const startAnimation = () => {
-          let thisLoop: any = new Date();
-          let fps: any = 1000 / (thisLoop - lastLoop);
-          let dt: any = 150 / fps;
-          gameState = store.getState().gameSocket;
-          game.setGameState(gameState.gamePhysics);
-          lastLoop = thisLoop;
-					if (game.gamePhysics.scored) {
-            score!.innerHTML = `<h1 id="score">${gameState.gamePhysics.player1.displayName} ${gameState.gamePhysics.score[0]} : ${gameState.gamePhysics.player2.displayName} ${gameState.gamePhysics.score[1]}</h1>`;
-          }
-          if (game.gamePhysics.score[0] == 5) {
-            score!.innerHTML = `<h1 id="score">${gameState.gamePhysics.player1.displayName} ${gameState.gamePhysics.score[0]} : ${gameState.gamePhysics.player2.displayName} ${gameState.gamePhysics.score[1]}</h1>`;
-            theGameFrame!.innerHTML = `<div><h2>${game.gamePhysics.player1.displayName} Won</h2></div>`;
-          }
-          if (game.gamePhysics.score[1] == 5) {
-            score!.innerHTML = `<h1 id="score">${gameState.gamePhysics.player1.displayName} ${gameState.gamePhysics.score[0]} : ${gameState.gamePhysics.player2.displayName} ${gameState.gamePhysics.score[1]}</h1>`;
-            theGameFrame!.innerHTML = `<div><h2>${game.gamePhysics.player2.displayName} Won</h2></div>`;
-          }
-          game.dt = dt;
-          game.fps = fps;
-          game.animation();
-          game.frame += 1;
-          requestAnimationFrame(startAnimation);
+        let thisLoop: any = new Date();
+        let fps: any = 1000 / (thisLoop - lastLoop);
+        let dt: any = 150 / fps;
+        gameState = store.getState().gameSocket;
+        game.setGameState(gameState.gamePhysics);
+        lastLoop = thisLoop;
+        if (game.gamePhysics.scored) {
+          score!.innerHTML = `<h1 id="score">${gameState.gamePhysics.player1.displayName} ${gameState.gamePhysics.score[0]} : ${gameState.gamePhysics.player2.displayName} ${gameState.gamePhysics.score[1]}</h1>`;
+        }
+        if (game.gamePhysics.score[0] == 5) {
+          score!.innerHTML = `<h1 id="score">${gameState.gamePhysics.player1.displayName} ${gameState.gamePhysics.score[0]} : ${gameState.gamePhysics.player2.displayName} ${gameState.gamePhysics.score[1]}</h1>`;
+          theGameFrame!.innerHTML = `<div><h2>${game.gamePhysics.player1.displayName} Won</h2></div>`;
+        }
+        if (game.gamePhysics.score[1] == 5) {
+          score!.innerHTML = `<h1 id="score">${gameState.gamePhysics.player1.displayName} ${gameState.gamePhysics.score[0]} : ${gameState.gamePhysics.player2.displayName} ${gameState.gamePhysics.score[1]}</h1>`;
+          theGameFrame!.innerHTML = `<div><h2>${game.gamePhysics.player2.displayName} Won</h2></div>`;
+        }
+        game.dt = dt;
+        game.fps = fps;
+        game.animation();
+        game.frame += 1;
+        requestAnimationFrame(startAnimation);
       };
       startAnimation();
     });
