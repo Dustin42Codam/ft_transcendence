@@ -18,7 +18,6 @@ import {
 } from "../redux/slices/chatsSlice";
 import PopUp from "./PopUp";
 import { toast } from "react-toastify";
-import LogoutIcon from "@mui/icons-material/Logout";
 import "./Menu.css";
 
 const Menu = (props: any) => {
@@ -174,7 +173,6 @@ const Menu = (props: any) => {
           </div>
         </div>
       </nav>
-      <LogoutIcon />
     </>
   );
 };
