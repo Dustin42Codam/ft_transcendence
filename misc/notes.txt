@@ -1,28 +1,62 @@
 
 todo:
+	-	Join chat pop up
+		-	
+		-	test with many chats
+		-	bug: sometimes the user is
+			redirected to the wrong channel
+	-	fetch joinable chats when clicking
+		on "join channel"
+		-	makes sure that the user
+			doesn't have to always reload
+			the whole application in order
+			to see if there are joinable chats
 
-	-	fix join DM
-		-	cannot join all DMs from sidebar
+	->	add "create channel" button to side bar
+		instead of "+" icon
+		+	cannot have a pw bug
+		+	new create new chat UI pop up modal
+		+	fix rendering in side bar
+			+	doesnt render directly after chat
+				was created
+		-	optional:
+			-	redirect to chat after creation
+			-	select user from friend list
+				-	test call dispatch with userIds beforhand
+
+	-	new join channel pop up
+		-	info if there are no channels to join 
+
+	+	move emojis into modal
+
+	-	rm "Sign out" text and leave only
+		an icon and attach an hover overlay text
+		to it
+	+	fix join DM
+		+	cannot join all DMs from sidebar
 	->	get all users authguard
 		->	check tfa secret of other users
 	+	fix sidebar create channel row layout
 	->	change cursor to pointer on all
 		mouse hovers in the sidebar
-	->	hide scroll bar on sidebar nav items
-		+	overflow=hidden
-		->	check how huge list of users is being rendered
+	+	hide scroll bar on sidebar nav items
+		+	check how huge list of users is being rendered
 	-	make whole div clickable to expand
 		dropdown menu for chats instead
 		of just the icon
 	+	move toasts on user page to the right
 
+	-	better game UI
+	-	better dashboard UI
+		-	particles js?
+		-	particles png?
+
 	-	optional, non mandatory extra stuff:
-		->	new create new chat UI
 		-	reset password in UI and component state
 			after new password + passwordConfirm
 			didn't match
 		-	change contentBody in user list, user profile, user page?
-		-	remove header
+		+	remove header
 		-	new side bar
 			-	move project name to top of sidebar
 			-	move sign out button to side bar

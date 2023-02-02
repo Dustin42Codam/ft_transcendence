@@ -7,23 +7,18 @@ import {
   selectCurrentChatroom,
   socketActions,
 } from "../../redux/slices/socketSlice";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import axios from "axios";
-import InsertEmoticonIcon from "@mui/icons-material/InsertEmoticon";
 import "./ChatInput.css";
 import { selectCurrentMember } from "../../redux/slices/currentMemberSlice";
-import { selectAllChatMembers } from "../../redux/slices/chatMembersSlice";
-import Emojis from "../Emojis";
+import EmojiModal from "../EmojiModal";
 
 function ChatInput(props: any) {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [message, setMessage] = useState("");
-  const [chatMembers, setChatMembers] = useAppSelector(selectAllChatMembers);
   const currentUser = useAppSelector(selectCurrentUser);
   const currentMember = useAppSelector(selectCurrentMember);
-  const currentChat = useAppSelector(selectCurrentChatroom);
   let currentChatroom: any = useAppSelector(selectCurrentChatroom);
   const inputRef = useRef<HTMLFormElement>(null);
 
@@ -102,7 +97,11 @@ function ChatInput(props: any) {
         onChange={(e) => setMessage(e.target.value)}
         autoComplete="off"
       />
-      <Emojis inputRef={inputRef} message={message} setMessage={setMessage} />
+      <EmojiModal
+        inputRef={inputRef}
+        message={message}
+        setMessage={setMessage}
+      />
       <input type="submit" autoComplete="off" hidden />
     </form>
   );

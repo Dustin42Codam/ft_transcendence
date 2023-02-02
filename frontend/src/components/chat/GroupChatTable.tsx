@@ -47,7 +47,7 @@ const GroupChatTable = () => {
 
   useEffect(() => {
     fetchChatData();
-  }, [currentChatroom, currentChatroom.type]);
+  }, [currentChatroom, currentChatroom.type, groupChats.length]);
 
   async function handleClick(name: string, chatToJoinIndex: number) {
     dispatch(
@@ -73,7 +73,6 @@ const GroupChatTable = () => {
           currentChatroom.id == groupChats[chatToJoinIndex].id &&
           currentChatroom.name == groupChats[chatToJoinIndex].name
         ) {
-          console.log("All goooed:", currentChatroom);
           resolve(null);
           clearInterval(interval);
         }
@@ -85,23 +84,22 @@ const GroupChatTable = () => {
     });
   }
 
-  /*
-  	generate map table using the chats array we got from the redux store
-  */
-  const renderedChats = groupChats.map((chat: Chats, index: number) => (
-    <div
-      key={index}
-      className="chatRow"
-      onClick={() => handleClick(chat.name, index)}
-    >
-      {chat.type === ChatroomType.PROTECTED && <CastleIcon />}
-      {chat.type === ChatroomType.PUBLIC && <PublicIcon />}
-      {chat.type === ChatroomType.PRIVATE && <VisibilityOffIcon />}
-      {chat.name}
+  return (
+    <div className="chatTableContainer">
+      {groupChats.map((chat: Chats, index: number) => (
+        <div
+          key={index}
+          className="chatRow"
+          onClick={() => handleClick(chat.name, index)}
+        >
+          {chat.type === ChatroomType.PROTECTED && <CastleIcon />}
+          {chat.type === ChatroomType.PUBLIC && <PublicIcon />}
+          {chat.type === ChatroomType.PRIVATE && <VisibilityOffIcon />}
+          {chat.name}
+        </div>
+      ))}
     </div>
-  ));
-
-  return <div className="chatTableContainer">{renderedChats}</div>;
+  );
 };
 
 export default GroupChatTable;

@@ -168,9 +168,6 @@ export class ChatroomController {
     if (!body.password) {
       throw new BadRequestException("You need a password to change to a PROTECTED chatroom.");
     }
-    if (chatroom.type !== ChatroomType.PROTECTED) {
-		  throw new BadRequestException("This chatroom doesn't have a password.");
-	  }
 	  const userId = await this.authService.userId(request)
     const user = await this.userService.getUserById(userId);
     const member = await this.memberService.getMemberByUserAndChatroom(user, chatroom);

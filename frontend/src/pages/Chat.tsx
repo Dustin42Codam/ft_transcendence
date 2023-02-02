@@ -102,11 +102,8 @@ const Chat = () => {
               </ul>
             </div>
 
-            {/* chatbox */}
-
             <ChatBox />
 
-            {/* user input */}
             <ChatInput location={location} />
           </div>{" "}
           {/* end left side */}

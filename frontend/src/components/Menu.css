@@ -6,10 +6,36 @@
   background-color: rgb(49, 48, 49);
 }
 
+.sidenav {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE 10+ */
+}
+
+.sidenav::-webkit-scrollbar {
+  display: none;
+}
+
 .navItemHiglight:hover {
   background-color: rgb(50, 50, 50);
   transition-duration: 0.15s;
   cursor: pointer;
+}
+
+.navChatOption {
+  background-color: rgba(140, 140, 145, 0);
+  /* transition-duration: 2s; */
+  cursor: pointer;
+  margin: 1px;
+  padding-left: 5px;
+  border-radius: 3%;
+  overflow: hidden;
+}
+
+.navChatOption:hover {
+  cursor: pointer;
+  color: rgb(255, 255, 255);
+  background-color: rgb(72, 75, 75);
+  transition-duration: 0.15s;
 }
 
 .channelRow {
@@ -19,6 +45,11 @@
 }
 
 .addIcon {
+  position: absolute;
+  left: 60px;
+}
+
+.logOutIcon {
   position: absolute;
   left: 60px;
 }
