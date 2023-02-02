@@ -3,15 +3,18 @@ import axios from "axios";
 import { Member } from "../../models/Member";
 import { toast } from "react-toastify";
 import { ChatroomType } from "../../models/Chats";
+import { User } from "../../models/User";
 
 interface chatMembersState {
   members: Member[];
+  joinableUsers: User[];
   status: string;
   error: string;
 }
 
 const initialState: chatMembersState = {
   members: [],
+  joinableUsers: [],
   status: "idle",
   error: "",
 };
@@ -24,67 +27,11 @@ export const fetchChatMembers = createAsyncThunk(
   }
 );
 
-export const updateCurrentChatType = createAsyncThunk(
-  "chatMembers/updateCurrentChatType",
+export const fetchJoinableUsers = createAsyncThunk(
+  "chatMembers/fetchJoinableUsers",
   async (data: any) => {
-    const toastId = toast.loading(`Updating channel data...`);
-
-    if (
-      data.type !== ChatroomType.PUBLIC &&
-      data.password?.length &&
-      data.password !== data.passwordConfirm
-    ) {
-      toast.update(toastId, {
-        render: `Passwords didn't match!`,
-        type: "error",
-        position: "top-right",
-        autoClose: 5000,
-        isLoading: false,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
-      return;
-    }
-    await axios
-      .post(`chatroom/type/id/${data.id}`, {
-        type: data.type,
-        password: data.password,
-      })
-      .then((ret) => {
-        toast.update(toastId, {
-          render: `Channel data updated!`,
-          type: "success",
-          isLoading: false,
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        });
-      })
-      .catch((error: any) => {
-        toast.update(toastId, {
-          render: `${error.response.data.message}`,
-          type: "error",
-          position: "top-right",
-          autoClose: 5000,
-          isLoading: false,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        });
-      });
-    return data.type;
+    const response = await axios.get(`chatroom/joinable/id/${data.id}`);
+    return response.data;
   }
 );
 
@@ -99,9 +46,21 @@ const chatMembers = createSlice({
       })
       .addCase(fetchChatMembers.fulfilled, (state, action) => {
         state.status = "succeeded";
+        // action.payload.sort
         state.members = action.payload;
       })
       .addCase(fetchChatMembers.rejected, (state: any, action) => {
+        state.status = "failed";
+        state.error = action.error.message;
+      })
+      .addCase(fetchJoinableUsers.pending, (state, action) => {
+        state.status = "loading";
+      })
+      .addCase(fetchJoinableUsers.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.joinableUsers = action.payload;
+      })
+      .addCase(fetchJoinableUsers.rejected, (state: any, action) => {
         state.status = "failed";
         state.error = action.error.message;
       });
@@ -110,5 +69,8 @@ const chatMembers = createSlice({
 
 // selectors
 export const selectAllChatMembers = (state: any) => state.chatMembers.members;
+
+export const selectJoinableUsers = (state: any) =>
+  state.chatMembers.joinableUsers;
 
 export default chatMembers.reducer;

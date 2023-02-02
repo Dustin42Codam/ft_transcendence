@@ -1,16 +1,12 @@
 import { WebSocketServer, OnGatewayDisconnect, OnGatewayConnection, WsResponse, OnGatewayInit, MessageBody, SubscribeMessage, WebSocketGateway } from "@nestjs/websockets";
 import { BadRequestException, Logger, Req } from "@nestjs/common";
 import { Request, Response } from "express";
-
 import { Namespace, Server, Socket } from "socket.io";
 import { UseGuards } from "@nestjs/common";
 import ChatroomEvents from "./chatroomEvents";
 import { UserStatus } from "src/user/entity/user.entity";
 import { AuthService } from "src/auth/auth.service";
 import { SocketAuthGuard } from "../auth/auth.socket.guard";
-
-
-
 import { Chatroom } from "src/chatroom/entity/chatroom.entity";
 import { UserService } from "src/user/user.service";
 import { MemberService } from "src/member/member.service";
@@ -30,7 +26,6 @@ export type ChatRoom = {
   userId : Number;
 };
 
-//TODO add authguard
 @WebSocketGateway(3001, {
   namespace: "chat",
 })
@@ -52,7 +47,7 @@ export class ChatroomGateway implements OnGatewayInit, OnGatewayConnection, OnGa
   }
 
  async handleConnection(client: any): Promise<void> {
-		console.log(`client ${client.id} conected, `);
+	console.log(`client ${client.id} conected, `);
     const userId = await this.userService.getUserFromClient(client);
 		if (userId) {
 			await this.userService.changeStatus(userId, UserStatus.ONLINE );
@@ -86,7 +81,7 @@ export class ChatroomGateway implements OnGatewayInit, OnGatewayConnection, OnGa
     }
 		console.log("clienat jointed:" ,client.id, payload);
     client.join(`${payload.id}`);
-    this.io.to(`${payload.id}`).emit(ChatroomEvents.ChatRoomNotification, `${member.user.display_name} joined the room`);
+    // this.io.to(`${payload.id}`).emit(ChatroomEvents.ChatRoomNotification, `${member.user.display_name} joined the room`);
     client.emit(ChatroomEvents.JoinChatRoomSuccess, payload);
   }
 
@@ -128,13 +123,3 @@ export class ChatroomGateway implements OnGatewayInit, OnGatewayConnection, OnGa
     //TODO: emit the message
   }
 }
-
-/*
-		//this we can aslo get by cookie
-    const member: Member = await this.memberService.getMemberById(Number(body.member));
-    if (this.memberService.isRestricted(member)) {
-      throw new BadRequestException("You are restricted from this chatroom.");
-			return { event: "msgNotRecivedToClient", data: null};
-    }
-    this.messageService.create({timestamp: new Date(), member: member, message: body.message});
-	 */

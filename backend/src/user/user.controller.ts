@@ -19,7 +19,11 @@ export class UserController {
 
   @Get("id/:id")
   async getUserById(@Param("id") id: string) {
-    return this.userService.getUserById(Number(id));
+		const user = this.userService.getUserById(Number(id));
+    if (!user) {
+			throw new BadRequestException("This user does not exist");
+		}
+		return user;
   }
 
 	// TODO: delete before handing in

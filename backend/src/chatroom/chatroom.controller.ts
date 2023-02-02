@@ -165,9 +165,12 @@ export class ChatroomController {
   @Post("password/id/:id")
   async changePassword(@Param("id") id: string, @Body() body: ChatroomChangePasswordDto, @Req() request: Request) {
     const chatroom = await this.chatroomService.getChatroomById(Number(id));
-    // if (chatroom.type !== ChatroomType.PROTECTED) {
-		//   throw new BadRequestException("This chatroom does not have a password.");
-	//   }
+    if (!body.password) {
+      throw new BadRequestException("You need a password to change to a PROTECTED chatroom.");
+    }
+    if (chatroom.type !== ChatroomType.PROTECTED) {
+		  throw new BadRequestException("This chatroom does not have a password.");
+	  }
 	  const userId = await this.authService.userId(request)
     const user = await this.userService.getUserById(userId);
     const member = await this.memberService.getMemberByUserAndChatroom(user, chatroom);

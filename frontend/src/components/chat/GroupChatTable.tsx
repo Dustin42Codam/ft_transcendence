@@ -40,7 +40,6 @@ const GroupChatTable = () => {
   const dispatch = useAppDispatch();
   const currentUser = useAppSelector(selectCurrentUser);
   const navigate = useNavigate();
-  let data = useAppSelector(selectGroupChats);
 
   async function fetchChatData() {
     dispatch(fetchGroupChats());

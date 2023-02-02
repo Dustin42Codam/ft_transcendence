@@ -1,11 +1,18 @@
+import { useEffect } from "react";
 import Wrapper from "../components/Wrapper";
+import { useAppDispatch } from "../redux/hooks";
+import { fetchJoinableChats } from "../redux/slices/chatsSlice";
 
 const Dashboard = () => {
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+      dispatch(fetchJoinableChats());
+  }, []);
+
   return (
     <Wrapper>
-      <div>
-        Wellcome to the most awesome Pong game since 197... somthing something
-      </div>
+      <div>Welcome to the most awesome Pong game since 1972</div>
     </Wrapper>
   );
 };

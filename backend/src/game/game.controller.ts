@@ -5,7 +5,7 @@ import { AuthGuard } from "src/auth/auth.guard";
 import express, { Request } from "express";
 import { AuthService } from "src/auth/auth.service";
 import { UserService } from "src/user/user.service";
-import { GameStatus, GameType } from "./entity/game.entity";
+import { GameMode, GameStatus, GameType } from "./entity/game.entity";
 
 @Controller("game")
 export class GameController {
@@ -43,29 +43,28 @@ export class GameController {
         return ladder;
     }
 
-    @Post('private/join/id/:id')
-    async joinPrivateGameById(
-        @Param('id') id : string,
-        @Req() request: Request
-    ) {
-        const userId = await this.authServcie.userId(request);
-        const user = await this.userService.getUserById(userId);
-        if (this.gameService.isAlreadyInGame(user))
-            throw new BadRequestException("This user is already in a game");
-        //TODO add check if person is in the correct chatroom
-        const game = await this.gameService.getGameById(Number(id));
-        return this.gameService.addUserToGame(userId, game)
-    }
 
-    @Post('private')
-    async createPrivateGameById(
+    //TODO make it work with spectating
+    @Post('private/join/invite_code/:invite_code')
+    async joinPrivateGameByInviteCode(
+        @Param('invite_code') invite_code : string,
         @Req() request: Request
     ) {
         const userId = await this.authServcie.userId(request);
         const user = await this.userService.getUserById(userId);
-        if (this.gameService.isAlreadyInGame(user))
+        if (await this.gameService.isAlreadyInGame(user))
             throw new BadRequestException("This user is already in a game");
-        return this.gameService.create({player_1: userId, type: GameType.CLASSIC})
+        const AllPrivateGames = await this.gameService.find({where: {status: GameStatus.PENDING, type: GameType.PRIVATE}})
+        for (const game of AllPrivateGames) {
+            console.log("🚀 ~ file: game.controller.ts:59 ~ GameController ~ game", game)
+            console.log("🚀 ~ file: game.controller.ts:62 ~ GameController ~ invite_code", typeof(invite_code))
+            console.log("🚀 ~ file: game.controller.ts:63 ~ GameController ~ game.invite_code", typeof(game.invite_code))
+            
+            if (game.invite_code === invite_code) {
+                return await this.gameService.addUserToGame(userId, game)
+            }
+        }
+        throw new BadRequestException("This game does not exist or is already full.");
     }
 
     @Post('classic')
@@ -76,11 +75,11 @@ export class GameController {
         const user = await this.userService.getUserById(userId);
         if (await this.gameService.isAlreadyInGame(user))
             throw new BadRequestException("This user is already in a game");
-        const games = await this.gameService.find({where: {status: GameStatus.PENDING, type: GameType.CLASSIC}})
+        const games = await this.gameService.find({where: {status: GameStatus.PENDING, type: GameType.PUBLIC, mode: GameMode.CLASSIC }})
         if (games.length > 0) {
             return this.gameService.addUserToGame(user.id, games[0])
         } else {
-            return this.gameService.create({player_1: userId, type: GameType.CLASSIC})
+            return this.gameService.create({player_1: userId, type: GameType.PUBLIC, mode: GameMode.CLASSIC})
         }
     }
 
@@ -92,11 +91,11 @@ export class GameController {
         const user = await this.userService.getUserById(userId);
         if (await this.gameService.isAlreadyInGame(user))
             throw new BadRequestException("This user is already in a game");
-        const games = await this.gameService.find({where: {status: GameStatus.PENDING, type: GameType.POWER_UP}})
+        const games = await this.gameService.find({where: {status: GameStatus.PENDING, type: GameType.PUBLIC, mode: GameMode.POWER_UP}})
         if (games.length > 0) {
             return this.gameService.addUserToGame(user.id, games[0])
         } else {
-            return this.gameService.create({player_1: userId, type: GameType.POWER_UP})
+            return this.gameService.create({player_1: userId, type: GameType.PUBLIC, mode: GameMode.POWER_UP})
         }
     }
 }

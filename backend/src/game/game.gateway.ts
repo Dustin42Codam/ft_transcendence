@@ -5,6 +5,7 @@ import GameroomEvents from "./gameroomEvents";
 import { UseGuards } from "@nestjs/common";
 import { Namespace, Server, Socket } from "socket.io";
 import { Logger, Req } from "@nestjs/common";
+import { GameStatus } from "./entity/game.entity";
 
 interface MoveableObject {
   positionX: number;
@@ -46,9 +47,9 @@ interface GamePhysics {
 interface GameRoom {
 	gameRoomId: string;
 	gamePhysics: GamePhysics;
+	finished: boolean;
 }
 
-//player2 = { displayName: user.display_name, bat: {positionX: 1250, positionY:270}};
 const leftBat: Bat = {
 	positionX: 1250,	
 	positionY: 270,	
@@ -93,6 +94,7 @@ const defaultGame: GameRoom = {
 		score: [0, 0],
 		scored: false,
 	},
+	finished: false,
 };
 
 @WebSocketGateway(3002, {
@@ -101,18 +103,18 @@ const defaultGame: GameRoom = {
 export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
   constructor(
 		private readonly userService: UserService,
-		private readonly gameService: GameService,
+		private readonly gameService: GameService
 		) {
 		};
 
-  private logger: Logger = new Logger("GameGatway");
-	private activeGames: Array<GameRoom> = [];
+  	private logger: Logger = new Logger("GameGatway");
+	public activeGames: Array<GameRoom> = [];
 
   @WebSocketServer() io: Namespace;
 
   afterInit(server: Server) {
     this.logger.log("Game gateway: game namespace socket server is running");
-		this.physicLoop(this.activeGames, this.logger, this.io);
+		this.physicLoop(this.activeGames, this.logger, this.io, this.gameService);
 		this.serverLoop(this.activeGames, this.logger, this.io);
   }
 
@@ -136,19 +138,19 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 					io.to(game.gameRoomId).emit(GameroomEvents.ServerLoop, game.gameRoomId);
 				});
 				test();
-			}, 1000);
+			}, 3000);
 		}
 		test();
 	}
 	//physic loop
-	async physicLoop(activeGames: Array<GameRoom>, logger: any, io: any): Promise<void>  {
+	async physicLoop(activeGames: Array<GameRoom>, logger: any, io: any, gameService: GameService): Promise<void>  {
 		function getRandomPosition(): Ball {
 			return {
 				positionX: 650,
 				positionY: 350,
 				directionX: Math.random() < 0.5 ? 1 : -1,
 				directionY: Math.floor(Math.random() * 5) - 2,
-				speed: 4,
+				speed: 10,
 				width: 20,
 				height: 20,
 			};
@@ -232,26 +234,42 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 		}
 		function test() {
 			setTimeout(() => {
-				activeGames.map((game: GameRoom, index: number) => {
-					logger.debug(`GAME[${index}]:`, game);
+				activeGames.map(async (game: GameRoom, index: number) => {
+					// logger.debug(`GAME[${index}]:`, game);
 					if (gameHasStarted(game.gamePhysics)) {
 						if (!isBallSet(game.gamePhysics.ball)) {
 							game.gamePhysics.ball = getRandomPosition();
+						} else {
+							checkBallHitBat(game);
+							if (checkIfScore(game)) {
+								game.gamePhysics.scored = true;
+								gameService.addScore(Number(game.gameRoomId), game.gamePhysics.score[0], game.gamePhysics.score[1]).then(
+									(be_game) => {
+										console.log(be_game)
+										if (be_game.status == GameStatus.PASSIVE) {
+											game.finished = true;
+										}
+									}
+								);
+								setTimeout(() => {
+									game.gamePhysics.scored = false;
+								}, 1000);
+							}
+							moveBall(game.gamePhysics.ball);
+							ballHitWall(game);
 						}
-						checkBallHitBat(game);
-						if (checkIfScore(game)) {
-							game.gamePhysics.scored = true;
-							setTimeout(() => {
-								game.gamePhysics.scored = false;
-							}, 1000);
-						}
-						moveBall(game.gamePhysics.ball);
-						ballHitWall(game);
 					}
 					io.to(game.gameRoomId).emit(GameroomEvents.PhysicsLoop, game.gamePhysics);
 				});
 				test();
 			}, 15);
+			var i = activeGames.length
+			while (i--) {
+				if (activeGames[i].finished) { 
+					//here we want to remove the clients but is ok for now//
+					activeGames.splice(i, 1);
+				} 
+			}
 		}
 		test();
 	}
@@ -260,7 +278,6 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 		let gameRoomIndex: number = 0;
 
 		this.activeGames.map((game: GameRoom, index: number) => {
-			//this.logger.debug(game, gameRoomId, game.gameRoomId == gameRoomId);
 			if (game.gameRoomId == gameRoomId) {
 				gameRoomIndex = index;
 			}
@@ -278,10 +295,14 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 		return isGameInLoop;
 	}
 
+  @SubscribeMessage(GameroomEvents.LeaveGameRoom)
+  async handelLeaveRoom(client: Socket, gameRoomId: string): Promise<void> {
+		console.log("leaving");
+    client.leave(gameRoomId);
+	}
+
   @SubscribeMessage(GameroomEvents.JoinGameRoom)
   async handelJoinRoom(client: Socket, gameRoomId: string): Promise<void> {
-
-    client.join(gameRoomId);
 		const clientsInRoom = (await this.io.in(gameRoomId).fetchSockets()).length;
 		const userId: number = await this.userService.getUserFromClient(client);
 		if (!userId)
@@ -290,42 +311,36 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 		const gameFromDb = await this.gameService.getGameById(Number(gameRoomId));
 		if (!gameFromDb)
 			throw ("game with id not found");
-		//check if a game is already in the pyhisic loop
+    client.join(gameRoomId);
+		console.log(gameRoomId, gameFromDb.status, gameFromDb.id);
+		if (gameFromDb.status == "passive") {
+			this.io.to(gameRoomId).emit(GameroomEvents.GameRoomNotification, `game is no longer active. Please start a new game`);
+			client.leave(gameRoomId);
+			throw ("game with id is done");
+		}
 		if (!this.isGameInPhysicsLoop(gameRoomId)) {
-			let newGame: GameRoom = JSON.parse(JSON.stringify({...defaultGame}));//create a deep copy
+			let newGame: GameRoom = JSON.parse(JSON.stringify({...defaultGame}));//creates a deep copy
 			this.activeGames.push({...newGame, gameRoomId: gameRoomId});
 		}
 		const currentActiveGame: GameRoom = this.getActiveGameByGameRoomId(gameRoomId);
-		if (!currentActiveGame)
-			throw ("server side error");
-		//check if palyer joining is one of the players
-		if (gameFromDb.player_1 != userId || gameFromDb.player_2 != userId) {
-			if (clientsInRoom == 1) {
-				let player1: Player;
-
-				if (userId == gameFromDb.player_1) {
-					player1 = { id: userId, displayName: user.display_name, bat: JSON.parse(JSON.stringify({...leftBat}))};
-				} else {
-					player1 = { id: userId, displayName: user.display_name, bat: JSON.parse(JSON.stringify({...rightBat}))};
-				}	
-				currentActiveGame.gamePhysics.player1 = player1;
-				this.io.to(gameRoomId).emit(GameroomEvents.GameRoomNotification, `Player 1: ${user.display_name}`);
-			} else if (clientsInRoom == 2) {
-				let player2: Player;
-
-				if (userId == gameFromDb.player_1) {
-					player2 = { id: userId, displayName: user.display_name, bat: JSON.parse(JSON.stringify({...leftBat}))};
-				} else {
-					player2 = { id: userId, displayName: user.display_name, bat: JSON.parse(JSON.stringify({...rightBat}))};
-				}	
-				currentActiveGame.gamePhysics.player2 = player2;
-
-				this.io.to(gameRoomId).emit(GameroomEvents.GameRoomNotification, `Player 2: ${user.display_name}`);
-			}
+		if (!currentActiveGame) {
+			this.io.to(gameRoomId).emit(GameroomEvents.GameRoomNotification, `Server side error our bad maybe try again :)`);
+			client.leave(gameRoomId);
+			throw ("game your joining is not in memmory. server side error or user input not check");
+		}
+		if (gameFromDb.player_1 == userId) {
+			let player1: Player;
+			player1 = { id: userId, displayName: user.display_name, bat: JSON.parse(JSON.stringify({...rightBat}))};
+			currentActiveGame.gamePhysics.player1 = player1;
+			this.io.to(gameRoomId).emit(GameroomEvents.GameRoomNotification, `Player 1: ${user.display_name}`);
+		} else if (gameFromDb.player_2 == userId) {
+			let player2: Player;
+			player2 = { id: userId, displayName: user.display_name, bat: JSON.parse(JSON.stringify({...leftBat}))};
+			currentActiveGame.gamePhysics.player2 = player2;
+			this.io.to(gameRoomId).emit(GameroomEvents.GameRoomNotification, `Player 2: ${user.display_name}`);
 		}
 	}
 
-	//TODO make these change the gameState from the gameRoomId In active games
   @SubscribeMessage(GameroomEvents.MoveBat)
   async handleMoveBat(client: Socket, payload: any): Promise<void> {
 		const userId: number = await this.userService.getUserFromClient(client);

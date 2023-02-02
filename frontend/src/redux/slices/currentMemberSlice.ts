@@ -26,7 +26,6 @@ export const fetchCurrentMember = createAsyncThunk(
   "currentMember/fetchCurrentMember",
   async (data: any) => {
     const response = await axios.get(`member/me/id/${data.id}`);
-    console.log("🚀 ~ file: currentMemberSlice.ts:21 ~ response", response);
     return response.data;
   }
 );
@@ -87,11 +86,7 @@ export const updateCurrentChatType = createAsyncThunk(
 export const updateCurrentChatPassword = createAsyncThunk(
   "currentMember/updateCurrentChatPassword",
   async (data: any) => {
-    // const toastId = toast.loading(`Updating channel data...`);
-
     if (
-      data.type === ChatroomType.PROTECTED &&
-      data.password?.length &&
       data.password !== data.passwordConfirm
     ) {
       toast.error(`Passwords didn't match!`, {
@@ -141,7 +136,12 @@ export const updateCurrentChatPassword = createAsyncThunk(
 const currentMemberSlice = createSlice({
   name: "currentMember",
   initialState,
-  reducers: {},
+  reducers: {
+    updateCurrentMember(state, action) {
+      const { role } = action.payload;
+      state.currentMember.role = role;
+    },
+  },
   extraReducers(builder) {
     builder
       .addCase(fetchCurrentMember.pending, (state, action) => {
@@ -170,6 +170,7 @@ const currentMemberSlice = createSlice({
         state.status = "loading";
       })
       .addCase(updateCurrentChatPassword.fulfilled, (state, action) => {
+        // state.currentMember.chatroom.type = ChatroomType.PROTECTED;
         state.status = "succeeded";
       })
       .addCase(updateCurrentChatPassword.rejected, (state: any, action) => {
@@ -182,5 +183,8 @@ const currentMemberSlice = createSlice({
 // selectors
 export const selectCurrentMember = (state: any) =>
   state.currentMember.currentMember;
+
+// action creators
+export const { updateCurrentMember } = currentMemberSlice.actions;
 
 export default currentMemberSlice.reducer;

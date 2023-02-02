@@ -4,7 +4,7 @@ import { Repository } from "typeorm";
 
 import { AbstractService } from "src/common/abstract.service";
 
-import { Game, GameStatus, GameType } from "./entity/game.entity";
+import { Game, GameMode, GameStatus, GameType } from "./entity/game.entity";
 import { GameCreateDto } from "./dto/game-create.dto";
 import { GameStatsService } from "src/games_stats/game_stats.service";
 import { UserService } from "src/user/user.service";
@@ -34,8 +34,8 @@ export class GameService extends AbstractService {
 		return game;
 }
 
-  private isGameFinished(score: number) {
-    return (score >= 5)
+  private isGameFinished(game: Game) {
+    return (game.score_player_1 >= 5 || game.score_player_2 >= 5)
   }
 
   async endGame(game: Game) {
@@ -48,25 +48,17 @@ export class GameService extends AbstractService {
       await this.gameStatsService.addLose(player_1);
       await this.gameStatsService.addWin(player_2);
     }
+    game.status = GameStatus.PASSIVE;
     await this.update(game.id, game)
     game.status = GameStatus.PASSIVE;
     return game;
   }
 
-  async addScoreP1(gameId: number) {
+  async addScore(gameId: number, score_player_1: number, score_player_2: number) {
     const game = await this.getGameById(gameId)
-    game.score_player_1++;
-    if (this.isGameFinished(game.score_player_1)) {
-      return this.endGame(game);
-    }
-    await this.update(game.id, game)
-    return game
-  }
-
-  async addScoreP2(gameId: number) {
-    const game = await this.getGameById(gameId)
-    game.score_player_2++;
-    if (this.isGameFinished(game.score_player_2)) {
+    game.score_player_1 = score_player_1;
+    game.score_player_2 = score_player_2;
+    if (this.isGameFinished(game)) {
       return this.endGame(game);
     }
     await this.update(game.id, game)
@@ -99,9 +91,7 @@ export class GameService extends AbstractService {
         {status: GameStatus.PENDING},
         {status: GameStatus.ACTIVE}
       ]});
-      console.log(allPendingGames)
     for (const game of allPendingGames) {
-      console.log(game)
       if (game.player_1 === user.id) {
         return true;
       }
@@ -109,7 +99,22 @@ export class GameService extends AbstractService {
         return true
       }
     }
-    console.log("return false")
     return false;
+  }
+
+    async createPrivateClassicGame(userId: number, invite_code: string) {
+      const user = await this.userService.getUserById(userId);
+      if (await this.isAlreadyInGame(user)) {
+        throw new BadRequestException("This user is already in a game");
+	  }
+      return this.create({player_1: userId, type: GameType.PRIVATE, mode: GameMode.CLASSIC, invite_code: invite_code})
+  }
+
+  async createPrivatePowerUpGame(userId: number, invite_code: string) {
+    const user = await this.userService.getUserById(userId);
+    if (await this.isAlreadyInGame(user)) {
+        throw new BadRequestException("This user is already in a game");
+	}
+    return this.create({player_1: userId, type: GameType.PRIVATE, mode: GameMode.POWER_UP, invite_code: invite_code})
   }
 }

@@ -1,7 +1,7 @@
-import { useLocation } from "react-router-dom";
-import { useEffect, useRef, useState } from "react";
 import Wrapper from "../components/Wrapper";
-import Socket from "../components/chat/Socket";
+import "./Chat.css";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import {
   selectCurrentChatroom,
@@ -10,33 +10,41 @@ import {
 import axios from "axios";
 import { selectCurrentUser } from "../redux/slices/currentUserSlice";
 import { Link } from "react-router-dom";
-import ChatUserList from "../components/chat/ChatUserList";
-import { selectAllUsers } from "../redux/slices/usersSlice";
+import { fetchUsers, selectAllUsers } from "../redux/slices/usersSlice";
 import { ChatroomType } from "../models/Chats";
-import "./Message.css";
-import "./Chat.css";
-import { fetchChatMembers } from "../redux/slices/chatMembersSlice";
+import {
+  fetchChatMembers,
+  selectAllChatMembers,
+} from "../redux/slices/chatMembersSlice";
+import { Member, MemberRole } from "../models/Member";
+import ChannelSettings from "../components/chat/ChatSettings";
+import {
+  fetchCurrentMember,
+  selectCurrentMember,
+} from "../redux/slices/currentMemberSlice";
+import { UserRole } from "../models/Channel";
+import LeaveChannel from "../components/chat/LeaveChannel";
+import MemberActions from "../components/chat/MemberActions";
+import ChatUserListModal from "../components/chat/ChatUserListModal";
+import ChatInput from "../components/chat/ChatInput";
+import ChatBox from "../components/chat/ChatBox";
+import SendGameInvite from "../components/chat/SendGameInvite";
 
 const Chat = () => {
+  const currentUser = useAppSelector(selectCurrentUser);
   const location = useLocation();
   const currentChat = useAppSelector(selectCurrentChatroom);
   const currentChatMessages = useAppSelector(selectCurrentChatroomMessages);
-  const currentUser = useAppSelector(selectCurrentUser);
   const [messages, setMessages] = useState([]);
   const dummy = useRef<HTMLDivElement>(null);
   const users = useAppSelector(selectAllUsers);
-  let user;
-
+  const chatMembers = useAppSelector(selectAllChatMembers);
+  const currentMember = useAppSelector(selectCurrentMember);
+  const allUsers = useAppSelector(selectAllUsers);
+  const [rerender, setRerender] = useState(true);
   const dispatch = useAppDispatch();
-  dispatch(
-    fetchChatMembers({
-      id: currentChat.id,
-    })
-  );
-
-  if (currentChat.id !== -1 && currentChat.type === ChatroomType.DIRECT) {
-    user = users.find((user: any) => user.display_name === currentChat.name);
-  }
+  const navigate = useNavigate();
+  let user;
 
   async function fetchMessages() {
     if (currentChat.id !== -1) {
@@ -48,6 +56,22 @@ const Chat = () => {
   }
 
   useEffect(() => {
+    if (currentChat.id !== -1) {
+      dispatch(
+        fetchChatMembers({
+          id: currentChat.id,
+        })
+      );
+    }
+  }, [currentChat]);
+
+  useEffect(() => {
+    dispatch(fetchUsers());
+    dispatch(
+      fetchCurrentMember({
+        id: currentChat.id,
+      })
+    );
     fetchMessages();
     dummy?.current?.scrollIntoView({
       behavior: "smooth",
@@ -56,56 +80,162 @@ const Chat = () => {
     });
   }, [currentChat, currentChatMessages]);
 
+  if (currentChat.id !== -1 && currentChat.type === ChatroomType.DIRECT) {
+    user = users.find((user: any) => user.display_name === currentChat.name);
+  }
+
   return (
     <Wrapper>
-      <div className="messageContainers">
-        <div className="chat-body">
-          <div className="chat-header">
-            {user && (
-              <Link to={`/users/${user.id}`} className="member-link">
-                <div>
-                  <img className="dm-avatar" src={user.avatar} alt="avatar" />
+      <div className="newChatBody">
+        <div className="newChatContainer">
+          <div className="leftSide">
+            <div className="userListHeader">
+              <div className="imageText">
+                {/* direct chat  */}
+                {/* <div className="userImage">
+            	    <Link to="/profile">
+            	      <img src={currentUser.avatar} className="cover" />
+            	    </Link>
+            	</div> */}
+                {/* <div className="newChatH4">
+						{currentChat.name}<br /><span>online</span>
+					</div> */}
+
+                {/* group chat */}
+                <div className="newChatH4">
+                  {currentChat.name}
+                  <br />
+                  <span>{currentChat.type}</span>
                 </div>
-              </Link>
-            )}
+              </div>
 
-            {currentChat.type !== ChatroomType.DIRECT && (
-              <ChatUserList currentChat={currentChat} />
-            )}
+              <ul className="navIcons">
+                <li>
+                  <SendGameInvite member={currentMember} navigation={navigate} />
+                </li>
+                {/* <li><ChatBubbleOutlineIcon /></li> */}
+                {/* <li><MoreVertIcon /></li> */}
+                {currentMember?.role !== "user" && (
+                  <li>
+                    {/* <PersonAddIcon /> */}
+                    <ChatUserListModal />
+                    {/*                     <ChatAddMember
+                      allUsers={allUsers}
+                      currentChat={currentChat}
+                      chatMembers={chatMembers}
+                      setRerender={setRerender}
+                      rerender={rerender}
+                    /> */}
+                  </li>
+                )}
+                {currentMember.role === UserRole.OWNER && (
+                  <li>
+                    <ChannelSettings
+                      currentChat={currentChat}
+                      currentMember={currentMember}
+                      chatMembers={chatMembers}
+                    />
+                  </li>
+                )}
+              </ul>
+            </div>
+
+            {/* chatbox */}
+
+            <ChatBox />
+
+            {/*               <div className="chatBox">
+                <div className="newChatMessage myMessage">
+                  <div className="newChatP">
+                    Heeeey
+                    <br />
+                    <span>12:15</span>
+                  </div>
+                </div>
+                <div className="newChatMessage friendMessage">
+                  <div className="newChatP">
+                    <div className="friendName">Tom</div>
+                    Hello my name is ?<span>12:15</span>
+                  </div>
+                </div>
+                <div className="newChatMessage myMessage">
+                  <div className="newChatP">
+                    Heeeey
+                    <br />
+                    <span>12:15</span>
+                  </div>
+                </div>
+              </div> */}
+
+            {/* user input */}
+            <ChatInput location={location} />
+          </div>{" "}
+          {/* end left side */}
+          {/* start right side -> member list + user actions */}
+          <div className="rightSide">
+            <div className="userListHeader">
+              <div className="userImage">
+                <Link to="/profile">
+                  <img src={currentUser.avatar} className="cover" />
+                </Link>
+              </div>
+              {currentMember.role !== MemberRole.USER && (
+                <div className="message_p">
+                  <div className="currentMemberRole">
+                    channel {currentMember.role}
+                  </div>
+                </div>
+              )}
+              <ul className="navIcons">
+                <li>
+                  <LeaveChannel />
+                </li>
+              </ul>
+            </div>
+
+            {/* chat list */}
+            <div className="chatlist">
+              {[...chatMembers]
+                .sort((a, b) => a.id - b.id)
+                .map(
+                  (member: Member, index: number) =>
+                    member.user.id !== currentUser.id && (
+                      <div className="block" key={index}>
+                        <div className="imagebox">
+                          <Link to={`/users/${member.user.id}`}>
+                            <img src={member.user.avatar} className="cover" />
+                          </Link>
+                        </div>
+                        <div className="details">
+                          <div className="listHead">
+                            <div className="newChatH4">
+                              {member.user.display_name}
+                            </div>
+                          </div>
+                          <div className="message_p">
+                            <div className="newChatP">{member.user.status}</div>
+                          </div>
+                        </div>
+                        {member.role !== MemberRole.USER && (
+                          <div className="message_p">
+                            <div className="newChatP">{member.role}</div>
+                          </div>
+                        )}
+                        <div className="userActions">
+                          <MemberActions
+                            member={member}
+                            currentMember={currentMember}
+                          />
+                        </div>
+                      </div>
+                    )
+                )}
+            </div>
           </div>
-          {messages?.map((msg: any, index: number) =>
-            msg.member.user.id === currentUser.id ? (
-              <p className="message message_right" key={index}>
-                {msg.message}
-                {""} {""}
-                <Link to={`/profile`}>
-                  <img
-                    src={msg.member.user.avatar}
-                    alt="avatar"
-                    className="msg-avatar"
-                  />
-                </Link>
-              </p>
-            ) : (
-              <p className="message message_left" key={index}>
-                <Link to={`/users/${msg.member.user.id}`}>
-                  <img
-                    src={msg.member.user.avatar}
-                    alt="avatar"
-                    className="msg-avatar"
-                  />
-                </Link>
-                {""} {""}
-                {msg.message}
-              </p>
-            )
-          )}
-
-          <Socket location={location} />
         </div>
-        <div ref={dummy}></div>
       </div>
     </Wrapper>
   );
 };
+
 export default Chat;
