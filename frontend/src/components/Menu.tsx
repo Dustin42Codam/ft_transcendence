@@ -10,7 +10,7 @@ import GroupChatTable from "./chat/GroupChatTable";
 import DirectChatTable from "./chat/DirectChatTable";
 import JoinableChatTable from "./chat/JoinableChatTable";
 import ChatCreateModal from "./chat/ChatCreateModal";
-import JoinChannel from "./JoinChannel"
+import JoinChannel from "./JoinChannel";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import {
   fetchDirectChats,
@@ -143,7 +143,7 @@ const Menu = (props: any) => {
                   <ChatCreateModal />
                 </p>
                 {/* <p className="navChatOption" onClick={() => joinChats()}> */}
-                  <JoinChannel setJoinableChats={setJoinChannel}/>
+                <JoinChannel setJoinableChats={setJoinChannel} />
                 {/* </p> */}
                 {/* {joinChannel && (
                   <PopUp

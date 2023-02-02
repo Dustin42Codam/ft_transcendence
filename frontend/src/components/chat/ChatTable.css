@@ -13,7 +13,7 @@
 }
 
 .chatRow {
-	display: flex;
+  display: flex;
   flex-direction: row;
   align-items: center;
   background-color: rgba(31, 33, 40, 0.479);
@@ -35,7 +35,7 @@
 }
 
 .dmContainer {
-	width: 100%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   cursor: pointer;

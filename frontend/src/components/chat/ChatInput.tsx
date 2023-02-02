@@ -10,7 +10,10 @@ import {
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./ChatInput.css";
-import { fetchCurrentMember, selectCurrentMember } from "../../redux/slices/currentMemberSlice";
+import {
+  fetchCurrentMember,
+  selectCurrentMember,
+} from "../../redux/slices/currentMemberSlice";
 import EmojiModal from "../EmojiModal";
 
 function ChatInput(props: any) {
@@ -22,14 +25,13 @@ function ChatInput(props: any) {
   let currentChatroom: any = useAppSelector(selectCurrentChatroom);
   const inputRef = useRef<HTMLFormElement>(null);
 
-
   useEffect(() => {
-	dispatch(
-		fetchCurrentMember({
-		  id: currentChatroom.id,
-		})
-	  );
-  }, [message])
+    dispatch(
+      fetchCurrentMember({
+        id: currentChatroom.id,
+      })
+    );
+  }, [message]);
 
   useEffect(() => {
     async function waitForIt() {

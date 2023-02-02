@@ -39,8 +39,8 @@ const Chat = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const params = useParams();
-  
-  console.log("🚀 ~ file: Chat.tsx:42 ~ Chat ~ params", params)
+
+  console.log("🚀 ~ file: Chat.tsx:42 ~ Chat ~ params", params);
 
   useEffect(() => {
     if (currentChat.id !== -1) {
