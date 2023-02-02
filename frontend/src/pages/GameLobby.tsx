@@ -52,8 +52,12 @@ const GameLobby = (navigation: any) => {
   }
   async function joinPowerupGame() {
     axios
-      .post("/game/classic", {})
-      .then((resp) => console.log(resp))
+      .post("/game/power_up", {})
+      .then((resp) => {
+        console.log(resp);
+        const powerUpGame: any = resp.data;
+        navigate(`/game/${powerUpGame.id}`);
+      })
       .catch((err) => console.log(err));
   }
   async function sendGameInvite() {
@@ -63,10 +67,6 @@ const GameLobby = (navigation: any) => {
       .catch((err) => console.log(err));
   }
   async function spectateGame(gameIndex: number) {
-    console.log(
-      "I want to spectate the game gameIndex:",
-      activeGames[gameIndex]
-    );
     dispatch(gameSocketActions.joinRoom(activeGames[gameIndex].id));
     navigate(`/game/${activeGames[gameIndex].id}`);
   }

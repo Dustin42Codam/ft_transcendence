@@ -15,6 +15,11 @@ interface MoveableObject {
 }
 
 interface Bat extends MoveableObject {
+	powerUpTimer?: number;
+	lastTouch: boolean;
+}
+
+interface PowerUp extends MoveableObject {
 }
 
 interface BatMove {
@@ -42,6 +47,7 @@ interface GamePhysics {
 	player2: Player;
 	score: Array<number>;
 	scored: boolean;
+	powerUp?: PowerUp;
 }
 
 interface GameRoom {
@@ -50,18 +56,29 @@ interface GameRoom {
 	finished: boolean;
 }
 
+const defaultPowerUp: PowerUp = {
+	positionX: -1,	
+	positionY: -1,	
+	height: 40,
+	width: 40, 
+}
+
 const leftBat: Bat = {
+	powerUpTimer: -1,
 	positionX: 1250,	
 	positionY: 270,	
 	height: 200,
 	width: 20, 
+	lastTouch: false,
 }
 
 const rightBat: Bat = {
+	powerUpTimer: -1,
 	positionX: 30,	
 	positionY: 270,	
 	height: 200,
 	width: 20, 
+	lastTouch: false,
 }
 
 const defaultPlyaer: Player = {
@@ -72,6 +89,7 @@ const defaultPlyaer: Player = {
 		positionY: -1,	
 		height: -1,
 		width: -1,
+		lastTouch: false,
 	},
 }
 
@@ -107,7 +125,7 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 		) {
 		};
 
-  	private logger: Logger = new Logger("GameGatway");
+  private logger: Logger = new Logger("GameGatway");
 	public activeGames: Array<GameRoom> = [];
 
   @WebSocketServer() io: Namespace;
@@ -120,15 +138,10 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 
   async handleConnection(client): Promise<void> {
 		this.logger.log(`clienet: ${client.id} connected`);
-		//tmp gurad
-    // await this.userService.getUserFromClient(client);
-		// console.log(`game client ${client.id} conected`);
   }
 
   async handleDisconnect(client: any): Promise<void> {
 		this.logger.log(`clienet: ${client.id} disconnected`);
-		//check active games if user is part of active game they loos
-		//if we do this then we do not have to worry about storing the ball
   }
 
 	async serverLoop(activeGames: Array<GameRoom>, logger: any, io: any): Promise<void>  {
@@ -144,6 +157,16 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 	}
 	//physic loop
 	async physicLoop(activeGames: Array<GameRoom>, logger: any, io: any, gameService: GameService): Promise<void>  {
+		function getRandomPowerUp(): PowerUp {
+			return {
+				positionX: Math.floor(Math.random() * 1299),
+				positionY: Math.floor(Math.random() * 699),
+				//positionX: 650,DEBUG
+				//positionY: 350,DEBUG
+				width: 100,
+				height: 100,
+			};
+		}
 		function getRandomPosition(): Ball {
 			return {
 				positionX: 650,
@@ -216,9 +239,13 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 			//const new_dir: Array<number> = [-3, -2, -1, 0, 1, 2, 3];
 			if (doesOverlapWith(game.gamePhysics.ball, game.gamePhysics.player1.bat)) {
 				ballHitsBat(game.gamePhysics.ball, game.gamePhysics.player1.bat);
+				game.gamePhysics.player1.bat.lastTouch = true;
+				game.gamePhysics.player2.bat.lastTouch = false;
 			}
 			if (doesOverlapWith(game.gamePhysics.ball, game.gamePhysics.player2.bat)) {
 				ballHitsBat(game.gamePhysics.ball, game.gamePhysics.player2.bat);
+				game.gamePhysics.player1.bat.lastTouch = false;
+				game.gamePhysics.player2.bat.lastTouch = true;
 			}
 		}
 		function moveBall(ball: Ball): void {
@@ -226,38 +253,91 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 			ball.positionY += ball.directionY * ball.speed;
 		}
 		function gameHasStarted(game: GamePhysics): boolean {
-			//logger.debug("player2", game.player2, "default", defaultPlyaer, JSON.stringify(game.player1) != JSON.stringify(defaultPlyaer), JSON.stringify(game.player2) != JSON.stringify(defaultPlyaer));
 			if ((JSON.stringify(game.player1) != JSON.stringify(defaultPlyaer)) && JSON.stringify(game.player2) != JSON.stringify(defaultPlyaer)) {
 				return true;
 			}
 			return false;
 		}
+		function isPowerUp(powerUp: PowerUp | undefined): boolean {
+			return powerUp ? true : false;
+		}
+		function hitPowerUp(game: GameRoom): boolean {
+			//hitPowerUp(powerUp: PowerUp, bat: Bat, fieldWitdh: number, fieldHeight: number) {
+      if (doesOverlapWith(game.gamePhysics.ball, game.gamePhysics.powerUp)) {
+				return true;
+			}
+			return false;
+    }
+		function powerUpPlayer(player: Player): void {
+			player.bat.height = 280;
+			player.bat.powerUpTimer = 400;
+		}
+		function activatePowerUp(game: GameRoom): void {
+			if (game.gamePhysics.player1.bat.lastTouch) {
+				powerUpPlayer(game.gamePhysics.player1);
+			} else if (game.gamePhysics.player2.bat.lastTouch) {
+				powerUpPlayer(game.gamePhysics.player2);
+			}
+		}
+		function powerUpOnBoard(game: GameRoom): boolean {
+			return (game.gamePhysics.powerUp.positionX != defaultPowerUp.positionX && game.gamePhysics.powerUp.positionY != defaultPowerUp.positionY);
+		}
 		function test() {
 			setTimeout(() => {
 				activeGames.map(async (game: GameRoom, index: number) => {
-					// logger.debug(`GAME[${index}]:`, game);
+					//logger.debug(`GAME[${index}]:`, game);
 					if (gameHasStarted(game.gamePhysics)) {
 						if (!isBallSet(game.gamePhysics.ball)) {
 							game.gamePhysics.ball = getRandomPosition();
-						} else {
-							checkBallHitBat(game);
-							if (checkIfScore(game)) {
-								game.gamePhysics.scored = true;
-								gameService.addScore(Number(game.gameRoomId), game.gamePhysics.score[0], game.gamePhysics.score[1]).then(
-									(be_game) => {
-										console.log(be_game)
-										if (be_game.status == GameStatus.PASSIVE) {
-											game.finished = true;
-										}
-									}
-								);
-								setTimeout(() => {
-									game.gamePhysics.scored = false;
-								}, 1000);
-							}
-							moveBall(game.gamePhysics.ball);
-							ballHitWall(game);
 						}
+						checkBallHitBat(game);
+						if (isPowerUp(game.gamePhysics.powerUp)) {
+							if (game.gamePhysics.player1.bat.powerUpTimer <= 0 && game.gamePhysics.player2.bat.powerUpTimer <= 0 && !powerUpOnBoard(game) && (game.gamePhysics.player1.bat.lastTouch || game.gamePhysics.player2.bat.lastTouch)) {
+								game.gamePhysics.powerUp = getRandomPowerUp();
+							}
+							if (powerUpOnBoard(game)) {
+								if (hitPowerUp(game)) {
+									game.gamePhysics.powerUp = {...defaultPowerUp}; 
+									activatePowerUp(game);
+								}
+							}
+							if (game.gamePhysics.player1.bat.powerUpTimer > 0) {
+								game.gamePhysics.player1.bat.powerUpTimer--;
+							}
+							if (game.gamePhysics.player2.bat.powerUpTimer > 0) {
+								game.gamePhysics.player2.bat.powerUpTimer--;
+							}
+							if (game.gamePhysics.player1.bat.powerUpTimer == 0) {
+								game.gamePhysics.player1.bat.height = 200;
+							}
+							if (game.gamePhysics.player2.bat.powerUpTimer == 0) {
+								game.gamePhysics.player2.bat.height = 200;
+							}
+						}
+						if (checkIfScore(game)) {
+							game.gamePhysics.scored = true;
+							if (isPowerUp(game.gamePhysics.powerUp)) {
+								game.gamePhysics.player1.bat.lastTouch = false;
+								game.gamePhysics.player2.bat.lastTouch = false;
+								game.gamePhysics.powerUp = {...defaultPowerUp}; 
+								game.gamePhysics.player1.bat.powerUpTimer = 0;
+								game.gamePhysics.player2.bat.powerUpTimer = 0;
+								game.gamePhysics.player1.bat.height = 200;
+								game.gamePhysics.player2.bat.height = 200;
+							}
+							gameService.addScore(Number(game.gameRoomId), game.gamePhysics.score[0], game.gamePhysics.score[1]).then(
+								(be_game) => {
+									if (be_game.status == GameStatus.PASSIVE) {
+										game.finished = true;
+									}
+								}
+							);
+							setTimeout(() => {
+								game.gamePhysics.scored = false;
+							}, 1000);
+						}
+						moveBall(game.gamePhysics.ball);
+						ballHitWall(game);
 					}
 					io.to(game.gameRoomId).emit(GameroomEvents.PhysicsLoop, game.gamePhysics);
 				});
@@ -297,7 +377,6 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 
   @SubscribeMessage(GameroomEvents.LeaveGameRoom)
   async handelLeaveRoom(client: Socket, gameRoomId: string): Promise<void> {
-		console.log("leaving");
     client.leave(gameRoomId);
 	}
 
@@ -312,7 +391,6 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 		if (!gameFromDb)
 			throw ("game with id not found");
     client.join(gameRoomId);
-		console.log(gameRoomId, gameFromDb.status, gameFromDb.id);
 		if (gameFromDb.status == "passive") {
 			this.io.to(gameRoomId).emit(GameroomEvents.GameRoomNotification, `game is no longer active. Please start a new game`);
 			client.leave(gameRoomId);
@@ -320,7 +398,12 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 		}
 		if (!this.isGameInPhysicsLoop(gameRoomId)) {
 			let newGame: GameRoom = JSON.parse(JSON.stringify({...defaultGame}));//creates a deep copy
-			this.activeGames.push({...newGame, gameRoomId: gameRoomId});
+			if (gameFromDb.mode == "classic") {
+				this.activeGames.push({...newGame, gameRoomId: gameRoomId});
+			} else if (gameFromDb.mode == "power_up") {
+				newGame.gamePhysics = {...newGame.gamePhysics, powerUp: JSON.parse(JSON.stringify({...defaultPowerUp}))};
+				this.activeGames.push({...newGame, gameRoomId: gameRoomId});
+			}
 		}
 		const currentActiveGame: GameRoom = this.getActiveGameByGameRoomId(gameRoomId);
 		if (!currentActiveGame) {
@@ -347,7 +430,6 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 		if (!userId)
 			throw ("user not found");
 		this.activeGames.map((game: GameRoom, index: number) => {
-			this.logger.debug(game.gameRoomId, payload.gameRoomId, game.gamePhysics.player1.id, userId, payload.direction);
 			if (game.gameRoomId == payload.gameRoomId) {
 				if (game.gamePhysics.player1.id == userId) {
 					if (payload.direction == "down") {

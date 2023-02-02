@@ -4,6 +4,7 @@ import { gameSocketActions } from "../redux/slices/gameSocketSlice";
 import { useAppDispatch } from "../redux/hooks";
 import "./Game.css";
 import store from "../redux/store";
+import Confetty from "../components/confety";
 
 import { useLocation } from "react-router-dom";
 
@@ -15,6 +16,7 @@ interface MoveableObject {
 }
 
 interface Bat extends MoveableObject {}
+interface PowerUp extends MoveableObject {}
 
 interface BatMove {
   gameRoomId: string;
@@ -38,6 +40,7 @@ interface GamePhysics {
   ball: Ball;
   player1: Player;
   player2: Player;
+  powerUp?: PowerUp;
   score: Array<number>;
   scored: boolean;
 }
@@ -72,9 +75,21 @@ class GameState {
     const batP1: Bat = gamePhysics.player1.bat;
     const batP2: Bat = gamePhysics.player2.bat;
     const ball: Ball = gamePhysics.ball;
+    const powerUp: PowerUp | undefined = gamePhysics.powerUp;
+
     ctx.fillRect(batP1.positionX, batP1.positionY, batP1.width, batP1.height);
     ctx.fillRect(batP2.positionX, batP2.positionY, batP2.width, batP2.height);
     ctx.fillRect(ball.positionX, ball.positionY, ball.width, ball.height);
+    if (powerUp) {
+      if (powerUp.positionX != -1 && powerUp.positionY != -1) {
+        ctx.fillRect(
+          powerUp.positionX,
+          powerUp.positionY,
+          powerUp.width,
+          powerUp.height
+        );
+      }
+    }
   }
 
   animation() {
@@ -190,11 +205,11 @@ const Game = (props: any) => {
           }
           if (game.gamePhysics.score[0] == 5) {
             score!.innerHTML = `<h1 id="score">${gameState.gamePhysics.player1.displayName} ${gameState.gamePhysics.score[0]} : ${gameState.gamePhysics.player2.displayName} ${gameState.gamePhysics.score[1]}</h1>`;
-            theGameFrame!.innerHTML = `<h2>${game.gamePhysics.player1.displayName} -> Won</h2>`;
+            theGameFrame!.innerHTML = `<div><h2>${game.gamePhysics.player1.displayName} -> Won</h2><Confetty></Confetty></div>`;
           }
           if (game.gamePhysics.score[1] == 5) {
             score!.innerHTML = `<h1 id="score">${gameState.gamePhysics.player1.displayName} ${gameState.gamePhysics.score[0]} : ${gameState.gamePhysics.player2.displayName} ${gameState.gamePhysics.score[1]}</h1>`;
-            theGameFrame!.innerHTML = `<h2>${game.gamePhysics.player2.displayName} -> Won</h2>`;
+            theGameFrame!.innerHTML = `<div><h2>${game.gamePhysics.player2.displayName} -> Won</h2><Confetty></Confetty></div>`;
           }
           game.dt = dt;
           game.fps = fps;

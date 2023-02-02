@@ -8,4 +8,16 @@
 .navItemHiglight:hover {
   background-color: rgb(50, 50, 50);
   transition-duration: 0.15s;
+  cursor: pointer;
+}
+
+.channelRow {
+  display: flex;
+  flex-direction: row;
+  color: inherit;
+}
+
+.addIcon {
+  position: absolute;
+  left: 60px;
 }

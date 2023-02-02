@@ -14,6 +14,8 @@ import InsertEmoticonIcon from "@mui/icons-material/InsertEmoticon";
 import "./ChatInput.css";
 import { selectCurrentMember } from "../../redux/slices/currentMemberSlice";
 import { selectAllChatMembers } from "../../redux/slices/chatMembersSlice";
+import Emojis from "../Emojis";
+
 
 function ChatInput(props: any) {
   const dispatch = useAppDispatch();
@@ -46,6 +48,10 @@ function ChatInput(props: any) {
 
   const sendMessage = (e: any) => {
     e.preventDefault();
+
+    if (!message.length) {
+      return ;
+    }
 
     if (currentMember.banned === true) {
       toast.error(`You are banned!`, {
@@ -80,6 +86,7 @@ function ChatInput(props: any) {
         })
       );
       inputRef.current!["messageInput"].value = "";
+      setMessage("");
     }
   };
 
@@ -96,9 +103,7 @@ function ChatInput(props: any) {
         onChange={(e) => setMessage(e.target.value)}
         autoComplete="off"
       />
-      <div className="emoji-icon">
-        <InsertEmoticonIcon />
-      </div>
+      <Emojis inputRef={inputRef} message={message} setMessage={setMessage}/>
       <input type="submit" autoComplete="off" hidden />
     </form>
   );
