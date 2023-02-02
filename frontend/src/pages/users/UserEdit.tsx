@@ -158,7 +158,7 @@ const UserEdit = () => {
     <Wrapper>
       <section id="content" className="container UserBody">
         <div className="page-heading">
-          <h3>Edit User Data</h3>
+          <h3>Edit User Profile</h3>
           <div className="mb-3">
             <Avatar
               src={user.avatar}
@@ -189,12 +189,17 @@ const UserEdit = () => {
           </div>
           <Button type="submit" onClick={infoSubmit}>
             Save
-          </Button>{" "}
-          <Button onClick={navigateBack}>Back</Button>
+          </Button>
+          {" "}
           <div className="mb-3">
             Two Factor Authentication
             <div className="mb-5">
-              <button id="qr-button">Generate QR Code</button>
+              <button
+                id="qr-button"
+                className="btn btn-outline-primary px-4"
+              >
+                Generate QR Code
+              </button>
               <img src="" id="qr" />
             </div>
             <div className="mb-3">
@@ -206,14 +211,26 @@ const UserEdit = () => {
                   onChange={(e) => setCode(e.target.value)}
                 />
               </label>
-
+              {/* <br/> */}
+              {" "}
               {twoFA === false ? (
-                <button onClick={activate2FA}>Activate 2FA</button>
+                <button
+                  onClick={activate2FA}
+                  className="btn btn-primary px-4"
+                >
+                    Activate 2FA
+                </button>
               ) : (
-                <button onClick={deactivate2FA}>Deactivate 2FA</button>
+                <button
+                  onClick={deactivate2FA}
+                  className="btn btn-primary px-4"
+                >
+                  Deactivate 2FA
+                </button>
               )}
             </div>
           </div>
+      <Button onClick={navigateBack}>Cancel</Button>
         </div>
       </section>
     </Wrapper>

@@ -40,8 +40,6 @@ const Chat = () => {
   const navigate = useNavigate();
   const params = useParams();
 
-  console.log("🚀 ~ file: Chat.tsx:42 ~ Chat ~ params", params);
-
   useEffect(() => {
     if (currentChat.id !== -1) {
       dispatch(
@@ -73,7 +71,6 @@ const Chat = () => {
           <div className="leftSide">
             <div className="userListHeader">
               <div className="imageText">
-                {/* group chat */}
                 <div className="newChatH4">
                   {currentChat.name}
                   <br />

@@ -15,6 +15,9 @@
   height: fit-content;
   border-radius: 10px;
   background: #00ddcea4;
+  z-index: 2;
+  position: relative;
+  top: -100px;
 }
 
 .user {
@@ -90,7 +93,7 @@
   border-bottom: 5px solid #42f3fa;
   border: 5px solid #42f3fa;
   transition-duration: 0.1s;
-  transition-delay: 0.3s;
+  transition-delay: 0.1s;
   box-shadow: 0 0 5px rgba(0, 255, 0, 0.3), 0 0 10px rgba(0, 255, 0, 0.2),
     0 0 15px rgba(0, 255, 0, 0.1), 0 2px 0 black;
 }

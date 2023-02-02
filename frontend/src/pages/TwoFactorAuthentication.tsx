@@ -57,9 +57,9 @@ function TwoFactorAuthentication() {
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
       ></link>
 
-      <ParticleBackground />
 
       <div className="auth-container">
+          <ParticleBackground clickEnable={true} speed={0.4}/>
         <div className="authBox">
           <img
             className="user rounded-circle"
