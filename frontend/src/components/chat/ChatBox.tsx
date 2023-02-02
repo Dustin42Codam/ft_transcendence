@@ -64,7 +64,7 @@ function ChatBox() {
     await axios
       .post(`game/private/join/invite_code/${inviteCode}`)
       .then(() => {
-        toast.success(`You joined the game!`, {
+        toast.success(`You've joined the game!`, {
           position: "top-center",
           autoClose: 5000,
           hideProgressBar: false,

@@ -21,7 +21,7 @@ const ImageUpload = (props: { uploaded: (url: string) => void }) => {
         props.uploaded(response.data.url);
       })
       .catch((err: any) => {
-        toast.error(`you cannot upload this file`, {
+        toast.error(`you can't upload this file`, {
           position: "top-center",
           autoClose: 5000,
           hideProgressBar: false,

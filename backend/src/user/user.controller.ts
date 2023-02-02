@@ -33,8 +33,9 @@ export class UserController {
     ) {
 		const user = await this.userService.findOne({display_name: body.display_name});
 		if (user)
-			return user;
+    return user;
 		return await this.userService.createUser(body);
+
 	}
   
   @Post('id/:id')
