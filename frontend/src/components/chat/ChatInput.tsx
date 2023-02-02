@@ -13,7 +13,6 @@ import "./ChatInput.css";
 import { selectCurrentMember } from "../../redux/slices/currentMemberSlice";
 import EmojiModal from "../EmojiModal";
 
-
 function ChatInput(props: any) {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -45,7 +44,7 @@ function ChatInput(props: any) {
     e.preventDefault();
 
     if (!message.length) {
-      return ;
+      return;
     }
 
     if (currentMember.banned === true) {
@@ -98,7 +97,11 @@ function ChatInput(props: any) {
         onChange={(e) => setMessage(e.target.value)}
         autoComplete="off"
       />
-      <EmojiModal inputRef={inputRef} message={message} setMessage={setMessage}/>
+      <EmojiModal
+        inputRef={inputRef}
+        message={message}
+        setMessage={setMessage}
+      />
       <input type="submit" autoComplete="off" hidden />
     </form>
   );

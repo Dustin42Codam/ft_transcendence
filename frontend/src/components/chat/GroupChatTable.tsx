@@ -86,20 +86,18 @@ const GroupChatTable = () => {
 
   return (
     <div className="chatTableContainer">
-      {
-        groupChats.map((chat: Chats, index: number) => (
-          <div
-            key={index}
-            className="chatRow"
-            onClick={() => handleClick(chat.name, index)}
-          >
-            {chat.type === ChatroomType.PROTECTED && <CastleIcon />}
-            {chat.type === ChatroomType.PUBLIC && <PublicIcon />}
-            {chat.type === ChatroomType.PRIVATE && <VisibilityOffIcon />}
-            {chat.name}
-          </div>
-        ))
-      }
+      {groupChats.map((chat: Chats, index: number) => (
+        <div
+          key={index}
+          className="chatRow"
+          onClick={() => handleClick(chat.name, index)}
+        >
+          {chat.type === ChatroomType.PROTECTED && <CastleIcon />}
+          {chat.type === ChatroomType.PUBLIC && <PublicIcon />}
+          {chat.type === ChatroomType.PRIVATE && <VisibilityOffIcon />}
+          {chat.name}
+        </div>
+      ))}
     </div>
   );
 };

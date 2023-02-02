@@ -8,7 +8,7 @@ body,
   height: 100%;
 }
 
-body::-webkit-scrollbar{
+body::-webkit-scrollbar {
   display: none;
 }
 

@@ -7,10 +7,10 @@
 
 .sidenav {
   scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none;  /* IE 10+ */
+  -ms-overflow-style: none; /* IE 10+ */
 }
 
-.sidenav::-webkit-scrollbar{
+.sidenav::-webkit-scrollbar {
   display: none;
 }
 

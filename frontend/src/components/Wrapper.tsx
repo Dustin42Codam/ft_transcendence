@@ -5,7 +5,7 @@ import { Navbar } from "react-bootstrap";
 const Wrapper = (props: any) => {
   return (
     <div className="wrapper">
-      {/* <Nav className="header" /> */}
+      <Nav className="header" />
       {/* <Navbar /> */}
       <div className="contentBody">
         <Menu className="sidenav" />
@@ -13,7 +13,7 @@ const Wrapper = (props: any) => {
           {props.children}
         </div>
       </div>
-      {/* <div className="footer"></div> */}
+      <div className="footer"></div>
     </div>
   );
 };
