@@ -117,7 +117,7 @@ const gameSocketSlice = createSlice({
       state.isJoning = true;
       return;
     },
-    leaveRoom: (state, action: PayloadAction<number>) => {
+    leaveRoom: (state, action: PayloadAction<any>) => {
       state.isJoning = false;
       state.gameRoomId = "-1";
       return;

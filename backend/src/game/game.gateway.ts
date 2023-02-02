@@ -240,7 +240,6 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 			ball.directionY = -ball.directionY;
 		}
 		function checkBallHitBat(game: GameRoom) {
-			//const new_dir: Array<number> = [-3, -2, -1, 0, 1, 2, 3];
 			if (doesOverlapWith(game.gamePhysics.ball, game.gamePhysics.player1.bat)) {
 				ballHitsBat(game.gamePhysics.ball, game.gamePhysics.player1.bat);
 				game.gamePhysics.player1.bat.lastTouch = true;
@@ -295,7 +294,7 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 		function test() {
 			setTimeout(() => {
 				activeGames.map(async (game: GameRoom, index: number) => {
-					//logger.debug(`GAME[${index}]:`, game);
+					logger.debug(`GAME[${index}]:`, game);
 					if (gameHasStarted(game)) {
 						if (!isBallSet(game.gamePhysics.ball)) {
 							game.gamePhysics.ball = getRandomPosition();
@@ -353,7 +352,7 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 				});
 				test();
 			}, 15);
-			let i = activeGames.length
+			var i = activeGames.length
 			while (i--) {
 				if (activeGames[i].finished) { 
 					//here we want to remove the clients but is ok for now//
@@ -386,8 +385,24 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
 	}
 
   @SubscribeMessage(GameroomEvents.LeaveGameRoom)
-  async handelLeaveRoom(client: Socket, gameRoomId: string): Promise<void> {
-    client.leave(gameRoomId);
+  async handelLeaveRoom(client: Socket, payload: any): Promise<void> {
+		const currentActiveGame: GameRoom = this.getActiveGameByGameRoomId(payload.gameRoomId);
+
+		console.log(this.activeGames.length);
+		if (currentActiveGame) {
+			if ((JSON.stringify(currentActiveGame.gamePhysics.player1) == JSON.stringify(defaultPlyaer)) || JSON.stringify(currentActiveGame.gamePhysics.player2) == JSON.stringify(defaultPlyaer)) {
+				let i:number = this.activeGames.length;
+				while (i--) {
+					if (this.activeGames[i].gameRoomId == currentActiveGame.gameRoomId) { 
+						const game = await this.gameService.getGameById(Number(currentActiveGame.gameRoomId));
+						await this.gameService.delete(game.id);
+						this.activeGames.splice(i, 1);
+					} 
+				}
+			}
+		}
+		console.log(this.activeGames.length);
+    client.leave(payload.gameRoomId);
 	}
 
   @SubscribeMessage(GameroomEvents.JoinGameRoom)
