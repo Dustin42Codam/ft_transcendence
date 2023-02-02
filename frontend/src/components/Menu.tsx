@@ -1,6 +1,5 @@
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
-import GroupAdd from "@mui/icons-material/GroupAdd";
 import PeopleIcon from "@mui/icons-material/People";
 import SentimentSatisfiedAltIcon from "@mui/icons-material/SentimentSatisfiedAlt";
 import SportsTennisIcon from "@mui/icons-material/SportsTennis";
@@ -11,6 +10,7 @@ import GroupChatTable from "./chat/GroupChatTable";
 import DirectChatTable from "./chat/DirectChatTable";
 import JoinableChatTable from "./chat/JoinableChatTable";
 import ChatCreateModal from "./chat/ChatCreateModal";
+import JoinChannel from "./JoinChannel"
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import {
   fetchDirectChats,
@@ -143,17 +143,17 @@ const Menu = (props: any) => {
                 <p className="navChatOption">
                   <ChatCreateModal />
                 </p>
-                <p className="navChatOption" onClick={() => joinChats()}>
-                  <GroupAdd /> Join channel
-                </p>
-                {joinChannel && (
+                {/* <p className="navChatOption" onClick={() => joinChats()}> */}
+                  <JoinChannel setJoinableChats={setJoinChannel}/>
+                {/* </p> */}
+                {/* {joinChannel && (
                   <PopUp
                     content={
                       <JoinableChatTable setJoinableChats={setJoinChannel} />
                     }
                     handleClose={() => joinChats()}
                   />
-                )}
+                )} */}
               </React.Fragment>
             ) : (
               <React.Fragment>
@@ -174,7 +174,6 @@ const Menu = (props: any) => {
           </div>
         </div>
       </nav>
-      <LogoutIcon />
     </>
   );
 };

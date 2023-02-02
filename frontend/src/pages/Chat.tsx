@@ -1,6 +1,6 @@
 import Wrapper from "../components/Wrapper";
 import "./Chat.css";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useEffect, useRef } from "react";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import {
@@ -38,6 +38,9 @@ const Chat = () => {
   const currentMember = useAppSelector(selectCurrentMember);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const params = useParams();
+  
+  console.log("🚀 ~ file: Chat.tsx:42 ~ Chat ~ params", params)
 
   useEffect(() => {
     if (currentChat.id !== -1) {

@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import Wrapper from "../components/Wrapper";
 import { useAppDispatch } from "../redux/hooks";
 import { fetchJoinableChats } from "../redux/slices/chatsSlice";
+import ParticleBackground from "../components/ParticleBackground";
 
 const Dashboard = () => {
   const dispatch = useAppDispatch();

@@ -9,9 +9,16 @@ import { selectCurrentUser } from "../../redux/slices/currentUserSlice";
 import {
   addNewGroupChat,
   fetchGroupChats,
+  removeChatFromJoinable,
+  selectGroupChats,
 } from "../../redux/slices/chatsSlice";
 import { toast } from "react-toastify";
 import { useState, useRef } from "react";
+import { useNavigate } from "react-router-dom";
+import { socketActions } from "../../redux/slices/socketSlice";
+import { fetchCurrentMember } from "../../redux/slices/currentMemberSlice";
+import { fetchChatMembers } from "../../redux/slices/chatMembersSlice";
+import axios from "axios";
 
 function ChatCreateModal() {
   const [show, setShow] = useState(false);
@@ -24,6 +31,8 @@ function ChatCreateModal() {
   const handleShow = () => setShow(true);
   const dispatch = useAppDispatch();
   const inputRef = useRef<HTMLFormElement>(null);
+  const navigate = useNavigate();
+  const chats = useAppSelector(selectGroupChats);
 
   async function createChat() {
     if (!chatName) {
@@ -63,7 +72,35 @@ function ChatCreateModal() {
           user_id: currentUser.id,
         })
       );
-      dispatch(fetchGroupChats());
+    //   dispatch(fetchGroupChats());
+	  handleClose()
+	//   dispatch(removeChatFromJoinable(index));
+	// console.log("🚀 ~ file: ChatCreateModal.tsx:78 ~ createChat ~ chats", chats)
+	
+	// 	const chatId = chats.find((chat: any) => chat.name === chatName);
+	// 	const chat = chats.find((chat: any) => chat.name === chatName);
+	// 	console.log("🚀 ~ file: ChatCreateModal.tsx:78 ~ createChat ~ chatId", chatId)
+	// 	console.log("🚀 ~ file: ChatCreateModal.tsx:78 ~ createChat ~ chat", chat)
+
+	//   dispatch(
+	// 	socketActions.joinARoom({
+	// 	  chatRoom: {
+	// 		userId: currentUser.id,
+	// 		id: chatId,
+	// 		name: chatName,
+	// 		type: chatType,
+	// 	  },
+	// 	})
+	//   );
+	//   dispatch(
+	// 	fetchCurrentMember({
+	// 	  id: chatId,
+	// 	})
+	//   );
+	//   navigate("../chats/" + chatName, {
+	// 	replace: true,
+	// 	state: chatId,
+	//   });
     }
     inputRef.current!["floatingInputCustom"].value = "";
     inputRef.current!["floatingPasswordConfirmCustom"].value = "";
@@ -156,7 +193,12 @@ function ChatCreateModal() {
         </Modal.Body>
 
         <Modal.Footer>
-          <Button variant="primary" onClick={createChat}>
+          <Button
+		  	variant="primary"
+			onClick={() => {
+				createChat()
+			}}
+		>
             Save
           </Button>
         </Modal.Footer>

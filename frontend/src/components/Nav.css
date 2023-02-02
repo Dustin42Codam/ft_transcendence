@@ -3,6 +3,7 @@
   padding: 5px 0px 5px 15px;
   justify-content: space-between;
   align-items: center;
+  z-index: 2;
 }
 
 .logOut {

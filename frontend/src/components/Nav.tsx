@@ -36,7 +36,6 @@ const Nav = (props: any) => {
             <LogoutIcon/>
           </div>
         </Link>
-        <LogoutIcon />
       </div>
     </nav>
   );
