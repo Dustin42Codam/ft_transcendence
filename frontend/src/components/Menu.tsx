@@ -90,10 +90,11 @@ const Menu = (props: any) => {
               Games
             </p>
           </NavLink>
+
           <div className="navItem">
             {activeDm === true ? (
               <React.Fragment>
-                <p>
+                {/* <span className="navItemSpan"> */}
                   <ArrowDropDownIcon
                     sx={{
                       "&:hover": { backgroundColor: "grey" },
@@ -102,12 +103,12 @@ const Menu = (props: any) => {
                     onClick={() => setActiveDm(!activeDm)}
                   />
                   Direct Messages
-                </p>
+                {/* </span> */}
                 <DirectChatTable />
               </React.Fragment>
             ) : (
               <React.Fragment>
-                <p>
+                {/* <span className="navItemSpan"> */}
                   <ArrowRightIcon
                     sx={{
                       "&:hover": { backgroundColor: "grey" },
@@ -119,15 +120,14 @@ const Menu = (props: any) => {
                     }}
                   />
                   Direct Messages
-                </p>
+                {/* </span> */}
               </React.Fragment>
             )}
           </div>
+
           <div className="navItem">
             {activeChannels === true ? (
               <React.Fragment>
-                <p>
-                  <div className="channelRow">
                     <ArrowDropDownIcon
                       sx={{
                         "&:hover": { backgroundColor: "grey" },
@@ -136,8 +136,6 @@ const Menu = (props: any) => {
                       onClick={() => setActiveChannels(!activeChannels)}
                     />
                     Channels
-                  </div>
-                </p>
                 <GroupChatTable />
                 <p className="navChatOption">
                   <ChatCreateModal />
@@ -156,8 +154,7 @@ const Menu = (props: any) => {
               </React.Fragment>
             ) : (
               <React.Fragment>
-                <p>
-                  <div className="channelRow">
+                  <div className="navItem">
                     <ArrowRightIcon
                       sx={{
                         "&:hover": { backgroundColor: "grey" },
@@ -167,7 +164,6 @@ const Menu = (props: any) => {
                     />
                     Channels
                   </div>
-                </p>
               </React.Fragment>
             )}
           </div>

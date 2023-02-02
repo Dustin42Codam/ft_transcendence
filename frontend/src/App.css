@@ -6,6 +6,7 @@ body,
 #app,
 #app > div {
   height: 100%;
+  background: url(./particles6.png);
 }
 
 body::-webkit-scrollbar {
@@ -58,16 +59,19 @@ p {
   overflow: auto;
   /* background-color: rgb(100, 100, 100); */
   /* background-color: rgba(22, 22, 54, 0); */
-  background: url(./particles6.png);
+  /* background: url(./particles6.png); */
   opacity: 0.99;
   /* opacity: 0.99; */
+  height: 93.5vh;
 }
 
 .contentBody .sidenav {
   order: -1;
   flex: 0 0 250px;
   overflow: auto;
-  height: 75vh;
+  /* height: 50vh; */
+  height: 100%;
+  background-color: #00ddce54;
   /* background-color: rgb(49, 48, 49); */
   /* background: url(./particles6.png); */
   /* opacity: 0.99; */
