@@ -18,7 +18,7 @@ export class MemberService extends AbstractService {
   async getMemberByUserAndChatroom(user: User, chatroom: Chatroom) {
     const member = await this.findOne({ user, chatroom }, ["user", "chatroom"]);
     if (!member || member.status === MemberStatus.INACTIVE) {
-      throw new BadRequestException("This member doesn't exist.");  
+      throw new BadRequestException("This member doesn't exist.");
     }
     return member;
   }
@@ -41,7 +41,7 @@ export class MemberService extends AbstractService {
     const members = await this.memberRepository.find({
       where: {
         user: user,
-        status: MemberStatus.ACTIVE
+        status: MemberStatus.ACTIVE,
       },
       relations: ["chatroom", "user"],
     });
@@ -52,7 +52,7 @@ export class MemberService extends AbstractService {
     const members = await this.memberRepository.find({
       where: {
         chatroom: chatroom,
-        status: MemberStatus.ACTIVE
+        status: MemberStatus.ACTIVE,
       },
       relations: ["user"],
     });

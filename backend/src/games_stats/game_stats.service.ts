@@ -19,19 +19,19 @@ export class GameStatsService extends AbstractService {
     return gameStats;
   }
 
-  async addWin(user: User) {  
+  async addWin(user: User) {
     user.game_stats.win++;
     user.game_stats.played++;
     this.update(user.game_stats.id, user.game_stats);
   }
 
-	async addLose(user: User) {
-		user.game_stats.lose++;
-		user.game_stats.played++;
-		this.update(user.game_stats.id, user.game_stats);
-	}
+  async addLose(user: User) {
+    user.game_stats.lose++;
+    user.game_stats.played++;
+    this.update(user.game_stats.id, user.game_stats);
+  }
 
-	async createGameStats(user: User) {
-		await this.create({user: user});
-	}
+  async createGameStats(user: User) {
+    await this.create({ user: user });
+  }
 }

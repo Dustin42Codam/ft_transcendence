@@ -12,14 +12,7 @@ import { FriendController } from "./friend.controller";
 import { FriendService } from "./friend.service";
 
 @Module({
-	imports: [
-		TypeOrmModule.forFeature([Friend]),
-		forwardRef(() => ChatroomModule),
-		forwardRef(() => UserModule),
-		CommonModule,
-		AuthModule,
-		BlockModule,
-	],
+  imports: [TypeOrmModule.forFeature([Friend]), forwardRef(() => ChatroomModule), forwardRef(() => UserModule), CommonModule, AuthModule, BlockModule],
   controllers: [FriendController],
   providers: [FriendService],
   exports: [FriendService],

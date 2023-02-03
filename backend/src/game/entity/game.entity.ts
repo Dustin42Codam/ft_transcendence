@@ -25,7 +25,7 @@ export class Game {
   @Column()
   player_1: number;
 
-  @Column({nullable: true})
+  @Column({ nullable: true })
   player_2: number;
 
   @Column({ default: 0 })
@@ -36,8 +36,8 @@ export class Game {
 
   @Column()
   type: GameType;
-  
-  @Column({nullable: true, default: null })
+
+  @Column({ nullable: true, default: null })
   invite_code: string;
 
   @Column()

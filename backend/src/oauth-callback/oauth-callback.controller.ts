@@ -1,9 +1,9 @@
 import { Request, Response } from "express-session";
-import { Controller, Get, Req, Res, UseInterceptors, BadRequestException } from '@nestjs/common';
-import { UserService } from '../user/user.service';
-import { JwtService } from '@nestjs/jwt';
-import { UserStatus } from 'src/user/entity/user.entity';
-import { UserCreateDto } from 'src/user/dto/user-create.dto';
+import { Controller, Get, Req, Res, UseInterceptors, BadRequestException } from "@nestjs/common";
+import { UserService } from "../user/user.service";
+import { JwtService } from "@nestjs/jwt";
+import { UserStatus } from "src/user/entity/user.entity";
+import { UserCreateDto } from "src/user/dto/user-create.dto";
 
 require("dotenv").config();
 
@@ -45,15 +45,14 @@ export class OauthCallbackController {
         headers: {
           Authorization: "Bearer " + request.session.token,
         },
-      })
-      if (!resp.data.login)
-        throw new BadRequestException("Intra changed his data.");
+      });
+      if (!resp.data.login) throw new BadRequestException("Intra changed his data.");
       user = await this.userService.findOne({ intra_name: resp.data.login });
       if (!user) {
-		    user = await registerUser(resp.data, this.userService);
-		  }
-		const jwt = await this.jwtService.signAsync({ id: user.id });
-		response.cookie("jwt", jwt, { httpOnly: true, sameSite: "lax" });
+        user = await registerUser(resp.data, this.userService);
+      }
+      const jwt = await this.jwtService.signAsync({ id: user.id });
+      response.cookie("jwt", jwt, { httpOnly: true, sameSite: "lax" });
 
       if (user.two_factor_auth === true) {
         response.redirect(`http://localhost:${process.env.FRONTEND_PORT}/authenticate/2fa`);
@@ -66,14 +65,14 @@ export class OauthCallbackController {
     }
 
     async function registerUser(data, userService) {
-		const userCreateDto: UserCreateDto = {
-			display_name: data.login,
-			intra_name: data.login,
-			avatar: data.image.link,
-			status: UserStatus.ONLINE
-		}
+      const userCreateDto: UserCreateDto = {
+        display_name: data.login,
+        intra_name: data.login,
+        avatar: data.image.link,
+        status: UserStatus.ONLINE,
+      };
       const user = await userService.createUser(userCreateDto);
-	  return user;
+      return user;
     }
   }
 }

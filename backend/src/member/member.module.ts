@@ -13,15 +13,7 @@ import { MessageModule } from "src/message/message.module";
 import { GameModule } from "src/game/game.module";
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([Member]),
-    forwardRef(() => ChatroomModule),
-    forwardRef(() => UserModule),
-    AuthModule,
-	MessageModule,
-	GameModule,
-    CommonModule
-  ],
+  imports: [TypeOrmModule.forFeature([Member]), forwardRef(() => ChatroomModule), forwardRef(() => UserModule), AuthModule, MessageModule, GameModule, CommonModule],
   providers: [MemberService],
   controllers: [MemberController],
   exports: [MemberService],

@@ -3,7 +3,7 @@ import { GameStats } from "src/games_stats/entity/game_stats.entity";
 import { Member } from "src/member/entity/member.entity";
 import { Column, Entity, OneToMany, JoinTable, PrimaryGeneratedColumn, OneToOne, JoinColumn } from "typeorm";
 import { TFA } from "src/tfa/entity/tfa.entity";
-import { Exclude } from 'class-transformer';
+import { Exclude } from "class-transformer";
 
 export enum UserStatus {
   ONLINE = "online",
@@ -16,11 +16,11 @@ export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
-	@Column({unique: true})
-	display_name: string;
+  @Column({ unique: true })
+  display_name: string;
 
-	@Column({unique: true})
-	intra_name: string;
+  @Column({ unique: true })
+  intra_name: string;
 
   @Column()
   avatar?: string;
@@ -47,13 +47,13 @@ export class User {
   @OneToMany(() => Block, (block: Block) => block.receiver)
   received_blocks: Block[];
 
-	@OneToOne(() => GameStats, {eager: true, cascade: true})
+  @OneToOne(() => GameStats, { eager: true, cascade: true })
   @JoinColumn()
-  game_stats: GameStats
+  game_stats: GameStats;
 
-  @OneToOne(() => TFA, {eager: true, cascade: true})
+  @OneToOne(() => TFA, { eager: true, cascade: true })
   @JoinColumn()
-  tfa_secret: TFA
+  tfa_secret: TFA;
 
   @OneToMany(() => Member, (member: Member) => member.user)
   chatrooms: Member[];

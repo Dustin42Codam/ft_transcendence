@@ -12,32 +12,38 @@ require("dotenv").config();
 @Controller()
 export class UploadController {
   constructor(private readonly userService: UserService, private readonly authService: AuthService) {}
-  
+
   @Post("upload")
   @UseInterceptors(
     FileInterceptor("image", {
       storage: diskStorage({
         destination: "./uploads",
-        async filename(_,file, callback) {
-          const randomName = Array(32).fill(null).map(() => Math.round(Math.random() * 16).toString(16)).join("")
-          console.log("-=-=-=-=-=-=-" + randomName + "-=-=-=-=-=-=-")
+        async filename(_, file, callback) {
+          const randomName = Array(32)
+            .fill(null)
+            .map(() => Math.round(Math.random() * 16).toString(16))
+            .join("");
+          console.log("-=-=-=-=-=-=-" + randomName + "-=-=-=-=-=-=-");
           return callback(null, randomName);
         },
       }),
     }),
   )
   async uploadFile(
-    @UploadedFile(new ParseFilePipeBuilder()
-    .addFileTypeValidator({
-      fileType: 'jpeg|jpg|gif|png',
-    })
-    .addMaxSizeValidator({
-      maxSize: 4000000
-    })
-    .build({
-      errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY
-    }),) file,
-    @Req() request: Request
+    @UploadedFile(
+      new ParseFilePipeBuilder()
+        .addFileTypeValidator({
+          fileType: "jpeg|jpg|gif|png",
+        })
+        .addMaxSizeValidator({
+          maxSize: 4000000,
+        })
+        .build({
+          errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY,
+        }),
+    )
+    file,
+    @Req() request: Request,
   ) {
     console.log("Uploading file:", file);
     // const userId = await this.authService.userId(request);
@@ -52,4 +58,3 @@ export class UploadController {
     res.sendFile(path, { root: "uploads" });
   }
 }
-

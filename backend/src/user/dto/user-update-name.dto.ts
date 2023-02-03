@@ -1,3 +1,3 @@
 export class UserUpdateNameDto {
-	display_name: string;
+  display_name: string;
 }

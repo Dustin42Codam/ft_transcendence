@@ -36,30 +36,30 @@ export class FriendService extends AbstractService {
     return friendship;
   }
 
-    async createFriendship(friendCreateDto: FriendCreateDto) {
-        const user1 = await this.userService.getUserById(friendCreateDto.user_1_id);
-        const user2 = await this.userService.getUserById(friendCreateDto.user_2_id);
-        const chatroomInfoDto : ChatroomInfoDto = {name: user1.intra_name+"-"+user2.intra_name, type: ChatroomType.DIRECT, password: null};
-        const newChatroom = await this.chatroomService.createChatroom([user1, user2], chatroomInfoDto, -1);
-        const friendshipInfo = {chatroom_id: newChatroom.id, ...friendCreateDto};
-        const friendship = await this.create(friendshipInfo)
-        return friendship;
-    }
+  async createFriendship(friendCreateDto: FriendCreateDto) {
+    const user1 = await this.userService.getUserById(friendCreateDto.user_1_id);
+    const user2 = await this.userService.getUserById(friendCreateDto.user_2_id);
+    const chatroomInfoDto: ChatroomInfoDto = { name: user1.intra_name + "-" + user2.intra_name, type: ChatroomType.DIRECT, password: null };
+    const newChatroom = await this.chatroomService.createChatroom([user1, user2], chatroomInfoDto, -1);
+    const friendshipInfo = { chatroom_id: newChatroom.id, ...friendCreateDto };
+    const friendship = await this.create(friendshipInfo);
+    return friendship;
+  }
 
-    async getAllFriendshipsFromUser(user_id: number) {
-        const friendship_ids = await this.friendRepository.find({ where: [{user_1_id: user_id},{user_2_id: user_id}],});
-        const users: User[] = [];
-        for (const friend of friendship_ids) {
-            if (friend.user_1_id === user_id) {
-                const user = await this.userService.getUserById(friend.user_2_id);
-                users.push(user);
-            } else {
-                const user = await this.userService.getUserById(friend.user_1_id);
-                users.push(user);
-            }
-        }
-        return users;
+  async getAllFriendshipsFromUser(user_id: number) {
+    const friendship_ids = await this.friendRepository.find({ where: [{ user_1_id: user_id }, { user_2_id: user_id }] });
+    const users: User[] = [];
+    for (const friend of friendship_ids) {
+      if (friend.user_1_id === user_id) {
+        const user = await this.userService.getUserById(friend.user_2_id);
+        users.push(user);
+      } else {
+        const user = await this.userService.getUserById(friend.user_1_id);
+        users.push(user);
+      }
     }
+    return users;
+  }
 
   async deleteFriendship(friendship: Friend) {
     const chatroom = await this.chatroomService.findOne({ id: friendship.chatroom_id }, ["users"]);

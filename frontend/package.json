@@ -24,7 +24,6 @@
       "@types/node": "^16.18.3",
       "@types/react": "^18.0.25",
       "@types/react-dom": "^18.0.8",
-      "@types/react-icons": "^3.0.0",
       "@types/react-redux": "^7.1.24",
       "@types/react-router-dom": "^5.3.3",
       "@types/redux": "^3.6.0",
@@ -58,7 +57,6 @@
       "sass": "^1.57.1",
       "socket.io-client": "^4.5.4",
       "tsparticles": "^2.7.1",
-      "update": "^0.7.4",
       "web-vitals": "^2.1.4"
    },
    "scripts": {

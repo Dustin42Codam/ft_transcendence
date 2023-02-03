@@ -1,4 +1,18 @@
-import { Redirect, UseGuards, ClassSerializerInterceptor, UseInterceptors, BadRequestException, Body, Controller, Get, NotFoundException, Post, Req, Res, HttpCode } from "@nestjs/common";
+import {
+  Redirect,
+  UseGuards,
+  ClassSerializerInterceptor,
+  UseInterceptors,
+  BadRequestException,
+  Body,
+  Controller,
+  Get,
+  NotFoundException,
+  Post,
+  Req,
+  Res,
+  HttpCode,
+} from "@nestjs/common";
 import { UserService } from "../user/user.service";
 import * as bcrypt from "bcrypt";
 import { RegisterDto } from "./models/register.dto";
@@ -13,21 +27,19 @@ import { TFAService } from "src/tfa/tfa.service";
 @Controller()
 export class AuthController {
   constructor(
-		private readonly userService: UserService,
-		private readonly jwtService: JwtService,
-		private readonly authService: AuthService,
-		private readonly tfaService: TFAService,
-	) {}
+    private readonly userService: UserService,
+    private readonly jwtService: JwtService,
+    private readonly authService: AuthService,
+    private readonly tfaService: TFAService,
+  ) {}
 
   @Post("register")
   async register(@Body() body: RegisterDto) {
-
     const user = await this.userService.findOne({ display_name: body.display_name });
 
     if (user) {
       throw new BadRequestException("User with this name already exists!");
     }
-
 
     await this.userService.createUser({
       display_name: body.display_name,
@@ -58,12 +70,11 @@ export class AuthController {
   @UseGuards(AuthGuard)
   @Get("me")
   async user(@Req() request: Request, @Res({ passthrough: true }) response: Response) {
-
     const id = await this.authService.userId(request);
 
-		const jwt = await this.jwtService.signAsync({ id: id });
+    const jwt = await this.jwtService.signAsync({ id: id });
 
-		response.set({ Authorization: "Bearer " + jwt, });
+    response.set({ Authorization: "Bearer " + jwt });
 
     return this.userService.findOne({ id });
   }
@@ -78,7 +89,7 @@ export class AuthController {
     response.clearCookie("Authentication");
     response.clearCookie("connect.sid");
 
-	await this.tfaService.update(userId, {isAuthenticated: false});
+    await this.tfaService.update(userId, { isAuthenticated: false });
 
     await this.userService.changeStatus(userId, UserStatus.OFFLINE);
 

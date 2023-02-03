@@ -15,6 +15,7 @@ import axios from "axios";
 
 export const UserProfile = () => {
   const currentUser = useAppSelector(selectCurrentUser);
+  console.log("current user", currentUser);
   const [friends, setFriends] = useState<any>([]);
   const friendsAmount = "Friends (" + friends.length + ")";
 

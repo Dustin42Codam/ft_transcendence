@@ -5,11 +5,10 @@ import { JwtService } from "@nestjs/jwt";
 
 @Injectable()
 export class SocketAuthGuard implements CanActivate {
-  constructor(private jwtService: JwtService,
-						 private readonly userService: UserService) {}
+  constructor(private jwtService: JwtService, private readonly userService: UserService) {}
   canActivate(context: ExecutionContext) {
-			console.log("THIS", context.getArgByIndex(0).client.sockets.entries().next().value[1]);
-			this.userService.getUserFromClient(context.getArgByIndex(0).client.sockets.entries().next().value[1]);
-			return true;
+    console.log("THIS", context.getArgByIndex(0).client.sockets.entries().next().value[1]);
+    this.userService.getUserFromClient(context.getArgByIndex(0).client.sockets.entries().next().value[1]);
+    return true;
   }
 }

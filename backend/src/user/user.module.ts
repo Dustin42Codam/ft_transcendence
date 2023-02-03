@@ -11,14 +11,7 @@ import { FriendModule } from "src/friend/friend.module";
 import { TFAModule } from "src/tfa/tfa.module";
 
 @Module({
-  imports: [
-	TypeOrmModule.forFeature([User]),
-	FriendModule,
-	CommonModule, 
-	GameStatsModule,
-	AuthModule,
-	forwardRef(() => TFAModule),
-	],
+  imports: [TypeOrmModule.forFeature([User]), FriendModule, CommonModule, GameStatsModule, AuthModule, forwardRef(() => TFAModule)],
   controllers: [UserController, UploadController],
   providers: [UserService],
   exports: [UserService],

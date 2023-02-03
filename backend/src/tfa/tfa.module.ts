@@ -1,4 +1,4 @@
-import { Module, forwardRef, Inject  } from "@nestjs/common";
+import { Module, forwardRef, Inject } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { CommonModule } from "src/common/common.module";
 
@@ -10,14 +10,9 @@ import { AuthModule } from "src/auth/auth.module";
 import { ConfigService } from "@nestjs/config";
 
 @Module({
-    imports: [
-		TypeOrmModule.forFeature([TFA]),
-		CommonModule,
-		forwardRef(() => UserModule),
-		forwardRef(() => AuthModule),
-	],
-    controllers: [TFAController], // TODO this is here for testing and should be removed
-    providers: [TFAService, ConfigService],
-    exports: [TFAService],
-  })
-  export class TFAModule {}
+  imports: [TypeOrmModule.forFeature([TFA]), CommonModule, forwardRef(() => UserModule), forwardRef(() => AuthModule)],
+  controllers: [TFAController], // TODO this is here for testing and should be removed
+  providers: [TFAService, ConfigService],
+  exports: [TFAService],
+})
+export class TFAModule {}

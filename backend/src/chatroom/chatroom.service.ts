@@ -67,7 +67,7 @@ export class ChatroomService extends AbstractService {
     var allGroupchats = [];
     for (const member of membersFromUser) {
       if ([ChatroomType.PRIVATE, ChatroomType.PROTECTED, ChatroomType.PUBLIC].includes(member.chatroom.type)) {
-        allGroupchats.push(member.chatroom)
+        allGroupchats.push(member.chatroom);
       }
     }
     return allGroupchats;
@@ -102,11 +102,11 @@ export class ChatroomService extends AbstractService {
   }
 
   async deleteChatroom(chatroomId: number) {
-	const chatroom = await this.getChatroomById(chatroomId);
+    const chatroom = await this.getChatroomById(chatroomId);
     for (const member of chatroom.users) {
       const allMessages = await this.messageService.getAllMessagesFromMember(member);
       for (const message of allMessages) {
-        await this.messageService.delete(message.id)
+        await this.messageService.delete(message.id);
       }
       await this.memberService.delete(member.id);
     }

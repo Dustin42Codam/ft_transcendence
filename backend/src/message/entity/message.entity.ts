@@ -15,7 +15,7 @@ export class Message {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => Member, {cascade: true})
+  @ManyToOne(() => Member, { cascade: true })
   member: Member;
 
   @CreateDateColumn()
@@ -23,10 +23,10 @@ export class Message {
 
   @Column({ default: MessageType.NORMAL })
   type: MessageType;
-  
+
   @Column()
   message: string;
 
-  @Column({nullable: true, default: null })
+  @Column({ nullable: true, default: null })
   invite_code: string;
 }
