@@ -158,10 +158,13 @@ const Chat = () => {
                           </div>
                         )}
                         <div className="userActions">
-                          <MemberActions
+                          {
+                            currentMember.role !== MemberRole.USER &&
+                            (<MemberActions
                             member={member}
                             currentMember={currentMember}
-                          />
+                            />)
+                          }
                         </div>
                       </div>
                     )

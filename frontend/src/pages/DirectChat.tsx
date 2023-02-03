@@ -49,7 +49,7 @@ const DirectChat = () => {
             <div className="userListHeader">
               <div className="imageText">
                 <div className="userImage">
-                  <Link to={`/users/${user.id}`}>
+                  <Link to={`/users/${user?.id}`}>
                     <img src={user?.avatar} className="cover" />
                   </Link>
                 </div>

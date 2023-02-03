@@ -24,7 +24,7 @@ const Nav = (props: any) => {
   return (
     <nav className={props.className}>
       <div className="navBarContainer">
-        <h1 className="nameProject">Trancedance</h1>
+        <h1 className="nameProject">TranceDance</h1>
         <Link
           to="/authenticate"
           className="logoutButton"

@@ -13,7 +13,10 @@ const Dashboard = () => {
 
   return (
     <Wrapper>
-      <div>Welcome to the most awesome Pong game since 1972</div>
+      <div>
+        <h1 style={{color: "white"}}>Welcome to the most awesome Pong game since 1972</h1>
+        <h3 style={{color: "white"}}>Play a game against your friends or just join them in a chat!</h3>
+      </div>
     </Wrapper>
   );
 };

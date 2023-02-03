@@ -8,7 +8,6 @@ import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import GroupChatTable from "./chat/GroupChatTable";
 import DirectChatTable from "./chat/DirectChatTable";
-import JoinableChatTable from "./chat/JoinableChatTable";
 import ChatCreateModal from "./chat/ChatCreateModal";
 import JoinChannel from "./JoinChannel";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
@@ -16,7 +15,6 @@ import {
   fetchDirectChats,
   selectJoinableChats,
 } from "../redux/slices/chatsSlice";
-import PopUp from "./PopUp";
 import { toast } from "react-toastify";
 import "./Menu.css";
 
@@ -94,7 +92,6 @@ const Menu = (props: any) => {
           <div className="navItem">
             {activeDm === true ? (
               <React.Fragment>
-                {/* <span className="navItemSpan"> */}
                   <ArrowDropDownIcon
                     sx={{
                       "&:hover": { backgroundColor: "grey" },
@@ -103,12 +100,10 @@ const Menu = (props: any) => {
                     onClick={() => setActiveDm(!activeDm)}
                   />
                   Direct Messages
-                {/* </span> */}
                 <DirectChatTable />
               </React.Fragment>
             ) : (
               <React.Fragment>
-                {/* <span className="navItemSpan"> */}
                   <ArrowRightIcon
                     sx={{
                       "&:hover": { backgroundColor: "grey" },
@@ -120,7 +115,6 @@ const Menu = (props: any) => {
                     }}
                   />
                   Direct Messages
-                {/* </span> */}
               </React.Fragment>
             )}
           </div>
@@ -140,17 +134,7 @@ const Menu = (props: any) => {
                 <p className="navChatOption">
                   <ChatCreateModal />
                 </p>
-                {/* <p className="navChatOption" onClick={() => joinChats()}> */}
                 <JoinChannel setJoinableChats={setJoinChannel} />
-                {/* </p> */}
-                {/* {joinChannel && (
-                  <PopUp
-                    content={
-                      <JoinableChatTable setJoinableChats={setJoinChannel} />
-                    }
-                    handleClose={() => joinChats()}
-                  />
-                )} */}
               </React.Fragment>
             ) : (
               <React.Fragment>
