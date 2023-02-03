@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useEffect, useState } from "react";
@@ -41,31 +41,32 @@ import "./chat/ChatTable.css";
 </div> */
 
 function JoinChannelPassword() {
-	const [show, setShow] = useState(false);
-	const handleClose = () => setShow(false);
-	const handleShow = () => setShow(true);
-	const dispatch = useAppDispatch();
-	let navigate = useNavigate();
-	const [joinableChats, setJoinableChats] = useState<any>([]);
-	const [isPopUp, setIsPopUp] = useState(false);
-	const [password, setPassword] = useState<string>("");
-	const [joinChatIndex, setJoinChatIndex] = useState<number>(0);
-	const user = useAppSelector(selectCurrentUser);
-	
-	console.log("🚀 ~ file: JoinChannelPassword.tsx:45 ~ JoinChannelPassword ~ show", show)
-	return (
-	<div onClick={handleShow}>
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+  const dispatch = useAppDispatch();
+  let navigate = useNavigate();
+  const [joinableChats, setJoinableChats] = useState<any>([]);
+  const [isPopUp, setIsPopUp] = useState(false);
+  const [password, setPassword] = useState<string>("");
+  const [joinChatIndex, setJoinChatIndex] = useState<number>(0);
+  const user = useAppSelector(selectCurrentUser);
+
+  console.log(
+    "🚀 ~ file: JoinChannelPassword.tsx:45 ~ JoinChannelPassword ~ show",
+    show
+  );
+  return (
+    <div onClick={handleShow}>
       <Modal className="modal" show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Channel password</Modal.Title>
         </Modal.Header>
 
-        <Modal.Body>
-			lol
-        </Modal.Body>
+        <Modal.Body>lol</Modal.Body>
       </Modal>
-	</div>
-  )
+    </div>
+  );
 }
 
-export default JoinChannelPassword
+export default JoinChannelPassword;

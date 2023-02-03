@@ -39,10 +39,7 @@ async function main() {
   root.render(
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <ParticleBackground
-          clickEnable={false}
-          speed={0.4}
-        />
+        <ParticleBackground clickEnable={false} speed={0.4} />
         <App />
       </PersistGate>
     </Provider>

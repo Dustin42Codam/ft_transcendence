@@ -92,29 +92,29 @@ const Menu = (props: any) => {
           <div className="navItem">
             {activeDm === true ? (
               <React.Fragment>
-                  <ArrowDropDownIcon
-                    sx={{
-                      "&:hover": { backgroundColor: "grey" },
-                      borderRadius: "10%",
-                    }}
-                    onClick={() => setActiveDm(!activeDm)}
-                  />
-                  Direct Messages
+                <ArrowDropDownIcon
+                  sx={{
+                    "&:hover": { backgroundColor: "grey" },
+                    borderRadius: "10%",
+                  }}
+                  onClick={() => setActiveDm(!activeDm)}
+                />
+                Direct Messages
                 <DirectChatTable />
               </React.Fragment>
             ) : (
               <React.Fragment>
-                  <ArrowRightIcon
-                    sx={{
-                      "&:hover": { backgroundColor: "grey" },
-                      borderRadius: "10%",
-                    }}
-                    onClick={() => {
-                      setActiveDm(!activeDm);
-                      dispatch(fetchDirectChats());
-                    }}
-                  />
-                  Direct Messages
+                <ArrowRightIcon
+                  sx={{
+                    "&:hover": { backgroundColor: "grey" },
+                    borderRadius: "10%",
+                  }}
+                  onClick={() => {
+                    setActiveDm(!activeDm);
+                    dispatch(fetchDirectChats());
+                  }}
+                />
+                Direct Messages
               </React.Fragment>
             )}
           </div>
@@ -122,14 +122,14 @@ const Menu = (props: any) => {
           <div className="navItem">
             {activeChannels === true ? (
               <React.Fragment>
-                    <ArrowDropDownIcon
-                      sx={{
-                        "&:hover": { backgroundColor: "grey" },
-                        borderRadius: "10%",
-                      }}
-                      onClick={() => setActiveChannels(!activeChannels)}
-                    />
-                    Channels
+                <ArrowDropDownIcon
+                  sx={{
+                    "&:hover": { backgroundColor: "grey" },
+                    borderRadius: "10%",
+                  }}
+                  onClick={() => setActiveChannels(!activeChannels)}
+                />
+                Channels
                 <GroupChatTable />
                 <p className="navChatOption">
                   <ChatCreateModal />
@@ -138,16 +138,16 @@ const Menu = (props: any) => {
               </React.Fragment>
             ) : (
               <React.Fragment>
-                  <div className="navItem">
-                    <ArrowRightIcon
-                      sx={{
-                        "&:hover": { backgroundColor: "grey" },
-                        borderRadius: "10%",
-                      }}
-                      onClick={() => setActiveChannels(!activeChannels)}
-                    />
-                    Channels
-                  </div>
+                {/* <div className="navItem"> */}
+                  <ArrowRightIcon
+                    sx={{
+                      "&:hover": { backgroundColor: "grey" },
+                      borderRadius: "10%",
+                    }}
+                    onClick={() => setActiveChannels(!activeChannels)}
+                  />
+                  Channels
+                {/* </div> */}
               </React.Fragment>
             )}
           </div>

@@ -4,7 +4,7 @@
   margin: 0px;
   /* background-color: rgb(49, 48, 49); */
   /* background-color: #006b6469; */
-  background-color: #00ddce54;
+  background-color: #00ddcea4;
 }
 
 .sidenav {
@@ -18,7 +18,7 @@
 
 .navItemHiglight:hover {
   /* background-color: rgb(50, 50, 50); */
-  background-color: #00ddce54;
+  background-color: #00ffee54;
   transition-duration: 0.15s;
   cursor: pointer;
 }
@@ -26,6 +26,8 @@
 .navItem {
   color: white;
   min-height: 60px;
+  font-size: 1.2em;
+  font-weight: 400;
 }
 
 .css-fc0jz7-MuiSvgIcon-root {

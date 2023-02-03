@@ -42,7 +42,7 @@ function JoinChannel(props: any) {
   let navigate = useNavigate();
   const [joinableChats, setJoinableChats] = useState<any>([]);
   const [isPopUp, setIsPopUp] = useState(false);
-  console.log("🚀 ~ file: JoinChannel.tsx:45 ~ JoinChannel ~ isPopUp", isPopUp)
+  console.log("🚀 ~ file: JoinChannel.tsx:45 ~ JoinChannel ~ isPopUp", isPopUp);
   const [password, setPassword] = useState<string>("");
   const [joinChatIndex, setJoinChatIndex] = useState<number>(0);
   const user = useAppSelector(selectCurrentUser);
@@ -159,13 +159,13 @@ function JoinChannel(props: any) {
         <Modal.Body>
           {joinableChats.map((chat: Chats, index: number) => (
             <div
-            key={chat.id}
-            className="joinChannelRow"
-            onClick={() => {
+              key={chat.id}
+              className="joinChannelRow"
+              onClick={() => {
                 handleClick(index);
                 handleClose();
-            }}
-          >
+              }}
+            >
               {chat.type === ChatroomType.PROTECTED ? (
                 <CastleIcon />
               ) : (

@@ -31,9 +31,11 @@ body {
 }
 
 p {
-  color: rgb(244, 241, 208);
+  color: rgb(255, 255, 255);
   margin: 0px;
   height: 50px;
+  /* font-size: 1.2em; */
+  /* font-weight: 600; */
 }
 
 .wrapper {

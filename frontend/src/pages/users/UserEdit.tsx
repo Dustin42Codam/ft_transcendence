@@ -189,15 +189,11 @@ const UserEdit = () => {
           </div>
           <Button type="submit" onClick={infoSubmit}>
             Save
-          </Button>
-          {" "}
+          </Button>{" "}
           <div className="mb-3">
             Two Factor Authentication
             <div className="mb-5">
-              <button
-                id="qr-button"
-                className="btn btn-outline-primary px-4"
-              >
+              <button id="qr-button" className="btn btn-outline-primary px-4">
                 Generate QR Code
               </button>
               <img src="" id="qr" />
@@ -211,14 +207,10 @@ const UserEdit = () => {
                   onChange={(e) => setCode(e.target.value)}
                 />
               </label>
-              {/* <br/> */}
-              {" "}
+              {/* <br/> */}{" "}
               {twoFA === false ? (
-                <button
-                  onClick={activate2FA}
-                  className="btn btn-primary px-4"
-                >
-                    Activate 2FA
+                <button onClick={activate2FA} className="btn btn-primary px-4">
+                  Activate 2FA
                 </button>
               ) : (
                 <button
@@ -230,7 +222,7 @@ const UserEdit = () => {
               )}
             </div>
           </div>
-      <Button onClick={navigateBack}>Cancel</Button>
+          <Button onClick={navigateBack}>Cancel</Button>
         </div>
       </section>
     </Wrapper>

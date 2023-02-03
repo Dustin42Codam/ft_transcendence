@@ -19,7 +19,6 @@
 .joinChannelRow:hover {
   background-color: #efefef;
   cursor: pointer;
-
 }
 
 .chatRow {
@@ -35,6 +34,8 @@
   min-height: 54px;
   overflow: hidden;
   width: 100%;
+  font-weight: initial;
+  font-size: 0.8em;
 }
 
 .chatRow:hover {

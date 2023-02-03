@@ -15,30 +15,30 @@
 }
 
 .gameButton {
-	margin: 15px;
-	height: 40px;
-	width: 250px;
-	font-size: 1.5em;
-	/* height: 30px; */
+  margin: 15px;
+  height: 40px;
+  width: 250px;
+  font-size: 1.5em;
+  /* height: 30px; */
 }
 
 .gameLobbyContainer {
-	display: flex;
-	flex-direction: column;
-	background-color: rgba(72, 64, 64, 0.237);
-	align-items: center;
+  display: flex;
+  flex-direction: column;
+  background-color: rgba(72, 64, 64, 0.237);
+  align-items: center;
 }
 
 th,
 td {
-	min-width: 150px!important;
-	min-height: 69px!important;
-	text-align: center;
-	vertical-align: middle;
-	overflow: hidden;
+  min-width: 150px !important;
+  min-height: 69px !important;
+  text-align: center;
+  vertical-align: middle;
+  overflow: hidden;
 
-	/* min-width: 3em; the normal 'fixed' width */
-	/* width: 3em; the normal 'fixed' width */
-	/* max-width: 3em; the normal 'fixed' width, to stop the cells expanding */
-	/* max-height: 3em; */
+  /* min-width: 3em; the normal 'fixed' width */
+  /* width: 3em; the normal 'fixed' width */
+  /* max-width: 3em; the normal 'fixed' width, to stop the cells expanding */
+  /* max-height: 3em; */
 }

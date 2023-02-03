@@ -37,7 +37,7 @@ export const UserProfile = () => {
         href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css"
         rel="stylesheet"
       />
-          <section id="content" className="container UserBody">
+      <section id="content" className="container UserBody">
         <div className="page-heading">
           <div className="container mt-5">
             <div className="row d-flex justify-content-center">
@@ -58,13 +58,11 @@ export const UserProfile = () => {
                       to="/profile/edit"
                       style={{ textDecoration: "inherit", color: "inherit" }}
                     >
-                    <div className="mt-2 buttons button-layout">
-                        <button
-                          className="btn btn-outline-primary px-4"
-                        >
+                      <div className="mt-2 buttons button-layout">
+                        <button className="btn btn-outline-primary px-4">
                           Edit profile
                         </button>
-                    </div>
+                      </div>
                     </Link>
                   </div>
                 </div>
