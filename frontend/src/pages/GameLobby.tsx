@@ -4,16 +4,19 @@ import Wrapper from "../components/Wrapper";
 import axios from "axios";
 import Popup from "reactjs-popup";
 import "./GameLobby.css";
+import Table from 'react-bootstrap/Table';
 
 import { selectCurrentUser } from "../redux/slices/currentUserSlice";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 
 import { useNavigate } from "react-router-dom";
+import { selectAllUsers } from "../redux/slices/usersSlice";
 
 const GameLobby = (navigation: any) => {
   const dispatch = useAppDispatch();
   const [activeGames, setActiveGames] = useState<any>(null);
   const currentUser = useAppSelector(selectCurrentUser);
+  const users = useAppSelector(selectAllUsers);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -71,41 +74,42 @@ const GameLobby = (navigation: any) => {
     navigate(`/game/${activeGames[gameIndex].id}`);
   }
 
+
+
   return (
     <Wrapper>
-      <div className="">
-        <button onClick={joinGameRoom}> Regular Game</button>
-        <button onClick={joinPowerupGame}> Power up Game </button>
-        <button onClick={sendGameInvite}>
-          {" "}
-          Send a game invite to some one{" "}
-        </button>
+
+		<div className="gameLobbyContainer">
+
+		<div className="gameButtons">
+			<button className="gameButton" onClick={joinGameRoom}> Regular Game</button>
+        	<button className="gameButton" onClick={joinPowerupGame}> Power up Game </button>
+		</div>
+
+		<div className="gamesTable">
+
         {activeGames ? (
-          <React.Fragment>
-            <table>
-              <thead>
+			// <Table striped variant="dark">
+			<table className="table table-striped table-dark">
+
+			<thead>
                 <tr className="activeGameRow">
-                  <td className="activeGameColumn">Game</td>
-                  <td className="activeGameColumn">Player1</td>
-                  <td className="activeGameColumn">Player2</td>
+                  <td className="activeGameColumn">Player 1</td>
+                  <td className="activeGameColumn">Player 2</td>
                   <td className="activeGameColumn">Score</td>
-                  <td className="activeGameColumn">Status</td>
-                  <td className="activeGameColumn">StartTime</td>
-                  <td className="activeGameColumn">type</td>
+                  <td className="activeGameColumn">mode</td>
+                  <td className="activeGameColumn">{" "}#</td>
                 </tr>
               </thead>
               <tbody>
                 {activeGames.map((games: any, index: number) => (
                   <tr className="activeGameRow" key={index}>
-                    <td className="activeGameColumn">{games.id}</td>
-                    <td className="activeGameColumn">{games.player_1}</td>
-                    <td className="activeGameColumn">{games.player_2}</td>
+                    <td className="activeGameColumn">{users.find((user: any) => user.id === games.player_1).display_name}</td>
+                    <td className="activeGameColumn">{users.find((user: any) => user.id === games.player_2).display_name}</td>
                     <td className="activeGameColumn">
                       {games.score_player_1} : {games.score_player_2}
                     </td>
-                    <td className="activeGameColumn">{games.active}</td>
-                    <td className="activeGameColumn">{games.timsstamp}</td>
-                    <td className="activeGameColumn">{games.type}</td>
+                    <td className="activeGameColumn">{games.mode}</td>
                     <td className="activeGameColumn">
                       {currentUser.id != games.player_1 &&
                       currentUser.id != games.player_2 ? (
@@ -120,17 +124,19 @@ const GameLobby = (navigation: any) => {
                         </React.Fragment>
                       ) : (
                         <React.Fragment></React.Fragment>
-                      )}
+						)}
                     </td>
                   </tr>
                 ))}
               </tbody>
-            </table>
-          </React.Fragment>
+				</table>
+    	// </Table>
         ) : (
-          <React.Fragment>No Actives games</React.Fragment>
-        )}
-      </div>
+			<React.Fragment>No Actives games</React.Fragment>
+			)}
+
+		</div>
+	</div>
     </Wrapper>
   );
 };

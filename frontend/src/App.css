@@ -21,6 +21,7 @@ body {
   /* height: 1024px; */
   font-family: "Studio Sans", sans-serif;
   background-color: rgb(16, 16, 20);
+  color: #555;
   /* height: intial !important; min-height: 100% !important; */
 }
 
@@ -34,6 +35,8 @@ span {
 
 p {
   color: rgb(244, 241, 208);
+  margin: 0px;
+  height: 50px;
 }
 
 .wrapper {
@@ -58,7 +61,10 @@ p {
   flex-direction: row;
   overflow: auto;
   /* background-color: rgb(100, 100, 100); */
-  background-color: rgb(16, 16, 20);
+  /* background-color: rgba(22, 22, 54, 0); */
+  background: url(./particles6.png);
+  opacity: 0.99;
+  /* opacity: 0.99; */
 }
 
 .contentBody .sidenav {
@@ -66,7 +72,9 @@ p {
   flex: 0 0 250px;
   overflow: auto;
   height: 75vh;
-  background-color: rgb(49, 48, 49);
+  /* background-color: rgb(49, 48, 49); */
+  /* background: url(./particles6.png); */
+  /* opacity: 0.99; */
 }
 
 .contentBody .ads {
