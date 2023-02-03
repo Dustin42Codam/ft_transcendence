@@ -31,7 +31,7 @@ const UserEdit = () => {
     button.addEventListener("click", async function onClick(event) {
       event.preventDefault();
 
-      const response = await fetch("http://localhost:3000/api/tfa/generate", {
+      const response = await fetch("http://10.10.6.8:3000/api/tfa/generate", {
         method: "POST",
         credentials: "include",
       });

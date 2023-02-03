@@ -38,7 +38,7 @@ interface GamePhysics {
   scored: boolean;
 }
 const gameSocketMiddleware: Middleware = (store) => {
-  let gameSocket: Socket = io("ws://localhost:3002/game", {
+  let gameSocket: Socket = io("ws://10.10.6.8:3002/game", {
     autoConnect: false,
     withCredentials: true,
   });

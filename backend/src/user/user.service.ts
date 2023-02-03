@@ -78,7 +78,7 @@ export class UserService extends AbstractService {
 
   async deleteAvatar(user: User) {
     var fs = require("fs");
-    const filePath = user.avatar.replace("http://localhost:3000/api", ".");
+    const filePath = user.avatar.replace("http://10.10.6.8:3000/api", ".");
     console.log("deleting: " + filePath);
     if (fs.existsSync(filePath)) {
       fs.unlink(filePath, err => {

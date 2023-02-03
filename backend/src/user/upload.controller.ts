@@ -49,7 +49,7 @@ export class UploadController {
     // const userId = await this.authService.userId(request);
     // const user = await this.userService.getUserById(userId);
     return {
-      url: `http://localhost:${process.env.BACKEND_PORT}/api/${file.path}`,
+      url: `http://10.10.6.8:${process.env.BACKEND_PORT}/api/${file.path}`,
     };
   }
 

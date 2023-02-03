@@ -12,7 +12,7 @@ const Nav = (props: any) => {
   const logout = async () => {
     await axios
       .post("logout", {})
-      .then((res) => (window.location.href = "http://localhost:4242"))
+      .then((res) => (window.location.href = "http://10.10.6.8:4242"))
       .catch((err) => console.log("failed to logout", err));
 
     dispatch({

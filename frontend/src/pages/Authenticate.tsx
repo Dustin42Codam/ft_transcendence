@@ -12,7 +12,7 @@ const Authenticate = () => {
       Math.random().toString(36).substring(2, 15) +
       Math.random().toString(36).substring(2, 15) +
       Math.random().toString(36).substring(2, 15);
-    document.location.href = `https://api.intra.42.fr/oauth/authorize?client_id=7c59d418a12bb6da95283ca1866d0db3946ff94528e8d7be5b98545c31f892ff&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fapi%2Foauth-callback&response_type=code&state=${stateValue}`;
+    document.location.href = `https://api.intra.42.fr/oauth/authorize?client_id=7c59d418a12bb6da95283ca1866d0db3946ff94528e8d7be5b98545c31f892ff&redirect_uri=http%3A%2F%2F10.10.6.8%3A3000%2Fapi%2Foauth-callback&response_type=code&state=${stateValue}`;
   }
   async function loginAsJohn() {
     await axios.post("users", {
@@ -24,7 +24,7 @@ const Authenticate = () => {
     await axios.post("login", {
       display_name: "John",
     });
-    document.location.href = "http://localhost:4242/";
+    document.location.href = "http://10.10.6.8:4242/";
   }
   async function loginAsAva() {
     await axios.post("users", {
@@ -36,7 +36,7 @@ const Authenticate = () => {
     await axios.post("login", {
       display_name: "Ava",
     });
-    document.location.href = "http://localhost:4242/";
+    document.location.href = "http://10.10.6.8:4242/";
   }
   return (
     <>

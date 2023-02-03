@@ -55,13 +55,13 @@ export class OauthCallbackController {
       response.cookie("jwt", jwt, { httpOnly: true, sameSite: "lax" });
 
       if (user.two_factor_auth === true) {
-        response.redirect(`http://localhost:${process.env.FRONTEND_PORT}/authenticate/2fa`);
+        response.redirect(`http://10.10.6.8:${process.env.FRONTEND_PORT}/authenticate/2fa`);
       } else {
-        response.redirect(`http://localhost:${process.env.FRONTEND_PORT}`);
+        response.redirect(`http://10.10.6.8:${process.env.FRONTEND_PORT}`);
       }
     } catch (e) {
-      console.log("ERROR:", e);
-      response.redirect(`http://localhost:${process.env.FRONTEND_PORT}/authenticate`);
+      // console.log("ERROR:", e);
+      response.redirect(`http://10.10.6.8:${process.env.FRONTEND_PORT}/authenticate`);
     }
 
     async function registerUser(data, userService) {
