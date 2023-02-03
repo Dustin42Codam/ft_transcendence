@@ -1,4 +1,5 @@
 import { WebSocketServer, OnGatewayDisconnect, OnGatewayConnection, WsResponse, OnGatewayInit, MessageBody, SubscribeMessage, WebSocketGateway } from "@nestjs/websockets";
+import { UserStatus } from "src/user/entity/user.entity";
 import { UserService } from "src/user/user.service";
 import { GameService } from "./game.service";
 import GameroomEvents from "./gameroomEvents";
@@ -272,7 +273,7 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
     function test() {
       setTimeout(() => {
         activeGames.map(async (game: GameRoom, index: number) => {
-          logger.debug(`GAME[${index}]:`, game);
+          //logger.debug(`GAME[${index}]:`, game);
           if (gameHasStarted(game)) {
             if (!isBallSet(game.gamePhysics.ball)) {
               game.gamePhysics.ball = getRandomPosition();
@@ -385,7 +386,11 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
         }
       }
     }
-    console.log(this.activeGames.length);
+    const user = await this.userService.getUserById(payload.userId);
+		this.logger.log(user);
+		if (user.status != "offline") {
+			await this.userService.changeStatus(payload.userId, UserStatus.ONLINE);
+		}
     client.leave(payload.gameRoomId);
   }
 
@@ -422,11 +427,13 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
       let player1: Player;
       player1 = { id: userId, displayName: user.display_name, bat: JSON.parse(JSON.stringify({ ...rightBat })) };
       currentActiveGame.gamePhysics.player1 = player1;
+			await this.userService.changeStatus(userId, UserStatus.IN_A_GAME);
       this.io.to(gameRoomId).emit(GameroomEvents.GameRoomNotification, `Player 1: ${user.display_name}`);
     } else if (gameFromDb.player_2 == userId) {
       let player2: Player;
       player2 = { id: userId, displayName: user.display_name, bat: JSON.parse(JSON.stringify({ ...leftBat })) };
       currentActiveGame.gamePhysics.player2 = player2;
+			await this.userService.changeStatus(userId, UserStatus.IN_A_GAME);
       this.io.to(gameRoomId).emit(GameroomEvents.GameRoomNotification, `Player 2: ${user.display_name}`);
     }
   }

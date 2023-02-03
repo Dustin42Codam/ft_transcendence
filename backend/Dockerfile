@@ -54,8 +54,6 @@ COPY --chown=node:node --from=build ./backend/dist ./dist
 
 COPY .env ./.env
 
-USER node
-
 HEALTHCHECK  --interval=30s --timeout=3s \
   CMD wget --no-verbose --tries=3 --spider http://127.0.0.1:3000/ || exit 1
 

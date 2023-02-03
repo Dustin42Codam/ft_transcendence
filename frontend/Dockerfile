@@ -48,7 +48,7 @@ FROM test as audit
 CMD ["npm", "run", "audit"]
 
 ###PROD###
-FROM nginx:1.23.-alpine as prod
+FROM nginx:1.23.3-alpine as prod
 
 COPY --chown=nginx:nginx --from=build ./frontend/build ./build
 

@@ -3,7 +3,6 @@ import { ValidationPipe } from "@nestjs/common";
 import { AppModule } from "./app.module";
 import * as session from "express-session";
 import * as cookieParser from "cookie-parser";
-import { SwaggerModule, DocumentBuilder } from "@nestjs/swagger";
 import * as dotenv from "dotenv";
 import { ConfigService } from "@nestjs/config";
 import { SocketIoAdapter } from "./game/socketIoAdapter";
@@ -45,9 +44,6 @@ async function bootstrap() {
       },
     }),
   );
-  const config = new DocumentBuilder().setTitle("ft_transcendence").setDescription("Team TranceDance API").setVersion("1.0").build();
-  const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup("api", app, document);
   await app.listen(parseInt(process.env.BACKEND_PORT));
 }
 bootstrap();
