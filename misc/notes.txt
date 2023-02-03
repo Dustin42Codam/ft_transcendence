@@ -1,7 +1,12 @@
 
 todo:
+	->	add updated thunder client collection
+		to "misc" directory so we can populate
+		our db during the eval
+		->	turn off auth guard in user controller
+			for evaluation
+
 	-	Join chat pop up
-		-	
 		-	test with many chats
 		-	bug: sometimes the user is
 			redirected to the wrong channel
@@ -24,6 +29,10 @@ todo:
 			-	select user from friend list
 				-	test call dispatch with userIds beforhand
 
+	-	make whole div clickable to expand
+		dropdown menu for chats instead
+		of just the icon
+
 	-	new join channel pop up
 		-	info if there are no channels to join 
 
@@ -41,36 +50,27 @@ todo:
 		mouse hovers in the sidebar
 	+	hide scroll bar on sidebar nav items
 		+	check how huge list of users is being rendered
-	-	make whole div clickable to expand
-		dropdown menu for chats instead
-		of just the icon
 	+	move toasts on user page to the right
 
-	-	better game UI
-	-	better dashboard UI
-		-	particles js?
-		-	particles png?
+	+	better game UI
+	+	better dashboard UI
+		+	particles js
 
 	-	optional, non mandatory extra stuff:
-		-	reset password in UI and component state
+		+	reset password in UI and component state
 			after new password + passwordConfirm
 			didn't match
-		-	change contentBody in user list, user profile, user page?
-		+	remove header
-		-	new side bar
-			-	move project name to top of sidebar
-			-	move sign out button to side bar
-		-	New side bar
-			-	new colors
-			-	new side dropdown DM render
-				-	render user blocks
-				-	add time?
+		+	New side bar
+			+	new colors
+			+	new side dropdown DM render
+				+	render user blocks
 				-	add status?
-				-	show last message (message_p)
+				-	show last message (message_p)?
 
-	->	New Chat UI
-		->	new chat bg with better crop
-			- test macos
+	+	New Chat UI
+		+	new chat bg with better crop
+			+ test macos
+			+ use particles instead of image now
 		+	add auto scroll down
 		+	add message input
 		+	add time stamp
@@ -90,10 +90,10 @@ todo:
 				+	when clicking on avatar
 			+	ban
 			+	unban
-				->	check un/ban with text input
+				+	check un/ban with text input
 			+	mute
 			+	unmute
-				->	check un/mute with text input
+				+	check un/mute with text input
 			+	add new admin
 			+	remove admin
 			+	grant ownership
@@ -110,7 +110,7 @@ todo:
 			+	smiley button
 			+	smiley dropdown
 
-	->	check if blocking user is effective
+	+	check if blocking user is effective
 
 
 done:

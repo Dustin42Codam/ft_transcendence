@@ -6,10 +6,10 @@
 }
 
 .user-image {
-	aspect-ratio: 1/1;
-	object-fit: cover;
-	border: solid 6px transparent;
-	border-radius: 50%;
+  aspect-ratio: 1/1;
+  object-fit: cover;
+  border: solid 6px transparent;
+  border-radius: 50%;
 }
 
 .button-layout {

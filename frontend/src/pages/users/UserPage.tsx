@@ -234,7 +234,7 @@ export const UserPage = () => {
             <div className="row d-flex justify-content-center">
               <div className="col-md-7">
                 <div className="card p-3 py-4">
-                  <div className="user-image">
+                  <div className="text-center">
                     <img
                       src={user.avatar}
                       width="200"

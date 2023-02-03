@@ -4,7 +4,6 @@ import { gameSocketActions } from "../redux/slices/gameSocketSlice";
 import { useAppDispatch } from "../redux/hooks";
 import "./Game.css";
 import store from "../redux/store";
-import Confetty from "../components/confety";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
