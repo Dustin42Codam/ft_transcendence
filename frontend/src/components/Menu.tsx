@@ -134,20 +134,20 @@ const Menu = (props: any) => {
                 <GroupChatTable />
                 <div className="navItemHiglight">
                   <ChatCreateModal />
-				</div>
+                </div>
                 <JoinChannel setJoinableChats={setJoinChannel} />
               </React.Fragment>
             ) : (
               <React.Fragment>
                 {/* <div className="navItem"> */}
-                  <ArrowRightIcon
-                    sx={{
-                      "&:hover": { backgroundColor: "grey" },
-                      borderRadius: "10%",
-                    }}
-                    onClick={() => setActiveChannels(!activeChannels)}
-                  />
-                  Channels
+                <ArrowRightIcon
+                  sx={{
+                    "&:hover": { backgroundColor: "grey" },
+                    borderRadius: "10%",
+                  }}
+                  onClick={() => setActiveChannels(!activeChannels)}
+                />
+                Channels
                 {/* </div> */}
               </React.Fragment>
             )}

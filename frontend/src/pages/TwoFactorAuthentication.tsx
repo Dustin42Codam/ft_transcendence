@@ -60,11 +60,7 @@ function TwoFactorAuthentication() {
       <div className="auth-container">
         <ParticleBackground clickEnable={true} speed={0.4} />
         <div className="authBox">
-          <img
-            className="user"
-            src={currentUser.avatar}
-            width="200px"
-          />
+          <img className="user" src={currentUser.avatar} width="200px" />
 
           <div className="p-2fa">Two Factor Authentication</div>
           <div className="info">6-Digit-Key</div>

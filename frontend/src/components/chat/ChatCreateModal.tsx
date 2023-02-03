@@ -20,7 +20,7 @@ import { fetchCurrentMember } from "../../redux/slices/currentMemberSlice";
 import { fetchChatMembers } from "../../redux/slices/chatMembersSlice";
 import axios from "axios";
 // import "./Menu.css"
-import "./ChatCreateModal.css"
+import "./ChatCreateModal.css";
 
 function ChatCreateModal() {
   const [show, setShow] = useState(false);
@@ -75,7 +75,6 @@ function ChatCreateModal() {
         })
       );
       handleClose();
-
     }
     inputRef.current!["floatingInputCustom"].value = "";
     inputRef.current!["floatingPasswordConfirmCustom"].value = "";
@@ -89,7 +88,7 @@ function ChatCreateModal() {
 
   return (
     <div>
-      <div className="navChatOption" onClick={handleShow}>
+      <div onClick={handleShow}>
         <AddIcon />
         Create channel
       </div>
