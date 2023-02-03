@@ -94,7 +94,7 @@ const Menu = (props: any) => {
           <div className="navItem">
             {activeDm === true ? (
               <React.Fragment>
-                <div>
+                <div className="dropDownText">
                   <ArrowDropDownIcon
                     sx={{
                       "&:hover": {
@@ -110,7 +110,7 @@ const Menu = (props: any) => {
               </React.Fragment>
             ) : (
               <React.Fragment>
-                <div>
+                <div className="dropDownText">
                   <ArrowRightIcon
                     sx={{
                       "&:hover": {
@@ -131,7 +131,7 @@ const Menu = (props: any) => {
           <div className="navItem">
             {activeChannels === true ? (
               <React.Fragment>
-                <div>
+                <div className="dropDownText">
                   <div className="channelRow">
                     <ArrowDropDownIcon
                       sx={{
@@ -164,7 +164,7 @@ const Menu = (props: any) => {
               </React.Fragment>
             ) : (
               <React.Fragment>
-                <div>
+                <div className="dropDownText">
                   <div className="channelRow">
                     <ArrowRightIcon
                       sx={{

@@ -14,6 +14,10 @@
   display: none;
 }
 
+.dropDownText {
+  color: rgb(244, 241, 208);
+}
+
 .navItemHiglight {
   color: rgb(244, 241, 208);
   background-color: rgba(140, 140, 145, 0);
