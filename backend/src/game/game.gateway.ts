@@ -447,21 +447,21 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
         if (game.gamePhysics.player1.id == userId) {
           if (payload.direction == "down") {
             if (game.gamePhysics.player1.bat.positionY > 0) {
-              game.gamePhysics.player1.bat.positionY -= 50;
+              game.gamePhysics.player1.bat.positionY -= 10;
             }
           } else if (payload.direction == "up") {
             if (game.gamePhysics.player1.bat.positionY < 520) {
-              game.gamePhysics.player1.bat.positionY += 50;
+              game.gamePhysics.player1.bat.positionY += 10;
             }
           }
         } else if (game.gamePhysics.player2.id == userId) {
           if (payload.direction == "down") {
             if (game.gamePhysics.player2.bat.positionY > 0) {
-              game.gamePhysics.player2.bat.positionY -= 50;
+              game.gamePhysics.player2.bat.positionY -= 10;
             }
           } else if (payload.direction == "up") {
             if (game.gamePhysics.player2.bat.positionY < 520) {
-              game.gamePhysics.player2.bat.positionY += 50;
+              game.gamePhysics.player2.bat.positionY += 10;
             }
           }
         }
