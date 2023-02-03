@@ -13,9 +13,18 @@ const Dashboard = () => {
 
   return (
     <Wrapper>
-      <div>
-        <h1 style={{color: "white"}}>Welcome to the most awesome Pong game since 1972</h1>
-        <h3 style={{color: "white"}}>Play a game against your friends or just join them in a chat!</h3>
+      <div style={{
+        backgroundColor: "#00ddce54",
+        height: "100px",
+        width: "1000px",
+        borderRadius: "1%"
+      }}>
+        <h1 style={{color: "white", textAlign: "center"}}>
+          Welcome to TranceDance
+        </h1>
+        <h3 style={{color: "white", textAlign: "center"}}>
+          Play a Pong game against your friends or just join them in a chat!
+        </h3>
       </div>
     </Wrapper>
   );
