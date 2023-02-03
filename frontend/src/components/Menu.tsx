@@ -8,7 +8,6 @@ import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import GroupChatTable from "./chat/GroupChatTable";
 import DirectChatTable from "./chat/DirectChatTable";
-import JoinableChatTable from "./chat/JoinableChatTable";
 import ChatCreateModal from "./chat/ChatCreateModal";
 import JoinChannel from "./JoinChannel";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
@@ -17,7 +16,6 @@ import {
   fetchDirectChats,
   selectJoinableChats,
 } from "../redux/slices/chatsSlice";
-import PopUp from "./PopUp";
 import { toast } from "react-toastify";
 import "./Menu.css";
 
@@ -91,93 +89,66 @@ const Menu = (props: any) => {
               Games
             </div>
           </NavLink>
+
           <div className="navItem">
             {activeDm === true ? (
               <React.Fragment>
-                <div className="dropDownText">
-                  <ArrowDropDownIcon
-                    sx={{
-                      "&:hover": {
-                        backgroundColor: "grey",
-                      },
-                      borderRadius: "10%",
-                    }}
-                    onClick={() => setActiveDm(!activeDm)}
-                  />
-                  Direct Messages
-                </div>
+                <ArrowDropDownIcon
+                  sx={{
+                    "&:hover": { backgroundColor: "grey" },
+                    borderRadius: "10%",
+                  }}
+                  onClick={() => setActiveDm(!activeDm)}
+                />
+                Direct Messages
                 <DirectChatTable />
               </React.Fragment>
             ) : (
               <React.Fragment>
-                <div className="dropDownText">
-                  <ArrowRightIcon
-                    sx={{
-                      "&:hover": {
-                        backgroundColor: "grey",
-                      },
-                      borderRadius: "10%",
-                    }}
-                    onClick={() => {
-                      setActiveDm(!activeDm);
-                      dispatch(fetchDirectChats());
-                    }}
-                  />
-                  Direct Messages
-                </div>
+                <ArrowRightIcon
+                  sx={{
+                    "&:hover": { backgroundColor: "grey" },
+                    borderRadius: "10%",
+                  }}
+                  onClick={() => {
+                    setActiveDm(!activeDm);
+                    dispatch(fetchDirectChats());
+                  }}
+                />
+                Direct Messages
               </React.Fragment>
             )}
           </div>
+
           <div className="navItem">
             {activeChannels === true ? (
               <React.Fragment>
-                <div className="dropDownText">
-                  <div className="channelRow">
-                    <ArrowDropDownIcon
-                      sx={{
-                        "&:hover": {
-                          backgroundColor: "grey",
-                        },
-                        borderRadius: "10%",
-                      }}
-                      onClick={() => setActiveChannels(!activeChannels)}
-                    />
-                    Channels
-                  </div>
-                </div>
+                <ArrowDropDownIcon
+                  sx={{
+                    "&:hover": { backgroundColor: "grey" },
+                    borderRadius: "10%",
+                  }}
+                  onClick={() => setActiveChannels(!activeChannels)}
+                />
+                Channels
                 <GroupChatTable />
                 <div className="navItemHiglight">
                   <ChatCreateModal />
-                </div>
-                <div className="navItemHiglight" onClick={() => joinChats()}>
-                  <KitesurfingIcon />
-                  Join channel
-                </div>
-                {joinChannel && (
-                  <PopUp
-                    content={
-                      <JoinableChatTable setJoinableChats={setJoinChannel} />
-                    }
-                    handleClose={() => joinChats()}
-                  />
-                )}
+				</div>
+                <JoinChannel setJoinableChats={setJoinChannel} />
               </React.Fragment>
             ) : (
               <React.Fragment>
-                <div className="dropDownText">
-                  <div className="channelRow">
-                    <ArrowRightIcon
-                      sx={{
-                        "&:hover": {
-                          backgroundColor: "grey",
-                        },
-                        borderRadius: "10%",
-                      }}
-                      onClick={() => setActiveChannels(!activeChannels)}
-                    />
-                    Channels
-                  </div>
-                </div>
+                {/* <div className="navItem"> */}
+                  <ArrowRightIcon
+                    sx={{
+                      "&:hover": { backgroundColor: "grey" },
+                      borderRadius: "10%",
+                    }}
+                    onClick={() => setActiveChannels(!activeChannels)}
+                  />
+                  Channels
+                {/* </div> */}
               </React.Fragment>
             )}
           </div>

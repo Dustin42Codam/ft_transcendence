@@ -26,8 +26,10 @@
   position: relative;
   width: 1396px;
   max-width: 100%;
-  height: calc(100vh - 40px);
-  background: rgb(37, 37, 37);
+  /* height: calc(100vh - 40px); */
+  height: 100%;
+  /* background: rgb(37, 37, 37); */
+  background: rgba(0, 119, 255, 0.075);
   box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.06), 0 2px 5px 0 rgba(0, 0, 0, 0.06);
   display: flex;
   /* border: red 3px solid; */
@@ -37,7 +39,7 @@
 .newChatContainer .leftSide {
   position: relative;
   flex: 70%;
-  background: #e5ddd5;
+  /* background: #e5ddd5; */
 }
 
 /* user list on the right */
@@ -56,8 +58,8 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: url(../particles6.png);
-  opacity: 0.99;
+  /*   background: url(../particles6.png);
+  opacity: 0.99; */
 }
 
 /* header */

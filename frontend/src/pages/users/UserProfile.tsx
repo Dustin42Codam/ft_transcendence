@@ -40,30 +40,36 @@ export const UserProfile = () => {
       />
       <section id="content" className="container UserBody">
         <div className="page-heading">
-          <Link
-            to="/profile/edit"
-            style={{ textDecoration: "inherit", color: "inherit" }}
-          >
-            <div className="card">
-              <div className="media clearfix">
-                <div className="media-left pr30">
-                  <Avatar
-                    src={currentUser.avatar}
-                    sx={{ height: "275px", width: "275px" }}
-                  ></Avatar>
-                </div>
+          <div className="container mt-5">
+            <div className="row d-flex justify-content-center">
+              <div className="col-md-7">
+                <div className="card p-3 py-4">
+                  <div className="text-center">
+                    <img
+                      src={currentUser.avatar}
+                      width="200"
+                      className="rounded-circle"
+                    />
+                  </div>
 
-                <div className="media-body va-m mb-3">
-                  <h2 className="media-heading">{currentUser.display_name}</h2>
-                </div>
-                <div className="media-body">
-                  <h2 className="media-heading">
-                    <Button className="">Edit</Button>
-                  </h2>
+                  <div className="text-center mt-3">
+                    <h5 className="mt-3">{currentUser.display_name}</h5>
+
+                    <Link
+                      to="/profile/edit"
+                      style={{ textDecoration: "inherit", color: "inherit" }}
+                    >
+                      <div className="mt-2 buttons button-layout">
+                        <button className="btn btn-outline-primary px-4">
+                          Edit profile
+                        </button>
+                      </div>
+                    </Link>
+                  </div>
                 </div>
               </div>
             </div>
-          </Link>
+          </div>
 
           <div>
             <Tabs

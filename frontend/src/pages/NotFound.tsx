@@ -1,5 +1,4 @@
 import { Component } from "react";
-import "../login.css";
 
 export class NotFound extends Component {
   render() {

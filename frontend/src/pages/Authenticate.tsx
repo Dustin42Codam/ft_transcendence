@@ -1,4 +1,4 @@
-import "../login.css";
+import "./Authenticate.css";
 import ParticleBackground from "../components/ParticleBackground";
 import SignInButton from "../components/SignInButton";
 import axios from "axios";
@@ -39,8 +39,8 @@ const Authenticate = () => {
     document.location.href = "http://localhost:4242/";
   }
   return (
-    <>
-      <ParticleBackground />
+    <div className="authenticate">
+      {/* <ParticleBackground clickEnable={true} speed={0.4}/> */}
 
       <div className="transparentBox">
         <div className="authCard">
@@ -66,7 +66,7 @@ const Authenticate = () => {
       </div>
       <SignInButton func={loginAsJohn} name="login as John (debug)" />
       <SignInButton func={loginAsAva} name="login as Ava (debug)" />
-    </>
+    </div>
   );
 };
 export default Authenticate;

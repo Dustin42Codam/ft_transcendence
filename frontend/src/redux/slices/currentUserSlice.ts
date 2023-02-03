@@ -42,7 +42,7 @@ export const updateCurrentUser = createAsyncThunk(
       const response: any = await axios
         .post(`users/id/${user.id}`, user)
         .then((response: any) => {
-          toast.success("User data successfully updated!", {
+          toast.success("User profile updated!", {
             position: "top-center",
             autoClose: 5000,
             hideProgressBar: false,

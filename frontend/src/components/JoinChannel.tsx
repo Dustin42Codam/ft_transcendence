@@ -18,6 +18,7 @@ import { fetchCurrentMember } from "../redux/slices/currentMemberSlice";
 import PasswordPrompt from "./chat/PasswordPrompt";
 import PopUp from "./PopUp";
 import "./chat/ChatTable.css";
+import JoinChannelPassword from "./JoinChannelPassword";
 
 export enum ChatroomType {
   PUBLIC = "public",
@@ -41,6 +42,7 @@ function JoinChannel(props: any) {
   let navigate = useNavigate();
   const [joinableChats, setJoinableChats] = useState<any>([]);
   const [isPopUp, setIsPopUp] = useState(false);
+  console.log("🚀 ~ file: JoinChannel.tsx:45 ~ JoinChannel ~ isPopUp", isPopUp);
   const [password, setPassword] = useState<string>("");
   const [joinChatIndex, setJoinChatIndex] = useState<number>(0);
   const user = useAppSelector(selectCurrentUser);
@@ -146,21 +148,22 @@ function JoinChannel(props: any) {
           handleClose={() => setIsPopUp(!isPopUp)}
         />
       )}
+
+      {/* {isPopUp && <JoinChannelPassword />} */}
+      {/* <JoinChannelPassword /> */}
       <Modal className="modal" show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Join a new chat</Modal.Title>
+          <Modal.Title>Join a channel</Modal.Title>
         </Modal.Header>
 
         <Modal.Body>
           {joinableChats.map((chat: Chats, index: number) => (
             <div
               key={chat.id}
-              className="chatRow"
+              className="joinChannelRow"
               onClick={() => {
                 handleClick(index);
-                if (chat.type !== ChatroomType.PROTECTED) {
-                  handleClose();
-                }
+                handleClose();
               }}
             >
               {chat.type === ChatroomType.PROTECTED ? (
