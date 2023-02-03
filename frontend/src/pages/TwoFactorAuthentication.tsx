@@ -61,7 +61,7 @@ function TwoFactorAuthentication() {
         <ParticleBackground clickEnable={true} speed={0.4} />
         <div className="authBox">
           <img
-            className="user rounded-circle"
+            className="user"
             src={currentUser.avatar}
             width="200px"
           />

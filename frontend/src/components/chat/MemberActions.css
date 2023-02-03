@@ -203,7 +203,7 @@ code {
 }
 
 .menu-item:hover {
-  background-color: #525357;
+  background-color: #00ddce54;
   transition-duration: 0.15s;
 }
 

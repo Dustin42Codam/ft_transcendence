@@ -19,6 +19,8 @@ import { socketActions } from "../../redux/slices/socketSlice";
 import { fetchCurrentMember } from "../../redux/slices/currentMemberSlice";
 import { fetchChatMembers } from "../../redux/slices/chatMembersSlice";
 import axios from "axios";
+// import "./Menu.css"
+import "./ChatCreateModal.css"
 
 function ChatCreateModal() {
   const [show, setShow] = useState(false);
@@ -72,35 +74,8 @@ function ChatCreateModal() {
           user_id: currentUser.id,
         })
       );
-      //   dispatch(fetchGroupChats());
       handleClose();
-      //   dispatch(removeChatFromJoinable(index));
-      // console.log("🚀 ~ file: ChatCreateModal.tsx:78 ~ createChat ~ chats", chats)
 
-      // 	const chatId = chats.find((chat: any) => chat.name === chatName);
-      // 	const chat = chats.find((chat: any) => chat.name === chatName);
-      // 	console.log("🚀 ~ file: ChatCreateModal.tsx:78 ~ createChat ~ chatId", chatId)
-      // 	console.log("🚀 ~ file: ChatCreateModal.tsx:78 ~ createChat ~ chat", chat)
-
-      //   dispatch(
-      // 	socketActions.joinARoom({
-      // 	  chatRoom: {
-      // 		userId: currentUser.id,
-      // 		id: chatId,
-      // 		name: chatName,
-      // 		type: chatType,
-      // 	  },
-      // 	})
-      //   );
-      //   dispatch(
-      // 	fetchCurrentMember({
-      // 	  id: chatId,
-      // 	})
-      //   );
-      //   navigate("../chats/" + chatName, {
-      // 	replace: true,
-      // 	state: chatId,
-      //   });
     }
     inputRef.current!["floatingInputCustom"].value = "";
     inputRef.current!["floatingPasswordConfirmCustom"].value = "";
@@ -114,7 +89,7 @@ function ChatCreateModal() {
 
   return (
     <div>
-      <div onClick={handleShow}>
+      <div className="navChatOption" onClick={handleShow}>
         <AddIcon />
         Create channel
       </div>
