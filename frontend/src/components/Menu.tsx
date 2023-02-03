@@ -12,7 +12,7 @@ import JoinableChatTable from "./chat/JoinableChatTable";
 import ChatCreateModal from "./chat/ChatCreateModal";
 import JoinChannel from "./JoinChannel";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
-import KitesurfingIcon from '@mui/icons-material/Kitesurfing';
+import KitesurfingIcon from "@mui/icons-material/Kitesurfing";
 import {
   fetchDirectChats,
   selectJoinableChats,
@@ -56,45 +56,45 @@ const Menu = (props: any) => {
             className="navItem"
             style={{ textDecoration: "none" }}
           >
-            <span className="navItemHiglight">
+            <div className="navItemHiglight">
               <DashboardIcon />
               Dashboard
-            </span>
+            </div>
           </NavLink>
           <NavLink
             to={"/profile"}
             className="navItem"
             style={{ textDecoration: "none" }}
           >
-            <span className="navItemHiglight">
+            <div className="navItemHiglight">
               <SentimentSatisfiedAltIcon />
               Profile
-            </span>
+            </div>
           </NavLink>
           <NavLink
             to={"/users"}
             className="navItem"
             style={{ textDecoration: "none" }}
           >
-            <span className="navItemHiglight">
+            <div className="navItemHiglight">
               <PeopleIcon />
               Users
-            </span>
+            </div>
           </NavLink>
           <NavLink
             to={"/game"}
             className="navItem"
             style={{ textDecoration: "none" }}
           >
-            <span className="navItemHiglight">
+            <div className="navItemHiglight">
               <SportsTennisIcon />
               Games
-            </span>
+            </div>
           </NavLink>
           <div className="navItem">
             {activeDm === true ? (
               <React.Fragment>
-                <span>
+                <div>
                   <ArrowDropDownIcon
                     sx={{
                       "&:hover": {
@@ -105,12 +105,12 @@ const Menu = (props: any) => {
                     onClick={() => setActiveDm(!activeDm)}
                   />
                   Direct Messages
-                </span>
+                </div>
                 <DirectChatTable />
               </React.Fragment>
             ) : (
               <React.Fragment>
-                <span>
+                <div>
                   <ArrowRightIcon
                     sx={{
                       "&:hover": {
@@ -124,14 +124,14 @@ const Menu = (props: any) => {
                     }}
                   />
                   Direct Messages
-                </span>
+                </div>
               </React.Fragment>
             )}
           </div>
           <div className="navItem">
             {activeChannels === true ? (
               <React.Fragment>
-                <span>
+                <div>
                   <div className="channelRow">
                     <ArrowDropDownIcon
                       sx={{
@@ -144,15 +144,15 @@ const Menu = (props: any) => {
                     />
                     Channels
                   </div>
-                </span>
+                </div>
                 <GroupChatTable />
-                <span className="navItemHiglight">
+                <div className="navItemHiglight">
                   <ChatCreateModal />
-                </span>
-                <span className="navItemHiglight" onClick={() => joinChats()}>
-									<KitesurfingIcon />
+                </div>
+                <div className="navItemHiglight" onClick={() => joinChats()}>
+                  <KitesurfingIcon />
                   Join channel
-                </span>
+                </div>
                 {joinChannel && (
                   <PopUp
                     content={
@@ -164,7 +164,7 @@ const Menu = (props: any) => {
               </React.Fragment>
             ) : (
               <React.Fragment>
-                <span>
+                <div>
                   <div className="channelRow">
                     <ArrowRightIcon
                       sx={{
@@ -177,7 +177,7 @@ const Menu = (props: any) => {
                     />
                     Channels
                   </div>
-                </span>
+                </div>
               </React.Fragment>
             )}
           </div>

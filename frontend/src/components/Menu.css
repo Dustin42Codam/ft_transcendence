@@ -14,10 +14,21 @@
   display: none;
 }
 
-.navItemHiglight:hover {
-  color: rgb(255, 255, 255);
-  transition-duration: 0.15s;
+.navItemHiglight {
+  color: rgb(244, 241, 208);
+  background-color: rgba(140, 140, 145, 0);
   cursor: pointer;
+  margin: 1px;
+  padding-left: 5px;
+  border-radius: 3%;
+  overflow: hidden;
+}
+
+.navItemHiglight:hover {
+  cursor: pointer;
+  color: rgb(255, 255, 255);
+  background-color: rgb(72, 75, 75);
+  transition-duration: 0.15s;
 }
 
 .navChatOption {
