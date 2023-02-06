@@ -32,14 +32,14 @@ function App() {
 
   useEffect(() => {
     if (chatNotificatoin != "") {
-      toast(chatNotificatoin, {autoClose: 1500,closeOnClick: true,});
+      toast(chatNotificatoin, { autoClose: 1500, closeOnClick: true });
       store.dispatch(socketActions.clearNotification());
     }
   }, [chatNotificatoin]);
 
   useEffect(() => {
     if (gameNotificatoin != "") {
-      toast(gameNotificatoin, {autoClose: 1500,closeOnClick: true,});
+      toast(gameNotificatoin, { autoClose: 1500, closeOnClick: true });
       store.dispatch(gameSocketActions.clearNotification());
     }
   }, [gameNotificatoin]);
