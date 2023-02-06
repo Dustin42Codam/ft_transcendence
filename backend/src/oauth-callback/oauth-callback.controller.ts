@@ -4,8 +4,12 @@ import { UserService } from "../user/user.service";
 import { JwtService } from "@nestjs/jwt";
 import { UserStatus } from "src/user/entity/user.entity";
 import { UserCreateDto } from "src/user/dto/user-create.dto";
+import * as dotenv from "dotenv";
+
 
 require("dotenv").config();
+dotenv.config();
+
 
 const axios = require("axios");
 const qs = require("query-string");
@@ -35,7 +39,7 @@ export class OauthCallbackController {
           client_secret: process.env.CLIENT_SECRET,
           code: request.query.code,
           grant_type: "authorization_code",
-          redirect_uri: process.env.REDIRECT_URI,
+          redirect_uri: "http://" + process.env.HOST_ID + ":3000/api/oauth-callback",
         }),
         config,
       );
@@ -55,13 +59,13 @@ export class OauthCallbackController {
       response.cookie("jwt", jwt, { httpOnly: true, sameSite: "lax" });
 
       if (user.two_factor_auth === true) {
-        response.redirect(`http://10.10.6.8:${process.env.FRONTEND_PORT}/authenticate/2fa`);
+        response.redirect(`http://${process.env.HOST_ID}:${process.env.FRONTEND_PORT}/authenticate/2fa`);
       } else {
-        response.redirect(`http://10.10.6.8:${process.env.FRONTEND_PORT}`);
+        response.redirect(`http://${process.env.HOST_ID}:${process.env.FRONTEND_PORT}`);
       }
     } catch (e) {
       // console.log("ERROR:", e);
-      response.redirect(`http://10.10.6.8:${process.env.FRONTEND_PORT}/authenticate`);
+      response.redirect(`http://${process.env.HOST_ID}:${process.env.FRONTEND_PORT}/authenticate`);
     }
 
     async function registerUser(data, userService) {

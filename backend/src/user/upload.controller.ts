@@ -5,8 +5,11 @@ import { Response, Request } from "express";
 import { AuthService } from "src/auth/auth.service";
 import { UserService } from "./user.service";
 import { AuthGuard } from "src/auth/auth.guard";
+import * as dotenv from "dotenv";
+
 
 require("dotenv").config();
+dotenv.config();
 
 @UseGuards(AuthGuard)
 @Controller()
@@ -49,7 +52,7 @@ export class UploadController {
     // const userId = await this.authService.userId(request);
     // const user = await this.userService.getUserById(userId);
     return {
-      url: `http://10.10.6.8:${process.env.BACKEND_PORT}/api/${file.path}`,
+      url: `http://${process.env.HOST_ID}:${process.env.BACKEND_PORT}/api/${file.path}`,
     };
   }
 

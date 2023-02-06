@@ -17,7 +17,7 @@ import { socketActions } from "./redux/slices/socketSlice";
 import { gameSocketActions } from "./redux/slices/gameSocketSlice";
 import "react-toastify/dist/ReactToastify.css";
 
-axios.defaults.baseURL = "http://10.10.6.8:3000/api/";
+axios.defaults.baseURL = "http://" + window.location.hostname + ":3000/api/";
 axios.defaults.withCredentials = true;
 
 const root = ReactDOM.createRoot(

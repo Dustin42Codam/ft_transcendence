@@ -10,7 +10,7 @@ interface ChatMessage {
 }
 
 const socketMiddleware: Middleware = (store) => {
-  let socket: Socket = io("ws://10.10.6.8:3001/chat", {
+  let socket: Socket = io("ws://" + window.location.hostname + ":3001/chat", {
     autoConnect: false,
     withCredentials: true,
   });

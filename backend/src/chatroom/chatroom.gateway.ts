@@ -48,7 +48,7 @@ export class ChatroomGateway implements OnGatewayInit, OnGatewayConnection, OnGa
   }
 
   async handleConnection(client: any): Promise<void> {
-    console.log(`client ${client.id} conected, `);
+    console.log(`client ${client.id} connected, `);
     const userId = await this.userService.getUserFromClient(client);
     if (userId) {
       await this.userService.changeStatus(userId, UserStatus.ONLINE);
@@ -59,7 +59,7 @@ export class ChatroomGateway implements OnGatewayInit, OnGatewayConnection, OnGa
     const userId = await this.userService.getUserFromClient(client);
     if (userId) {
       await this.userService.changeStatus(userId, UserStatus.OFFLINE);
-      console.log(`client ${client.id} disconected`);
+      console.log(`client ${client.id} disconnected`);
     }
   }
 
