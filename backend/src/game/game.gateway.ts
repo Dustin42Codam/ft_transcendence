@@ -167,12 +167,12 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
         height: 40,
       };
     }
-    function getRandomPosition(): Ball {
+    function getRandomPosition(dirX: number): Ball {
       return {
         positionX: 650,
         positionY: 350,
-        directionX: Math.random() < 0.5 ? 1 : -1,
-        directionY: Math.floor(Math.random() * 5) - 2,
+        directionX: dirX,
+        directionY: 0,
         speed: 10,
         width: 20,
         height: 20,
@@ -184,11 +184,11 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
     function checkIfScore(game: GameRoom): boolean {
       if (game.gamePhysics.ball.positionX + game.gamePhysics.ball.width < 0) {
         game.gamePhysics.score[1] += 1;
-        game.gamePhysics.ball = getRandomPosition();
+        game.gamePhysics.ball = getRandomPosition(-1);
         return true;
       } else if (game.gamePhysics.ball.positionX > game.gamePhysics.canvasWidth) {
         game.gamePhysics.score[0] += 1;
-        game.gamePhysics.ball = getRandomPosition();
+        game.gamePhysics.ball = getRandomPosition(1);
         return true;
       }
       return false;
@@ -206,13 +206,13 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
     function ballHitsBat(ball: Ball, bat: Bat) {
       if (ball.directionX < 0) {
         if (ball.positionX == bat.positionX + bat.width) {
-          ball.directionY = Math.floor((ball.positionY + ball.height / 2 - bat.positionY) / (bat.height / 5)) - 2;
+          ball.directionY = Math.floor((ball.positionY + ball.height / 2 - bat.positionY) / (bat.height / 3)) - 1;
           ball.directionX = -ball.directionX;
           return;
         }
       } else {
         if (ball.positionX + ball.width == bat.positionX) {
-          ball.directionY = Math.floor((ball.positionY + ball.height / 2 - bat.positionY) / (bat.height / 5)) - 2;
+          ball.directionY = Math.floor((ball.positionY + ball.height / 2 - bat.positionY) / (bat.height / 3)) - 1;
           ball.directionX = -ball.directionX;
           return;
         }
@@ -276,7 +276,7 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
           //logger.debug(`GAME[${index}]:`, game);
           if (gameHasStarted(game)) {
             if (!isBallSet(game.gamePhysics.ball)) {
-              game.gamePhysics.ball = getRandomPosition();
+              game.gamePhysics.ball = getRandomPosition(Math.random() < 0.5 ? 1 : -1);
             }
             checkBallHitBat(game);
             if (isPowerUp(game.gamePhysics.powerUp)) {

@@ -18,7 +18,7 @@ import { gameSocketActions } from "./redux/slices/gameSocketSlice";
 import "react-toastify/dist/ReactToastify.css";
 import ParticleBackground from "./components/ParticleBackground";
 
-axios.defaults.baseURL = "http://localhost:3000/api/";
+axios.defaults.baseURL = "http://" + window.location.hostname + ":3000/api/";
 axios.defaults.withCredentials = true;
 
 const root = ReactDOM.createRoot(

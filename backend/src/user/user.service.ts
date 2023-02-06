@@ -16,6 +16,10 @@ import experss, { Request } from "express";
 import { Socket } from "socket.io";
 import { parse } from "cookie";
 import { JwtService } from "@nestjs/jwt";
+import * as dotenv from "dotenv";
+
+dotenv.config();
+
 
 @Injectable()
 export class UserService extends AbstractService {
@@ -78,7 +82,7 @@ export class UserService extends AbstractService {
 
   async deleteAvatar(user: User) {
     var fs = require("fs");
-    const filePath = user.avatar.replace("http://localhost:3000/api", ".");
+    const filePath = user.avatar.replace("http://" + process.env.HOST_ID+ ":3000/api", ".");
     console.log("deleting: " + filePath);
     if (fs.existsSync(filePath)) {
       fs.unlink(filePath, err => {

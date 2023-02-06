@@ -5,6 +5,10 @@ import { ConfigService } from "@nestjs/config";
 import { JwtService } from "@nestjs/jwt";
 import { Socket, Server } from "socket.io";
 import { parse } from "cookie";
+import * as dotenv from "dotenv";
+
+
+dotenv.config();
 
 export class SocketIoAdapter extends IoAdapter {
   private readonly logger = new Logger(SocketIoAdapter.name);
@@ -14,7 +18,7 @@ export class SocketIoAdapter extends IoAdapter {
 
   createIOServer(port: number, options?: ServerOptions) {
     const cors = {
-      origin: [`http://localhost:4242`],
+      origin: [`http://` + process.env.HOST_ID + `:4242`],
       credentials: true,
     };
     this.logger.log("configuring socketIO server with custom CORS options", {

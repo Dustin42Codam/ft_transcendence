@@ -34,3 +34,4 @@ fi
 echo "File was successfully decrypted!"
 ln -f .env backend/.env
 ln -f .env frontend/.env
+echo "HOST_ID=$HOSTNAME" >> .env

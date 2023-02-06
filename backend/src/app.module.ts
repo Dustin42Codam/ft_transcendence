@@ -16,8 +16,8 @@ import { GameStatsModule } from "./games_stats/game_stats.module";
 import { MessageModule } from "./message/message.module";
 import { TFAModule } from "./tfa/tfa.module";
 
-dotenv.config();
 
+dotenv.config();
 @Module({
   imports: [
     TypeOrmModule.forRoot({
