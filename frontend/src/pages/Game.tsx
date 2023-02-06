@@ -163,7 +163,7 @@ const Game = (props: any) => {
       const score = document.getElementById("score") as HTMLCanvasElement;
       const game = new GameState(canvas, gameState);
 
-      canvas.addEventListener("keydown", function onKeyDown(e) {
+      window.addEventListener("keydown", function onKeyDown(e) {
         let keynum: any;
 
         if (window.event) {

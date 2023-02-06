@@ -88,7 +88,7 @@ function ChatCreateModal() {
 
   return (
     <div>
-      <div className="navChatOption" onClick={handleShow}>
+      <div onClick={handleShow}>
         <AddIcon />
         Create channel
       </div>
