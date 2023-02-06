@@ -137,7 +137,7 @@ function JoinChannel(props: any) {
   }, [password]);
 
   return (
-    <p className="navChatOption">
+    <div className="navChatOption">
       <div onClick={handleShow}>
         <GroupAdd />
         Join a chat
@@ -176,7 +176,7 @@ function JoinChannel(props: any) {
           ))}
         </Modal.Body>
       </Modal>
-    </p>
+    </div>
   );
 }
 
