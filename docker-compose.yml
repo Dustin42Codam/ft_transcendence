@@ -1,6 +1,9 @@
 services:
   backend:
+    restart: always
     hostname: backend
+    depends_on:
+      - postgres
     networks:
       - ft_trance
     build:
@@ -10,18 +13,13 @@ services:
       - ${BACKEND_PORT}:${BACKEND_PORT}
       - 3001:3001
       - 3002:3002
-    depends_on:
-      postgres:
-        condition: service_healthy
     volumes:
       - ./backend/src/:/backend/src/:delegated
-    healthcheck:
-        test: wget --no-verbose --tries=3 --spider http://127.0.0.1:3000/api/users || exit 1
-        interval: 5s
-        retries: 5 
-        start_period: 5s
-        timeout: 3s
+
   frontend:
+    depends_on:
+      - backend
+    restart: always
     hostname: frontend
     networks:
       - ft_trance
@@ -30,19 +28,8 @@ services:
       target: dev
     ports:
       - ${FRONTEND_PORT}:${FRONTEND_PORT}
-    depends_on:
-      postgres:
-        condition: service_healthy
-      backend:
-        condition: service_healthy
     volumes:
       - ./frontend/src/:/frontend/src/:delegated
-    healthcheck:
-        test: wget --no-verbose --tries=3 --spider http://127.0.0.1:${FRONTEND_PORT}/ || exit 1
-        interval: 5s
-        retries: 5 
-        start_period: 5s
-        timeout: 3s
 
   postgres:
     restart: always
@@ -58,12 +45,6 @@ services:
       POSTGRES_PASSWORD:    ${POSTGRES_PASSWORD}
       POSTGRES_USER:        ${POSTGRES_USER}
       POSTGRES_DB:          ${POSTGRES_DB}
-    healthcheck:
-        test: pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}
-        interval: 5s
-        retries: 5 
-        start_period: 5s
-        timeout: 3s
 
 networks:
   ft_trance:
