@@ -15,10 +15,10 @@ const Authenticate = () => {
     document.location.href = `https://api.intra.42.fr/oauth/authorize?client_id=7c59d418a12bb6da95283ca1866d0db3946ff94528e8d7be5b98545c31f892ff&redirect_uri=http%3A%2F%2F${window.location.hostname}%3A3000%2Fapi%2Foauth-callback&response_type=code&state=${stateValue}`;
   }
 
-  async function loginAsJohn() {
+  async function loginAsGuest() {
     
     await axios.post("login", {
-      display_name: "John",
+      display_name: "Guest",
     });
 
     document.location.href = "http://" + window.location.hostname + ":4242";
@@ -38,7 +38,7 @@ const Authenticate = () => {
 
           <div className="title">ft_transcendence</div>
           <SignInButton func={login} name="Sign In" />
-          <GuestButton func={loginAsJohn} name="Login as Guest" />
+          <GuestButton func={loginAsGuest} name="Login as Guest" />
 
           <div className="auth_footer">
             <div className="">
