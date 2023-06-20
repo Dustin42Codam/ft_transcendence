@@ -177,6 +177,28 @@ export class ChatroomController {
     this.chatroomService.update(chatroom.id, body);
   }
 
+  @Post("join_general")
+  async joinGeneralChatroom(@Req() request: Request) {
+
+    const chatroom = await this.chatroomService.getChatroomById(1);
+    const userId = await this.authService.userId(request);
+
+    const user = await this.userService.getUserById(userId);
+    const member = await this.memberService.findOne({
+      user: user,
+      chatroom: chatroom,
+    });
+    if (member && member.status === MemberStatus.ACTIVE) {
+      return member;
+    }
+    if (member) {
+      member.status = MemberStatus.ACTIVE;
+      await this.memberService.update(member.id, member);
+      return member;
+    }
+    return await this.memberService.createMember({ user: user, chatroom: chatroom, role: MemberRole.USER });
+  }
+
   @Post("join/id/:id")
   async joinChatroom(@Param("id") id: string, @Body() body: JoinChatroomDto, @Req() request: Request) {
     console.log("🚀 ~ file: chatroom.controller.ts:116 ~ ChatroomController ~ joinChatroom ~ body", body);

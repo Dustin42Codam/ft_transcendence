@@ -13,7 +13,6 @@ const express = require("express");
 require("dotenv").config();
 dotenv.config();
 
-
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
@@ -30,6 +29,7 @@ async function bootstrap() {
   app.use(
     cors({ origin: ["http://" + process.env.HOST_ID + ":4242", "http://10.10.6.12:4242", "http://10.10.6.10:4242", "http://10.10.6.8:4242"], allowedHeaders: ["Access-Control-Allow-Origin", "content-type", "Location", "Authorization", "origin", "accept"], credentials: true }),
   );
+
   app.useWebSocketAdapter(new SocketIoAdapter(app, configService));
   app.use(express.json());
   app.use(cookieParser());

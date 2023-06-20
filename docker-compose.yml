@@ -46,6 +46,19 @@ services:
       POSTGRES_USER:        ${POSTGRES_USER}
       POSTGRES_DB:          ${POSTGRES_DB}
 
+  pgAdmin4:
+    restart: always
+    hostname: pgAdmin4
+    image: dpage/pgadmin4
+    ports:
+     - 8082:80
+    networks:
+     - ft_trance
+    environment:
+      PGADMIN_DEFAULT_EMAIL:    ${PGADMIN_DEFAULT_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
+      GUNICORN_ACCESS_LOGFILE: "/tmp/pg.log" 
+
 networks:
   ft_trance:
     driver: bridge

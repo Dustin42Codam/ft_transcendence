@@ -10,7 +10,12 @@ import { Request } from "express-session";
 // @UseGuards(AuthGuard) TODO turn on before handing in
 @Controller("users")
 export class UserController {
-  constructor(private readonly userService: UserService, private readonly authService: AuthService) {}
+  constructor
+    (
+      private readonly userService: UserService,
+      private readonly authService: AuthService
+    )
+  {}
 
   @Get()
   async all(@Query("page") page = 1) {
@@ -27,12 +32,13 @@ export class UserController {
   }
 
   // TODO: delete before handing in
-  @Post()
-  async create(@Body() body: UserCreateDto) {
-    const user = await this.userService.findOne({ display_name: body.display_name });
-    if (user) return user;
-    return await this.userService.createUser(body);
-  }
+  // @Post()
+  // async create(@Body() body: UserCreateDto) {
+  //   const user = await this.userService.findOne({ display_name: body.display_name });
+  //   if (user) return user;
+  //   const user_return = await this.userService.createUser(body);
+    
+  // }
 
   @Post("id/:id")
   async update(@Body() body: UserUpdateDto, @Req() request: Request) {
