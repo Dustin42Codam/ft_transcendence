@@ -4,8 +4,6 @@ User registration.
 
 Reall time chat.
 
-Only kick is that you need to part of 42 to use it.
-
 ```sh
 docker-compose up --build
 ```
