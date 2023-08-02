@@ -9,3 +9,4 @@ Only kick is that you need to part of 42 to use it.
 ```sh
 docker-compose up --build
 ```
+Live Demo: http://dustbin.live:4242/
