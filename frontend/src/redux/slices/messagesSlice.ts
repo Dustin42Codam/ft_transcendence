@@ -39,10 +39,6 @@ const messagesSlice = createSlice({
       })
       .addCase(fetchMessages.fulfilled, (state: any, action) => {
         state.status = "succeeded";
-        console.log(
-          "🚀 ~ file: messagesSlice.ts:40 ~ .addCase ~ action.payload",
-          action.payload
-        );
         state.messages = state.messages.concat(action.payload);
       })
       .addCase(fetchMessages.rejected, (state: any, action) => {

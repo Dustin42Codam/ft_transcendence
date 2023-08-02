@@ -42,7 +42,6 @@ function JoinChannel(props: any) {
   let navigate = useNavigate();
   const [joinableChats, setJoinableChats] = useState<any>([]);
   const [isPopUp, setIsPopUp] = useState(false);
-  console.log("🚀 ~ file: JoinChannel.tsx:45 ~ JoinChannel ~ isPopUp", isPopUp);
   const [password, setPassword] = useState<string>("");
   const [joinChatIndex, setJoinChatIndex] = useState<number>(0);
   const user = useAppSelector(selectCurrentUser);
@@ -84,7 +83,6 @@ function JoinChannel(props: any) {
           });
         })
         .catch((err) => {
-          console.log("🚀 ~ file: JoinChannel.tsx:83 ~ handleClick ~ err", err);
           toast.error(`${err.response.data.message}`, {
             position: "top-center",
             autoClose: 5000,

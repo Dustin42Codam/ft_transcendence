@@ -16,7 +16,6 @@ const Authenticate = () => {
   }
 
   async function loginAsGuest() {
-    
     await axios.post("login", {
       display_name: "Guest",
     });
@@ -26,7 +25,6 @@ const Authenticate = () => {
 
   return (
     <div className="authenticate">
-
       <div className="transparentBox">
         <div className="authCard">
           <img

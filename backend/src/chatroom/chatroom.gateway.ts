@@ -48,7 +48,6 @@ export class ChatroomGateway implements OnGatewayInit, OnGatewayConnection, OnGa
   }
 
   async handleConnection(client: any): Promise<void> {
-    console.log(`client ${client.id} connected, `);
     const userId = await this.userService.getUserFromClient(client);
     if (userId) {
       await this.userService.changeStatus(userId, UserStatus.ONLINE);
@@ -59,13 +58,11 @@ export class ChatroomGateway implements OnGatewayInit, OnGatewayConnection, OnGa
     const userId = await this.userService.getUserFromClient(client);
     if (userId) {
       await this.userService.changeStatus(userId, UserStatus.OFFLINE);
-      console.log(`client ${client.id} disconnected`);
     }
   }
 
   @SubscribeMessage(ChatroomEvents.JoinChatRoom)
   async handelJoinRoom(client: Socket, payload: ChatRoom): Promise<void> {
-    console.log("client trying to join:", client.id, payload);
     const chatroom = await this.chatroomService.getChatroomById(Number(payload.id));
     if (!chatroom) {
       throw new BadRequestException(`Chatroom with id ${payload.id} doesn't exist.`);
@@ -76,19 +73,15 @@ export class ChatroomGateway implements OnGatewayInit, OnGatewayConnection, OnGa
     }
     const user = await this.userService.getUserById(userId);
     const member = await this.memberService.getMemberByUserAndChatroom(user, chatroom);
-    console.log("this is member", member);
     if (await this.memberService.isRestricted(member)) {
       throw new BadRequestException(`User with id ${payload.userId} is restricted from chatroom with id ${payload.id}.`);
     }
-    console.log("client joined:", client.id, payload);
     client.join(`${payload.id}`);
-    // this.io.to(`${payload.id}`).emit(ChatroomEvents.ChatRoomNotification, `${member.user.display_name} joined the room`);
     client.emit(ChatroomEvents.JoinChatRoomSuccess, payload);
   }
 
   @SubscribeMessage(ChatroomEvents.LeaveChatRoom)
   leaveJoinRoom(client: Socket, payload: ChatRoom): void {
-    console.log("client leaving: ", payload);
     this.io.to(`${payload.id}`).emit(ChatroomEvents.LeaveChatRoomSuccess, payload);
     client.leave(`${payload.id}`);
   }
@@ -107,16 +100,12 @@ export class ChatroomGateway implements OnGatewayInit, OnGatewayConnection, OnGa
   async handleMessageToServer(client: Socket, payload: Message): Promise<void> {
     const user = await this.userService.getUserById(Number(payload.authorId));
     const chatroom = await this.chatroomService.getChatroomById(Number(payload.chatRoomId));
-    console.log("🚀 ~ file: chatroom.gateway.ts:133 ~ ChatroomGateway ~ handleMessageToServer ~ payload.chatRoomId", payload.chatRoomId);
     if (!chatroom) {
       throw new BadRequestException(`Chatroom with id ${payload.chatRoomId} doesn't exist.`);
     }
     const member = await this.memberService.getMemberByUserAndChatroom(user, chatroom);
     if (await this.memberService.isRestricted(member)) client.to("${payload.chatRoomId}").emit(ChatroomEvents.SendMessageToClient, "You are restricted from sending messages.");
-    console.log(payload);
     await this.messageService.create({ timestamp: new Date(), member: member, message: payload.content });
-    console.log("this is a message", payload, `${payload.chatRoomId}`);
-    console.log(payload);
     this.io.to(`${payload.chatRoomId}`).emit(ChatroomEvents.SendMessageToClient, payload);
   }
 }

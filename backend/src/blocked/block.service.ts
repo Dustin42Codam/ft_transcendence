@@ -26,7 +26,6 @@ export class BlockService extends AbstractService {
   }
 
   async getBlockByUserids(senderId: number, receiverId: number) {
-    console.log(senderId, receiverId);
     const sender = await this.userService.getUserById(senderId);
     const receiver = await this.userService.getUserById(receiverId);
     const block = await this.findOne({

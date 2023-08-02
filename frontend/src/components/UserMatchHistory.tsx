@@ -12,7 +12,6 @@ function UserMatchHistory(props: { user: any }) {
     const response: any = await axios
       .get(`game/passive/user/id/${props.user.id}`)
       .catch((err: any) => {
-        console.log("🚀 ~ file: GameMatches.tsx:11 ~ fetchMatches ~ err", err);
       });
     setMatches(response.data);
   }

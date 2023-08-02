@@ -73,7 +73,6 @@ export class UserService extends AbstractService {
     }
     newUserInfo.display_name = name;
     const newUser = await this.create(newUserInfo);
-    console.log("🚀 ~ file: user.service.ts:70 ~ UserService ~ createUser ~ newUser", newUser);
     await this.gameStatsService.createGameStats(newUser);
     const tfa_user = await this.getUserById(newUser.id, ["tfa_secret"]);
     await this.TFAService.createTFA(tfa_user);
@@ -83,7 +82,6 @@ export class UserService extends AbstractService {
   async deleteAvatar(user: User) {
     var fs = require("fs");
     const filePath = user.avatar.replace("http://" + process.env.HOST_ID+ ":3000/api", ".");
-    console.log("deleting: " + filePath);
     if (fs.existsSync(filePath)) {
       fs.unlink(filePath, err => {
         if (err) {

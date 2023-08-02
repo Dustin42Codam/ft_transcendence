@@ -26,7 +26,6 @@ export class UploadController {
             .fill(null)
             .map(() => Math.round(Math.random() * 16).toString(16))
             .join("");
-          console.log("-=-=-=-=-=-=-" + randomName + "-=-=-=-=-=-=-");
           return callback(null, randomName);
         },
       }),
@@ -48,7 +47,6 @@ export class UploadController {
     file,
     @Req() request: Request,
   ) {
-    console.log("Uploading file:", file);
     // const userId = await this.authService.userId(request);
     // const user = await this.userService.getUserById(userId);
     return {

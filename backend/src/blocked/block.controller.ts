@@ -12,7 +12,6 @@ export class BlockController {
 
   @Get("receiverId/:id")
   async getBlockByUserId(@Param("id") userId: string, @Req() request: Request) {
-    console.log(userId);
     const senderId = await this.authService.userId(request);
     return await this.blockService.getBlockByUserids(senderId, Number(userId));
   }

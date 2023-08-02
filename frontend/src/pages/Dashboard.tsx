@@ -22,7 +22,7 @@ const Dashboard = () => {
         }}
       >
         <h1 style={{ color: "white", textAlign: "center" }}>
-          Welcome to TranceDance
+          Welcome to ft_transcendence
         </h1>
         <h3 style={{ color: "white", textAlign: "center" }}>
           Play a Pong game against your friends or just join them in a chat!

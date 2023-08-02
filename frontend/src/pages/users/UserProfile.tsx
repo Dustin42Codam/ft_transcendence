@@ -12,18 +12,24 @@ import UserStats from "../../components/UserStats";
 import GameLadder from "../../components/GameLadder";
 import { Button } from "react-bootstrap";
 import axios from "axios";
+import { useAppDispatch } from "../../redux/hooks";
+import { fetchJoinableChats } from "../../redux/slices/chatsSlice";
 
-export const UserProfile = () => {
-  const currentUser = useAppSelector(selectCurrentUser);
-  console.log("current user", currentUser);
-  const [friends, setFriends] = useState<any>([]);
-  const friendsAmount = "Friends (" + friends.length + ")";
+  
+  export const UserProfile = () => {
+    const currentUser = useAppSelector(selectCurrentUser);
+    const [friends, setFriends] = useState<any>([]);
+    const friendsAmount = "Friends (" + friends.length + ")";
+    const dispatch = useAppDispatch();
+  
+    useEffect(() => {
+      dispatch(fetchJoinableChats());
+    }, []);
 
   async function fetchFriends() {
     const response: any = await axios
       .get(`friend/all/id/${currentUser.id}`)
       .catch((err: any) => {
-        console.log("🚀 ~ file: UserProfile.tsx:29 ~ fetchFriends ~ err", err);
       });
     setFriends(response.data);
   }

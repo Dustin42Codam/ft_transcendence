@@ -2,7 +2,7 @@ import "./App.css";
 import Game from "./pages/Game";
 import GameLobby from "./pages/GameLobby";
 import NotFound from "./pages/NotFound";
-import Dashboard from "./pages/Dashboard";
+// import Dashboard from "./pages/Dashboard";
 import Authenticate from "./pages/Authenticate";
 import UserEdit from "./pages/users/UserEdit";
 import { UserProfile } from "./pages/users/UserProfile";
@@ -54,7 +54,7 @@ function App() {
             <Route path={"/particles"} element={<ParticleBackground />} />
             <Route path="/" element={<Navigate to="/authenticate" />} />
             <Route
-              path="/dashboard"
+              path="/profile"
               element={<Navigate to="/authenticate" />}
             />
             <Route path={"*"} element={<NotFound />} />
@@ -90,10 +90,10 @@ function App() {
         <ToastContainer />
         <BrowserRouter>
           <Routes>
-            <Route path={"/dashboard"} element={<Dashboard />} />
+            {/* <Route path={"/dashboard"} element={<Dashboard />} /> */}
             <Route
               path="/authenticate"
-              element={<Navigate to="/dashboard" />}
+              element={<Navigate to="/profile" />}
             />
 
             <Route path={"/chats/:name"} element={<Chat />} />
@@ -108,8 +108,8 @@ function App() {
             <Route path={"/game"} element={<GameLobby />} />
             <Route path={"/game/:gameId"} element={<Game />} />
 
-            <Route path={"/authenticate"} element={<Dashboard />} />
-            <Route path="/" element={<Navigate to="/dashboard" />} />
+            <Route path={"/authenticate"} element={<UserProfile />} />
+            <Route path="/" element={<Navigate to="/profile" />} />
             <Route path={"*"} element={<NotFound />} />
           </Routes>
         </BrowserRouter>

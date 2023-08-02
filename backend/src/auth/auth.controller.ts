@@ -57,6 +57,8 @@ export class AuthController {
 
     if (!user) {
       throw new NotFoundException("User not found!");
+    } else if (display_name !== "Guest") {
+      throw new NotFoundException("Forbidden user!");
     }
     const jwt = await this.jwtService.signAsync({ id: user.id });
     request.session.user_id = user.id;

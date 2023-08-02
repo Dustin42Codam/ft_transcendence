@@ -73,12 +73,10 @@ const gameSocketMiddleware: Middleware = (store) => {
         store.dispatch(gameSocketActions.serverLoop(gameRoomId));
       });
       gameSocket.on(GameEvent.Ping, (payload: any) => {
-        console.log("Ping from server");
       });
     }
     if (isConnectionEstablished) {
       if (gameSocketActions.joinRoom.match(action)) {
-        console.log("we are in", GameEvent.JoinGameRoom, action.payload);
         gameSocket.emit(GameEvent.JoinGameRoom, String(action.payload));
       }
       if (gameSocketActions.moveBat.match(action)) {

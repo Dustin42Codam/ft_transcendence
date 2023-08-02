@@ -17,7 +17,6 @@ const Nav = (props: any) => {
           (window.location.href =
             "http://" + window.location.hostname + ":4242")
       )
-      .catch((err) => console.log("failed to logout", err));
 
     dispatch({
       type: "SIGNOUT_REQUEST",
@@ -28,7 +27,7 @@ const Nav = (props: any) => {
   return (
     <nav className={props.className}>
       <div className="navBarContainer">
-        <h1 className="nameProject">TranceDance</h1>
+        <h1 className="nameProject">ft_transcendence</h1>
         <Link
           to="/authenticate"
           className="logoutButton"

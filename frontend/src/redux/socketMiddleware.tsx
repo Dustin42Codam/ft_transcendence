@@ -22,7 +22,6 @@ const socketMiddleware: Middleware = (store) => {
     if (socketActions.startConnecting.match(action)) {
       socket.connect();
       socket.on("connect_failed", () => {
-        console.log("did not catch");
         //TODO how would you handel socket errors?
       });
 

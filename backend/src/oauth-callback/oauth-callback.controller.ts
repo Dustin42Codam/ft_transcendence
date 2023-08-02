@@ -64,7 +64,6 @@ export class OauthCallbackController {
         response.redirect(`http://${process.env.HOST_ID}:${process.env.FRONTEND_PORT}`);
       }
     } catch (e) {
-      // console.log("ERROR:", e);
       response.redirect(`http://${process.env.HOST_ID}:${process.env.FRONTEND_PORT}/authenticate`);
     }
 

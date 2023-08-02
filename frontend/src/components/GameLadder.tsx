@@ -15,7 +15,6 @@ function GameLadder(props: { displayedUser: any }) {
     const response: any = await axios
       .get(`game/get/ladder`)
       .catch((err: any) => {
-        console.log("🚀 ~ file: GameLadder.tsx:11 ~ fetchLadder ~ err", err);
       });
     setLadder(response.data);
   }

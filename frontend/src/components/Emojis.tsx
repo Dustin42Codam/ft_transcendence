@@ -54,10 +54,6 @@ class Emojis extends React.Component<MyProps, MyState> {
           <EmojiPicker
             emojiStyle={EmojiStyle.GOOGLE}
             onEmojiClick={(emoji: any) => {
-              console.log(
-                "🚀 ~ file: ChatInput.tsx:112 ~ ChatInput ~ emoji",
-                emoji
-              );
               this.props.setMessage(this.props.message + emoji.emoji);
               this.props.inputRef.current!["messageInput"].value += emoji.emoji;
             }}

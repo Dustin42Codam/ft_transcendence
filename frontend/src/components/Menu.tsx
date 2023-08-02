@@ -50,16 +50,6 @@ const Menu = (props: any) => {
       <nav className={props.className}>
         <div className="sideNavContainer">
           <NavLink
-            to={"/dashboard"}
-            className="navItem"
-            style={{ textDecoration: "none" }}
-          >
-            <div className="navItemHiglight">
-              <DashboardIcon />
-              Dashboard
-            </div>
-          </NavLink>
-          <NavLink
             to={"/profile"}
             className="navItem"
             style={{ textDecoration: "none" }}

@@ -4,8 +4,11 @@ import { selectCurrentUser } from "../../redux/slices/currentUserSlice";
 import { selectUsersWithoutUser } from "../../redux/slices/usersSlice";
 import { Link } from "react-router-dom";
 import "../../components/UserFriends.css";
+import { fetchUsers } from "../../redux/slices/usersSlice";
+import store from "../../redux/store";
 
 export const UserList = () => {
+  // store.dispatch(fetchUsers());
   const currentUser = useAppSelector(selectCurrentUser);
 
   const users = useAppSelector((state) =>

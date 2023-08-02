@@ -42,7 +42,6 @@ export const UserPage = () => {
     const response: any = await axios
       .get(`friend/all/id/${userId}`)
       .catch((err: any) => {
-        console.log("🚀 ~ file: UserPage.tsx ~ fetchFriends ~ err", err);
       });
     setFriends(response.data);
   }
@@ -54,7 +53,6 @@ export const UserPage = () => {
         return response.data;
       })
       .catch((error) => {
-        console.log("🚀 ~ file: UserPage.tsx ~ joinDM ~ error", error);
       });
     setFriendship(response);
   }
@@ -94,7 +92,6 @@ export const UserPage = () => {
           progress: undefined,
           theme: "colored",
         });
-        console.log("🚀 ~ file: UserPage.tsx ~ addFriend ~ error", error);
       });
     fetchFriends();
   }
@@ -125,7 +122,6 @@ export const UserPage = () => {
           progress: undefined,
           theme: "colored",
         });
-        console.log("🚀 ~ file: UserPage.tsx ~ removeFriend ~ error", error);
       });
     fetchFriends();
   }
@@ -156,7 +152,6 @@ export const UserPage = () => {
           progress: undefined,
           theme: "colored",
         });
-        console.log("🚀 ~ file: UserPage.tsx ~ blockUser ~ error", error);
       });
     fetchFriends();
     setBlocked(true);
@@ -188,7 +183,6 @@ export const UserPage = () => {
           progress: undefined,
           theme: "colored",
         });
-        console.log("🚀 ~ file: UserPage.tsx ~ unblockUser ~ error", error);
       });
     fetchFriends();
     setBlocked(false);

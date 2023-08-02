@@ -7,7 +7,7 @@ import { UserUpdateNameDto } from "./dto/user-update-name.dto";
 import { AuthService } from "src/auth/auth.service";
 import { Request } from "express-session";
 
-// @UseGuards(AuthGuard) TODO turn on before handing in
+@UseGuards(AuthGuard)
 @Controller("users")
 export class UserController {
   constructor

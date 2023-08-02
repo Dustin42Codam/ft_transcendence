@@ -201,8 +201,6 @@ export class ChatroomController {
 
   @Post("join/id/:id")
   async joinChatroom(@Param("id") id: string, @Body() body: JoinChatroomDto, @Req() request: Request) {
-    console.log("🚀 ~ file: chatroom.controller.ts:116 ~ ChatroomController ~ joinChatroom ~ body", body);
-
     const chatroom = await this.chatroomService.getChatroomById(Number(id));
     if ([ChatroomType.DIRECT, ChatroomType.PRIVATE].includes(chatroom.type)) {
       throw new BadRequestException("You can't join a PRIVATE or DIRECT chatroom.");
@@ -277,7 +275,6 @@ export class ChatroomController {
       throw new BadRequestException("PROTECTED chatrooms need to have a password.");
     }
     const chatroom = await this.chatroomService.findOne({ name: body.name });
-    console.log(chatroom);
     if (chatroom) {
       throw new BadRequestException("There already exists a chatroom with this name.");
     }

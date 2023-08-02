@@ -39,7 +39,6 @@ const GameLobby = (navigation: any) => {
           navigateIfUserIsPartOfAlreadyActiveGame(resp.data);
           setActiveGames(resp.data);
         })
-        .catch((err) => console.log(err));
     }
     fetchAllActiveGames();
   }, []);
@@ -51,23 +50,18 @@ const GameLobby = (navigation: any) => {
         const classicGame: any = resp.data;
         navigate(`/game/${classicGame.id}`);
       })
-      .catch((err) => console.log(err));
   }
   async function joinPowerupGame() {
     axios
       .post("/game/power_up", {})
       .then((resp) => {
-        console.log(resp);
         const powerUpGame: any = resp.data;
         navigate(`/game/${powerUpGame.id}`);
       })
-      .catch((err) => console.log(err));
   }
   async function sendGameInvite() {
     axios
       .post("/game/classic", {})
-      .then((resp) => console.log(resp))
-      .catch((err) => console.log(err));
   }
   async function spectateGame(gameIndex: number) {
     dispatch(gameSocketActions.joinRoom(activeGames[gameIndex].id));

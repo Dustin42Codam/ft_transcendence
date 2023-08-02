@@ -52,10 +52,6 @@ function JoinChannelPassword() {
   const [joinChatIndex, setJoinChatIndex] = useState<number>(0);
   const user = useAppSelector(selectCurrentUser);
 
-  console.log(
-    "🚀 ~ file: JoinChannelPassword.tsx:45 ~ JoinChannelPassword ~ show",
-    show
-  );
   return (
     <div onClick={handleShow}>
       <Modal className="modal" show={show} onHide={handleClose}>

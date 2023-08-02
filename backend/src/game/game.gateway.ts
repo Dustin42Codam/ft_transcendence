@@ -370,7 +370,6 @@ export class GameGateway implements OnGatewayInit, OnGatewayConnection, OnGatewa
   async handelLeaveRoom(client: Socket, payload: any): Promise<void> {
     const currentActiveGame: GameRoom = this.getActiveGameByGameRoomId(payload.gameRoomId);
 
-    console.log(this.activeGames.length);
     if (currentActiveGame) {
       if (
         JSON.stringify(currentActiveGame.gamePhysics.player1) == JSON.stringify(defaultPlyaer) ||

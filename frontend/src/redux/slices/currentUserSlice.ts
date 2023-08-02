@@ -111,10 +111,6 @@ const currentUserSlice = createSlice({
       )
       .addCase(updateCurrentUser.rejected, (state: any, action: any) => {
         state.status = "failed";
-        console.log(
-          "🚀 ~ file: currentUserSlice.ts:78 ~ .addCase ~ action",
-          action
-        );
         state.error = action.payload.message;
       });
   },

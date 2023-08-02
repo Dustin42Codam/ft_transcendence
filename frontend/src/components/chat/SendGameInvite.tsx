@@ -39,8 +39,6 @@ class SendGameInvite extends React.Component<MyProps, MyState> {
   }
 
   async sendDefaultInvite(memberId: number) {
-    console.log("Send game invite for a default game.");
-    console.log(`member/create/game/classic/${memberId}`);
 
     await axios
       .post(`member/create/game/classic/id/${memberId}`)
@@ -58,7 +56,6 @@ class SendGameInvite extends React.Component<MyProps, MyState> {
         this.props.navigation(`/game/${response.data.id}`);
       })
       .catch((error: any) => {
-        console.log(error);
         toast.error(`${error.response.data.message}`, {
           position: "top-center",
           autoClose: 5000,
@@ -89,7 +86,6 @@ class SendGameInvite extends React.Component<MyProps, MyState> {
         this.props.navigation(`/game/${response.data.id}`);
       })
       .catch((error: any) => {
-        console.log(error);
         toast.error(`${error.response.data.message}`, {
           position: "top-center",
           autoClose: 5000,

@@ -62,7 +62,6 @@ const ChannelSettings = (props: any) => {
           );
         })
         .catch((error: any) => {
-          console.log(error);
           toast.error(`${error.response.data.message}`, {
             position: "top-right",
             autoClose: 5000,
@@ -95,15 +94,6 @@ const ChannelSettings = (props: any) => {
         return;
       }
     }
-
-    console.log(
-      "🚀 ~ file: ChatSettings.tsx:100 ~ saveChanges ~ chatType",
-      chatType
-    );
-    console.log(
-      "🚀 ~ file: ChatSettings.tsx:101 ~ saveChanges ~ currentChat.type",
-      currentChat.type
-    );
     if (chatType !== currentChat.type) {
       dispatch(
         updateCurrentChatType({
@@ -114,7 +104,6 @@ const ChannelSettings = (props: any) => {
         })
       );
     } else if (currentChat.type === "protected") {
-      console.log("🚀 ~ file: ChatSettings.tsx:124 ~ saveChanges ~ pw");
 
       dispatch(
         updateCurrentChatPassword({

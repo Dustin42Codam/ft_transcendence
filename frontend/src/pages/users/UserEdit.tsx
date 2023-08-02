@@ -96,7 +96,6 @@ const UserEdit = () => {
         });
       })
       .catch((error: any) => {
-        console.log(error);
         toast.update(toastId, {
           render: `${error.response.data.message}...`,
           type: "error",
@@ -140,7 +139,6 @@ const UserEdit = () => {
         });
       })
       .catch((error: any) => {
-        console.log(error);
         toast.update(id, {
           render: `${error.response.data.message}...`,
           type: "error",
